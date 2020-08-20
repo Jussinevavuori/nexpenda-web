@@ -1,0 +1,40 @@
+import React from "react";
+import { Route, RouteProps, Redirect } from "react-router-dom";
+import { useStoreState } from "../../store";
+import { routes } from "../../Routes";
+
+export type ProtectedRouteProps = {
+	fallbackRoute?: string;
+} & RouteProps
+
+export default function ProtectedRoute(props: ProtectedRouteProps) {
+
+	const { fallbackRoute, ...routeProps } = props
+
+	/**
+	 * Default fallback to login on redirect
+	 */
+	const defaultFallbackRoute = routes.login
+
+	/**
+	 * Get current user details
+	 */
+	const loading = useStoreState(_ => _.authentication.loading)
+	const isLoggedIn = useStoreState(_ => _.authentication.isLoggedIn)
+
+	/**
+	 * If the user is being loaded, show nothing
+	 */
+	if (loading) return null
+
+	/**
+	 * Else if user is not logged in redirect to fallback route or default fallback route
+	 * if none specified in props
+	 */
+	else if (!isLoggedIn) return <Redirect to={fallbackRoute || defaultFallbackRoute} />
+
+	/**
+	 * Else return route as is
+	 */
+	else return <Route {...routeProps} />
+}
