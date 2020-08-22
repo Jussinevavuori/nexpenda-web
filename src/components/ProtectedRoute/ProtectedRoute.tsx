@@ -19,13 +19,13 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
 	/**
 	 * Get current user details
 	 */
-	const loading = useStoreState(_ => _.authentication.loading)
-	const isLoggedIn = useStoreState(_ => _.authentication.isLoggedIn)
+	const initialized = useStoreState(_ => _.auth.initialized)
+	const isLoggedIn = useStoreState(_ => _.auth.isLoggedIn)
 
 	/**
 	 * If the user is being loaded, show nothing
 	 */
-	if (loading) return null
+	if (!initialized) return null
 
 	/**
 	 * Else if user is not logged in redirect to fallback route or default fallback route

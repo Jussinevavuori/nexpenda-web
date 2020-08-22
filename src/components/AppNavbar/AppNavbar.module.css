@@ -1,0 +1,30 @@
+.root {
+  grid-area: appnavbar;
+  z-index: var(--nav-bar-z);
+  width: 100%;
+  height: var(--nav-bar-height);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo middle-padding user";
+  place-items: center center;
+  box-shadow: 0 0 var(--shadow-blur-medium) var(--shadow-color-medium);
+  padding: 0 16px;
+}
+
+.user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-area: user;
+}
+
+.user > * {
+  margin-left: 8px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-area: logo;
+}

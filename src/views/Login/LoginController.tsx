@@ -12,7 +12,7 @@ export type LoginFormType = yup.InferType<typeof loginValidationSchema>
 
 export const LoginController: React.FC<{}> = () => {
 
-	const logInWithGoogle = useStoreActions(_ => _.authentication.logInWithGoogle)
+	const logInWithGoogle = useStoreActions(_ => _.auth.logInWithGoogle)
 
 	async function handleSubmit(values: LoginFormType) {
 		console.log("Submitted")

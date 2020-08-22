@@ -1,27 +1,49 @@
 import { BaseService } from "./BaseService";
-import { TransactionConstructable } from "../models/transactions/transactions.constructable";
+import {
+  JsonTransaction,
+  isJsonTransactionArray,
+  isJsonTransaction,
+} from "../models/transactions/transactions.json";
 
 export class TransactionService extends BaseService {
   getTransactions() {
-    return this.get<TransactionConstructable[]>("/transactions");
+    return this.get<JsonTransaction[] | null>("/transactions", {
+      transformResponse: (data) => (isJsonTransactionArray(data) ? data : null),
+    });
   }
 
-  postTransaction(constructable: TransactionConstructable) {
-    return this.post<TransactionConstructable, TransactionConstructable>(
-      "/transactions",
-      constructable
+  async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
+    return this.post<
+      Omit<JsonTransaction, "id" | "uid">,
+      JsonTransaction | null
+    >("/transactions", json, {
+      transformResponse: (data) => (isJsonTransaction(data) ? data : null),
+    });
+  }
+
+  async deleteTransaction(id: string) {
+    return this.delete<boolean>(`/transactions/${id}`, {
+      transformResponse: (_, headers) => headers.status === 204,
+    });
+  }
+
+  async putTransaction(json: JsonTransaction) {
+    return this.put<JsonTransaction, JsonTransaction | null>(
+      `/transactions/${json.id}`,
+      json,
+      {
+        transformResponse: (data) => (isJsonTransaction(data) ? data : null),
+      }
     );
   }
 
-  deleteTransaction(id: string) {
-    return this.delete(`/transactions/${id}`);
-  }
-
-  patchTransaction(constructable: TransactionConstructable) {
-    if (constructable.id) {
-      return this.patch<TransactionConstructable, TransactionConstructable>(
-        `/transactions/${constructable.id}`
-      );
-    }
+  async patchTransaction(json: JsonTransaction) {
+    return this.patch<JsonTransaction, JsonTransaction | null>(
+      `/transactions/${json.id}`,
+      json,
+      {
+        transformResponse: (data) => (isJsonTransaction(data) ? data : null),
+      }
+    );
   }
 }

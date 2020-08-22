@@ -1,17 +1,10 @@
 import React from "react"
-import { Switch, Route, Link, Redirect } from 'react-router-dom';
-import { LoginController } from './components/Login/LoginController';
-import { RegisterController } from './components/Register/RegisterController';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { LoginController } from './views/Login/LoginController';
+import { RegisterController } from './views/Register/RegisterController';
 import AppLayout from './components/AppLayout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import HomeScreen from './views/HomeScreen/HomeScreenView';
-
-function Navigation() {
-	return <nav style={{ margin: "0 0 16px 0", display: "flex", flexDirection: "row", height: 40, background: "#204aa5", width: "100%", alignItems: "center" }}>
-		<Link to={routes.login} style={{ color: "white", margin: "0 8px" }}>Login</Link>
-		<Link to={routes.register} style={{ color: "white", margin: "0 8px" }}>Register</Link>
-	</nav>
-}
+import Dashboard from './views/Dashboard/DashboardView';
 
 export const routes = {
 	approot: "/app",
@@ -26,18 +19,18 @@ export const routes = {
 export function Routes() {
 
 	return <Switch>
+
 		<Route exact path={routes.login}>
-			<Navigation />
 			<LoginController />
 		</Route>
+
 		<Route exact path={routes.register}>
-			<Navigation />
 			<RegisterController />
 		</Route>
 
 		<ProtectedRoute exact path={routes.dashboard}>
 			<AppLayout>
-				<HomeScreen />
+				<Dashboard />
 			</AppLayout>
 		</ProtectedRoute>
 

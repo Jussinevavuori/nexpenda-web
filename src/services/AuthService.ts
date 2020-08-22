@@ -1,19 +1,33 @@
 import { BaseService } from "./BaseService";
-import { UserConstructable } from "../models/authentication/user.constructable";
+import { isJsonAuth, JsonAuth } from "../models/authentication/auth.json";
 
 type EmailAndPassword = { email: string; password: string };
 
 export class AuthService extends BaseService {
   getProfile() {
-    return this.get<UserConstructable>("/auth/profile");
+    return this.get<JsonAuth | null>("/auth/profile", {
+      transformResponse: [(data) => (isJsonAuth(data) ? data : null)],
+    });
   }
 
   registerWithEmailAndPassword(values: EmailAndPassword) {
-    return this.post<EmailAndPassword, void>("/auth/register", values);
+    return this.post<EmailAndPassword, boolean>("/auth/register", values, {
+      transformResponse: [
+        (_, headers) => {
+          return headers.status === 200;
+        },
+      ],
+    });
   }
 
-  logInWithEmailAndPassword(values: { email: string; password: string }) {
-    return this.post<EmailAndPassword, void>("/auth/login", values);
+  async logInWithEmailAndPassword(values: { email: string; password: string }) {
+    return this.post<EmailAndPassword, boolean>("/auth/login", values, {
+      transformResponse: [
+        (_, headers) => {
+          return headers.status === 200;
+        },
+      ],
+    });
   }
 
   logInWithGoogle() {

@@ -3,19 +3,16 @@ import {
   TransactionsModel,
   transactionsModel,
 } from "./models/transactions/transactions.model";
-import {
-  AuthenticationModel,
-  authenticationModel,
-} from "./models/authentication/auth.model";
+import { AuthModel, authModel } from "./models/authentication/auth.model";
 
 export interface StoreModel {
   transactions: TransactionsModel;
-  authentication: AuthenticationModel;
+  auth: AuthModel;
 }
 
 const storeModel: StoreModel = {
   transactions: transactionsModel,
-  authentication: authenticationModel,
+  auth: authModel,
 };
 
 export const store = createStore(storeModel);

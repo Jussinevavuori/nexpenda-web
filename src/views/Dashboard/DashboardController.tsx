@@ -1,5 +1,5 @@
 import React from "react"
-import HomeScreenView from "./HomeScreenView"
+import HomeScreenView from "./DashboardView"
 import { useStoreActions } from "../../store"
 
 export default function HomeScreenController() {

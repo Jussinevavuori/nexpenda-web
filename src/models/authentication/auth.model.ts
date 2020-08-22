@@ -1,43 +1,30 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { User } from "./user.class";
-// import { isUserConstructable } from "./user.constructable";
-// import jwt from "jsonwebtoken";
+import { Auth } from "./auth.class";
 import { AuthService } from "../../services/AuthService";
-import { isUserConstructable, UserConstructable } from "./user.constructable";
+import { JsonAuth, isJsonAuth } from "./auth.json";
+import { isServerError, ServerError } from "../../utils/ServerError";
 
 /**
  * An instance of the auth service for the authentication model to use
  */
 export const authService = new AuthService();
 
-/**
- * Defining the current user, access token and user functions
- */
-export interface AuthenticationModel {
+export interface AuthModel {
   /**
-   * Has the application automatically fetched the current user's profile?
+   * Initialized state: has the profile been fetched at the least once
    */
-  loading: boolean;
+  initialized: boolean;
+  _setInitialized: Action<AuthModel, boolean>;
 
   /**
-   * Function to mark as initialized
+   * Currently logged in user or null if none logged in
    */
-  setLoading: Action<AuthenticationModel, boolean>;
-
-  /**
-   * Currently loggged in user or null if none logged in
-   */
-  user: User | null;
+  user: Auth | null;
 
   /**
    * Computed property for whether the user is currently logged in
    */
-  isLoggedIn: Computed<AuthenticationModel, boolean>;
-
-  /**
-   * Action to set the current user with partial user data (a constructable)
-   */
-  applyUserConstructable: Action<AuthenticationModel, UserConstructable>;
+  isLoggedIn: Computed<AuthModel, boolean>;
 
   /**
    * Current access token for authentication in memory for security purposes.
@@ -49,65 +36,113 @@ export interface AuthenticationModel {
   /**
    * Function to set the access token
    */
-  setAccessToken: Action<AuthenticationModel, string>;
+  _setAccessToken: Action<AuthModel, string>;
 
   /**
    * Function to get the currently logged in user's profile data and apply it
    * to the user property. The logged in property is defined by the current
    * refresh token.
    */
-  getProfile: Thunk<AuthenticationModel, void>;
+  getProfile: Thunk<AuthModel, void, any, any, Promise<void | ServerError>>;
 
   /**
    * Log in the current user with a Google account
    */
-  logInWithGoogle: Thunk<AuthenticationModel, void>;
+  logInWithGoogle: Thunk<AuthModel, void>;
+
+  /**
+   * Register the current user with email and password
+   */
+  registerWithEmailPassword: Thunk<
+    AuthModel,
+    { email: string; password: string },
+    any,
+    any,
+    Promise<void | ServerError>
+  >;
+
+  /**
+   * Log in the current user with email and password
+   */
+  loginWithEmailPassword: Thunk<
+    AuthModel,
+    { email: string; password: string },
+    any,
+    any,
+    Promise<void | ServerError>
+  >;
+
+  /**
+   * Action to set the current user with partial user data (a constructable)
+   */
+  _login: Action<AuthModel, JsonAuth>;
 
   /**
    * Log out the current user
    */
-  logOut: Thunk<AuthenticationModel, void>;
+  logOut: Thunk<AuthModel, void>;
 }
 
 /**
  * Implementation of the authentication model
  */
-export const authenticationModel: AuthenticationModel = {
-  loading: true,
-
-  setLoading: action((state) => {
-    state.loading = false;
+export const authModel: AuthModel = {
+  initialized: false,
+  _setInitialized: action((state, boolean) => {
+    state.initialized = boolean;
   }),
 
   user: null,
 
   isLoggedIn: computed((state) => Boolean(state.user)),
 
-  applyUserConstructable: action((state, constructable) => {
-    state.user = new User(constructable);
-  }),
-
   accessToken: null,
 
-  setAccessToken: action((state, newAccessToken) => {
+  _setAccessToken: action((state, newAccessToken) => {
     state.accessToken = newAccessToken;
   }),
 
   getProfile: thunk(async (actions) => {
-    try {
-      const result = await authService.getProfile();
-      if (isUserConstructable(result.data)) {
-        actions.applyUserConstructable(result.data);
-      }
-    } catch (error) {
-      console.warn("Not logged in");
-    } finally {
-      actions.setLoading(false);
+    const { data } = await authService.getProfile();
+    if (isServerError(data)) {
+      actions._setInitialized(true);
+      return data;
+    } else if (data) {
+      actions._login(data);
     }
+    actions._setInitialized(true);
   }),
 
   logInWithGoogle: thunk(() => {
     authService.logInWithGoogle();
+  }),
+
+  loginWithEmailPassword: thunk(async (actions, form) => {
+    const { data } = await authService.logInWithEmailAndPassword(form);
+    if (isServerError(data)) {
+      return data;
+    } else if (data) {
+      const { data: profileData } = await authService.getProfile();
+      if (!profileData || isServerError(profileData)) return;
+      actions._login(profileData);
+    }
+  }),
+
+  registerWithEmailPassword: thunk(async (actions, form) => {
+    const { data } = await authService.registerWithEmailAndPassword(form);
+    if (isServerError(data)) {
+      return data;
+    } else if (data) {
+      const { data: profileData } = await authService.getProfile();
+      if (!profileData || isServerError(profileData)) return;
+      actions._login(profileData);
+    }
+  }),
+
+  _login: action((state, json) => {
+    if (isJsonAuth(json)) {
+      state.user = new Auth(json);
+    }
   }),
 
   logOut: thunk(() => {

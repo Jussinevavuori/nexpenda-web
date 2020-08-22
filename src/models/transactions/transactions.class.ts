@@ -1,4 +1,4 @@
-import { TransactionConstructable } from "./transactions.constructable";
+import { JsonTransaction } from "./transactions.json";
 import * as uuid from "uuid";
 
 export class Transaction {
@@ -8,12 +8,12 @@ export class Transaction {
   integerAmount: number;
   id: string;
 
-  constructor(constructable: TransactionConstructable) {
-    this.date = new Date(constructable.date);
-    this.comment = constructable.comment || "";
-    this.category = constructable.category;
-    this.integerAmount = Math.floor(constructable.integerAmount);
-    this.id = constructable.id || uuid.v4();
+  constructor(json: JsonTransaction) {
+    this.date = new Date(json.time);
+    this.comment = json.comment || "";
+    this.category = json.category;
+    this.integerAmount = Math.floor(json.integerAmount);
+    this.id = json.id || uuid.v4();
   }
 
   get amount() {

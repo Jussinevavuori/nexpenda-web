@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form"
 import { loginValidationSchema, LoginFormType } from './LoginController';
 import { yupResolver } from '@hookform/resolvers';
+import { useRedirect } from '../../hooks/useRedirect';
 
 export type LoginViewProps = {
 	handleSubmit(values: LoginFormType): Promise<void>;
@@ -10,6 +11,8 @@ export type LoginViewProps = {
 
 
 export const LoginView: React.FC<LoginViewProps> = (props) => {
+
+	const redirect = useRedirect()
 
 	const { register, handleSubmit, errors, formState } = useForm<LoginFormType>({
 		resolver: yupResolver(loginValidationSchema),
@@ -36,5 +39,8 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 		<form onSubmit={e => { e.preventDefault(); props.handleGoogleSubmit() }}>
 			<button type="submit">{"Log in with Google"}</button>
 		</form>
+
+
+		<p onClick={() => redirect(_ => _.dashboard)}>{"Go to protected page"}</p>
 	</div>
 }

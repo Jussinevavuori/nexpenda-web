@@ -7,7 +7,7 @@ function App() {
 	/**
 	 * Initialize by fetching the user's profile if any
 	 */
-	const getProfile = useStoreActions(_ => _.authentication.getProfile)
+	const getProfile = useStoreActions(_ => _.auth.getProfile)
 
 	useEffect(() => {
 		getProfile()

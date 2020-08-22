@@ -1,15 +1,10 @@
-export const config = {
-  productionApiBaseURL: "https://expenceapp.herokuapp.com",
-  developmentApiBaseURL: "http://localhost:4000",
-  testApiBaseURL: "http://localhost:4000",
-  getApiBaseURL() {
+export class Config {
+  static get API_URL() {
     switch (process.env.NODE_ENV) {
       case "production":
-        return config.productionApiBaseURL;
-      case "development":
-        return config.developmentApiBaseURL;
-      case "test":
-        return config.testApiBaseURL;
+        return "https://expenceapp.herokuapp.com";
+      default:
+        return "http://localhost:4000";
     }
-  },
-};
+  }
+}
