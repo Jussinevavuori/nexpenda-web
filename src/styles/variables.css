@@ -2,6 +2,8 @@
   /** TYPOGRAPHY */
 
   --font-family-roboto: Roboto, Helvetica, Arial, sans-serif;
+  --font-family-roboto-condensed: "Roboto Condensed", Helvetica, Arial,
+    sans-serif;
 
   --font-size-default: 1rem;
 
@@ -25,6 +27,10 @@
   --color-primary-700: #390cb5;
   --color-primary-800: #300d94;
   --color-primary-900: #200d55;
+
+  --color-positive-main: #07b1b6;
+
+  --color-negative-main: #ff437c;
 
   --color-error-main: #f44336;
   --color-error-light: #e57373;

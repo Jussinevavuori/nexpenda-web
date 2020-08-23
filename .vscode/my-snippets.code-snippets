@@ -1,0 +1,36 @@
+{
+	"Create view component": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "viewcomp",
+		"body": [
+			"import styles from \"./$1View.module.css\";",
+			"import React from \"react\"",
+			"",
+			"export type $1ViewProps = {",
+			"",
+			"}",
+			"",
+			"export function $1View(props: $1ViewProps) {",
+			"return <div>",
+			"",
+			"</div>",
+			"}",
+		]
+	},
+	"Create container component": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "contcomp",
+		"body": [
+			"import React from \"react\"",
+			"import { $1View } from \"./$1View\"",
+			"",
+			"export type $1Props = {",
+			"",
+			"}",
+			"",
+			"export function $1(props: $1Props) {",
+			"return <$1View />",
+			"}",
+		]
+	}
+}

@@ -23,6 +23,14 @@ export interface TransactionsModel {
   items: Transaction[];
 
   /**
+   * Current transactions sorted by dates
+   */
+  itemsByDates: Computed<
+    TransactionsModel,
+    { date: Date; items: Transaction[] }[]
+  >;
+
+  /**
    * Current amount of transactions
    */
   count: Computed<TransactionsModel, number>;
@@ -96,23 +104,32 @@ export interface TransactionsModel {
 }
 
 export const transactionsModel: TransactionsModel = {
-  /**
-   * Items
-   */
   items: [],
 
-  /**
-   * Items count
-   */
+  itemsByDates: computed((state) => {
+    return Object.entries(
+      state.items.reduce((result, transaction) => {
+        const _datestring = transaction.date.toDateString();
+        const _transactions = result[_datestring] ?? [];
+        return { ...result, [_datestring]: [..._transactions, transaction] };
+      }, {} as { [datestring: string]: Transaction[] })
+    )
+      .map((entry) => {
+        return {
+          date: new Date(entry[0]),
+          items: entry[1].sort((a, b) => b.date.getTime() - a.date.getTime()),
+        };
+      })
+      .sort((a, b) => b.date.getTime() - a.date.getTime());
+  }),
+
   count: computed((state) => state.items.length),
 
   /**
    * GET transactions Thunk and Action
    */
   getTransactions: thunk(async (actions) => {
-    console.log("Getting transactions");
     const { data } = await transactionService.getTransactions();
-    console.log({ data });
     if (isServerError(data)) {
       return data;
     } else if (isJsonTransactionArray(data)) {
@@ -128,7 +145,6 @@ export const transactionsModel: TransactionsModel = {
    */
   postTransaction: thunk(async (actions, json) => {
     const { data } = await transactionService.postTransaction(json);
-    console.log({ data });
     if (isServerError(data)) {
       return data;
     } else if (data) {

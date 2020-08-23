@@ -3,6 +3,7 @@ import { useStoreState, useStoreActions } from "../../store";
 import { useForm } from "react-hook-form";
 import { object, string, ObjectSchema, number } from "yup"
 import { yupResolver } from "@hookform/resolvers";
+import { TransactionList } from "../../components/TransactionList/TransactionList";
 
 export type HomeScreenViewProps = {}
 
@@ -29,7 +30,6 @@ export default function HomeScreenView(props: HomeScreenViewProps) {
 	const commentError = formState.touched.comment && errors.comment?.message
 
 	const user = useStoreState(_ => _.auth.user)
-	const transactions = useStoreState(_ => _.transactions.items)
 	const postTransaction = useStoreActions(_ => _.transactions.postTransaction)
 
 	if (!user) return null
@@ -67,20 +67,7 @@ export default function HomeScreenView(props: HomeScreenViewProps) {
 
 			</form>
 
-			<h1>
-				{`Your transactions this month`}
-			</h1>
-
-			<ul>
-				{transactions.map(item => {
-					return <li key={item.id}>
-						<span>{item.date.toLocaleString()}</span>
-						<span style={{ margin: "0 8px", fontWeight: "bold" }}>{item.formatFull}</span>
-						<span>{item.category}</span>
-						<span style={{ margin: "0 8px", fontStyle: "italic", opacity: 0.5, }}>{item.comment}</span>
-					</li>
-				})}
-			</ul>
+			<TransactionList />
 
 		</section>
 

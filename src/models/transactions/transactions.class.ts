@@ -59,4 +59,12 @@ export class Transaction {
   get formatFull() {
     return this.formatSign + this.formatEuros + "." + this.formatCents;
   }
+
+  get isPositive() {
+    return this.sign >= 0;
+  }
+
+  get isNegative() {
+    return this.sign < 0;
+  }
 }

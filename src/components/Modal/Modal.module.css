@@ -1,0 +1,51 @@
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2000;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2010;
+}
+
+.modal {
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 0;
+  background: white;
+  z-index: 2020;
+  box-shadow: 0 0 var(--shadow-blur-medium) var(--shadow-color-medium);
+  border-radius: 8px;
+  max-width: 50%;
+  animation: modal-in 400ms forwards;
+}
+
+.modalContent {
+  position: relative;
+  padding: 0 20px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+@keyframes modal-in {
+  0% {
+    transform: translate(-50%, -30%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
