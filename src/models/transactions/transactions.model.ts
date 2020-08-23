@@ -36,6 +36,11 @@ export interface TransactionsModel {
   count: Computed<TransactionsModel, number>;
 
   /**
+   * All different categories
+   */
+  categories: Computed<TransactionsModel, string[]>;
+
+  /**
    * Fetch all transactions for user from server
    */
   getTransactions: Thunk<
@@ -125,6 +130,10 @@ export const transactionsModel: TransactionsModel = {
 
   count: computed((state) => state.items.length),
 
+  categories: computed((state) =>
+    state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)
+  ),
+
   /**
    * GET transactions Thunk and Action
    */
@@ -207,7 +216,7 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   onAuthChanged: thunkOn(
-    (_, store) => [store.auth.logOut, store.auth._login],
+    (_, store) => [store.auth.logout, store.auth._login],
     (actions, target) => {
       const [loggedOut, loggedIn] = target.resolvedTargets;
       switch (target.type) {

@@ -9,9 +9,9 @@
 
   display: grid;
 
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   grid-template-columns: 1fr;
-  grid-template-areas: "appnavbar" "children" "apptabs";
+  grid-template-areas: "children" "apptabs";
 }
 
 .childrenContainer {
@@ -23,8 +23,8 @@
 
 @media (min-width: 600px) {
   .root {
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr;
     grid-template-columns: auto 1fr;
-    grid-template-areas: "appnavbar appnavbar" "apptabs children";
+    grid-template-areas: "apptabs children";
   }
 }

@@ -51,15 +51,17 @@
 
   /** SHADOWS */
 
+  --shadow-blur-small: 6px;
   --shadow-blur-medium: 20px;
 
   --shadow-color-medium: rgba(0, 0, 0, 0.15);
+  --shadow-color-strong: rgba(0, 0, 0, 0.2);
 
   /** LAYOUT */
 
   --nav-bar-height: 60px;
   --app-tab-height: 60px;
-  --app-tab-width: 160px;
+  --app-tab-width: 14rem;
 
   --nav-bar-z: 1000;
   --app-tab-z: 900;

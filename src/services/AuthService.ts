@@ -20,7 +20,7 @@ export class AuthService extends BaseService {
     });
   }
 
-  async logInWithEmailAndPassword(values: { email: string; password: string }) {
+  async loginWithEmailAndPassword(values: { email: string; password: string }) {
     return this.post<EmailAndPassword, boolean>("/auth/login", values, {
       transformResponse: [
         (_, headers) => {
@@ -30,11 +30,11 @@ export class AuthService extends BaseService {
     });
   }
 
-  logInWithGoogle() {
+  loginWithGoogle() {
     window.location.href = this.endpoint("/auth/google");
   }
 
-  logOut() {
+  logout() {
     window.location.href = this.endpoint("/auth/logout");
   }
 }

@@ -1,0 +1,15 @@
+.root {
+  padding: 40px;
+}
+
+.root img {
+  margin-bottom: 20px;
+}
+
+.root td {
+  padding: 0 8px 8px 0;
+}
+
+.root button {
+  margin-top: 20px;
+}

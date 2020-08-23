@@ -18,3 +18,7 @@
 .transactionListing {
   padding: 6px 0;
 }
+
+.transactionListing:not(:first-child) {
+  border-top: 1px solid var(--color-divider);
+}

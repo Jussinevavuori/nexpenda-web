@@ -16,24 +16,27 @@ const portalElement = document.getElementById("_modal")
 
 export function Modal(props: ModalProps) {
 
+	const { onClose, disableBackgroundClick, disableEsc } = props
+
 	/**
 	 * Unless disabled, pressing ESC will close the modal
 	 */
 	const onEscKeyPressed = useCallback(() => {
-		if (!props.disableEsc) {
-			props.onClose()
+		if (!disableEsc) {
+			onClose()
 		}
-	}, [props.disableEsc, props.onClose])
+	}, [disableEsc, onClose])
+
 	useOnKeyPress(27, onEscKeyPressed, { if: props.open })
 
 	/**
 	 * Unless disabled, clicking the background will close the modal
 	 */
 	const handleBackgroundClick = useCallback(() => {
-		if (!props.disableBackgroundClick) {
-			props.onClose()
+		if (!disableBackgroundClick) {
+			onClose()
 		}
-	}, [props.disableBackgroundClick, props.onClose])
+	}, [disableBackgroundClick, onClose])
 
 	/**
 	 * Ensure portal element exists

@@ -59,7 +59,7 @@ export class BaseService {
         store.getActions().auth._setAccessToken(accessToken);
       } catch (e) {
         if (store.getState().auth.accessToken) {
-          store.getActions().auth.logOut();
+          store.getActions().auth.logout();
         }
       }
     }

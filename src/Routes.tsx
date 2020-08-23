@@ -4,7 +4,8 @@ import { LoginController } from './views/Login/LoginController';
 import { RegisterController } from './views/Register/RegisterController';
 import AppLayout from './components/AppLayout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import Dashboard from './views/Dashboard/DashboardView';
+import { DashboardTab } from './views/DashboardTab/DashboardTabController';
+import { SettingsTab } from "./views/SettingsTab/SettingsTabController";
 
 export const routes = {
 	approot: "/app",
@@ -30,7 +31,7 @@ export function Routes() {
 
 		<ProtectedRoute exact path={routes.dashboard}>
 			<AppLayout>
-				<Dashboard />
+				<DashboardTab />
 			</AppLayout>
 		</ProtectedRoute>
 
@@ -48,7 +49,7 @@ export function Routes() {
 
 		<ProtectedRoute exact path={routes.settings}>
 			<AppLayout>
-				<p>Settings placeholder</p>
+				<SettingsTab />
 			</AppLayout>
 		</ProtectedRoute>
 

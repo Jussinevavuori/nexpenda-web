@@ -1,22 +1,22 @@
 import styles from "./AppLayout.module.css"
 import React from "react"
 import AppTabs from "../AppTabs/AppTabs"
-import AppNavbar from "../AppNavbar/AppNavbar"
-import { useMinWidthMedia } from "../../hooks/useMedia"
+import { TransactionFormModal } from "../TransactionFormModal/TransactionFormModalController"
 
 type AppLayoutProps = {
 	children?: React.ReactNode
 }
 
 export default function AppLayout(props: AppLayoutProps) {
+	return <>
 
-	const renderAppNavbar = useMinWidthMedia(600)
+		<TransactionFormModal />
 
-	return <div className={styles.root}>
-		{renderAppNavbar ? <AppNavbar /> : null}
-		<AppTabs />
-		<div className={styles.childrenContainer}>
-			{props.children}
+		<div className={styles.root}>
+			<AppTabs />
+			<div className={styles.childrenContainer}>
+				{props.children}
+			</div>
 		</div>
-	</div>
+	</>
 }

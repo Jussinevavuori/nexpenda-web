@@ -4,14 +4,20 @@ import {
   transactionsModel,
 } from "./models/transactions/transactions.model";
 import { AuthModel, authModel } from "./models/authentication/auth.model";
+import {
+  TransactionFormModel,
+  transactionFormModel,
+} from "./models/transactionForm/transactionForm.model";
 
 export interface StoreModel {
   transactions: TransactionsModel;
+  transactionForm: TransactionFormModel;
   auth: AuthModel;
 }
 
 const storeModel: StoreModel = {
   transactions: transactionsModel,
+  transactionForm: transactionFormModel,
   auth: authModel,
 };
 

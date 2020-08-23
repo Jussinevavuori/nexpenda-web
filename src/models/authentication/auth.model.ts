@@ -48,7 +48,7 @@ export interface AuthModel {
   /**
    * Log in the current user with a Google account
    */
-  logInWithGoogle: Thunk<AuthModel, void>;
+  loginWithGoogle: Thunk<AuthModel, void>;
 
   /**
    * Register the current user with email and password
@@ -80,7 +80,7 @@ export interface AuthModel {
   /**
    * Log out the current user
    */
-  logOut: Thunk<AuthModel, void>;
+  logout: Thunk<AuthModel, void>;
 }
 
 /**
@@ -113,12 +113,12 @@ export const authModel: AuthModel = {
     actions._setInitialized(true);
   }),
 
-  logInWithGoogle: thunk(() => {
-    authService.logInWithGoogle();
+  loginWithGoogle: thunk(() => {
+    authService.loginWithGoogle();
   }),
 
   loginWithEmailPassword: thunk(async (actions, form) => {
-    const { data } = await authService.logInWithEmailAndPassword(form);
+    const { data } = await authService.loginWithEmailAndPassword(form);
     if (isServerError(data)) {
       return data;
     } else if (data) {
@@ -145,7 +145,7 @@ export const authModel: AuthModel = {
     }
   }),
 
-  logOut: thunk(() => {
-    authService.logOut();
+  logout: thunk(() => {
+    authService.logout();
   }),
 };
