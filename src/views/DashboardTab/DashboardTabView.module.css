@@ -1,0 +1,14 @@
+.header {
+  padding: var(--padding-4);
+  background: var(--color-primary-main);
+  color: white;
+}
+
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.body {
+  padding: var(--padding-4);
+}

@@ -12,6 +12,15 @@
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
+  /** SIZES */
+
+  --padding-1: 0.5rem;
+  --padding-2: 1rem;
+  --padding-3: 1.5rem;
+  --padding-4: 2rem;
+  --padding-6: 3rem;
+  --padding-8: 4rem;
+
   /** PALETTE */
 
   --color-primary-main: #5e24ff;

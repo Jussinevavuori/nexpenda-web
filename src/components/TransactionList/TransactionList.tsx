@@ -3,14 +3,16 @@ import { TransactionListView } from "./TransactionListView"
 import { useStoreState } from "../../store"
 
 export type TransactionListProps = {
-
+	bypassFilters?: boolean;
 }
 
 export function TransactionList(props: TransactionListProps) {
 
 	const itemsByDates = useStoreState(_ => _.transactions.itemsByDates)
 
+	const filteredItemsByDates = useStoreState(_ => _.transactions.filteredItemsByDates)
+
 	return <TransactionListView
-		itemsByDates={itemsByDates}
+		itemsByDates={props.bypassFilters ? itemsByDates : filteredItemsByDates}
 	/>
 }

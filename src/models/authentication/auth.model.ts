@@ -124,7 +124,7 @@ export const authModel: AuthModel = {
     } else if (data) {
       const { data: profileData } = await authService.getProfile();
       if (!profileData || isServerError(profileData)) return;
-      actions._login(profileData);
+			actions._login(profileData);
     }
   }),
 

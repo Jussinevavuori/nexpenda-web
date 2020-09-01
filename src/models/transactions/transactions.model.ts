@@ -13,6 +13,7 @@ import { JsonTransaction, isJsonTransactionArray } from "./transactions.json";
 import { TransactionService } from "../../services/TransactionService";
 import { isServerError, ServerError } from "../../utils/ServerError";
 import { StoreModel } from "../../store";
+import { compareDate } from "../../utils/compareDate";
 
 const transactionService = new TransactionService();
 
@@ -23,11 +24,25 @@ export interface TransactionsModel {
   items: Transaction[];
 
   /**
-   * Current transactions sorted by dates
+   * Current transactions, filtered
+   */
+  filteredItems: Computed<TransactionsModel, Transaction[], StoreModel>;
+
+  /**
+   * Current transactions grouped and sorted by dates
    */
   itemsByDates: Computed<
     TransactionsModel,
     { date: Date; items: Transaction[] }[]
+  >;
+
+  /**
+   * Current filtered transactions grouped and sorted by dates
+   */
+  filteredItemsByDates: Computed<
+    TransactionsModel,
+    { date: Date; items: Transaction[] }[],
+    StoreModel
   >;
 
   /**
@@ -111,21 +126,27 @@ export interface TransactionsModel {
 export const transactionsModel: TransactionsModel = {
   items: [],
 
+  filteredItems: computed(
+    [
+      (state) => state.items,
+      (state, storeState) => storeState.transactionInterval.startDate,
+      (state, storeState) => storeState.transactionInterval.endDate,
+    ],
+    (items, startDate, endDate) => {
+      return items.filter((item) => {
+        if (compareDate(item.date, "<", startDate)) return false;
+        if (compareDate(item.date, ">", endDate)) return false;
+        return true;
+      });
+    }
+  ),
+
   itemsByDates: computed((state) => {
-    return Object.entries(
-      state.items.reduce((result, transaction) => {
-        const _datestring = transaction.date.toDateString();
-        const _transactions = result[_datestring] ?? [];
-        return { ...result, [_datestring]: [..._transactions, transaction] };
-      }, {} as { [datestring: string]: Transaction[] })
-    )
-      .map((entry) => {
-        return {
-          date: new Date(entry[0]),
-          items: entry[1].sort((a, b) => b.date.getTime() - a.date.getTime()),
-        };
-      })
-      .sort((a, b) => b.date.getTime() - a.date.getTime());
+    return groupAndSortItemsByDates(state.items);
+  }),
+
+  filteredItemsByDates: computed((state) => {
+    return groupAndSortItemsByDates(state.filteredItems);
   }),
 
   count: computed((state) => state.items.length),
@@ -233,3 +254,23 @@ export const transactionsModel: TransactionsModel = {
     state.items = [];
   }),
 };
+
+// Helper function to group and sort items by dates
+function groupAndSortItemsByDates<T extends { date: Date }>(
+  items: T[]
+): { date: Date; items: T[] }[] {
+  return Object.entries(
+    items.reduce((result, transaction) => {
+      const _datestring = transaction.date.toDateString();
+      const _transactions = result[_datestring] ?? [];
+      return { ...result, [_datestring]: [..._transactions, transaction] };
+    }, {} as { [datestring: string]: T[] })
+  )
+    .map((entry) => {
+      return {
+        date: new Date(entry[0]),
+        items: entry[1].sort((a, b) => b.date.getTime() - a.date.getTime()),
+      };
+    })
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+}
