@@ -10,13 +10,13 @@ export type DashboardTabViewProps = {
 
 export function DashboardTabView(props: DashboardTabViewProps) {
 
-	// const startDate = useStoreState(_ => _.transactionInterval.startDate)
-	// const endDate = useStoreState(_ => _.transactionInterval.endDate)
-	// const dateIntervalIsMonth = useStoreState(_ => _.transactionInterval.dateIntervalIsMonth)
-	const dateIntervalMonthString = useStoreState(_ => _.transactionInterval.dateIntervalMonthString)
-
-	const setNextMonthAsDateInterval = useStoreActions(_ => _.transactionInterval.setNextMonthAsDateInterval)
-	const setPreviousMonthAsDateInterval = useStoreActions(_ => _.transactionInterval.setPreviousMonthAsDateInterval)
+	const dateIntervalMonthString = useStoreState(_ => _.transactions.interval.dateIntervalMonthString)
+	const filteredItemsCount = useStoreState(_ => _.transactions.filteredCount)
+	const filteredSum = useStoreState(_ => _.transactions.filteredSum)
+	const filteredExpensesSum = useStoreState(_ => _.transactions.filteredExpensesSum)
+	const filteredIncomesSum = useStoreState(_ => _.transactions.filteredIncomesSum)
+	const setNextMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setNextMonthAsDateInterval)
+	const setPreviousMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setPreviousMonthAsDateInterval)
 
 	return <div className={styles.root}>
 
@@ -25,6 +25,13 @@ export function DashboardTabView(props: DashboardTabViewProps) {
 			<h1>
 				{dateIntervalMonthString}
 			</h1>
+
+			<p>Total: {filteredSum.formatFull}</p>
+
+			<p>{filteredIncomesSum.formatFull} / {filteredExpensesSum.formatFull}</p>
+
+			<p>{filteredItemsCount} items</p>
+
 
 			<button onClick={() => setPreviousMonthAsDateInterval()}>
 				{"<"}

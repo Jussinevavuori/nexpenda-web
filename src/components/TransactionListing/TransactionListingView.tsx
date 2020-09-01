@@ -12,10 +12,10 @@ export type TransactionListingViewProps = {
 export function TransactionListingView(props: TransactionListingViewProps) {
 
 	return <div className={styles.root}>
-		<div className={cx(styles.icon, props.transaction.isPositive ? styles.icon_positive : styles.icon_negative)}>
+		<div className={cx(styles.icon, props.transaction.amount.isPositive ? styles.icon_positive : styles.icon_negative)}>
 			<div className={styles.iconContainer}>
 				{
-					props.transaction.isPositive
+					props.transaction.amount.isPositive
 						? <PlusIcon />
 						: <MinusIcon />
 				}
@@ -31,9 +31,9 @@ export function TransactionListingView(props: TransactionListingViewProps) {
 				{props.transaction.comment}
 			</span>
 		</div>
-		<div className={cx(styles.amount, props.transaction.isPositive ? styles.amount_positive : styles.amount_negative)}>
+		<div className={cx(styles.amount, props.transaction.amount.isPositive ? styles.amount_positive : styles.amount_negative)}>
 			<span>
-				{props.transaction.formatFull}
+				{props.transaction.amount.formatFull}
 			</span>
 		</div>
 	</div>

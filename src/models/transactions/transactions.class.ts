@@ -1,70 +1,32 @@
 import { JsonTransaction } from "./transactions.json";
 import * as uuid from "uuid";
+import { MoneyAmount } from "../../utils/MoneyAmount";
 
 export class Transaction {
   date: Date;
   category: string;
   comment: string;
-  integerAmount: number;
+  amount: MoneyAmount;
   id: string;
+  uid: string;
 
   constructor(json: JsonTransaction) {
     this.date = new Date(json.time);
     this.comment = json.comment || "";
     this.category = json.category;
-    this.integerAmount = Math.floor(json.integerAmount);
+    this.amount = new MoneyAmount(Math.floor(json.integerAmount));
     this.id = json.id || uuid.v4();
+    this.uid = json.uid;
   }
 
-  get amount() {
-    return this.integerAmount / 100;
-  }
-
-  get unsignedIntegerAmount() {
-    return Math.abs(this.integerAmount);
-  }
-
-  get unsignedAmount() {
-    return Math.abs(this.amount);
-  }
-
-  get euros() {
-    if (this.integerAmount > 0) {
-      return Math.floor(this.integerAmount / 100);
-    } else {
-      return Math.ceil(this.integerAmount / 100);
-    }
-  }
-
-  get formatEuros() {
-    return Math.abs(this.euros).toFixed(0);
-  }
-
-  get cents() {
-    return Math.floor(this.integerAmount % 100);
-  }
-
-  get formatCents() {
-    return Math.abs(this.cents).toFixed(0).padStart(2, "0");
-  }
-
-  get sign(): -1 | 0 | 1 {
-    return this.integerAmount === 0 ? 0 : this.integerAmount > 0 ? 1 : -1;
-  }
-
-  get formatSign() {
-    return this.integerAmount === 0 ? "±" : this.integerAmount > 0 ? "+" : "-";
-  }
-
-  get formatFull() {
-    return this.formatSign + this.formatEuros + "." + this.formatCents;
-  }
-
-  get isPositive() {
-    return this.sign >= 0;
-  }
-
-  get isNegative() {
-    return this.sign < 0;
+  toJson(): JsonTransaction {
+    return {
+      time: this.date.getTime(),
+      category: this.category,
+      comment: this.comment,
+      integerAmount: this.amount.integer,
+      id: this.id,
+      uid: this.uid,
+    };
   }
 }

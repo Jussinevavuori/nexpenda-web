@@ -14,10 +14,18 @@ import { TransactionService } from "../../services/TransactionService";
 import { isServerError, ServerError } from "../../utils/ServerError";
 import { StoreModel } from "../../store";
 import { compareDate } from "../../utils/compareDate";
+import { groupByDate } from "../../utils/groupByDate";
+import { intervalModel, IntervalModel } from "../interval/interval.model";
+import { MoneyAmount } from "../../utils/MoneyAmount";
 
 const transactionService = new TransactionService();
 
 export interface TransactionsModel {
+  /**
+   * Current interval (nested model)
+   */
+  interval: IntervalModel;
+
   /**
    * Current transactions
    */
@@ -49,6 +57,41 @@ export interface TransactionsModel {
    * Current amount of transactions
    */
   count: Computed<TransactionsModel, number>;
+
+  /**
+   * Current amount of transactions after filtering
+   */
+  filteredCount: Computed<TransactionsModel, number>;
+
+  /**
+   * Sum of transactions
+   */
+  sum: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Sum of filtered transactions
+   */
+  filteredSum: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Sum of positive transactions only
+   */
+  incomesSum: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Sum of negative transactions only
+   */
+  expensesSum: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Sum of positive filtered transactions only
+   */
+  filteredIncomesSum: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Sum of negative filtered transactions only
+   */
+  filteredExpensesSum: Computed<TransactionsModel, MoneyAmount>;
 
   /**
    * All different categories
@@ -124,40 +167,78 @@ export interface TransactionsModel {
 }
 
 export const transactionsModel: TransactionsModel = {
+  interval: intervalModel,
+
   items: [],
 
-  filteredItems: computed(
-    [
-      (state) => state.items,
-      (state, storeState) => storeState.transactionInterval.startDate,
-      (state, storeState) => storeState.transactionInterval.endDate,
-    ],
-    (items, startDate, endDate) => {
-      return items.filter((item) => {
-        if (compareDate(item.date, "<", startDate)) return false;
-        if (compareDate(item.date, ">", endDate)) return false;
-        return true;
-      });
-    }
-  ),
+  filteredItems: computed((state) => {
+    return state.items.filter((item) => {
+      if (compareDate(item.date, "<", state.interval.startDate)) return false;
+      if (compareDate(item.date, ">", state.interval.endDate)) return false;
+      return true;
+    });
+  }),
 
   itemsByDates: computed((state) => {
-    return groupAndSortItemsByDates(state.items);
+    return groupByDate(state.items, (_) => _.date, { sort: true });
   }),
 
   filteredItemsByDates: computed((state) => {
-    return groupAndSortItemsByDates(state.filteredItems);
+    return groupByDate(state.filteredItems, (_) => _.date, { sort: true });
   }),
 
   count: computed((state) => state.items.length),
+
+  filteredCount: computed((state) => state.filteredItems.length),
+
+  sum: computed((state) => {
+    return new MoneyAmount(
+      state.items.reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
+
+  filteredSum: computed((state) => {
+    return new MoneyAmount(
+      state.filteredItems.reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
+
+  incomesSum: computed((state) => {
+    return new MoneyAmount(
+      state.items
+        .filter((_) => _.amount.integer > 0)
+        .reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
+
+  filteredIncomesSum: computed((state) => {
+    return new MoneyAmount(
+      state.filteredItems
+        .filter((_) => _.amount.integer > 0)
+        .reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
+
+  expensesSum: computed((state) => {
+    return new MoneyAmount(
+      state.items
+        .filter((_) => _.amount.integer < 0)
+        .reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
+
+  filteredExpensesSum: computed((state) => {
+    return new MoneyAmount(
+      state.filteredItems
+        .filter((_) => _.amount.integer < 0)
+        .reduce((sum, item) => sum + item.amount.integer, 0)
+    );
+  }),
 
   categories: computed((state) =>
     state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)
   ),
 
-  /**
-   * GET transactions Thunk and Action
-   */
   getTransactions: thunk(async (actions) => {
     const { data } = await transactionService.getTransactions();
     if (isServerError(data)) {
@@ -166,13 +247,11 @@ export const transactionsModel: TransactionsModel = {
       actions._getTransactions(data);
     }
   }),
+
   _getTransactions: action((state, jsons) => {
     state.items = jsons.map((json) => new Transaction(json));
   }),
 
-  /**
-   * POST transactions Thunk and Action
-   */
   postTransaction: thunk(async (actions, json) => {
     const { data } = await transactionService.postTransaction(json);
     if (isServerError(data)) {
@@ -186,9 +265,6 @@ export const transactionsModel: TransactionsModel = {
     state.items.push(new Transaction(json));
   }),
 
-  /**
-   * DELETE transactions Thunk and Action
-   */
   deleteTransaction: thunk(async (actions, id) => {
     const { data } = await transactionService.deleteTransaction(id);
     if (isServerError(data)) {
@@ -202,9 +278,6 @@ export const transactionsModel: TransactionsModel = {
     state.items = state.items.filter((item) => item.id !== id);
   }),
 
-  /**
-   * PUT transactions Thunk and Action
-   */
   putTransaction: thunk(async (actions, json) => {
     const { data } = await transactionService.putTransaction(json);
     if (isServerError(data)) {
@@ -213,15 +286,13 @@ export const transactionsModel: TransactionsModel = {
       actions._putTransaction(data);
     }
   }),
+
   _putTransaction: action((state, json) => {
     state.items = state.items.map((item) =>
       item.id === json.id ? new Transaction(json) : item
     );
   }),
 
-  /**
-   * PATCH transactions Thunk and Action
-   */
   patchTransaction: thunk(async (actions, json) => {
     const { data } = await transactionService.putTransaction(json);
     if (isServerError(data)) {
@@ -230,6 +301,7 @@ export const transactionsModel: TransactionsModel = {
       actions._patchTransaction(data);
     }
   }),
+
   _patchTransaction: action((state, json) => {
     state.items = state.items.map((item) =>
       item.id === json.id ? new Transaction(json) : item
@@ -250,27 +322,8 @@ export const transactionsModel: TransactionsModel = {
       }
     }
   ),
+
   _clearTransactions: action((state) => {
     state.items = [];
   }),
 };
-
-// Helper function to group and sort items by dates
-function groupAndSortItemsByDates<T extends { date: Date }>(
-  items: T[]
-): { date: Date; items: T[] }[] {
-  return Object.entries(
-    items.reduce((result, transaction) => {
-      const _datestring = transaction.date.toDateString();
-      const _transactions = result[_datestring] ?? [];
-      return { ...result, [_datestring]: [..._transactions, transaction] };
-    }, {} as { [datestring: string]: T[] })
-  )
-    .map((entry) => {
-      return {
-        date: new Date(entry[0]),
-        items: entry[1].sort((a, b) => b.date.getTime() - a.date.getTime()),
-      };
-    })
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
-}
