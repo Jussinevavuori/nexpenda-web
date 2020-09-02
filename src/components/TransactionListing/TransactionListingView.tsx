@@ -1,4 +1,4 @@
-import styles from "./TransactionListingView.module.css";
+import "./TransactionListing.scss";
 import React from "react"
 import cx from "classnames"
 import { Transaction } from "../../models/transactions/transactions.class";
@@ -11,9 +11,11 @@ export type TransactionListingViewProps = {
 
 export function TransactionListingView(props: TransactionListingViewProps) {
 
-	return <div className={styles.root}>
-		<div className={cx(styles.icon, props.transaction.amount.isPositive ? styles.icon_positive : styles.icon_negative)}>
-			<div className={styles.iconContainer}>
+	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
+
+	return <div className="TransactionListing">
+		<div className={cx("icon", signClass)}>
+			<div className="iconContainer">
 				{
 					props.transaction.amount.isPositive
 						? <PlusIcon />
@@ -21,17 +23,17 @@ export function TransactionListingView(props: TransactionListingViewProps) {
 				}
 			</div>
 		</div>
-		<div className={styles.category}>
+		<div className="category">
 			<span>
 				{props.transaction.category}
 			</span>
 		</div>
-		<div className={styles.comment}>
+		<div className="comment">
 			<span>
 				{props.transaction.comment}
 			</span>
 		</div>
-		<div className={cx(styles.amount, props.transaction.amount.isPositive ? styles.amount_positive : styles.amount_negative)}>
+		<div className={cx("amount", signClass)}>
 			<span>
 				{props.transaction.amount.formatFull}
 			</span>

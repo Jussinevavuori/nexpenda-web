@@ -1,4 +1,4 @@
-import styles from "./SettingsTabView.module.css";
+import "./SettingsTab.scss";
 import React from "react"
 import { Auth } from "../../models/authentication/auth.class";
 
@@ -9,7 +9,7 @@ export type SettingsTabViewProps = {
 
 export function SettingsTabView(props: SettingsTabViewProps) {
 
-	return <div className={styles.root}>
+	return <div className="SettingsTab">
 
 		{
 			props.user.photoUrl ? <img style={{ width: 64, height: 64 }} alt="profile" src={props.user.photoUrl} /> : null

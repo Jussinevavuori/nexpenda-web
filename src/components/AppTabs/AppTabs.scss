@@ -1,0 +1,135 @@
+@import "main";
+
+.AppTabs {
+  width: 100%;
+  height: 100%;
+  z-index: $app-tab-z;
+
+  & .tabContainer {
+    width: 100%;
+    height: $app-tab-height;
+    display: flex;
+    flex-direction: row;
+    filter: drop-shadow(0 0 $shadow-blur-small $shadow-color-strong);
+
+    @include sm {
+      width: $app-tab-width;
+      height: 100%;
+      flex-direction: column;
+      justify-content: start;
+      filter: none;
+      box-shadow: 0 0 $shadow-blur-medium $shadow-color-medium;
+    }
+
+    & .tab {
+      padding: 4px;
+      height: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+      border-radius: none;
+      background: white;
+      transition: background-color 100ms;
+
+      @include sm {
+        flex: none;
+        height: $app-tab-height;
+        flex-direction: row;
+        justify-content: start;
+      }
+
+      & span {
+        display: none;
+
+        @include min-width(400px) {
+          display: initial;
+          font-size: 0.8rem;
+        }
+
+        @include sm {
+          display: initial;
+          font-size: 1rem;
+        }
+      }
+
+      & svg {
+        width: $icon-size-sm;
+        height: $icon-size-sm;
+
+        @include sm {
+          margin: 0px 12px;
+        }
+      }
+
+      &:hover {
+        background-color: $color-action-hover;
+      }
+
+      &:active {
+        background-color: $color-action-active;
+      }
+
+      &.active * {
+        color: $color-primary-main;
+      }
+
+      &.addTab {
+        background: $color-primary-main;
+        color: white;
+        margin-top: auto;
+        order: 5;
+
+        &:hover {
+          background-color: $color-primary-600;
+        }
+
+        &:active {
+          background-color: $color-primary-800;
+        }
+
+        & span {
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+      }
+    }
+
+    & .plusButtonContainer {
+      position: relative;
+      width: 108px;
+      background: none;
+
+      & > svg {
+        fill: white;
+      }
+
+      & .plusButton {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        background: $color-primary-main;
+        outline: none;
+        border: none;
+        width: 48px;
+        height: 48px;
+        color: white;
+        border-radius: 50%;
+        filter: drop-shadow(0 0 $shadow-blur-small $shadow-color-strong);
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color-primary-600;
+        }
+
+        &:active {
+          background-color: $color-primary-800;
+        }
+      }
+    }
+  }
+}

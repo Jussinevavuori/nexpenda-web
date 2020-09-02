@@ -1,0 +1,38 @@
+@import "main";
+@import "theme";
+@import "reset";
+
+body * {
+  font-family: $roboto;
+  font-size: 1rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: unset;
+  }
+  ::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: $color-primary-main;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+}
+
+.MuiButton-label {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 0.5rem;
+  place-items: center center;
+}

@@ -19,12 +19,11 @@ export const LoginController: React.FC<{}> = () => {
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
 
 	async function handleSubmit(values: LoginFormType) {
-		const error = await loginWithEmailPassword(values)
-		console.log({ error })
-		if (error) {
-			console.error(error)
-		} else {
+		try {
+			await loginWithEmailPassword(values)
 			redirect(routes => routes.dashboard)
+		} catch (error) {
+			console.error(error)
 		}
 	}
 

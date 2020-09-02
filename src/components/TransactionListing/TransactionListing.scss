@@ -1,0 +1,72 @@
+@import "main";
+
+.TransactionListing {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "icon category amount"
+    "icon comment amount";
+  grid-gap: 0 24px;
+
+  & .icon {
+    grid-area: icon;
+    place-self: center;
+
+    & .iconContainer {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.1);
+      color: white;
+    }
+
+    &.positive .iconContainer {
+      background-color: $color-positive-main;
+    }
+
+    &.negative .iconContainer {
+      background-color: $color-negative-main;
+    }
+  }
+
+  & .category {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    font-weight: $font-weight-bold;
+    grid-area: category;
+  }
+
+  & .comment {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    grid-area: comment;
+    opacity: 0.6;
+  }
+
+  & .amount {
+    grid-area: amount;
+    display: flex;
+    align-items: center;
+
+    & span {
+      font-family: $roboto-condensed;
+      font-weight: $font-weight-bold;
+      font-size: 1.4rem;
+    }
+
+    &.positive {
+      color: $color-positive-main;
+    }
+
+    &.negative {
+      color: $color-negative-main;
+    }
+  }
+}

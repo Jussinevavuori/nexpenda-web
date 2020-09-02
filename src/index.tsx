@@ -1,6 +1,5 @@
-import "./styles/reset.css"
-import "./styles/variables.css"
-import "./styles/index.css"
+import "./styles/index.scss"
+import "./styles/main.scss"
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -8,14 +7,18 @@ import * as serviceWorker from './serviceWorker';
 import { StoreProvider } from 'easy-peasy';
 import { store } from './store';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from "@material-ui/core";
+import { theme } from "./styles/theme";
 
 ReactDOM.render(
 	<StoreProvider store={store}>
-		<React.StrictMode>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</React.StrictMode>
+		<ThemeProvider theme={theme}>
+			<React.StrictMode>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</React.StrictMode>
+		</ThemeProvider>
 	</StoreProvider>,
 	document.getElementById('root')
 );

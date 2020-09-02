@@ -2,7 +2,6 @@ import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 import { Auth } from "./auth.class";
 import { AuthService } from "../../services/AuthService";
 import { JsonAuth, isJsonAuth } from "./auth.json";
-import { isServerError, ServerError } from "../../utils/ServerError";
 
 /**
  * An instance of the auth service for the authentication model to use
@@ -43,7 +42,7 @@ export interface AuthModel {
    * to the user property. The logged in property is defined by the current
    * refresh token.
    */
-  getProfile: Thunk<AuthModel, void, any, any, Promise<void | ServerError>>;
+  getProfile: Thunk<AuthModel, void, any, any, Promise<void>>;
 
   /**
    * Log in the current user with a Google account
@@ -58,7 +57,7 @@ export interface AuthModel {
     { email: string; password: string },
     any,
     any,
-    Promise<void | ServerError>
+    Promise<void>
   >;
 
   /**
@@ -69,7 +68,7 @@ export interface AuthModel {
     { email: string; password: string },
     any,
     any,
-    Promise<void | ServerError>
+    Promise<void>
   >;
 
   /**
@@ -103,14 +102,13 @@ export const authModel: AuthModel = {
   }),
 
   getProfile: thunk(async (actions) => {
-    const { data } = await authService.getProfile();
-    if (isServerError(data)) {
+    try {
+      const profile = await authService.getProfile();
+      actions._login(profile);
+    } catch (error) {
+    } finally {
       actions._setInitialized(true);
-      return data;
-    } else if (data) {
-      actions._login(data);
     }
-    actions._setInitialized(true);
   }),
 
   loginWithGoogle: thunk(() => {
@@ -118,25 +116,15 @@ export const authModel: AuthModel = {
   }),
 
   loginWithEmailPassword: thunk(async (actions, form) => {
-    const { data } = await authService.loginWithEmailAndPassword(form);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      const { data: profileData } = await authService.getProfile();
-      if (!profileData || isServerError(profileData)) return;
-			actions._login(profileData);
-    }
+    await authService.loginWithEmailAndPassword(form);
+    const profile = await authService.getProfile();
+    actions._login(profile);
   }),
 
   registerWithEmailPassword: thunk(async (actions, form) => {
-    const { data } = await authService.registerWithEmailAndPassword(form);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      const { data: profileData } = await authService.getProfile();
-      if (!profileData || isServerError(profileData)) return;
-      actions._login(profileData);
-    }
+    await authService.registerWithEmailAndPassword(form);
+    const profile = await authService.getProfile();
+    actions._login(profile);
   }),
 
   _login: action((state, json) => {

@@ -1,0 +1,107 @@
+/** Typography */
+
+$roboto: Roboto, Helvetica, Arial, sans-serif;
+$roboto-condensed: "Roboto Condensed", Helvetica, Arial, sans-serif;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+/** Theme */
+
+$spacing-md: var(--spacing-md);
+$spacing-lg: var(--spacing-lg);
+
+$color-primary-main: var(--color-primary-main);
+$color-primary-light: var(--color-primary-light);
+$color-primary-dark: var(--color-primary-dark);
+
+$color-primary-50: var(--color-primary-50);
+$color-primary-100: var(--color-primary-100);
+$color-primary-200: var(--color-primary-200);
+$color-primary-300: var(--color-primary-300);
+$color-primary-400: var(--color-primary-400);
+$color-primary-500: var(--color-primary-500);
+$color-primary-600: var(--color-primary-600);
+$color-primary-700: var(--color-primary-700);
+$color-primary-800: var(--color-primary-800);
+$color-primary-900: var(--color-primary-900);
+
+$color-positive-main: var(--color-positive-main);
+$color-negative-main: var(--color-negative-main);
+$color-error-main: var(--color-error-main);
+$color-error-light: var(--color-error-light);
+$color-error-dark: var(--color-error-dark);
+
+$color-divider: var(--color-divider);
+
+$color-action-focus: var(--color-action-focus);
+$color-action-hover: var(--color-action-hover);
+$color-action-active: var(--color-action-active);
+
+$color-action-primary-focus: var(--color-action-primary-focus);
+$color-action-primary-hover: var(--color-action-primary-hover);
+$color-action-primary-active: var(--color-action-primary-active);
+
+$color-text-default: var(--color-text-default);
+
+/** Shadows */
+
+$shadow-blur-small: 6px;
+$shadow-blur-medium: 20px;
+
+$shadow-color-medium: rgba(0, 0, 0, 0.15);
+$shadow-color-strong: rgba(0, 0, 0, 0.2);
+
+/** Layout */
+
+$app-tab-height: 60px;
+$app-tab-width: 14rem;
+$mobile-bottom-offset: 60px;
+$app-tab-z: 900;
+
+/** Icons */
+
+$icon-size-xs: 1rem;
+$icon-size-sm: 1.25rem;
+$icon-size-md: 1.5rem;
+
+/** Breakpoints and breakpoint mixins */
+
+$bp-sm: 600px;
+$bp-md: 900px;
+$bp-lg: 1200px;
+
+@mixin sm {
+  @media (min-width: $bp-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $bp-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin min-width($mw) {
+  @media (min-width: $mw) {
+    @content;
+  }
+}
+
+/** Resets */
+
+@mixin button-reset {
+  border: 0;
+  padding: 0;
+  background: 0;
+  cursor: pointer;
+}

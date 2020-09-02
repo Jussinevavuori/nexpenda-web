@@ -9,30 +9,34 @@ import {
   thunkOn,
 } from "easy-peasy";
 import { Transaction } from "./transactions.class";
-import { JsonTransaction, isJsonTransactionArray } from "./transactions.json";
+import { JsonTransaction } from "./transactions.json";
 import { TransactionService } from "../../services/TransactionService";
-import { isServerError, ServerError } from "../../utils/ServerError";
 import { StoreModel } from "../../store";
 import { compareDate } from "../../utils/compareDate";
 import { groupByDate } from "../../utils/groupByDate";
 import { intervalModel, IntervalModel } from "../interval/interval.model";
 import { MoneyAmount } from "../../utils/MoneyAmount";
 
+/**
+ * Instance of transactionService for thunks
+ */
 const transactionService = new TransactionService();
 
 export interface TransactionsModel {
   /**
-   * Current interval (nested model)
+   * Current interval filter (nested model)
    */
   interval: IntervalModel;
 
   /**
-   * Current transactions
+   * All user's current transactions
    */
   items: Transaction[];
 
   /**
-   * Current transactions, filtered
+   * Current transactions which pass all the filters:
+   *
+   * - Interval filter (time must be between the interval startDate and endDate)
    */
   filteredItems: Computed<TransactionsModel, Transaction[], StoreModel>;
 
@@ -106,8 +110,12 @@ export interface TransactionsModel {
     void,
     any,
     any,
-    Promise<void | ServerError>
+    Promise<JsonTransaction[]>
   >;
+
+  /**
+   * Action called by get transaction thunk to update get result to state
+   */
   _getTransactions: Action<TransactionsModel, JsonTransaction[]>;
 
   /**
@@ -118,8 +126,12 @@ export interface TransactionsModel {
     Omit<JsonTransaction, "id" | "uid">,
     any,
     any,
-    Promise<void | ServerError>
+    Promise<JsonTransaction>
   >;
+
+  /**
+   * Action called by post transaction thunk to update post result to state
+   */
   _postTransaction: Action<TransactionsModel, JsonTransaction>;
 
   /**
@@ -130,8 +142,12 @@ export interface TransactionsModel {
     string,
     any,
     any,
-    Promise<void | ServerError>
+    Promise<Boolean>
   >;
+
+  /**
+   * Action called by delete transaction thunk to update delete result to state
+   */
   _deleteTransaction: Action<TransactionsModel, string>;
 
   /**
@@ -142,8 +158,12 @@ export interface TransactionsModel {
     JsonTransaction,
     any,
     any,
-    Promise<void | ServerError>
+    Promise<JsonTransaction>
   >;
+
+  /**
+   * Action called by put transaction thunk to update put result to state
+   */
   _putTransaction: Action<TransactionsModel, JsonTransaction>;
 
   /**
@@ -154,15 +174,19 @@ export interface TransactionsModel {
     JsonTransaction,
     any,
     any,
-    Promise<void | ServerError>
+    Promise<JsonTransaction>
   >;
+
+  /**
+   * Action called by patch transaction thunk to update patch result to state
+   */
   _patchTransaction: Action<TransactionsModel, JsonTransaction>;
 
   /**
    * Listening to auth changes
    */
-
   onAuthChanged: ThunkOn<TransactionsModel, any, StoreModel>;
+
   _clearTransactions: Action<TransactionsModel, void>;
 }
 
@@ -192,46 +216,38 @@ export const transactionsModel: TransactionsModel = {
   filteredCount: computed((state) => state.filteredItems.length),
 
   sum: computed((state) => {
-    return new MoneyAmount(
-      state.items.reduce((sum, item) => sum + item.amount.integer, 0)
-    );
+    return MoneyAmount.sum(state.items.map((_) => _.amount));
   }),
 
   filteredSum: computed((state) => {
-    return new MoneyAmount(
-      state.filteredItems.reduce((sum, item) => sum + item.amount.integer, 0)
-    );
+    return MoneyAmount.sum(state.filteredItems.map((_) => _.amount));
   }),
 
   incomesSum: computed((state) => {
-    return new MoneyAmount(
-      state.items
-        .filter((_) => _.amount.integer > 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0)
+    return MoneyAmount.sum(
+      state.items.filter((_) => _.amount.isPositive).map((_) => _.amount)
     );
   }),
 
   filteredIncomesSum: computed((state) => {
-    return new MoneyAmount(
+    return MoneyAmount.sum(
       state.filteredItems
-        .filter((_) => _.amount.integer > 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0)
+        .filter((_) => _.amount.isPositive)
+        .map((_) => _.amount)
     );
   }),
 
   expensesSum: computed((state) => {
-    return new MoneyAmount(
-      state.items
-        .filter((_) => _.amount.integer < 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0)
+    return MoneyAmount.sum(
+      state.items.filter((_) => _.amount.isNegative).map((_) => _.amount)
     );
   }),
 
   filteredExpensesSum: computed((state) => {
-    return new MoneyAmount(
+    return MoneyAmount.sum(
       state.filteredItems
-        .filter((_) => _.amount.integer < 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0)
+        .filter((_) => _.amount.isNegative)
+        .map((_) => _.amount)
     );
   }),
 
@@ -240,12 +256,9 @@ export const transactionsModel: TransactionsModel = {
   ),
 
   getTransactions: thunk(async (actions) => {
-    const { data } = await transactionService.getTransactions();
-    if (isServerError(data)) {
-      return data;
-    } else if (isJsonTransactionArray(data)) {
-      actions._getTransactions(data);
-    }
+    const transactions = await transactionService.getTransactions();
+    actions._getTransactions(transactions);
+    return transactions;
   }),
 
   _getTransactions: action((state, jsons) => {
@@ -253,12 +266,9 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   postTransaction: thunk(async (actions, json) => {
-    const { data } = await transactionService.postTransaction(json);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      actions._postTransaction(data);
-    }
+    const transaction = await transactionService.postTransaction(json);
+    actions._postTransaction(transaction);
+    return transaction;
   }),
 
   _postTransaction: action((state, json) => {
@@ -266,12 +276,9 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   deleteTransaction: thunk(async (actions, id) => {
-    const { data } = await transactionService.deleteTransaction(id);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      actions._deleteTransaction(id);
-    }
+    const deleted = await transactionService.deleteTransaction(id);
+    actions._deleteTransaction(id);
+    return deleted;
   }),
 
   _deleteTransaction: action((state, id) => {
@@ -279,12 +286,9 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   putTransaction: thunk(async (actions, json) => {
-    const { data } = await transactionService.putTransaction(json);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      actions._putTransaction(data);
-    }
+    const transaction = await transactionService.putTransaction(json);
+    actions._putTransaction(transaction);
+    return transaction;
   }),
 
   _putTransaction: action((state, json) => {
@@ -294,12 +298,9 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   patchTransaction: thunk(async (actions, json) => {
-    const { data } = await transactionService.putTransaction(json);
-    if (isServerError(data)) {
-      return data;
-    } else if (data) {
-      actions._patchTransaction(data);
-    }
+    const transaction = await transactionService.patchTransaction(json);
+    actions._patchTransaction(transaction);
+    return transaction;
   }),
 
   _patchTransaction: action((state, json) => {

@@ -1,33 +1,41 @@
-import { BaseService } from "./BaseService";
-import { isJsonAuth, JsonAuth } from "../models/authentication/auth.json";
+import { ServiceBase } from "./ServiceBase";
+import { isJsonAuth } from "../models/authentication/auth.json";
+import { ApplicationError } from "../utils/Error";
 
 type EmailAndPassword = { email: string; password: string };
 
-export class AuthService extends BaseService {
-  getProfile() {
-    return this.get<JsonAuth | null>("/auth/profile", {
-      transformResponse: [(data) => (isJsonAuth(data) ? data : null)],
-    });
+export class AuthService extends ServiceBase {
+  async getProfile() {
+    const response = await this.get("/auth/profile");
+    const data = response.data;
+    if (isJsonAuth(data)) {
+      return data;
+    } else {
+      throw new ApplicationError(
+        "auth/profile/invalid-response",
+        "Invalid profile response received from server"
+      );
+    }
   }
 
-  registerWithEmailAndPassword(values: EmailAndPassword) {
-    return this.post<EmailAndPassword, boolean>("/auth/register", values, {
-      transformResponse: [
-        (_, headers) => {
-          return headers.status === 200;
-        },
-      ],
-    });
+  async registerWithEmailAndPassword(values: EmailAndPassword) {
+    const response = await this.post("/auth/register", values);
+    if (response.status !== 200) {
+      throw new ApplicationError(
+        "auth/register/invalid-response",
+        "Invalid response received from server during registration"
+      );
+    }
   }
 
-  async loginWithEmailAndPassword(values: { email: string; password: string }) {
-    return this.post<EmailAndPassword, boolean>("/auth/login", values, {
-      transformResponse: [
-        (_, headers) => {
-          return headers.status === 200;
-        },
-      ],
-    });
+  async loginWithEmailAndPassword(values: EmailAndPassword) {
+    const response = await this.post("/auth/login", values);
+    if (response.status !== 200) {
+      throw new ApplicationError(
+        "auth/login/invalid-response",
+        "Invalid response received from server during login"
+      );
+    }
   }
 
   loginWithGoogle() {

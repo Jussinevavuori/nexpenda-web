@@ -1,9 +1,9 @@
-import styles from "./TransactionFormModalView.module.css";
+import "./TransactionFormModal.scss"
 import React from "react"
 import { yupResolver } from "@hookform/resolvers";
 import { TransactionForm, transactionFormSchema } from "./TransactionFormModalController";
 import { useForm } from "react-hook-form";
-import { Modal } from "../Modal/Modal";
+import { Modal } from "@material-ui/core";
 
 export type TransactionFormModalViewProps = {
 	open: boolean;
@@ -21,8 +21,8 @@ export function TransactionFormModalView(props: TransactionFormModalViewProps) {
 	const categoryError = formState.touched.category && errors.category?.message
 	const commentError = formState.touched.comment && errors.comment?.message
 
-	return <Modal open={props.open} onClose={props.handleClose}>
-		<div className={styles.root}>
+	return <Modal open={props.open} onClose={() => props.handleClose()}>
+		<div className="TransactionFormModal">
 			<form onSubmit={handleSubmit(props.handleSubmit)}>
 				<p>Integer amount</p>
 				<input type="number" id="integerAmount" name="integerAmount" ref={register} />

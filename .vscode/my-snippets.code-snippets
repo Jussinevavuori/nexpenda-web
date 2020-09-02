@@ -3,7 +3,7 @@
 		"scope": "javascriptreact,typescriptreact",
 		"prefix": "viewcomp",
 		"body": [
-			"import styles from \"./$1View.module.css\";",
+			"import \"./$1.scss\";",
 			"import React from \"react\"",
 			"",
 			"export type $1ViewProps = {",
@@ -11,7 +11,7 @@
 			"}",
 			"",
 			"export function $1View(props: $1ViewProps) {",
-			"return <div>",
+			"return <div className=\"$1\">",
 			"",
 			"</div>",
 			"}",
@@ -30,6 +30,24 @@
 			"",
 			"export function $1(props: $1Props) {",
 			"return <$1View />",
+			"}",
+		]
+	},
+	"SCSS variable for CSS variable": {
+		"scope": "scss,css",
+		"prefix": "svar",
+		"body": [
+			"$$1: var(--$1);"
+		]
+	},
+	"Initialize SCSS file": {
+		"scope": "scss",
+		"prefix": "scsscomp",
+		"body": [
+			"@import \"main\";",
+			"",
+			".$1 {",
+			"",
 			"}",
 		]
 	}

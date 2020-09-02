@@ -1,8 +1,9 @@
-import styles from "./TransactionListView.module.css";
+import "./TransactionList.scss";
 import React from "react"
 import { TransactionListing } from "../TransactionListing/TransactionListing";
 import { Transaction } from "../../models/transactions/transactions.class";
 import { format } from "date-fns"
+import { useStoreActions } from "../../store";
 
 export type TransactionListViewProps = {
 	itemsByDates: {
@@ -19,28 +20,38 @@ export function TransactionListView(props: TransactionListViewProps) {
 			: format(date, "dd.MM.yyyy")
 	}
 
-	return <div className={styles.root}>
+	const del = useStoreActions(_ => _.transactions.deleteTransaction)
 
-		<ul className={styles.datesList}>
+	return <div className="TransactionList">
+
+		<ul >
 
 			{
 				props.itemsByDates.map(entry => {
 
 					const datestring = toDatestring(entry.date)
 
-					return <li key={datestring} className={styles.dateListing}>
+					return <li key={datestring}>
 
-						<p className={styles.datestring}>
+						<p>
 							{datestring}
 						</p>
 
-						<ul className={styles.transactionsList}>
+						<ul >
 
 							{
 								entry.items.map(item => {
 
-									return <li key={item.id} className={styles.transactionListing}>
+									return <li key={item.id}
+										onClick={() => {
+											del(item.id).catch(error => {
+												console.log("Error deleting:", error)
+											})
+										}}
+									>
+
 										<TransactionListing transaction={item} />
+
 									</li>
 
 								})
@@ -55,7 +66,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 
 		</ul>
 
-	</div>
+	</div >
 }
 
 const currentYear = new Date().getFullYear()

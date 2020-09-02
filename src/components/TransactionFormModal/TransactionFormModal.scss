@@ -1,0 +1,24 @@
+@import "main";
+
+.TransactionFormModal {
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: $spacing-md;
+  border-radius: 4px;
+  outline: none;
+  animation: TransactionFormModal-in forwards 200ms;
+}
+
+@keyframes TransactionFormModal-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

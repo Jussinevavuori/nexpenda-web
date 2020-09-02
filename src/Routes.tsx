@@ -6,6 +6,7 @@ import AppLayout from './components/AppLayout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { DashboardTab } from './views/DashboardTab/DashboardTabController';
 import { SettingsTab } from "./views/SettingsTab/SettingsTabController";
+import { AnalyticsTab } from "./views/AnalyticsTab/AnalyticsTabController";
 
 export const routes = {
 	approot: "/app",
@@ -37,7 +38,7 @@ export function Routes() {
 
 		<ProtectedRoute exact path={routes.analytics}>
 			<AppLayout>
-				<p>Analytics placeholder</p>
+				<AnalyticsTab />
 			</AppLayout>
 		</ProtectedRoute>
 

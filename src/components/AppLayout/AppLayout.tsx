@@ -1,4 +1,4 @@
-import styles from "./AppLayout.module.css"
+import "./AppLayout.scss"
 import React from "react"
 import AppTabs from "../AppTabs/AppTabs"
 import { TransactionFormModal } from "../TransactionFormModal/TransactionFormModalController"
@@ -12,9 +12,11 @@ export default function AppLayout(props: AppLayoutProps) {
 
 		<TransactionFormModal />
 
-		<div className={styles.root}>
-			<AppTabs />
-			<div className={styles.childrenContainer}>
+		<div className="AppLayout">
+			<div className="appTabsContainer">
+				< AppTabs />
+			</div>
+			<div className="childrenContainer">
 				{props.children}
 			</div>
 		</div>

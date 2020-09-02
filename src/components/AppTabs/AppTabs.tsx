@@ -1,4 +1,4 @@
-import styles from "./AppTabs.module.css"
+import "./AppTabs.scss"
 import React from "react"
 import cx from "classnames"
 import { useRouteMatch } from "react-router-dom"
@@ -27,13 +27,13 @@ export default function AppTabs() {
 	const budgetMatch = useRouteMatch(routes.budget)
 	const settingsMatch = useRouteMatch(routes.settings)
 
-	return <div className={styles.root}>
+	return <div className="AppTabs">
 
-		<div className={styles.tabContainer}>
+		<div className="tabContainer">
 
 			<button
 				onClick={() => redirect(_ => _.dashboard)}
-				className={cx(styles.tab, { [styles.tab_active]: !!dashboardMatch })}
+				className={cx("tab", { active: !!dashboardMatch })}
 			>
 				<DashboardIcon />
 				<span>{"Dashboard"}</span>
@@ -41,7 +41,7 @@ export default function AppTabs() {
 
 			<button
 				onClick={() => redirect(_ => _.analytics)}
-				className={cx(styles.tab, { [styles.tab_active]: !!analyticsMatch })}
+				className={cx("tab", { active: !!analyticsMatch })}
 			>
 				<AnalyticsIcon />
 				<span>{"Analytics"}</span>
@@ -51,12 +51,12 @@ export default function AppTabs() {
 				sidebarView ?
 					<button
 						onClick={() => openTransactionsForm()}
-						className={cx(styles.tab, styles.addTab)}
+						className={cx("tab", "addTab")}
 					>
 						<PlusIcon />
 						<span>{"New transaction"}</span>
 					</button>
-					: <div className={styles.plusButtonContainer}>
+					: <div className="plusButtonContainer">
 
 						<svg version="1.1" x="0px" y="0px" width="108px" height="60px" viewBox="0 0 108 60" >
 							<path d={svgPath} />
@@ -64,7 +64,7 @@ export default function AppTabs() {
 
 						<button
 							onClick={() => openTransactionsForm()}
-							className={styles.plusButton}
+							className="plusButton"
 						>
 							<PlusIcon />
 						</button>
@@ -73,7 +73,7 @@ export default function AppTabs() {
 
 			<button
 				onClick={() => redirect(_ => _.budget)}
-				className={cx(styles.tab, { [styles.tab_active]: !!budgetMatch })}
+				className={cx("tab", { active: !!budgetMatch })}
 			>
 				<BudgetIcon />
 				<span>{"Budget"}</span>
@@ -81,7 +81,7 @@ export default function AppTabs() {
 
 			<button
 				onClick={() => redirect(_ => _.settings)}
-				className={cx(styles.tab, { [styles.tab_active]: !!settingsMatch })}
+				className={cx("tab", { active: !!settingsMatch })}
 			>
 				<SettingsIcon />
 				<span>{"Settings"}</span>

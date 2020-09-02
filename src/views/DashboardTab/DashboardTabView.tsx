@@ -1,52 +1,87 @@
-import styles from "./DashboardTabView.module.css"
+import "./DashboardTab.scss"
 import React from "react";
 import { TransactionList } from "../../components/TransactionList/TransactionList";
 import { Auth } from "../../models/authentication/auth.class";
-import { useStoreState, useStoreActions } from "../../store";
+import { MoneyAmount } from "../../utils/MoneyAmount";
+import { ChevronUp as ChevronUpIcon, ChevronDown as ChevronDownIcon } from "react-feather"
+import { TransactionListFilters } from "../../components/TransactionListFilters/TransactionListFiltersController";
+
+import textureImg from "../../images/pexels-johannes-plenio-1103970.jpg"
+
+const styles: Record<string, string> = {}
 
 export type DashboardTabViewProps = {
 	user: Auth;
+	dateIntervalMonthString: string | undefined;
+	dateIntervalIsMonth: boolean;
+	filteredSum: MoneyAmount;
+	filteredIncomesSum: MoneyAmount;
+	filteredExpensesSum: MoneyAmount;
+
+	setNextMonthAsDateInterval(): void;
+	setPreviousMonthAsDateInterval(): void;
 }
 
 export function DashboardTabView(props: DashboardTabViewProps) {
 
-	const dateIntervalMonthString = useStoreState(_ => _.transactions.interval.dateIntervalMonthString)
-	const filteredItemsCount = useStoreState(_ => _.transactions.filteredCount)
-	const filteredSum = useStoreState(_ => _.transactions.filteredSum)
-	const filteredExpensesSum = useStoreState(_ => _.transactions.filteredExpensesSum)
-	const filteredIncomesSum = useStoreState(_ => _.transactions.filteredIncomesSum)
-	const setNextMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setNextMonthAsDateInterval)
-	const setPreviousMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setPreviousMonthAsDateInterval)
+	return <div className="DashboardTab">
 
-	return <div className={styles.root}>
+		<header>
 
-		<header className={styles.header}>
+			<img src={textureImg} alt="" />
 
 			<h1>
-				{dateIntervalMonthString}
+				{props.dateIntervalMonthString}
 			</h1>
 
-			<p>Total: {filteredSum.formatFull}</p>
+			<div className="totals">
 
-			<p>{filteredIncomesSum.formatFull} / {filteredExpensesSum.formatFull}</p>
+				<h2 className={styles.totalHeader}>
+					<span>
+						{props.filteredSum.formatSign + " "}
+					</span>
+					<span className={styles.larger}>
+						{props.filteredSum.formatEuros}
+					</span>
+					<span>
+						{"." + props.filteredSum.formatCents + " €"}
+					</span>
+				</h2>
 
-			<p>{filteredItemsCount} items</p>
+				<div className="subtotals">
+					<div className="subtotal">
+						<ChevronUpIcon />
+						<span>
+							{props.filteredIncomesSum.formatFull}
+						</span>
+					</div>
+					<div className="subtotal">
+						<ChevronDownIcon />
+						<span>
+							{props.filteredExpensesSum.formatFull}
+						</span>
+					</div>
+				</div>
 
-
-			<button onClick={() => setPreviousMonthAsDateInterval()}>
-				{"<"}
-			</button>
-			<button onClick={() => setNextMonthAsDateInterval()}>
-				{">"}
-			</button>
+			</div>
 
 		</header>
 
-		<div className={styles.body}>
+		<main>
 
-			<TransactionList />
+			<div className="filters">
 
-		</div>
+				<TransactionListFilters />
+
+			</div>
+
+			<div className="list">
+
+				<TransactionList />
+
+			</div>
+
+		</main>
 
 	</div>
 
