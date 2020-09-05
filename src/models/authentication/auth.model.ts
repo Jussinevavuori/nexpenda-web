@@ -72,6 +72,11 @@ export interface AuthModel {
   >;
 
   /**
+   * Forgot password
+   */
+  forgotPassword: Thunk<AuthModel, { email: string }, any, any, Promise<void>>;
+
+  /**
    * Action to set the current user with partial user data (a constructable)
    */
   _login: Action<AuthModel, JsonAuth>;
@@ -125,6 +130,10 @@ export const authModel: AuthModel = {
     await authService.registerWithEmailAndPassword(form);
     const profile = await authService.getProfile();
     actions._login(profile);
+  }),
+
+  forgotPassword: thunk(async (actions, form) => {
+    await authService.forgotPassword(form);
   }),
 
   _login: action((state, json) => {

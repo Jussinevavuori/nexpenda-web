@@ -12,10 +12,12 @@ import { Transaction } from "./transactions.class";
 import { JsonTransaction } from "./transactions.json";
 import { TransactionService } from "../../services/TransactionService";
 import { StoreModel } from "../../store";
-import { compareDate } from "../../utils/compareDate";
 import { groupByDate } from "../../utils/groupByDate";
-import { intervalModel, IntervalModel } from "../interval/interval.model";
 import { MoneyAmount } from "../../utils/MoneyAmount";
+import {
+  filteredTransactionsModel,
+  FilteredTransactionsModel,
+} from "./transactions.filtered.model";
 
 /**
  * Instance of transactionService for thunks
@@ -24,21 +26,9 @@ const transactionService = new TransactionService();
 
 export interface TransactionsModel {
   /**
-   * Current interval filter (nested model)
-   */
-  interval: IntervalModel;
-
-  /**
    * All user's current transactions
    */
   items: Transaction[];
-
-  /**
-   * Current transactions which pass all the filters:
-   *
-   * - Interval filter (time must be between the interval startDate and endDate)
-   */
-  filteredItems: Computed<TransactionsModel, Transaction[], StoreModel>;
 
   /**
    * Current transactions grouped and sorted by dates
@@ -49,53 +39,27 @@ export interface TransactionsModel {
   >;
 
   /**
-   * Current filtered transactions grouped and sorted by dates
-   */
-  filteredItemsByDates: Computed<
-    TransactionsModel,
-    { date: Date; items: Transaction[] }[],
-    StoreModel
-  >;
-
-  /**
    * Current amount of transactions
    */
   count: Computed<TransactionsModel, number>;
 
   /**
-   * Current amount of transactions after filtering
-   */
-  filteredCount: Computed<TransactionsModel, number>;
-
-  /**
    * Sum of transactions
    */
-  sum: Computed<TransactionsModel, MoneyAmount>;
+  sums: Computed<
+    TransactionsModel,
+    {
+      all: MoneyAmount;
+      expenses: MoneyAmount;
+      incomes: MoneyAmount;
+    }
+  >;
 
   /**
-   * Sum of filtered transactions
+   * Filtered properties (copies of the above properties using only
+   * filtered items)
    */
-  filteredSum: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Sum of positive transactions only
-   */
-  incomesSum: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Sum of negative transactions only
-   */
-  expensesSum: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Sum of positive filtered transactions only
-   */
-  filteredIncomesSum: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Sum of negative filtered transactions only
-   */
-  filteredExpensesSum: Computed<TransactionsModel, MoneyAmount>;
+  filtered: FilteredTransactionsModel;
 
   /**
    * All different categories
@@ -191,65 +155,29 @@ export interface TransactionsModel {
 }
 
 export const transactionsModel: TransactionsModel = {
-  interval: intervalModel,
-
   items: [],
-
-  filteredItems: computed((state) => {
-    return state.items.filter((item) => {
-      if (compareDate(item.date, "<", state.interval.startDate)) return false;
-      if (compareDate(item.date, ">", state.interval.endDate)) return false;
-      return true;
-    });
-  }),
 
   itemsByDates: computed((state) => {
     return groupByDate(state.items, (_) => _.date, { sort: true });
   }),
 
-  filteredItemsByDates: computed((state) => {
-    return groupByDate(state.filteredItems, (_) => _.date, { sort: true });
-  }),
-
   count: computed((state) => state.items.length),
 
-  filteredCount: computed((state) => state.filteredItems.length),
-
-  sum: computed((state) => {
-    return MoneyAmount.sum(state.items.map((_) => _.amount));
+  sums: computed((state) => {
+    const incomes = state.items
+      .filter((_) => _.amount.integer > 0)
+      .reduce((sum, item) => sum + item.amount.integer, 0);
+    const expenses = state.items
+      .filter((_) => _.amount.integer < 0)
+      .reduce((sum, item) => sum + item.amount.integer, 0);
+    return {
+      all: new MoneyAmount(incomes + expenses),
+      incomes: new MoneyAmount(incomes),
+      expenses: new MoneyAmount(expenses),
+    };
   }),
 
-  filteredSum: computed((state) => {
-    return MoneyAmount.sum(state.filteredItems.map((_) => _.amount));
-  }),
-
-  incomesSum: computed((state) => {
-    return MoneyAmount.sum(
-      state.items.filter((_) => _.amount.isPositive).map((_) => _.amount)
-    );
-  }),
-
-  filteredIncomesSum: computed((state) => {
-    return MoneyAmount.sum(
-      state.filteredItems
-        .filter((_) => _.amount.isPositive)
-        .map((_) => _.amount)
-    );
-  }),
-
-  expensesSum: computed((state) => {
-    return MoneyAmount.sum(
-      state.items.filter((_) => _.amount.isNegative).map((_) => _.amount)
-    );
-  }),
-
-  filteredExpensesSum: computed((state) => {
-    return MoneyAmount.sum(
-      state.filteredItems
-        .filter((_) => _.amount.isNegative)
-        .map((_) => _.amount)
-    );
-  }),
+  filtered: filteredTransactionsModel,
 
   categories: computed((state) =>
     state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)

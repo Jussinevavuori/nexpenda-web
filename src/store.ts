@@ -8,15 +8,18 @@ import {
   TransactionFormModel,
   transactionFormModel,
 } from "./models/transactionForm/transactionForm.model";
+import { intervalModel, IntervalModel } from "./models/interval/interval.model";
 
 export interface StoreModel {
   transactions: TransactionsModel;
   transactionForm: TransactionFormModel;
+  interval: IntervalModel;
   auth: AuthModel;
 }
 
 const storeModel: StoreModel = {
   transactions: transactionsModel,
+  interval: intervalModel,
   transactionForm: transactionFormModel,
   auth: authModel,
 };

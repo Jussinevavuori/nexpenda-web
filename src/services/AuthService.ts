@@ -2,8 +2,6 @@ import { ServiceBase } from "./ServiceBase";
 import { isJsonAuth } from "../models/authentication/auth.json";
 import { ApplicationError } from "../utils/Error";
 
-type EmailAndPassword = { email: string; password: string };
-
 export class AuthService extends ServiceBase {
   async getProfile() {
     const response = await this.get("/auth/profile");
@@ -18,7 +16,10 @@ export class AuthService extends ServiceBase {
     }
   }
 
-  async registerWithEmailAndPassword(values: EmailAndPassword) {
+  async registerWithEmailAndPassword(values: {
+    email: string;
+    password: string;
+  }) {
     const response = await this.post("/auth/register", values);
     if (response.status !== 200) {
       throw new ApplicationError(
@@ -28,12 +29,22 @@ export class AuthService extends ServiceBase {
     }
   }
 
-  async loginWithEmailAndPassword(values: EmailAndPassword) {
+  async loginWithEmailAndPassword(values: { email: string; password: string }) {
     const response = await this.post("/auth/login", values);
     if (response.status !== 200) {
       throw new ApplicationError(
         "auth/login/invalid-response",
         "Invalid response received from server during login"
+      );
+    }
+  }
+
+  async forgotPassword(values: { email: string }) {
+    const response = await this.post("/auth/forgot_password", values);
+    if (response.status !== 200) {
+      throw new ApplicationError(
+        "auth/forgotpassword/invalid-response",
+        "Invalid response received from server during forgot password"
       );
     }
   }

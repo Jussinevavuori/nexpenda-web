@@ -8,8 +8,8 @@ export type TransactionListFiltersProps = {
 
 export function TransactionListFilters(props: TransactionListFiltersProps) {
 
-	const setNextMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setNextMonthAsDateInterval)
-	const setPreviousMonthAsDateInterval = useStoreActions(_ => _.transactions.interval.setPreviousMonthAsDateInterval)
+	const setNextMonthAsDateInterval = useStoreActions(_ => _.interval.setNextMonthAsDateInterval)
+	const setPreviousMonthAsDateInterval = useStoreActions(_ => _.interval.setPreviousMonthAsDateInterval)
 
 	function handleNextMonth() {
 		setNextMonthAsDateInterval()
