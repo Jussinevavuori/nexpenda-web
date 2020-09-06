@@ -17,6 +17,7 @@ export const LoginController: React.FC<{}> = () => {
 
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
+	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
 
 	async function handleSubmit(values: LoginFormType) {
 		try {
@@ -31,5 +32,22 @@ export const LoginController: React.FC<{}> = () => {
 		loginWithGoogle()
 	}
 
-	return <LoginView {...{ handleGoogleSubmit, handleSubmit }} />
+	async function handleForgotPassword(values: Pick<LoginFormType, "email">) {
+		try {
+			await forgotPassword(values)
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	async function handleCreateAccount() {
+		redirect(_ => _.register)
+	}
+
+	return <LoginView {...{
+		handleGoogleSubmit,
+		handleSubmit,
+		handleForgotPassword,
+		handleCreateAccount
+	}} />
 }

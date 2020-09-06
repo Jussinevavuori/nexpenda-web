@@ -39,9 +39,9 @@ describe("group by date", () => {
   });
 
   it("should return groups in sorted order when required", () => {
-    const result = groupByDate(items, (_) => _.date);
-    expect(datefns.isBefore(result[0].date, result[1].date)).toBeTruthy();
-    expect(datefns.isBefore(result[1].date, result[2].date)).toBeTruthy();
-    expect(datefns.isBefore(result[2].date, result[3].date)).toBeTruthy();
+    const result = groupByDate(items, (_) => _.date, { sort: true });
+    expect(datefns.isAfter(result[0].date, result[1].date)).toBeTruthy();
+    expect(datefns.isAfter(result[1].date, result[2].date)).toBeTruthy();
+    expect(datefns.isAfter(result[2].date, result[3].date)).toBeTruthy();
   });
 });

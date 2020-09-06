@@ -10,6 +10,7 @@ $font-weight-bold: 700;
 
 /** Theme */
 
+$spacing-sm: var(--spacing-sm);
 $spacing-md: var(--spacing-md);
 $spacing-lg: var(--spacing-lg);
 
@@ -45,6 +46,9 @@ $color-action-primary-hover: var(--color-action-primary-hover);
 $color-action-primary-active: var(--color-action-primary-active);
 
 $color-text-default: var(--color-text-default);
+
+/** Border radius */
+$border-radius: 0.4rem;
 
 /** Shadows */
 

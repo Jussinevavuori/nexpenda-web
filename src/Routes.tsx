@@ -54,6 +54,10 @@ export function Routes() {
 			</AppLayout>
 		</ProtectedRoute>
 
+		<Route exact path="/v">
+			Version number 0.0.1
+		</Route>
+
 		<Route path="/">
 			<Redirect to={routes.dashboard} />
 		</Route>

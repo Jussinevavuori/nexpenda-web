@@ -1,52 +1,142 @@
-import React from 'react';
+import "./Login.scss";
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form"
 import { loginValidationSchema, LoginFormType } from './LoginController';
 import { yupResolver } from '@hookform/resolvers';
-import { useStoreActions } from '../../store';
+import { Text } from "../../components/Text/Text";
+import { TextField, Button, Divider, InputAdornment, IconButton } from "@material-ui/core";
+import googleLogo from "../../images/logo_google.png"
+import {
+	Email as EmailIcon,
+	Visibility as PasswordVisibleIcon,
+	VisibilityOff as PasswordInvisibleIcon,
+} from "@material-ui/icons";
 
 export type LoginViewProps = {
 	handleSubmit(values: LoginFormType): Promise<void>;
 	handleGoogleSubmit(): Promise<void>;
+	handleForgotPassword(values: Pick<LoginFormType, "email">): Promise<void>;
+	handleCreateAccount(): Promise<void>;
 }
 
 export const LoginView: React.FC<LoginViewProps> = (props) => {
 
-	const { register, handleSubmit, errors, formState } = useForm<LoginFormType>({
+	/**
+	 * Password visible state
+	 */
+	const [passwordVisible, setPasswordVisible] = useState(false)
+
+	/**
+	 * React hook form
+	 */
+	const { register, handleSubmit, errors, formState, ...form } = useForm<LoginFormType>({
 		resolver: yupResolver(loginValidationSchema),
 	})
 
-	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
-
+	/**
+	 * Email and password error shorthands for react hook form
+	 */
 	const emailError = formState.touched.email && errors.email?.message
 	const passwordError = formState.touched.password && errors.password?.message
 
-	return <div className="LoginView">
-		<form onSubmit={handleSubmit(props.handleSubmit)}>
+	return <div className="Login">
 
-			<input id="login-email" name="email" type="text" ref={register} />
-			<p style={{ color: "#FF6622" }}>{emailError}</p>
+		<div className="container">
 
-			<input id="login-password" name="password" type="password" ref={register} />
-			<p style={{ color: "#FF6622" }}>{passwordError}</p>
+			<header>
 
-			<button type="submit">{"Log in"}</button>
+				<Text.Header.H5 weight="bold" padding="sm" color="white">
+					{"Login to Expence"}
+				</Text.Header.H5>
 
-		</form >
+			</header>
 
-		<p>{"or"}</p>
+			<div className="content">
 
-		<form onSubmit={e => { e.preventDefault(); props.handleGoogleSubmit() }}>
-			<button type="submit">{"Log in with Google"}</button>
-		</form>
+				<div className="signInOptions">
 
-		<button onClick={async () => {
-			try {
-				forgotPassword({ email: "jussi@nevavuori.fi" })
-			} catch (error) {
-				console.log("Failed with error:", error)
-			}
-		}}>
-			Forgot password?
-		</button>
+					<Button
+						variant="outlined"
+						onClick={() => props.handleGoogleSubmit()}
+						startIcon={<img className="logo" src={googleLogo} alt="Google Logo" />}
+						fullWidth
+					>
+						{"Log in with Google"}
+					</Button>
+
+				</div>
+
+				<Divider />
+
+				<form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
+
+					<TextField
+						id="login-email"
+						name="email"
+						type="text"
+						inputRef={register}
+						label="Email"
+						variant="outlined"
+						error={!!emailError}
+						helperText={emailError}
+						fullWidth
+						InputProps={{
+							endAdornment: <InputAdornment position="end">
+								<EmailIcon />
+							</InputAdornment>
+						}}
+					/>
+
+					<TextField
+						id="login-password"
+						name="password"
+						type={passwordVisible ? "text" : "password"}
+						inputRef={register}
+						label="Password"
+						variant="outlined"
+						error={!!passwordError}
+						helperText={passwordError}
+						fullWidth
+						InputProps={{
+							endAdornment: <InputAdornment position="end">
+								<IconButton onClick={() => setPasswordVisible(_ => !_)} size="small">
+									{passwordVisible ? <PasswordVisibleIcon /> : <PasswordInvisibleIcon />}
+								</IconButton>
+							</InputAdornment>,
+						}}
+					/>
+
+					<Button
+						variant="contained"
+						color="primary"
+						type="submit"
+						fullWidth
+					>
+						{"Login"}
+					</Button>
+
+				</form >
+
+				<Divider />
+
+				<div className="signInOptions">
+
+					<Button onClick={() => props.handleCreateAccount()}>
+						{"Create account"}
+					</Button>
+
+					<Button onClick={() => props.handleForgotPassword({
+						email: form.getValues().email
+					})}>
+						{"Forgot password"}
+					</Button>
+
+				</div>
+
+			</div>
+
+		</div>
+
 	</div>
+
 }

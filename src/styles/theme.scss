@@ -1,8 +1,10 @@
 :root {
+  --spacing-sm: 1rem;
   --spacing-md: 2rem;
   --spacing-lg: 3rem;
 
   @media (max-width: 599px) {
+    --spacing-md: 0.7rem;
     --spacing-md: 1.4rem;
     --spacing-lg: 2.1rem;
   }
@@ -29,7 +31,7 @@
   --color-error-light: #e57373;
   --color-error-dark: #d32f2f;
 
-  --color-divider: rgba(0, 0, 0, 0.12);
+  --color-divider: #ddd;
 
   --color-action-focus: #f3f3f3;
   --color-action-hover: #e7e7e7;
@@ -40,4 +42,7 @@
   --color-action-primary-active: rgba(94, 36, 255, 0.16);
 
   --color-text-default: rgba(0, 0, 0, 0.78);
+
+  --color-white: #ffffff;
+  --color-black: #000000;
 }
