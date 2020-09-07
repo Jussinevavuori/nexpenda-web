@@ -15,8 +15,9 @@ import {
 export type LoginViewProps = {
 	handleSubmit(values: LoginFormType): Promise<void>;
 	handleGoogleSubmit(): Promise<void>;
-	handleForgotPassword(values: Pick<LoginFormType, "email">): Promise<void>;
+	handleForgotPassword(): Promise<void>;
 	handleCreateAccount(): Promise<void>;
+	error?: string;
 }
 
 export const LoginView: React.FC<LoginViewProps> = (props) => {
@@ -39,7 +40,7 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 	const emailError = formState.touched.email && errors.email?.message
 	const passwordError = formState.touched.password && errors.password?.message
 
-	return <div className="Login">
+	return <div className="Login AuthView">
 
 		<div className="container">
 
@@ -52,21 +53,6 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 			</header>
 
 			<div className="content">
-
-				<div className="signInOptions">
-
-					<Button
-						variant="outlined"
-						onClick={() => props.handleGoogleSubmit()}
-						startIcon={<img className="logo" src={googleLogo} alt="Google Logo" />}
-						fullWidth
-					>
-						{"Log in with Google"}
-					</Button>
-
-				</div>
-
-				<Divider />
 
 				<form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
 
@@ -115,6 +101,23 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 						{"Login"}
 					</Button>
 
+					{
+						props.error
+							? <Text.Paragraph error>
+								{props.error}
+							</Text.Paragraph>
+							: null
+					}
+
+					<Button
+						variant="outlined"
+						onClick={() => props.handleGoogleSubmit()}
+						startIcon={<img className="logo" src={googleLogo} alt="Google Logo" />}
+						fullWidth
+					>
+						{"Log in with Google"}
+					</Button>
+
 				</form >
 
 				<Divider />
@@ -125,9 +128,7 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 						{"Create account"}
 					</Button>
 
-					<Button onClick={() => props.handleForgotPassword({
-						email: form.getValues().email
-					})}>
+					<Button onClick={() => props.handleForgotPassword()}>
 						{"Forgot password"}
 					</Button>
 

@@ -1,12 +1,13 @@
 import React from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { LoginController } from './views/Login/LoginController';
-import { RegisterController } from './views/Register/RegisterController';
+import { Login } from './views/Login/LoginController';
+import { Register } from './views/Register/RegisterController';
 import AppLayout from './components/AppLayout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { DashboardTab } from './views/DashboardTab/DashboardTabController';
 import { SettingsTab } from "./views/SettingsTab/SettingsTabController";
 import { AnalyticsTab } from "./views/AnalyticsTab/AnalyticsTabController";
+import { ForgotPassword } from "./views/ForgotPassword/ForgotPasswordController";
 
 export const routes = {
 	approot: "/app",
@@ -15,6 +16,7 @@ export const routes = {
 	budget: "/app/budget",
 	settings: "/app/settings",
 	login: "/",
+	forgotPassword: "/forgotPassword",
 	register: "/register",
 } as const;
 
@@ -23,11 +25,15 @@ export function Routes() {
 	return <Switch>
 
 		<Route exact path={routes.login}>
-			<LoginController />
+			<Login />
 		</Route>
 
 		<Route exact path={routes.register}>
-			<RegisterController />
+			<Register />
+		</Route>
+
+		<Route exact path={routes.forgotPassword}>
+			<ForgotPassword />
 		</Route>
 
 		<ProtectedRoute exact path={routes.dashboard}>

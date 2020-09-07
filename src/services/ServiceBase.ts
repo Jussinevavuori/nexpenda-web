@@ -2,7 +2,16 @@ import Axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { ServerError, ApplicationError } from "../utils/Error";
+import { promiseToResult, Result } from "../utils/Result";
+import { Problem } from "../utils/Problem";
+
+export type ServiceMethodResponse<T = void> = Result<
+  T,
+  | Problem<{
+      errors?: object | undefined;
+    }>
+  | Problem<any>
+>;
 
 export abstract class ServiceBase {
   protected baseURL: string;
@@ -94,68 +103,27 @@ export abstract class ServiceBase {
    * @param requestFunction Request creator function
    */
   protected async handleRequest<T>(requestFunction: () => Promise<T>) {
-    try {
-      /**
-       * Run hooks
-       */
-      await this.onBeforeRequest();
+    /**
+     * Run hooks
+     */
+    await this.onBeforeRequest();
 
-      /**
-       * Run request
-       */
-      return requestFunction();
-    } catch (error) {
-      /**
-       * Handle Axios errors
-       */
-      if (error.isAxiosError) {
-        const { response, request, code, message } = error as AxiosError;
+    /**
+     * Run request function to promise
+     */
+    const promise = requestFunction();
 
-        /**
-         * If response contains errors, throw new ServerError from
-         * response data.
-         */
-        if (response) {
-          const code =
-            typeof response.data?.code === "string"
-              ? response.data?.code
-              : "server/unknown";
+    /**
+     * Create result from promise
+     */
+    const result = await promiseToResult(promise);
 
-          const message =
-            typeof response.data?.message === "string"
-              ? response.data?.message
-              : "Unknown server error";
-
-          throw new ServerError(code, message, response.status);
-        }
-
-        /**
-         * If response was not received, create ApplicationError for request
-         */
-        if (request) {
-          throw new ApplicationError(
-            code || "axios/request",
-            message || "Error sending Axios request"
-          );
-        }
-
-        /**
-         * If no request was sent, an error must've occured during configuration
-         */
-        throw new ApplicationError(
-          code || "axios/config",
-          "Error during Axios config phase: " + message
-        );
-      }
-
-      /**
-       * If error is not Axios error, error is unknonwn
-       */
-      throw new ApplicationError(
-        "axios/unknown",
-        `Unknown error during Axios request (${error.message})`
-      );
-    }
+    /**
+     * Map failures to Problems, automatically created from failures
+     */
+    return result.mapFailure((failureValue) => {
+      return Problem.fromAxiosError(failureValue as AxiosError);
+    });
   }
 
   /**

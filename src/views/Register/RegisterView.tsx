@@ -11,9 +11,12 @@ import {
 	VisibilityOff as PasswordInvisibleIcon,
 } from "@material-ui/icons";
 
+
 export type RegisterViewProps = {
 	handleSubmit(values: RegisterFormType): Promise<void>;
 	handleLogin(): Promise<void>;
+	handleGoogleSubmit(): Promise<void>;
+	error?: string;
 }
 
 export const RegisterView: React.FC<RegisterViewProps> = (props) => {
@@ -36,7 +39,7 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
 	const emailError = formState.touched.email && errors.email?.message
 	const passwordError = formState.touched.password && errors.password?.message
 
-	return <div className="Register">
+	return <div className="Register AuthView">
 
 		<div className="container">
 
@@ -96,6 +99,14 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
 					>
 						{"Create account"}
 					</Button>
+
+					{
+						props.error
+							? <Text.Paragraph error>
+								{props.error}
+							</Text.Paragraph>
+							: null
+					}
 
 				</form >
 

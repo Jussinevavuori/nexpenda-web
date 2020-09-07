@@ -1,29 +1,34 @@
-import React, { useState } from 'react';
-import { LoginView } from './LoginView';
-import * as yup from "yup"
-import { useStoreActions } from '../../store';
-import { useRedirect } from '../../hooks/useRedirect';
+import React, { useState } from "react"
+import { ForgotPasswordView } from "./ForgotPasswordView"
+import * as yup from "yup";
+import { useStoreActions } from "../../store";
+import { useRedirect } from "../../hooks/useRedirect";
 
-export const loginValidationSchema = yup.object({
+export const forgotPasswordValidationSchema = yup.object({
 	email: yup.string().defined().min(3).max(255).email(),
-	password: yup.string().defined().min(3).max(255),
 }).defined()
 
-export type LoginFormType = yup.InferType<typeof loginValidationSchema>
+export type ForgotPasswordFormType = yup.InferType<typeof forgotPasswordValidationSchema>
 
-export const Login: React.FC<{}> = () => {
+export type ForgotPasswordProps = {
+
+}
+
+export function ForgotPassword(props: ForgotPasswordProps) {
 
 	const [error, setError] = useState<string>()
 
+	const [success, setSuccess] = useState<boolean>(false)
+
 	const redirect = useRedirect()
 
+	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
-	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
 
-	async function handleSubmit(values: LoginFormType) {
+	async function handleSubmit(values: ForgotPasswordFormType) {
 		setError(undefined)
-		const result = await loginWithEmailPassword(values)
-		result.onSuccess(() => redirect(routes => routes.dashboard))
+		const result = await forgotPassword(values)
+		result.onSuccess(() => setSuccess(true))
 		result.onFailure(failure => {
 			switch (failure.code) {
 				case "data/invalid-request-data":
@@ -46,23 +51,24 @@ export const Login: React.FC<{}> = () => {
 		})
 	}
 
-	async function handleGoogleSubmit() {
-		loginWithGoogle()
-	}
-
-	async function handleForgotPassword() {
-		redirect(_ => _.forgotPassword)
+	async function handleLogin() {
+		redirect(_ => _.login)
 	}
 
 	async function handleCreateAccount() {
 		redirect(_ => _.register)
 	}
 
-	return <LoginView {...{
-		handleGoogleSubmit,
+	async function handleGoogleSubmit() {
+		loginWithGoogle()
+	}
+
+	return <ForgotPasswordView {...{
 		handleSubmit,
-		handleForgotPassword,
 		handleCreateAccount,
-		error,
+		handleGoogleSubmit,
+		handleLogin,
+		success,
+		error
 	}} />
 }

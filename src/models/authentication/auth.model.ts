@@ -2,11 +2,7 @@ import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 import { Auth } from "./auth.class";
 import { AuthService } from "../../services/AuthService";
 import { JsonAuth, isJsonAuth } from "./auth.json";
-
-/**
- * An instance of the auth service for the authentication model to use
- */
-export const authService = new AuthService();
+import { StoreInjections, StoreModel } from "../../store";
 
 export interface AuthModel {
   /**
@@ -38,16 +34,33 @@ export interface AuthModel {
   _setAccessToken: Action<AuthModel, string>;
 
   /**
+   * Action to set the current user with partial user data (a constructable)
+   */
+  _login: Action<AuthModel, JsonAuth>;
+
+  /**
    * Function to get the currently logged in user's profile data and apply it
    * to the user property. The logged in property is defined by the current
    * refresh token.
    */
-  getProfile: Thunk<AuthModel, void, any, any, Promise<void>>;
+  getProfile: Thunk<
+    AuthModel,
+    void,
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["getProfile"]>
+  >;
 
   /**
    * Log in the current user with a Google account
    */
-  loginWithGoogle: Thunk<AuthModel, void>;
+  loginWithGoogle: Thunk<
+    AuthModel,
+    void,
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["loginWithGoogle"]>
+  >;
 
   /**
    * Register the current user with email and password
@@ -55,9 +68,9 @@ export interface AuthModel {
   registerWithEmailPassword: Thunk<
     AuthModel,
     { email: string; password: string },
-    any,
-    any,
-    Promise<void>
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["registerWithEmailAndPassword"]>
   >;
 
   /**
@@ -66,25 +79,32 @@ export interface AuthModel {
   loginWithEmailPassword: Thunk<
     AuthModel,
     { email: string; password: string },
-    any,
-    any,
-    Promise<void>
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["loginWithEmailAndPassword"]>
   >;
 
   /**
    * Forgot password
    */
-  forgotPassword: Thunk<AuthModel, { email: string }, any, any, Promise<void>>;
-
-  /**
-   * Action to set the current user with partial user data (a constructable)
-   */
-  _login: Action<AuthModel, JsonAuth>;
+  forgotPassword: Thunk<
+    AuthModel,
+    { email: string },
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["forgotPassword"]>
+  >;
 
   /**
    * Log out the current user
    */
-  logout: Thunk<AuthModel, void>;
+  logout: Thunk<
+    AuthModel,
+    void,
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["logout"]>
+  >;
 }
 
 /**
@@ -106,43 +126,59 @@ export const authModel: AuthModel = {
     state.accessToken = newAccessToken;
   }),
 
-  getProfile: thunk(async (actions) => {
-    try {
-      const profile = await authService.getProfile();
-      actions._login(profile);
-    } catch (error) {
-    } finally {
-      actions._setInitialized(true);
-    }
-  }),
-
-  loginWithGoogle: thunk(() => {
-    authService.loginWithGoogle();
-  }),
-
-  loginWithEmailPassword: thunk(async (actions, form) => {
-    await authService.loginWithEmailAndPassword(form);
-    const profile = await authService.getProfile();
-    actions._login(profile);
-  }),
-
-  registerWithEmailPassword: thunk(async (actions, form) => {
-    await authService.registerWithEmailAndPassword(form);
-    const profile = await authService.getProfile();
-    actions._login(profile);
-  }),
-
-  forgotPassword: thunk(async (actions, form) => {
-    await authService.forgotPassword(form);
-  }),
-
   _login: action((state, json) => {
     if (isJsonAuth(json)) {
       state.user = new Auth(json);
     }
   }),
 
-  logout: thunk(() => {
-    authService.logout();
+  getProfile: thunk(async (actions, payload, { injections }) => {
+    const profileResult = await injections.authService.getProfile();
+    profileResult.onSuccess((profile) => {
+      actions._login(profile);
+    });
+    actions._setInitialized(true);
+    return profileResult;
+  }),
+
+  loginWithGoogle: thunk((actions, payload, { injections }) => {
+    return injections.authService.loginWithGoogle();
+  }),
+
+  loginWithEmailPassword: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.authService.loginWithEmailAndPassword(
+      payload
+    );
+    result.onSuccess(async () => {
+      const profileResult = await injections.authService.getProfile();
+      profileResult.onSuccess((profile) => {
+        actions._login(profile);
+      });
+    });
+    return result;
+  }),
+
+  registerWithEmailPassword: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.authService.registerWithEmailAndPassword(
+      payload
+    );
+    result.onSuccess(async () => {
+      const profileResult = await injections.authService.getProfile();
+      profileResult.onSuccess((profile) => {
+        actions._login(profile);
+      });
+    });
+    return result;
+  }),
+
+  forgotPassword: thunk(async (actions, payload, { injections }) => {
+    const forgotPasswordResult = await injections.authService.forgotPassword(
+      payload
+    );
+    return forgotPasswordResult;
+  }),
+
+  logout: thunk((actions, payload, { injections }) => {
+    return injections.authService.logout();
   }),
 };

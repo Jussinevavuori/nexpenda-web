@@ -9,6 +9,8 @@ import {
   transactionFormModel,
 } from "./models/transactionForm/transactionForm.model";
 import { intervalModel, IntervalModel } from "./models/interval/interval.model";
+import { AuthService } from "./services/AuthService";
+import { TransactionService } from "./services/TransactionService";
 
 export interface StoreModel {
   transactions: TransactionsModel;
@@ -24,7 +26,17 @@ const storeModel: StoreModel = {
   auth: authModel,
 };
 
-export const store = createStore(storeModel);
+export interface StoreInjections {
+  authService: AuthService;
+  transactionService: TransactionService;
+}
+
+export const store = createStore(storeModel, {
+  injections: {
+    authService: new AuthService(),
+    transactionService: new TransactionService(),
+  },
+});
 
 if (process.env.NODE_ENV === "development") {
   (window as any).store = store;

@@ -11,18 +11,13 @@ import {
 import { Transaction } from "./transactions.class";
 import { JsonTransaction } from "./transactions.json";
 import { TransactionService } from "../../services/TransactionService";
-import { StoreModel } from "../../store";
+import { StoreModel, StoreInjections } from "../../store";
 import { groupByDate } from "../../utils/groupByDate";
 import { MoneyAmount } from "../../utils/MoneyAmount";
 import {
   filteredTransactionsModel,
   FilteredTransactionsModel,
 } from "./transactions.filtered.model";
-
-/**
- * Instance of transactionService for thunks
- */
-const transactionService = new TransactionService();
 
 export interface TransactionsModel {
   /**
@@ -72,9 +67,9 @@ export interface TransactionsModel {
   getTransactions: Thunk<
     TransactionsModel,
     void,
-    any,
-    any,
-    Promise<JsonTransaction[]>
+    StoreInjections,
+    StoreModel,
+    ReturnType<TransactionService["getTransactions"]>
   >;
 
   /**
@@ -88,9 +83,9 @@ export interface TransactionsModel {
   postTransaction: Thunk<
     TransactionsModel,
     Omit<JsonTransaction, "id" | "uid">,
-    any,
-    any,
-    Promise<JsonTransaction>
+    StoreInjections,
+    StoreModel,
+    ReturnType<TransactionService["postTransaction"]>
   >;
 
   /**
@@ -104,9 +99,9 @@ export interface TransactionsModel {
   deleteTransaction: Thunk<
     TransactionsModel,
     string,
-    any,
-    any,
-    Promise<Boolean>
+    StoreInjections,
+    StoreModel,
+    ReturnType<TransactionService["deleteTransaction"]>
   >;
 
   /**
@@ -120,9 +115,9 @@ export interface TransactionsModel {
   putTransaction: Thunk<
     TransactionsModel,
     JsonTransaction,
-    any,
-    any,
-    Promise<JsonTransaction>
+    StoreInjections,
+    StoreModel,
+    ReturnType<TransactionService["putTransaction"]>
   >;
 
   /**
@@ -136,9 +131,9 @@ export interface TransactionsModel {
   patchTransaction: Thunk<
     TransactionsModel,
     JsonTransaction,
-    any,
-    any,
-    Promise<JsonTransaction>
+    StoreInjections,
+    StoreModel,
+    ReturnType<TransactionService["patchTransaction"]>
   >;
 
   /**
@@ -183,40 +178,40 @@ export const transactionsModel: TransactionsModel = {
     state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)
   ),
 
-  getTransactions: thunk(async (actions) => {
-    const transactions = await transactionService.getTransactions();
-    actions._getTransactions(transactions);
-    return transactions;
+  getTransactions: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.transactionService.getTransactions();
+    result.onSuccess((json) => actions._getTransactions(json));
+    return result;
   }),
 
   _getTransactions: action((state, jsons) => {
     state.items = jsons.map((json) => new Transaction(json));
   }),
 
-  postTransaction: thunk(async (actions, json) => {
-    const transaction = await transactionService.postTransaction(json);
-    actions._postTransaction(transaction);
-    return transaction;
+  postTransaction: thunk(async (actions, json, { injections }) => {
+    const result = await injections.transactionService.postTransaction(json);
+    result.onSuccess((json) => actions._postTransaction(json));
+    return result;
   }),
 
   _postTransaction: action((state, json) => {
     state.items.push(new Transaction(json));
   }),
 
-  deleteTransaction: thunk(async (actions, id) => {
-    const deleted = await transactionService.deleteTransaction(id);
-    actions._deleteTransaction(id);
-    return deleted;
+  deleteTransaction: thunk(async (actions, id, { injections }) => {
+    const result = await injections.transactionService.deleteTransaction(id);
+    result.onSuccess(() => actions.deleteTransaction(id));
+    return result;
   }),
 
   _deleteTransaction: action((state, id) => {
     state.items = state.items.filter((item) => item.id !== id);
   }),
 
-  putTransaction: thunk(async (actions, json) => {
-    const transaction = await transactionService.putTransaction(json);
-    actions._putTransaction(transaction);
-    return transaction;
+  putTransaction: thunk(async (actions, json, { injections }) => {
+    const result = await injections.transactionService.putTransaction(json);
+    result.onSuccess((json) => actions._putTransaction(json));
+    return result;
   }),
 
   _putTransaction: action((state, json) => {
@@ -225,10 +220,10 @@ export const transactionsModel: TransactionsModel = {
     );
   }),
 
-  patchTransaction: thunk(async (actions, json) => {
-    const transaction = await transactionService.patchTransaction(json);
-    actions._patchTransaction(transaction);
-    return transaction;
+  patchTransaction: thunk(async (actions, json, { injections }) => {
+    const result = await injections.transactionService.patchTransaction(json);
+    result.onSuccess((json) => actions._patchTransaction(json));
+    return result;
   }),
 
   _patchTransaction: action((state, json) => {
