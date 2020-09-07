@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.b8ddcf63.chunk.css",
-    "main.js": "/static/js/main.c8cde506.chunk.js",
-    "main.js.map": "/static/js/main.c8cde506.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.d51d26c1.js",
-    "runtime-main.js.map": "/static/js/runtime-main.d51d26c1.js.map",
-    "static/js/2.8cac7acc.chunk.js": "/static/js/2.8cac7acc.chunk.js",
-    "static/js/2.8cac7acc.chunk.js.map": "/static/js/2.8cac7acc.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.d98da392d8ca2f732789e98fcb00cce3.js": "/precache-manifest.d98da392d8ca2f732789e98fcb00cce3.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.b8ddcf63.chunk.css.map": "/static/css/main.b8ddcf63.chunk.css.map",
-    "static/js/2.8cac7acc.chunk.js.LICENSE.txt": "/static/js/2.8cac7acc.chunk.js.LICENSE.txt",
-    "static/media/index.scss": "/static/media/awar-meman-Ujt8Ti-5OQ0-unsplash.b0effcc2.jpg",
-    "static/media/logo_google.png": "/static/media/logo_google.696b80ec.png",
-    "static/media/pexels-johannes-plenio-1103970.jpg": "/static/media/pexels-johannes-plenio-1103970.afe78909.jpg"
+    "main.css": "/expence-web/static/css/main.fe6d17a1.chunk.css",
+    "main.js": "/expence-web/static/js/main.cc0d7969.chunk.js",
+    "main.js.map": "/expence-web/static/js/main.cc0d7969.chunk.js.map",
+    "runtime-main.js": "/expence-web/static/js/runtime-main.cd90f0eb.js",
+    "runtime-main.js.map": "/expence-web/static/js/runtime-main.cd90f0eb.js.map",
+    "static/js/2.707bbc09.chunk.js": "/expence-web/static/js/2.707bbc09.chunk.js",
+    "static/js/2.707bbc09.chunk.js.map": "/expence-web/static/js/2.707bbc09.chunk.js.map",
+    "index.html": "/expence-web/index.html",
+    "precache-manifest.b3e34c38926f077f6ce8789f9e82e418.js": "/expence-web/precache-manifest.b3e34c38926f077f6ce8789f9e82e418.js",
+    "service-worker.js": "/expence-web/service-worker.js",
+    "static/css/main.fe6d17a1.chunk.css.map": "/expence-web/static/css/main.fe6d17a1.chunk.css.map",
+    "static/js/2.707bbc09.chunk.js.LICENSE.txt": "/expence-web/static/js/2.707bbc09.chunk.js.LICENSE.txt",
+    "static/media/index.scss": "/expence-web/static/media/awar-meman-Ujt8Ti-5OQ0-unsplash.b0effcc2.jpg",
+    "static/media/logo_google.png": "/expence-web/static/media/logo_google.696b80ec.png",
+    "static/media/pexels-johannes-plenio-1103970.jpg": "/expence-web/static/media/pexels-johannes-plenio-1103970.afe78909.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d51d26c1.js",
-    "static/js/2.8cac7acc.chunk.js",
-    "static/css/main.b8ddcf63.chunk.css",
-    "static/js/main.c8cde506.chunk.js"
+    "static/js/runtime-main.cd90f0eb.js",
+    "static/js/2.707bbc09.chunk.js",
+    "static/css/main.fe6d17a1.chunk.css",
+    "static/js/main.cc0d7969.chunk.js"
   ]
 }
