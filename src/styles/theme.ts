@@ -37,7 +37,7 @@ export const theme = createMuiTheme({
       700: cssvar("color-primary-900", { color: true }),
       800: cssvar("color-primary-800", { color: true }),
       900: cssvar("color-primary-700", { color: true }),
-      contrastText: "white",
+      contrastText: "#fff",
     },
   },
 });

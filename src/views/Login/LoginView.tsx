@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form"
 import { loginValidationSchema, LoginFormType } from './LoginController';
 import { yupResolver } from '@hookform/resolvers';
-import { Text } from "../../components/Text/Text";
-import { TextField, Button, Divider, InputAdornment, IconButton } from "@material-ui/core";
+import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core";
 import googleLogo from "../../images/logo_google.png"
 import {
 	Email as EmailIcon,
 	Visibility as PasswordVisibleIcon,
 	VisibilityOff as PasswordInvisibleIcon,
 } from "@material-ui/icons";
+import { AuthFrame } from "../../components/AuthFrame/AuthFrame";
+import { Type } from "../../components/Type/Type";
 
 export type LoginViewProps = {
 	handleSubmit(values: LoginFormType): Promise<void>;
@@ -40,20 +41,12 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 	const emailError = formState.touched.email && errors.email?.message
 	const passwordError = formState.touched.password && errors.password?.message
 
-	return <div className="Login AuthView">
+	return <div className="Login">
+		<AuthFrame
 
-		<div className="container">
+			header="Login to Expence"
 
-			<header>
-
-				<Text.Header.H5 weight="bold" padding="sm" color="white">
-					{"Login to Expence"}
-				</Text.Header.H5>
-
-			</header>
-
-			<div className="content">
-
+			body={
 				<form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
 
 					<TextField
@@ -103,9 +96,9 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 
 					{
 						props.error
-							? <Text.Paragraph error>
+							? <Type color="error">
 								{props.error}
-							</Text.Paragraph>
+							</Type>
 							: null
 					}
 
@@ -118,26 +111,20 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 						{"Log in with Google"}
 					</Button>
 
-				</form >
+				</form>
+			}
 
-				<Divider />
+			footer={<div className="footerContent">
 
-				<div className="signInOptions">
+				<Button onClick={() => props.handleCreateAccount()}>
+					{"Create account"}
+				</Button>
 
-					<Button onClick={() => props.handleCreateAccount()}>
-						{"Create account"}
-					</Button>
+				<Button onClick={() => props.handleForgotPassword()}>
+					{"Forgot password"}
+				</Button>
 
-					<Button onClick={() => props.handleForgotPassword()}>
-						{"Forgot password"}
-					</Button>
-
-				</div>
-
-			</div>
-
-		</div>
-
+			</div>}
+		/>
 	</div>
-
 }

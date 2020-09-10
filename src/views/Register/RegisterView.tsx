@@ -2,127 +2,117 @@ import "./Register.scss"
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form"
 import { registerValidationSchema, RegisterFormType } from './RegisterController';
-import { Text } from "../../components/Text/Text";
 import { yupResolver } from '@hookform/resolvers';
-import { TextField, Button, Divider, InputAdornment, IconButton } from "@material-ui/core";
+import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core";
 import {
 	Email as EmailIcon,
 	Visibility as PasswordVisibleIcon,
 	VisibilityOff as PasswordInvisibleIcon,
 } from "@material-ui/icons";
+import { AuthFrame } from "../../components/AuthFrame/AuthFrame";
+import { Type } from "../../components/Type/Type";
 
 
 export type RegisterViewProps = {
 	handleSubmit(values: RegisterFormType): Promise<void>;
 	handleLogin(): Promise<void>;
-	handleGoogleSubmit(): Promise<void>;
 	error?: string;
+	registered: boolean;
 }
 
 export const RegisterView: React.FC<RegisterViewProps> = (props) => {
 
-	/**
-	 * Password visible state
-	 */
 	const [passwordVisible, setPasswordVisible] = useState(false)
 
-	/**
-	 * React hook form
-	 */
-	const { register, handleSubmit, errors, formState } = useForm<RegisterFormType>({
+	const form = useForm<RegisterFormType>({
 		resolver: yupResolver(registerValidationSchema),
 	})
 
-	/**
-	 * Email and password error shorthands for react hook form
-	 */
-	const emailError = formState.touched.email && errors.email?.message
-	const passwordError = formState.touched.password && errors.password?.message
+	const emailError = form.formState.touched.email && form.errors.email?.message
+	const passwordError = form.formState.touched.password && form.errors.password?.message
 
-	return <div className="Register AuthView">
+	return <div className="Register">
 
-		<div className="container">
+		<AuthFrame
 
-			<header>
+			header="Create account"
 
-				<Text.Header.H5 weight="bold" color="white">
-					{"Create account"}
-				</Text.Header.H5>
+			body={
+				props.registered
+					? <>
+						<Type variant="h6">
+							{"Succesfully registered."}
+						</Type>
+						<Type>
+							{"Check your email in order to confirm your email address. "}
+							{"You can login after having confirmation."}
+						</Type>
+					</>
+					: <form onSubmit={form.handleSubmit(props.handleSubmit)}>
 
-			</header>
+						<TextField
+							id="register-email"
+							name="email"
+							type="text"
+							inputRef={form.register}
+							label="Email"
+							variant="outlined"
+							error={!!emailError}
+							helperText={emailError}
+							fullWidth
+							InputProps={{
+								endAdornment: <InputAdornment position="end">
+									<EmailIcon />
+								</InputAdornment>
+							}}
+						/>
 
-			<div className="content">
+						<TextField
+							id="register-password"
+							name="password"
+							type={passwordVisible ? "text" : "password"}
+							inputRef={form.register}
+							label="Password"
+							variant="outlined"
+							error={!!passwordError}
+							helperText={passwordError}
+							fullWidth
+							InputProps={{
+								endAdornment: <InputAdornment position="end">
+									<IconButton onClick={() => setPasswordVisible(_ => !_)} size="small">
+										{passwordVisible ? <PasswordVisibleIcon /> : <PasswordInvisibleIcon />}
+									</IconButton>
+								</InputAdornment>,
+							}}
+						/>
 
-				<form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
+						<Button
+							variant="contained"
+							color="primary"
+							type="submit"
+							fullWidth
+						>
+							{"Create account"}
+						</Button>
 
-					<TextField
-						id="register-email"
-						name="email"
-						type="text"
-						inputRef={register}
-						label="Email"
-						variant="outlined"
-						error={!!emailError}
-						helperText={emailError}
-						fullWidth
-						InputProps={{
-							endAdornment: <InputAdornment position="end">
-								<EmailIcon />
-							</InputAdornment>
-						}}
-					/>
+						{
+							props.error
+								? <Type color="error">
+									{props.error}
+								</Type>
+								: null
+						}
 
-					<TextField
-						id="register-password"
-						name="password"
-						type={passwordVisible ? "text" : "password"}
-						inputRef={register}
-						label="Password"
-						variant="outlined"
-						error={!!passwordError}
-						helperText={passwordError}
-						fullWidth
-						InputProps={{
-							endAdornment: <InputAdornment position="end">
-								<IconButton onClick={() => setPasswordVisible(_ => !_)} size="small">
-									{passwordVisible ? <PasswordVisibleIcon /> : <PasswordInvisibleIcon />}
-								</IconButton>
-							</InputAdornment>,
-						}}
-					/>
+					</form >
+			}
 
-					<Button
-						variant="contained"
-						color="primary"
-						type="submit"
-						fullWidth
-					>
-						{"Create account"}
-					</Button>
+			footer={
+				<Button onClick={() => props.handleLogin()}>
+					{"Already have an account? Login"}
+				</Button>
+			}
 
-					{
-						props.error
-							? <Text.Paragraph error>
-								{props.error}
-							</Text.Paragraph>
-							: null
-					}
-
-				</form >
-
-				<Divider />
-
-				<div className="options">
-
-					<Button onClick={() => props.handleLogin()}>
-						{"Already have an account? Login"}
-					</Button>
-
-				</div>
-
-			</div>
-
-		</div>
+		/>
 
 	</div>
 }

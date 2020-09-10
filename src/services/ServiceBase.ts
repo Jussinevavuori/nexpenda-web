@@ -102,7 +102,11 @@ export abstract class ServiceBase {
    *
    * @param requestFunction Request creator function
    */
-  protected async handleRequest<T>(requestFunction: () => Promise<T>) {
+  protected async handleRequest<T>(
+    path: string,
+    config: AxiosRequestConfig | undefined,
+    requestFunction: (url: string, options: AxiosRequestConfig) => Promise<T>
+  ) {
     /**
      * Run hooks
      */
@@ -111,7 +115,9 @@ export abstract class ServiceBase {
     /**
      * Run request function to promise
      */
-    const promise = requestFunction();
+    const url = this.endpoint(path);
+    const options = this.getConfig(config);
+    const promise = requestFunction(url, options);
 
     /**
      * Create result from promise
@@ -133,9 +139,7 @@ export abstract class ServiceBase {
     path: string,
     config?: AxiosRequestConfig | undefined
   ) {
-    return this.handleRequest(() => {
-      const url = this.endpoint(path);
-      const options = this.getConfig(config);
+    return this.handleRequest(path, config, (url, options) => {
       return this.axios.get<ResponseData>(url, options);
     });
   }
@@ -148,9 +152,7 @@ export abstract class ServiceBase {
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(() => {
-      const url = this.endpoint(path);
-      const options = this.getConfig(config);
+    return this.handleRequest(path, config, (url, options) => {
       return this.axios.post<ResponseData>(url, data, options);
     });
   }
@@ -162,9 +164,7 @@ export abstract class ServiceBase {
     path: string,
     config?: AxiosRequestConfig | undefined
   ) {
-    return this.handleRequest(() => {
-      const url = this.endpoint(path);
-      const options = this.getConfig(config);
+    return this.handleRequest(path, config, (url, options) => {
       return this.axios.delete<ResponseData>(url, options);
     });
   }
@@ -177,9 +177,7 @@ export abstract class ServiceBase {
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(() => {
-      const url = this.endpoint(path);
-      const options = this.getConfig(config);
+    return this.handleRequest(path, config, (url, options) => {
       return this.axios.put<ResponseData>(url, data, options);
     });
   }
@@ -192,9 +190,7 @@ export abstract class ServiceBase {
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(() => {
-      const url = this.endpoint(path);
-      const options = this.getConfig(config);
+    return this.handleRequest(path, config, (url, options) => {
       return this.axios.patch<ResponseData>(url, data, options);
     });
   }

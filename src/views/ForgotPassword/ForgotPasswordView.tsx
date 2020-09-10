@@ -1,11 +1,12 @@
 import "./ForgotPassword.scss";
 import React from "react"
 import { ForgotPasswordFormType, forgotPasswordValidationSchema } from "./ForgotPasswordController";
-import { Text } from "../../components/Text/Text";
-import { TextField, Button, Divider, InputAdornment } from "@material-ui/core";
+import { TextField, Button, InputAdornment } from "@material-ui/core";
 import { Email as EmailIcon } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
+import { AuthFrame } from "../../components/AuthFrame/AuthFrame";
+import { Type } from "../../components/Type/Type";
 
 export type ForgotPasswordViewProps = {
 	handleSubmit(values: ForgotPasswordFormType): Promise<void>;
@@ -30,85 +31,67 @@ export function ForgotPasswordView(props: ForgotPasswordViewProps) {
 	 */
 	const emailError = formState.touched.email && errors.email?.message
 
-	return <div className="ForgotPassword AuthView">
+	return <div className="ForgotPassword">
 
-		<div className="container">
+		<AuthFrame
 
-			<header>
+			header="Forgot password"
 
-				<Text.Header.H5 weight="bold" padding="sm" color="white">
-					{"Forgot password"}
-				</Text.Header.H5>
+			body={
+				props.success
+					? <Type>
+						{"Recovery email sent. Check your email."}
+					</Type>
+					: <form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
 
-			</header>
+						<Type>
+							{"Enter your email below and we will send you an email containing a link, which you can use to change your password."}
+						</Type>
 
-			<div className="content">
+						<TextField
+							id="login-email"
+							name="email"
+							type="text"
+							inputRef={register}
+							label="Email"
+							variant="outlined"
+							error={!!emailError}
+							helperText={emailError}
+							fullWidth
+							InputProps={{
+								endAdornment: <InputAdornment position="end">
+									<EmailIcon />
+								</InputAdornment>
+							}}
+						/>
 
-				{
+						<Button
+							variant="contained"
+							color="primary"
+							type="submit"
+							fullWidth
+						>
+							{"Send recovery email"}
+						</Button>
 
-					props.success
-						? <Text.Paragraph>
-							{"Recovery email sent. Check your email."}
-						</Text.Paragraph>
-						: <form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
+						{
+							props.error
+								? <Type color="error">
+									{props.error}
+								</Type>
+								: null
+						}
 
-							<Text.Paragraph>
-								{"Enter your email below and we will send you an email containing a link, which you can use to change your password."}
-							</Text.Paragraph>
+					</form >
 
-							<TextField
-								id="login-email"
-								name="email"
-								type="text"
-								inputRef={register}
-								label="Email"
-								variant="outlined"
-								error={!!emailError}
-								helperText={emailError}
-								fullWidth
-								InputProps={{
-									endAdornment: <InputAdornment position="end">
-										<EmailIcon />
-									</InputAdornment>
-								}}
-							/>
+			}
 
-							<Button
-								variant="contained"
-								color="primary"
-								type="submit"
-								fullWidth
-							>
-								{"Send recovery email"}
-							</Button>
+			footer={
+				<Button onClick={() => props.handleLogin()}>
+					{"Back"}
+				</Button>}
 
-							{
-								props.error
-									? <Text.Paragraph error>
-										{props.error}
-									</Text.Paragraph>
-									: null
-							}
+		/>
 
-						</form >
-
-				}
-
-
-
-				<Divider />
-
-				<div className="signInOptions">
-
-					<Button onClick={() => props.handleLogin()}>
-						{"Back"}
-					</Button>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
+	</div >
 }

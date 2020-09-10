@@ -35,7 +35,7 @@ export function TransactionListingView(props: TransactionListingViewProps) {
 		</div>
 		<div className={cx("amount", signClass)}>
 			<span>
-				{props.transaction.amount.formatFull}
+				{props.transaction.amount.format()}
 			</span>
 		</div>
 	</div>

@@ -1,0 +1,93 @@
+@import "main";
+
+.Sidebar {
+  position: relative;
+  z-index: 1;
+
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.24);
+  width: 100%;
+  height: auto;
+
+  @include sm {
+    width: 18rem;
+    height: 100%;
+  }
+
+  & .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    & .header {
+      background: $color-primary-main;
+      height: $app-header-height;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: $spacing-sm;
+
+      & * {
+        color: white;
+      }
+
+      & .top-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      & .bottom-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        & p {
+          margin-left: 1rem;
+        }
+      }
+    }
+
+    & .body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      & .tabContainer {
+        & .tab {
+          padding: calc(#{$spacing-sm} * 1.1) calc(#{$spacing-sm} * 1.3);
+          width: 100%;
+          & .MuiButton-label {
+            justify-content: flex-start;
+          }
+        }
+
+        &.addButton {
+          margin-top: auto;
+          & * {
+            color: $color-primary-main;
+          }
+        }
+      }
+    }
+  }
+
+  & .tabs {
+    display: grid;
+    grid-auto-flow: column;
+
+    & .tabContainer {
+      display: grid;
+      place-items: center;
+
+      & .tab {
+        padding: 1rem;
+        border-radius: 0;
+        width: 100%;
+
+        &.active svg {
+          color: $color-primary-main;
+        }
+      }
+    }
+  }
+}

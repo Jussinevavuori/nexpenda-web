@@ -24,7 +24,7 @@ export class Transaction {
       time: this.date.getTime(),
       category: this.category,
       comment: this.comment,
-      integerAmount: this.amount.integer,
+      integerAmount: this.amount.value,
       id: this.id,
       uid: this.uid,
     };

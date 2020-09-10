@@ -160,11 +160,11 @@ export const transactionsModel: TransactionsModel = {
 
   sums: computed((state) => {
     const incomes = state.items
-      .filter((_) => _.amount.integer > 0)
-      .reduce((sum, item) => sum + item.amount.integer, 0);
+      .filter((_) => _.amount.isPositive)
+      .reduce((sum, item) => sum + item.amount.value, 0);
     const expenses = state.items
-      .filter((_) => _.amount.integer < 0)
-      .reduce((sum, item) => sum + item.amount.integer, 0);
+      .filter((_) => _.amount.isNegative)
+      .reduce((sum, item) => sum + item.amount.value, 0);
     return {
       all: new MoneyAmount(incomes + expenses),
       incomes: new MoneyAmount(incomes),

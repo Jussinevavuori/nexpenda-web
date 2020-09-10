@@ -4,17 +4,12 @@ import {
   TransactionsModel,
   transactionsModel,
 } from "./models/transactions/transactions.model";
-import {
-  TransactionFormModel,
-  transactionFormModel,
-} from "./models/transactionForm/transactionForm.model";
 import { intervalModel, IntervalModel } from "./models/interval/interval.model";
 import { AuthService } from "./services/AuthService";
 import { TransactionService } from "./services/TransactionService";
 
 export interface StoreModel {
   transactions: TransactionsModel;
-  transactionForm: TransactionFormModel;
   interval: IntervalModel;
   auth: AuthModel;
 }
@@ -22,7 +17,6 @@ export interface StoreModel {
 const storeModel: StoreModel = {
   transactions: transactionsModel,
   interval: intervalModel,
-  transactionForm: transactionFormModel,
   auth: authModel,
 };
 

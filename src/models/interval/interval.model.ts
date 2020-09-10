@@ -39,28 +39,79 @@ export type IntervalModel = {
   setInterval: Action<IntervalModel, { startDate: Date; endDate: Date }>;
 
   /**
-   * Set previous month as interval. Uses the start date's month to figure
-   * out the previous month in case the start and end date are in different
-   * months.
+   * Move interval forward
+   *
+   * - If interval is year, select next year
+   * - If interval is month, select next month
+   * - If interval is week, select next week
+   * - If interval is other, select next interval of same length
+   *   starting from the end date of the current interval.
    */
-  setPreviousMonthAsDateInterval: Action<IntervalModel, void>;
+  nextInterval: Action<IntervalModel, void>;
 
   /**
-   * Set next month as interval. Uses the end date's month to figure out
-   * the next month in case the start and end date are in different months.
+   * Move interval backwards
+   *
+   * - If interval is year, select previous year
+   * - If interval is month, select previous month
+   * - If interval is week, select previous week
+   * - If interval is other, select previous interval of same length
+   *   ending at the starting date of the current interval.
    */
-  setNextMonthAsDateInterval: Action<IntervalModel, void>;
+  previousInterval: Action<IntervalModel, void>;
+
+  /**
+   * Move interval to nearest week
+   */
+  weekInterval: Action<IntervalModel, void>;
+
+  /**
+   * Move interval to nearest month
+   */
+  monthInterval: Action<IntervalModel, void>;
+
+  /**
+   * Move interval to nearest year
+   */
+  yearInterval: Action<IntervalModel, void>;
+
+  /**
+   * Is the urrent date interval a signle full week
+   */
+  isWeek: Computed<IntervalModel, boolean>;
 
   /**
    * Is the current date interval a single full month
    */
-  dateIntervalIsMonth: Computed<IntervalModel, boolean>;
+  isMonth: Computed<IntervalModel, boolean>;
 
   /**
-   * The current date interval month string or undefined if date interval is not a
-   * single full month
+   * Is the current date interval a single full year
    */
-  dateIntervalMonthString: Computed<IntervalModel, string | undefined>;
+  isYear: Computed<IntervalModel, boolean>;
+
+  /**
+   * Smarter display string that displays in format...
+   *
+   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
+   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
+   *
+   * Else falls back to `displayString` property and the
+   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` format.
+   */
+  smartDisplayString: Computed<IntervalModel, string>;
+
+  /**
+   * Display string of format
+   *
+   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` if dates
+   * are in different years.
+   *
+   * For example
+   * - `1.12. - 7.12.2020`
+   * - `30.12.1999 - 5.1.2000`
+   */
+  displayString: Computed<IntervalModel, string>;
 };
 
 export const intervalModel: IntervalModel = {
@@ -93,21 +144,60 @@ export const intervalModel: IntervalModel = {
     }
   }),
 
-  setPreviousMonthAsDateInterval: action((state) => {
-    const startOfActiveMonth = datefns.startOfMonth(state.startDate);
-    const dateInPreviousMonth = datefns.subDays(startOfActiveMonth, 1);
-    state.startDate = datefns.startOfMonth(dateInPreviousMonth);
-    state.endDate = datefns.endOfMonth(dateInPreviousMonth);
+  nextInterval: action((state) => {
+    const length = datefns.differenceInDays(state.startDate, state.endDate);
+    const newStartDate = datefns.addDays(state.endDate, 1);
+    if (state.isYear) {
+      state.endDate = datefns.endOfYear(newStartDate);
+    } else if (state.isMonth) {
+      state.endDate = datefns.endOfMonth(newStartDate);
+    } else if (state.isWeek) {
+      state.endDate = datefns.endOfWeek(newStartDate, { weekStartsOn: 1 });
+    } else {
+      state.endDate = datefns.addDays(newStartDate, length);
+    }
+    state.startDate = newStartDate;
   }),
 
-  setNextMonthAsDateInterval: action((state) => {
-    const endOfActiveMonth = datefns.endOfMonth(state.endDate);
-    const dateInNextMonth = datefns.addDays(endOfActiveMonth, 1);
-    state.startDate = datefns.startOfMonth(dateInNextMonth);
-    state.endDate = datefns.endOfMonth(dateInNextMonth);
+  previousInterval: action((state) => {
+    const length = datefns.differenceInDays(state.startDate, state.endDate);
+    const newEndDate = datefns.subDays(state.startDate, 1);
+    if (state.isYear) {
+      state.startDate = datefns.startOfYear(newEndDate);
+    } else if (state.isMonth) {
+      state.startDate = datefns.startOfMonth(newEndDate);
+    } else if (state.isWeek) {
+      state.startDate = datefns.startOfWeek(newEndDate, { weekStartsOn: 1 });
+    } else {
+      state.startDate = datefns.subDays(newEndDate, length);
+    }
+    state.endDate = newEndDate;
   }),
 
-  dateIntervalIsMonth: computed((state) => {
+  weekInterval: action((state) => {
+    state.startDate = datefns.startOfWeek(state.startDate, { weekStartsOn: 1 });
+    state.endDate = datefns.endOfWeek(state.startDate, { weekStartsOn: 1 });
+  }),
+
+  monthInterval: action((state) => {
+    state.startDate = datefns.startOfMonth(state.startDate);
+    state.endDate = datefns.endOfMonth(state.startDate);
+  }),
+
+  yearInterval: action((state) => {
+    state.startDate = datefns.startOfYear(state.startDate);
+    state.endDate = datefns.endOfYear(state.startDate);
+  }),
+
+  isYear: computed((state) => {
+    return (
+      datefns.isSameYear(state.startDate, state.endDate) &&
+      datefns.getDayOfYear(state.startDate) === 1 &&
+      datefns.isSameDay(state.endDate, datefns.lastDayOfYear(state.endDate))
+    );
+  }),
+
+  isMonth: computed((state) => {
     return (
       datefns.isSameMonth(state.startDate, state.endDate) &&
       datefns.isFirstDayOfMonth(state.startDate) &&
@@ -115,15 +205,31 @@ export const intervalModel: IntervalModel = {
     );
   }),
 
-  dateIntervalMonthString: computed((state) => {
-    if (state.dateIntervalIsMonth) {
-      const month = state.startDate.toLocaleDateString("en-EN", {
-        month: "long",
-      });
-      const year = state.startDate.toLocaleDateString("en-EN", {
-        year: "numeric",
-      });
-      return `${month}, ${year}`;
+  isWeek: computed((state) => {
+    return (
+      datefns.isSameWeek(state.startDate, state.endDate, { weekStartsOn: 1 }) &&
+      datefns.getDay(state.startDate) === 1 &&
+      datefns.getDay(state.endDate) === 0
+    );
+  }),
+
+  smartDisplayString: computed((state) => {
+    if (state.isYear) {
+      return datefns.format(state.startDate, "yyyy");
+    } else if (state.isMonth) {
+      return datefns.format(state.startDate, "MMMM, yyyy");
+    } else {
+      return state.displayString;
     }
+  }),
+
+  displayString: computed((state) => {
+    return (
+      (datefns.isSameYear(state.startDate, state.endDate)
+        ? datefns.format(state.startDate, "d.M")
+        : datefns.format(state.startDate, "d.M.yyyy")) +
+      " - " +
+      datefns.format(state.endDate, "d.M.yyyy")
+    );
   }),
 };

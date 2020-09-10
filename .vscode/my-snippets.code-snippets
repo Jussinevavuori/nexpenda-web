@@ -33,6 +33,24 @@
 			"}",
 		]
 	},
+	"Create default component": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "newcomp",
+		"body": [
+			"import \"./$1.scss\";",
+			"import React from \"react\"",
+			"",
+			"export type $1Props = {",
+			"",
+			"}",
+			"",
+			"export function $1(props: $1Props) {",
+			"return <div className=\"$1\">",
+			"",
+			"</div>",
+			"}",
+		]
+	},
 	"SCSS variable for CSS variable": {
 		"scope": "scss,css",
 		"prefix": "svar",

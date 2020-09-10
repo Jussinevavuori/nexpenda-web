@@ -8,18 +8,22 @@ import { store } from './store';
 import { StoreProvider } from 'easy-peasy';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from "@material-ui/core";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { theme } from "./styles/theme";
+import DateFnsUtils from "@date-io/date-fns"
 
 ReactDOM.render(
-	<StoreProvider store={store}>
-		<ThemeProvider theme={theme}>
-			<React.StrictMode>
-				<BrowserRouter>
-					<App />
-				</BrowserRouter>
-			</React.StrictMode>
-		</ThemeProvider>
-	</StoreProvider>,
+	<React.StrictMode>
+		<StoreProvider store={store}>
+			<ThemeProvider theme={theme}>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</MuiPickersUtilsProvider>
+			</ThemeProvider>
+		</StoreProvider>
+	</React.StrictMode>,
 	document.getElementById('root')
 );
 

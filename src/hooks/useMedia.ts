@@ -52,3 +52,33 @@ export function useMaxWidthMedia(maxWidth: number) {
   const query = `(max-width: ${maxWidth}px)`;
   return useMedia(query);
 }
+
+/**
+ * Responsive media queries for app breakpoints
+ *
+ * SM breakpoint at 600px
+ */
+export function useSmMedia() {
+  const query = `(min-width: 600px)`;
+  return useMedia(query);
+}
+
+/**
+ * Responsive media queries for app breakpoints
+ *
+ * MD breakpoint at 900px
+ */
+export function useMdMedia() {
+  const query = `(min-width: 900px)`;
+  return useMedia(query);
+}
+
+/**
+ * Responsive media queries for app breakpoints
+ *
+ * LG breakpoint at 1200px
+ */
+export function useLgMedia() {
+  const query = `(min-width: 1200px)`;
+  return useMedia(query);
+}

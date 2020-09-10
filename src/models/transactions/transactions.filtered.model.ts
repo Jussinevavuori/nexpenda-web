@@ -73,11 +73,11 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
     [(_, storeState) => storeState.transactions.filtered.items],
     (items) => {
       const incomes = items
-        .filter((_) => _.amount.integer > 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0);
+        .filter((_) => _.amount.isPositive)
+        .reduce((sum, item) => sum + item.amount.value, 0);
       const expenses = items
-        .filter((_) => _.amount.integer < 0)
-        .reduce((sum, item) => sum + item.amount.integer, 0);
+        .filter((_) => _.amount.isNegative)
+        .reduce((sum, item) => sum + item.amount.value, 0);
       return {
         all: new MoneyAmount(incomes + expenses),
         incomes: new MoneyAmount(incomes),

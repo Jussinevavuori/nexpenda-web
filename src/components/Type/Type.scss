@@ -1,0 +1,19 @@
+@import "main";
+
+.Type {
+  & * {
+    color: inherit;
+  }
+
+  &.condensed {
+    font-family: $roboto-condensed;
+  }
+
+  &.color-white {
+    color: white;
+  }
+
+  &.color-black {
+    color: black;
+  }
+}

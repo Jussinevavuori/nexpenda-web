@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoginView } from './LoginView';
 import * as yup from "yup"
-import { useStoreActions } from '../../store';
+import { useStoreActions, useStoreState } from '../../store';
 import { useRedirect } from '../../hooks/useRedirect';
 
 export const loginValidationSchema = yup.object({
-	email: yup.string().defined().min(3).max(255).email(),
-	password: yup.string().defined().min(3).max(255),
+	email: yup.string().defined().email(),
+	password: yup.string().defined(),
 }).defined()
 
 export type LoginFormType = yup.InferType<typeof loginValidationSchema>
@@ -17,13 +17,26 @@ export const Login: React.FC<{}> = () => {
 
 	const redirect = useRedirect()
 
+	const user = useStoreState(_ => _.auth.user)
+
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
 
+	/**
+	 * Check initial login
+	 */
+	useEffect(() => {
+		if (user) {
+			redirect(routes => routes.dashboard)
+		}
+	}, [user, redirect])
+
 	async function handleSubmit(values: LoginFormType) {
 		setError(undefined)
+
 		const result = await loginWithEmailPassword(values)
 		result.onSuccess(() => redirect(routes => routes.dashboard))
+
 		result.onFailure(failure => {
 			switch (failure.code) {
 				case "data/invalid-request-data":
@@ -34,6 +47,9 @@ export const Login: React.FC<{}> = () => {
 					break;
 				case "auth/user-not-found":
 					setError("No user exists with that email.")
+					break;
+				case "auth/email-not-confirmed":
+					setError("Confirm your email before logging in.")
 					break;
 				case "server/unavailable":
 					setError("Could not contact server. Try again later.")

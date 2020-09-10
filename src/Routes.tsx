@@ -2,12 +2,14 @@ import React from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Login } from './views/Login/LoginController';
 import { Register } from './views/Register/RegisterController';
-import AppLayout from './components/AppLayout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import { DashboardTab } from './views/DashboardTab/DashboardTabController';
-import { SettingsTab } from "./views/SettingsTab/SettingsTabController";
-import { AnalyticsTab } from "./views/AnalyticsTab/AnalyticsTabController";
+import { Dashboard } from './views/Dashboard/DashboardController';
+import { Settings } from "./views/Settings/SettingsController";
+import { Analytics } from "./views/Analytics/AnalyticsController";
 import { ForgotPassword } from "./views/ForgotPassword/ForgotPasswordController";
+import { AppFrame } from "./views/AppFrame/AppFrameController";
+import { ChangePassword } from "./views/ChangePassword/ChangePasswordController";
+import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmailController";
 
 export const routes = {
 	approot: "/app",
@@ -18,6 +20,12 @@ export const routes = {
 	login: "/",
 	forgotPassword: "/forgotPassword",
 	register: "/register",
+	changePassword(token: string) {
+		return `/changePassword/${token}`
+	},
+	confirmEmail(token: string) {
+		return `/confirmEmail/${token}`
+	}
 } as const;
 
 export function Routes() {
@@ -36,28 +44,36 @@ export function Routes() {
 			<ForgotPassword />
 		</Route>
 
+		<Route exact path={routes.changePassword(":token")}>
+			<ChangePassword />
+		</Route>
+
+		<Route exact path={routes.confirmEmail(":token")}>
+			<ConfirmEmail />
+		</Route>
+
 		<ProtectedRoute exact path={routes.dashboard}>
-			<AppLayout>
-				<DashboardTab />
-			</AppLayout>
+			<AppFrame>
+				<Dashboard />
+			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.analytics}>
-			<AppLayout>
-				<AnalyticsTab />
-			</AppLayout>
+			<AppFrame>
+				<Analytics />
+			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.budget}>
-			<AppLayout>
+			<AppFrame>
 				<p>Budget placeholder</p>
-			</AppLayout>
+			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.settings}>
-			<AppLayout>
-				<SettingsTab />
-			</AppLayout>
+			<AppFrame>
+				<Settings />
+			</AppFrame>
 		</ProtectedRoute>
 
 		<Route exact path="/v">

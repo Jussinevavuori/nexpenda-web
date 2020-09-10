@@ -34,9 +34,14 @@ export interface AuthModel {
   _setAccessToken: Action<AuthModel, string>;
 
   /**
-   * Action to set the current user with partial user data (a constructable)
+   * Action to set the current user with partial user JSON object
    */
   _login: Action<AuthModel, JsonAuth>;
+
+  /**
+   * Action to set the current user to null
+   */
+  _logout: Action<AuthModel, void>;
 
   /**
    * Function to get the currently logged in user's profile data and apply it
@@ -105,6 +110,39 @@ export interface AuthModel {
     StoreModel,
     ReturnType<AuthService["logout"]>
   >;
+
+  /**
+   * Validate a change password token
+   */
+  validateChangePasswordToken: Thunk<
+    AuthModel,
+    Parameters<AuthService["validatePasswordChangeToken"]>[0],
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["validatePasswordChangeToken"]>
+  >;
+
+  /**
+   * Change a user's password
+   */
+  changePassword: Thunk<
+    AuthModel,
+    Parameters<AuthService["changePassword"]>[0],
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["changePassword"]>
+  >;
+
+  /**
+   * Confirm a user's email
+   */
+  confirmEmail: Thunk<
+    AuthModel,
+    Parameters<AuthService["confirmEmail"]>[0],
+    StoreInjections,
+    StoreModel,
+    ReturnType<AuthService["confirmEmail"]>
+  >;
 }
 
 /**
@@ -130,6 +168,11 @@ export const authModel: AuthModel = {
     if (isJsonAuth(json)) {
       state.user = new Auth(json);
     }
+  }),
+
+  _logout: action((state) => {
+    state.user = null;
+    state.accessToken = null;
   }),
 
   getProfile: thunk(async (actions, payload, { injections }) => {
@@ -162,23 +205,44 @@ export const authModel: AuthModel = {
     const result = await injections.authService.registerWithEmailAndPassword(
       payload
     );
-    result.onSuccess(async () => {
+    if (result.isSuccess()) {
       const profileResult = await injections.authService.getProfile();
       profileResult.onSuccess((profile) => {
         actions._login(profile);
       });
-    });
+    }
     return result;
   }),
 
   forgotPassword: thunk(async (actions, payload, { injections }) => {
-    const forgotPasswordResult = await injections.authService.forgotPassword(
-      payload
-    );
-    return forgotPasswordResult;
+    const result = await injections.authService.forgotPassword(payload);
+    return result;
   }),
 
-  logout: thunk((actions, payload, { injections }) => {
-    return injections.authService.logout();
+  validateChangePasswordToken: thunk(
+    async (actions, payload, { injections }) => {
+      const result = await injections.authService.validatePasswordChangeToken(
+        payload
+      );
+      return result;
+    }
+  ),
+
+  changePassword: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.authService.changePassword(payload);
+    return result;
+  }),
+
+  confirmEmail: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.authService.confirmEmail(payload);
+    return result;
+  }),
+
+  logout: thunk(async (actions, payload, { injections }) => {
+    const result = await injections.authService.logout();
+    result.onSuccess(() => {
+      actions._logout();
+    });
+    return result;
   }),
 };
