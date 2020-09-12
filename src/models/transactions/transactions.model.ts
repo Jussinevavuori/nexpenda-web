@@ -62,6 +62,16 @@ export interface TransactionsModel {
   categories: Computed<TransactionsModel, string[]>;
 
   /**
+   * Minimum possible amount
+   */
+  minimumAmount: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
+   * Maximum possible amount
+   */
+  maximumAmount: Computed<TransactionsModel, MoneyAmount>;
+
+  /**
    * Fetch all transactions for user from server
    */
   getTransactions: Thunk<
@@ -177,6 +187,18 @@ export const transactionsModel: TransactionsModel = {
   categories: computed((state) =>
     state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)
   ),
+
+  minimumAmount: computed((state) => {
+    return state.items.reduce((min, next) => {
+      return next.amount.value < min.value ? next.amount : min;
+    }, new MoneyAmount(0));
+  }),
+
+  maximumAmount: computed((state) => {
+    return state.items.reduce((max, next) => {
+      return next.amount.value > max.value ? next.amount : max;
+    }, new MoneyAmount(0));
+  }),
 
   getTransactions: thunk(async (actions, payload, { injections }) => {
     const result = await injections.transactionService.getTransactions();

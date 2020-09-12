@@ -45,11 +45,58 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
       (_, storeState) => storeState.transactions.items,
       (_, storeState) => storeState.interval.startDate,
       (_, storeState) => storeState.interval.endDate,
+      (_, storeState) => storeState.filters.searchTerm,
+      (_, storeState) => storeState.filters.minAmount,
+      (_, storeState) => storeState.filters.maxAmount,
+      (_, storeState) => storeState.filters.excludedCategories,
     ],
-    (items, startDate, endDate) => {
+    (
+      items,
+      startDate,
+      endDate,
+      searchTerm,
+      minAmount,
+      maxAmount,
+      excludedCategories
+    ) => {
       return items.filter((item) => {
-        if (compareDate(item.date, "<", startDate)) return false;
-        if (compareDate(item.date, ">", endDate)) return false;
+        // Filter by start date
+        if (compareDate(item.date, "<", startDate)) {
+          return false;
+        }
+
+        // Filter by end date
+        if (compareDate(item.date, ">", endDate)) {
+          return false;
+        }
+
+        // Filter by minimum amount
+        if (item.amount.value < minAmount) {
+          return false;
+        }
+
+        // Filter by maximum amount
+        if (item.amount.value > maxAmount) {
+          return false;
+        }
+
+        // Filter by category
+        if (excludedCategories.includes(item.category)) {
+          return false;
+        }
+
+        // Filter by search term
+        if (
+          !(
+            item.amount.format().toLowerCase().includes(searchTerm) ||
+            item.category.toLowerCase().includes(searchTerm) ||
+            item.comment.toLowerCase().includes(searchTerm)
+          )
+        ) {
+          return false;
+        }
+
+        // All filters passed: include
         return true;
       });
     }

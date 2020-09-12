@@ -1,0 +1,60 @@
+@import "main";
+
+.FiltersForm {
+  & header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    & .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      & svg {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  & section {
+    padding: $spacing-sm 0;
+
+    & .sectionLabel {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: $spacing-sm;
+    }
+
+    &.amount {
+      & .sliderLabel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      & .sliderContainer {
+        padding: 0 0.5rem;
+      }
+    }
+
+    &.category {
+      & .categoryChips {
+        display: flex;
+        flex-wrap: wrap;
+        & > * {
+          margin: 0 0.2rem 0.3rem 0;
+        }
+      }
+      & .categoryActions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  }
+}

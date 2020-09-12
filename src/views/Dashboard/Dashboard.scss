@@ -5,77 +5,26 @@
   width: 100%;
   overflow: hidden;
   display: grid;
+
+  grid-template:
+    "pageHeader" auto
+    "filtersPanel" auto
+    "transactionsList" 1fr / 1fr;
+
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr;
 
-  & header {
-    padding: $spacing-md;
-
-    & h1 {
-      font-size: 1.6rem;
-      font-weight: bold;
-      &::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 2px;
-        background: white;
-        margin: 16px 0;
-        border-radius: 1px;
-      }
-    }
-
-    & .totals {
-      padding: 1.5rem 0 0;
-
-      & h2 {
-        margin: 1rem 0;
-
-        & span {
-          font-size: 1.8rem;
-          font-weight: bold;
-          &.larger {
-            font-size: 2.2rem;
-          }
-        }
-      }
-
-      & .subtotals {
-        display: flex;
-        opacity: 0.6;
-
-        & .subtotal {
-          display: flex;
-          align-items: center;
-          margin-right: 1rem;
-
-          & svg {
-            margin-right: 0.5rem;
-          }
-        }
-      }
-    }
+  & .PageHeader {
+    grid-area: pageHeader;
   }
 
-  & .filters {
-    position: sticky;
-    top: 0;
-    background: white;
-    width: 100%;
-    height: auto;
-    z-index: 1;
+  & .transactionsList {
+    grid-area: transactionsList;
+    padding: 4px $spacing-sm;
+    overflow-y: auto;
   }
 
-  & main {
-    overflow: auto;
-    padding: 0 $spacing-sm $spacing-sm;
-
-    @include sm {
-      padding-bottom: 2rem;
-    }
-
-    & .list {
-      z-index: 0;
-    }
+  & .filtersPanel {
+    grid-area: filtersPanel;
   }
 }

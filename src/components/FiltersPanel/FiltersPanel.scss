@@ -1,0 +1,39 @@
+@import "main";
+
+.FiltersPanel {
+  // Adjust for button edges and icon buttons
+  padding: 0 calc(#{$spacing-sm} - 6px);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  & .floatRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    & .filtersButton {
+      margin-left: 1.6rem;
+    }
+  }
+}
+
+.FiltersPanel_filtersFormDrawer {
+  padding: $spacing-sm;
+  min-height: 50vh;
+  max-height: 80vh;
+  @include lg {
+    max-width: 50vw;
+  }
+}
+
+.FiltersPanel_intervalPickerMenu {
+  padding: $spacing-sm;
+}
+
+.FiltersPanel_intervalPickerDrawer {
+  padding: $spacing-sm;
+  min-height: 50vh;
+}

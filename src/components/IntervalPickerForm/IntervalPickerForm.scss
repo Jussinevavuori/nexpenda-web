@@ -1,0 +1,37 @@
+@import "main";
+
+.IntervalPickerForm {
+  & section.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    & .currentInterval {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      & svg {
+        margin-right: 0.5rem;
+      }
+    }
+    & .nextOrPreviousInterval {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  & hr {
+    margin: 1rem 0;
+  }
+  & section.intervalLength {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  & section.dateSection {
+    padding: $spacing-sm 0;
+  }
+}

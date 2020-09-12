@@ -7,16 +7,19 @@ import {
 import { intervalModel, IntervalModel } from "./models/interval/interval.model";
 import { AuthService } from "./services/AuthService";
 import { TransactionService } from "./services/TransactionService";
+import { FiltersModel, filtersModel } from "./models/filters/filters.model";
 
 export interface StoreModel {
   transactions: TransactionsModel;
   interval: IntervalModel;
+  filters: FiltersModel;
   auth: AuthModel;
 }
 
 const storeModel: StoreModel = {
   transactions: transactionsModel,
   interval: intervalModel,
+  filters: filtersModel,
   auth: authModel,
 };
 

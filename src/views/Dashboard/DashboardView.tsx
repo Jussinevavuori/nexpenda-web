@@ -1,12 +1,11 @@
 import "./Dashboard.scss"
 import React from "react";
-import { TransactionList } from "../../components/TransactionList/TransactionList";
+import { TransactionList } from "../../components/TransactionList/TransactionListController";
 import { Auth } from "../../models/authentication/auth.class";
 import { MoneyAmount } from "../../utils/MoneyAmount";
-// import { ChevronUp as ChevronUpIcon, ChevronDown as ChevronDownIcon } from "react-feather"
-import { TransactionListFilters } from "../../components/TransactionListFilters/TransactionListFiltersController";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { MoneyType } from "../../components/MoneyType/MoneyType";
+import { FiltersPanel } from "../../components/FiltersPanel/FiltersPanelController";
 
 export type DashboardViewProps = {
 	user: Auth;
@@ -34,21 +33,17 @@ export function DashboardView(props: DashboardViewProps) {
 
 		</PageHeader>
 
-		<div className="filters">
+		<section className="filtersPanel">
 
-			<TransactionListFilters />
+			<FiltersPanel />
 
-		</div>
+		</section>
 
-		<main>
+		<section className="transactionsList">
 
-			<div className="list">
+			<TransactionList />
 
-				<TransactionList />
-
-			</div>
-
-		</main>
+		</section>
 
 	</div>
 

@@ -1,20 +1,19 @@
 @import "main";
 
 .TransactionList {
-  & > ul {
-    padding: 12px 0 0 0;
-    & > li {
-      & > p {
-        color: $color-text-default;
-        font-size: 1rem;
-      }
-      & > ul {
-        padding: 8px 0 16px 0;
-        & > li {
-          padding: 6px 0;
-          &:not(:first-child) {
-            border-top: 1px solid $color-divider;
-          }
+  width: 100%;
+  height: 100%;
+  & .dateGroup {
+    & > p {
+      color: $color-text-default;
+      font-size: 1rem;
+    }
+    & > ul {
+      padding: 8px 0 16px 0;
+      & > li {
+        padding: 6px 1rem 6px 0;
+        &:not(:first-child) {
+          border-top: 1px solid $color-divider;
         }
       }
     }
