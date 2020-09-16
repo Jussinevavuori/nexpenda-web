@@ -1,41 +1,36 @@
-import Axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
+import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { promiseToResult, Result } from "../utils/Result";
-import { Problem } from "../utils/Problem";
+import { Failure, Result } from "../classes/Result/Result";
+import { PromiseToResult } from "../classes/Result/PromiseToResult";
+import { Try } from "../classes/Result/Try";
 
-export type ServiceMethodResponse<T = void> = Result<
-  T,
-  | Problem<{
-      errors?: object | undefined;
-    }>
-  | Problem<any>
->;
-
-export abstract class ServiceBase {
-  protected baseURL: string;
-  protected axios: AxiosInstance;
+export class Service {
+  /**
+   * Base URL for sending requests to the API
+   */
+  protected static baseURL = `${Config.API_URL}/api`;
 
   /**
-   * Set up base URL and axios instance for service
+   * Axios instance to use for sending requests
    */
-  constructor() {
-    this.baseURL = `${Config.API_URL}/api`;
-    this.axios = Axios.create({ baseURL: this.baseURL, withCredentials: true });
-  }
+  protected static axios = Axios.create({
+    baseURL: Service.baseURL,
+    withCredentials: true,
+  });
 
   /**
    * Construct endpoint from path, base URL already handled
    */
-  protected endpoint(path: string) {
-    return `${this.baseURL}${path}`;
+  protected static endpoint(path: string) {
+    return `${Service.baseURL}${path}`;
   }
 
   /**
    * Ensure access token is valid
    */
-  protected isAccessTokenValid() {
+  protected static isAccessTokenValid() {
     const token = store.getState().auth.accessToken;
     if (!token) return false;
     try {
@@ -53,12 +48,12 @@ export abstract class ServiceBase {
   /**
    * Attempt refresh access token function
    */
-  protected async attemptRefreshAccessToken(force: boolean = false) {
-    const accessTokenIsValid = this.isAccessTokenValid();
+  protected static async attemptRefreshAccessToken(force: boolean = false) {
+    const accessTokenIsValid = Service.isAccessTokenValid();
     if (!accessTokenIsValid || force) {
-      const url = this.endpoint("/auth/refresh_token");
+      const url = Service.endpoint("/auth/refresh_token");
       try {
-        const result = await this.axios.get<string>(url);
+        const result = await Service.axios.get<string>(url);
         const accessToken = result.data;
         store.getActions().auth._setAccessToken(accessToken);
       } catch (e) {
@@ -72,14 +67,14 @@ export abstract class ServiceBase {
   /**
    * Before request hook
    */
-  protected async onBeforeRequest() {
-    await this.attemptRefreshAccessToken();
+  protected static async onBeforeRequest() {
+    await Service.attemptRefreshAccessToken();
   }
 
   /**
    * Gets basic axios config
    */
-  protected getConfig(
+  protected static getConfig(
     override?: AxiosRequestConfig | undefined
   ): AxiosRequestConfig {
     const accessToken = store.getState().auth.accessToken;
@@ -102,96 +97,93 @@ export abstract class ServiceBase {
    *
    * @param requestFunction Request creator function
    */
-  protected async handleRequest<T>(
+  protected static async handleRequest<T>(
     path: string,
     config: AxiosRequestConfig | undefined,
     requestFunction: (url: string, options: AxiosRequestConfig) => Promise<T>
-  ) {
+  ): Promise<Result<T, { errors?: object; response?: AxiosResponse<any> }>> {
     /**
      * Run hooks
      */
-    await this.onBeforeRequest();
+    await Service.onBeforeRequest();
 
     /**
      * Run request function to promise
      */
-    const url = this.endpoint(path);
-    const options = this.getConfig(config);
+    const url = Service.endpoint(path);
+    const options = Service.getConfig(config);
     const promise = requestFunction(url, options);
 
-    /**
-     * Create result from promise
-     */
-    const result = await promiseToResult(promise);
-
-    /**
-     * Map failures to Problems, automatically created from failures
-     */
-    return result.mapFailure((failureValue) => {
-      return Problem.fromAxiosError(failureValue as AxiosError);
+    return Try(async () => {
+      const result = await PromiseToResult(promise);
+      if (result.isSuccess()) {
+        return result;
+      } else {
+        return Failure.AxiosError(result.value as AxiosError);
+      }
     });
   }
 
   /**
    * Axios typed GET request wrapper with hooks
    */
-  protected async get<ResponseData = any>(
+  protected static async get<ResponseData = any>(
     path: string,
     config?: AxiosRequestConfig | undefined
   ) {
-    return this.handleRequest(path, config, (url, options) => {
-      return this.axios.get<ResponseData>(url, options);
+    return Service.handleRequest(path, config, (url, options) => {
+      return Service.axios.get<ResponseData>(url, options);
     });
   }
 
   /**
    * Axios typed POST request wrapper with hooks
    */
-  protected async post<RequestData = any, ResponseData = any>(
+  protected static async post<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(path, config, (url, options) => {
-      return this.axios.post<ResponseData>(url, data, options);
+    return Service.handleRequest(path, config, (url, options) => {
+      return Service.axios.post<ResponseData>(url, data, options);
     });
   }
 
   /**
    * Axios typed DELETE request wrapper with hooks
    */
-  protected async delete<ResponseData = any>(
+  protected static async delete<ResponseData = any>(
     path: string,
     config?: AxiosRequestConfig | undefined
   ) {
-    return this.handleRequest(path, config, (url, options) => {
-      return this.axios.delete<ResponseData>(url, options);
+    return Service.handleRequest(path, config, (url, options) => {
+      return Service.axios.delete<ResponseData>(url, options);
     });
   }
 
   /**
    * Axios typed PUT request wrapper with hooks
    */
-  protected async put<RequestData = any, ResponseData = any>(
+  protected static async put<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(path, config, (url, options) => {
-      return this.axios.put<ResponseData>(url, data, options);
+    return Service.handleRequest(path, config, (url, options) => {
+      return Service.axios.put<ResponseData>(url, data, options);
     });
   }
 
   /**
    * Axios typed PATCH request wrapper with hooks
    */
-  protected async patch<RequestData = any, ResponseData = any>(
+  protected static async patch<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
     config?: AxiosRequestConfig
   ) {
-    return this.handleRequest(path, config, (url, options) => {
-      return this.axios.patch<ResponseData>(url, data, options);
+    return Service.handleRequest(path, config, (url, options) => {
+      return Service.axios.patch<ResponseData>(url, data, options);
     });
   }
 }

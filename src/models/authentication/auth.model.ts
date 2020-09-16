@@ -2,7 +2,7 @@ import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 import { Auth } from "./auth.class";
 import { AuthService } from "../../services/AuthService";
 import { JsonAuth, isJsonAuth } from "./auth.json";
-import { StoreInjections, StoreModel } from "../../store";
+import { StoreModel } from "../../store";
 
 export interface AuthModel {
   /**
@@ -51,9 +51,9 @@ export interface AuthModel {
   getProfile: Thunk<
     AuthModel,
     void,
-    StoreInjections,
+    any,
     StoreModel,
-    ReturnType<AuthService["getProfile"]>
+    ReturnType<typeof AuthService["getProfile"]>
   >;
 
   /**
@@ -62,9 +62,9 @@ export interface AuthModel {
   loginWithGoogle: Thunk<
     AuthModel,
     void,
-    StoreInjections,
+    any,
     StoreModel,
-    ReturnType<AuthService["loginWithGoogle"]>
+    ReturnType<typeof AuthService["loginWithGoogle"]>
   >;
 
   /**
@@ -72,10 +72,10 @@ export interface AuthModel {
    */
   registerWithEmailPassword: Thunk<
     AuthModel,
-    { email: string; password: string },
-    StoreInjections,
+    Parameters<typeof AuthService["registerWithEmailAndPassword"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["registerWithEmailAndPassword"]>
+    ReturnType<typeof AuthService["registerWithEmailAndPassword"]>
   >;
 
   /**
@@ -83,10 +83,10 @@ export interface AuthModel {
    */
   loginWithEmailPassword: Thunk<
     AuthModel,
-    { email: string; password: string },
-    StoreInjections,
+    Parameters<typeof AuthService["loginWithEmailAndPassword"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["loginWithEmailAndPassword"]>
+    ReturnType<typeof AuthService["loginWithEmailAndPassword"]>
   >;
 
   /**
@@ -94,10 +94,10 @@ export interface AuthModel {
    */
   forgotPassword: Thunk<
     AuthModel,
-    { email: string },
-    StoreInjections,
+    Parameters<typeof AuthService["forgotPassword"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["forgotPassword"]>
+    ReturnType<typeof AuthService["forgotPassword"]>
   >;
 
   /**
@@ -106,9 +106,9 @@ export interface AuthModel {
   logout: Thunk<
     AuthModel,
     void,
-    StoreInjections,
+    any,
     StoreModel,
-    ReturnType<AuthService["logout"]>
+    ReturnType<typeof AuthService["logout"]>
   >;
 
   /**
@@ -116,10 +116,10 @@ export interface AuthModel {
    */
   validateChangePasswordToken: Thunk<
     AuthModel,
-    Parameters<AuthService["validatePasswordChangeToken"]>[0],
-    StoreInjections,
+    Parameters<typeof AuthService["validatePasswordChangeToken"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["validatePasswordChangeToken"]>
+    ReturnType<typeof AuthService["validatePasswordChangeToken"]>
   >;
 
   /**
@@ -127,10 +127,10 @@ export interface AuthModel {
    */
   changePassword: Thunk<
     AuthModel,
-    Parameters<AuthService["changePassword"]>[0],
-    StoreInjections,
+    Parameters<typeof AuthService["changePassword"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["changePassword"]>
+    ReturnType<typeof AuthService["changePassword"]>
   >;
 
   /**
@@ -138,10 +138,10 @@ export interface AuthModel {
    */
   confirmEmail: Thunk<
     AuthModel,
-    Parameters<AuthService["confirmEmail"]>[0],
-    StoreInjections,
+    Parameters<typeof AuthService["confirmEmail"]>[0],
+    any,
     StoreModel,
-    ReturnType<AuthService["confirmEmail"]>
+    ReturnType<typeof AuthService["confirmEmail"]>
   >;
 }
 
@@ -175,8 +175,8 @@ export const authModel: AuthModel = {
     state.accessToken = null;
   }),
 
-  getProfile: thunk(async (actions, payload, { injections }) => {
-    const profileResult = await injections.authService.getProfile();
+  getProfile: thunk(async (actions, payload) => {
+    const profileResult = await AuthService.getProfile();
     profileResult.onSuccess((profile) => {
       actions._login(profile);
     });
@@ -184,16 +184,14 @@ export const authModel: AuthModel = {
     return profileResult;
   }),
 
-  loginWithGoogle: thunk((actions, payload, { injections }) => {
-    return injections.authService.loginWithGoogle();
+  loginWithGoogle: thunk((actions, payload) => {
+    return AuthService.loginWithGoogle();
   }),
 
-  loginWithEmailPassword: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.loginWithEmailAndPassword(
-      payload
-    );
+  loginWithEmailPassword: thunk(async (actions, payload) => {
+    const result = await AuthService.loginWithEmailAndPassword(payload);
     result.onSuccess(async () => {
-      const profileResult = await injections.authService.getProfile();
+      const profileResult = await AuthService.getProfile();
       profileResult.onSuccess((profile) => {
         actions._login(profile);
       });
@@ -201,12 +199,10 @@ export const authModel: AuthModel = {
     return result;
   }),
 
-  registerWithEmailPassword: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.registerWithEmailAndPassword(
-      payload
-    );
+  registerWithEmailPassword: thunk(async (actions, payload) => {
+    const result = await AuthService.registerWithEmailAndPassword(payload);
     if (result.isSuccess()) {
-      const profileResult = await injections.authService.getProfile();
+      const profileResult = await AuthService.getProfile();
       profileResult.onSuccess((profile) => {
         actions._login(profile);
       });
@@ -214,32 +210,28 @@ export const authModel: AuthModel = {
     return result;
   }),
 
-  forgotPassword: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.forgotPassword(payload);
+  forgotPassword: thunk(async (actions, payload) => {
+    const result = await AuthService.forgotPassword(payload);
     return result;
   }),
 
-  validateChangePasswordToken: thunk(
-    async (actions, payload, { injections }) => {
-      const result = await injections.authService.validatePasswordChangeToken(
-        payload
-      );
-      return result;
-    }
-  ),
-
-  changePassword: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.changePassword(payload);
+  validateChangePasswordToken: thunk(async (actions, payload) => {
+    const result = await AuthService.validatePasswordChangeToken(payload);
     return result;
   }),
 
-  confirmEmail: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.confirmEmail(payload);
+  changePassword: thunk(async (actions, payload) => {
+    const result = await AuthService.changePassword(payload);
     return result;
   }),
 
-  logout: thunk(async (actions, payload, { injections }) => {
-    const result = await injections.authService.logout();
+  confirmEmail: thunk(async (actions, payload) => {
+    const result = await AuthService.confirmEmail(payload);
+    return result;
+  }),
+
+  logout: thunk(async (actions, payload) => {
+    const result = await AuthService.logout();
     result.onSuccess(() => {
       actions._logout();
     });

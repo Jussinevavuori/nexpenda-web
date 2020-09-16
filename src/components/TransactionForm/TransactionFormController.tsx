@@ -101,7 +101,7 @@ export function TransactionForm(props: TransactionFormProps) {
 				setTime(new Date())
 				setComment("")
 			})
-			result.onFailure(failure => {
+			result.onFailure((failure: any) => {
 				switch (failure.code) {
 					case "data/invalid-request-data":
 						if (failure.data?.errors?.integerAmount) {

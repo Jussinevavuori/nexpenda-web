@@ -38,5 +38,9 @@ export function SettingsView(props: SettingsViewProps) {
 
 		<button onClick={props.handleLogout}>Log out</button>
 
+		<button>Import data from Excel</button>
+
+		<button>Export data</button>
+
 	</div>
 }

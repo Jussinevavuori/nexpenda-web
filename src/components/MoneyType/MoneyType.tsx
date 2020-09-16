@@ -1,6 +1,6 @@
 import "./MoneyType.scss";
 import React from "react"
-import { MoneyAmount } from "../../utils/MoneyAmount";
+import { MoneyAmount } from "../../classes/MoneyAmount";
 import { Type, TypeProps } from "../Type/Type";
 
 export type MoneyTypeProps = {

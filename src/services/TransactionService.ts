@@ -1,89 +1,113 @@
-import { ServiceBase } from "./ServiceBase";
+import { Service } from "./Service";
 import {
   JsonTransaction,
   isJsonTransactionArray,
   isJsonTransaction,
 } from "../models/transactions/transactions.json";
-import { Failure, Success } from "../utils/Result";
+import { Failure, Success } from "../classes/Result/Result";
+import { Try } from "../classes/Result/Try";
 
-export class TransactionService extends ServiceBase {
-  async getTransactions() {
-    const result = await this.get("/transactions");
-
-    return result.ensureType(
-      (response) => response.data,
-      isJsonTransactionArray,
-      (response) =>
-        Failure.Problem({
-          status: 23,
-          code: "transactions/get/invalid-response",
-          message: "Could not get transactions, received invalid response.",
-          data: response.data,
-        })
-    );
+export class TransactionService extends Service {
+  /**
+   * Get all transactions for user as Result
+   */
+  static async getTransactions() {
+    return Try(async () => {
+      const result = await Service.get("/transactions");
+      if (result.isFailure()) {
+        return result;
+      } else if (isJsonTransactionArray(result.value.data)) {
+        return new Success(result.value.data);
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "transactions/get",
+          "Could not get transactions."
+        );
+      }
+    });
   }
 
-  async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
-    const result = await this.post("/transactions", json);
-
-    return result.ensureType(
-      (response) => response.data,
-      isJsonTransaction,
-      (response) =>
-        Failure.Problem({
-          status: 23,
-          code: "transactions/post/invalid-response",
-          message: "Could not post transaction, received invalid response.",
-          data: response.data,
-        })
-    );
+  /**
+   * Post a transaction (in json, without id or uid) and return
+   * created json transaction response as Result.
+   */
+  static async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
+    return Try(async () => {
+      const result = await Service.post("/transactions", json);
+      if (result.isFailure()) {
+        return result;
+      } else if (isJsonTransaction(result.value.data)) {
+        return new Success(result.value.data);
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "transactions/post",
+          "Could not post transaction."
+        );
+      }
+    });
   }
 
-  async deleteTransaction(id: string) {
-    const result = await this.delete(`/transactions/${id}`);
-
-    return result.transform(
-      (response) => response.status === 200,
-      () => Success.Empty(),
-      (response) =>
-        Failure.Problem({
-          status: 23,
-          code: "transactions/delete/invalid-response",
-          message: "Could not delete transaction, received invalid response.",
-          data: response.data,
-        })
-    );
+  /**
+   * Delete a transaction by ID and return empty Result.
+   */
+  static async deleteTransaction(id: string) {
+    return Try(async () => {
+      const result = await Service.delete(`/transactions/${id}`);
+      if (result.isFailure()) {
+        return result;
+      } else if (result.value.status === 200) {
+        return Success.Empty();
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "transactions/delete",
+          "Could not delete transaction."
+        );
+      }
+    });
   }
 
-  async putTransaction(json: JsonTransaction) {
-    const result = await this.put(`/transactions/${json.id}`, json);
-
-    return result.ensureType(
-      (response) => response.data,
-      isJsonTransaction,
-      (response) =>
-        Failure.Problem({
-          status: 23,
-          code: "transactions/put/invalid-response",
-          message: "Could not put transaction, received invalid response.",
-          data: response.data,
-        })
-    );
+  /**
+   * Put a transaction on the server as json (upsert) and
+   * return upserted json transaction as Result.
+   */
+  static async putTransaction(json: JsonTransaction) {
+    return Try(async () => {
+      const result = await Service.put(`/transactions/${json.id}`, json);
+      if (result.isFailure()) {
+        return result;
+      } else if (isJsonTransaction(result.value.data)) {
+        return new Success(result.value.data);
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "transactions/put",
+          "Could not put transaction"
+        );
+      }
+    });
   }
 
-  async patchTransaction(json: JsonTransaction) {
-    const result = await this.patch(`/transactions/${json.id}`, json);
-
-    return result.ensureType(
-      (response) => response.data,
-      isJsonTransaction,
-      (response) =>
-        Failure.Problem({
-          status: 23,
-          code: "transactions/patch/invalid-response",
-          message: "Could not patch transaction, received invalid response.",
-          data: response.data,
-        })
-    );
+  /**
+   * Patch a transaction on the server as json (partial update)
+   * and return updated json transaction as Result.
+   */
+  static async patchTransaction(json: JsonTransaction) {
+    return Try(async () => {
+      const result = await Service.patch(`/transactions/${json.id}`, json);
+      if (result.isFailure()) {
+        return result;
+      } else if (isJsonTransaction(result.value.data)) {
+        return new Success(result.value.data);
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "transactions/patch",
+          "Could not patch transaction."
+        );
+      }
+    });
   }
 }

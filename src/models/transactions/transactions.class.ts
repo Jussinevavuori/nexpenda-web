@@ -1,6 +1,6 @@
 import { JsonTransaction } from "./transactions.json";
 import * as uuid from "uuid";
-import { MoneyAmount } from "../../utils/MoneyAmount";
+import { MoneyAmount } from "../../classes/MoneyAmount";
 
 export class Transaction {
   date: Date;

@@ -4,8 +4,8 @@ import { IconButton, Button, Divider } from "@material-ui/core";
 import { ChevronLeft, ChevronRight, Today as CalendarIcon } from "@material-ui/icons";
 import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
-import { MAXIMUM_DATE, MINIMUM_DATE } from "../../utils/constants";
-import { compareDate } from "../../utils/compareDate";
+import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
+import { compareDate } from "../../utils/compareDate/compareDate";
 
 export type IntervalPickerFormViewProps = {
 	onConfirm?(): void;

@@ -2,7 +2,7 @@ import "./Dashboard.scss"
 import React from "react";
 import { TransactionList } from "../../components/TransactionList/TransactionListController";
 import { Auth } from "../../models/authentication/auth.class";
-import { MoneyAmount } from "../../utils/MoneyAmount";
+import { MoneyAmount } from "../../classes/MoneyAmount";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { MoneyType } from "../../components/MoneyType/MoneyType";
 import { FiltersPanel } from "../../components/FiltersPanel/FiltersPanelController";
