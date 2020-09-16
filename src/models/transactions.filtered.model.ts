@@ -1,9 +1,9 @@
 import { computed, Computed } from "easy-peasy";
-import { Transaction } from "./transactions.class";
-import { MoneyAmount } from "../../classes/MoneyAmount";
-import { groupByDate } from "../../utils/groupByDate/groupByDate";
-import { StoreModel } from "../../store";
-import { compareDate } from "../../utils/compareDate/compareDate";
+import { Transaction } from "../classes/Transaction";
+import { MoneyAmount } from "../classes/MoneyAmount";
+import { groupByDate } from "../utils/groupByDate/groupByDate";
+import { StoreModel } from "../store";
+import { compareDate } from "../utils/compareDate/compareDate";
 
 export interface FilteredTransactionsModel {
   /**

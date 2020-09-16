@@ -1,8 +1,7 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { Auth } from "./auth.class";
-import { AuthService } from "../../services/AuthService";
-import { JsonAuth, isJsonAuth } from "./auth.json";
-import { StoreModel } from "../../store";
+import { Auth, JsonAuth } from "../classes/Auth";
+import { AuthService } from "../services/AuthService";
+import { StoreModel } from "../store";
 
 export interface AuthModel {
   /**
@@ -165,7 +164,7 @@ export const authModel: AuthModel = {
   }),
 
   _login: action((state, json) => {
-    if (isJsonAuth(json)) {
+    if (Auth.isJson(json)) {
       state.user = new Auth(json);
     }
   }),

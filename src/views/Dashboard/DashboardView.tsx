@@ -1,7 +1,7 @@
 import "./Dashboard.scss"
 import React from "react";
 import { TransactionList } from "../../components/TransactionList/TransactionListController";
-import { Auth } from "../../models/authentication/auth.class";
+import { Auth } from "../../classes/Auth";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { MoneyType } from "../../components/MoneyType/MoneyType";

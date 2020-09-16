@@ -1,7 +1,7 @@
 import "./TransactionListing.scss";
 import React from "react"
 import cx from "classnames"
-import { Transaction } from "../../models/transactions/transactions.class";
+import { Transaction } from "../../classes/Transaction";
 import { Plus as PlusIcon, Minus as MinusIcon } from "react-feather"
 
 export type TransactionListingViewProps = {

@@ -1,7 +1,7 @@
 import { Action, action, Computed, computed } from "easy-peasy";
 import * as datefns from "date-fns";
-import { compareDate } from "../../utils/compareDate/compareDate";
-import { MINIMUM_DATE, MAXIMUM_DATE } from "../../constants";
+import { compareDate } from "../utils/compareDate/compareDate";
+import { MINIMUM_DATE, MAXIMUM_DATE } from "../constants";
 
 export type IntervalModel = {
   /**

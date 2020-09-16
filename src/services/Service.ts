@@ -2,9 +2,9 @@ import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { Failure, Result } from "../classes/Result/Result";
-import { PromiseToResult } from "../classes/Result/PromiseToResult";
-import { Try } from "../classes/Result/Try";
+import { Failure, Result } from "../utils/Result/Result";
+import { PromiseToResult } from "../utils/Result/PromiseToResult";
+import { Try } from "../utils/Result/Try";
 
 export class Service {
   /**

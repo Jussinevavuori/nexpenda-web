@@ -1,11 +1,11 @@
 import { createStore, createTypedHooks } from "easy-peasy";
-import { AuthModel, authModel } from "./models/authentication/auth.model";
+import { AuthModel, authModel } from "./models/auth.model";
 import {
   TransactionsModel,
   transactionsModel,
-} from "./models/transactions/transactions.model";
-import { intervalModel, IntervalModel } from "./models/interval/interval.model";
-import { FiltersModel, filtersModel } from "./models/filters/filters.model";
+} from "./models/transactions.model";
+import { intervalModel, IntervalModel } from "./models/interval.model";
+import { FiltersModel, filtersModel } from "./models/filters.model";
 
 export interface StoreModel {
   transactions: TransactionsModel;

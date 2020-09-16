@@ -1,6 +1,6 @@
 import "./Sidebar.scss";
 import React from "react"
-import { Auth } from "../../models/authentication/auth.class";
+import { Auth } from "../../classes/Auth";
 import { IconButton, Button, Drawer } from "@material-ui/core";
 import {
 	Home as DashboardIcon,

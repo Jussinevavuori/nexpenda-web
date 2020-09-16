@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { TransactionListingView } from "./TransactionListingView"
-import { Transaction } from "../../models/transactions/transactions.class"
+import { Transaction } from "../../classes/Transaction"
 import { useStoreActions } from "../../store"
 
 export type TransactionListingProps = {

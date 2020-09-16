@@ -35,7 +35,7 @@ interface IResult<T = undefined, E = undefined> {
    * }
    * ```
    */
-  onSuccess(callback: (value: T) => void): void;
+  onSuccess(callback: (value: T) => void): this;
 
   /**
    * If the ``Result`` fails, the provided callback function is ran with the
@@ -47,7 +47,7 @@ interface IResult<T = undefined, E = undefined> {
    * }
    * ```
    */
-  onFailure(callback: (value: Failure<T, E>) => void): void;
+  onFailure(callback: (value: Failure<T, E>) => void): this;
 }
 
 /**
@@ -72,11 +72,14 @@ export class Success<T = undefined, E = undefined> implements IResult<T, E> {
     return false;
   }
 
-  onSuccess(callback: (value: T) => void): void {
+  onSuccess(callback: (value: T) => void): this {
     callback(this.value);
+    return this;
   }
 
-  onFailure(callback: (value: Failure<T, E>) => void): void {}
+  onFailure(callback: (value: Failure<T, E>) => void): this {
+    return this;
+  }
 
   static From<R = any, U = any>(value: U) {
     return new Success<U, R>(value);
@@ -103,11 +106,13 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
    * Detailed information on the failure: Failure status code.
    *
    * Codes
-   * - `0-9` Generic errors
-   *   - `0` Unknown error
-   *   - `1` Unimplemented error
-   * - `10-19` Local error
-   * - `20-29` Local network and service errors
+   * - `0-9` Generic failures and errors
+   *   - `0` Unknown failure
+   *   - `1` Caught error
+   *   - `2` Unimplemented failure
+   * - `10-19` Local failure
+   *   - `10` Any local failure
+   * - `20-29` Local network and service failures
    *   - `21` Network error or could not reach server
    *   - `22` Could not formulate request
    *   - `23` Invalid data received from server
@@ -162,11 +167,13 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
        * Detailed information on the failure: Failure status code.
        *
        * Codes
-       * - `0-9` Generic errors
-       *   - `0` Unknown error
-       *   - `1` Unimplemented error
-       * - `10-19` Local error
-       * - `20-29` Local network and service errors
+       * - `0-9` Generic failures and errors
+       *   - `0` Unknown failure
+       *   - `1` Caught error
+       *   - `2` Unimplemented failure
+       * - `10-19` Local failure
+       *   - `10` Any local failure
+       * - `20-29` Local network and service failures
        *   - `21` Network error or could not reach server
        *   - `22` Could not formulate request
        *   - `23` Invalid data received from server
@@ -198,10 +205,13 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
     return fallbackValue;
   }
 
-  onSuccess(callback: (value: T) => void): void {}
+  onSuccess(callback: (value: T) => void): this {
+    return this;
+  }
 
-  onFailure(callback: (value: Failure<T, E>) => void): void {
+  onFailure(callback: (value: Failure<T, E>) => void): this {
     callback(this);
+    return this;
   }
 
   isSuccess(): this is Success<T, E> {
@@ -286,7 +296,25 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
     return new Failure<T, undefined>(undefined, {
       code: "failure/unimplemented",
       message: "Unimplemented feature",
+      status: 2,
+    });
+  }
+
+  /**
+   * Failure from thrown error
+   */
+  static Error<T = undefined>(error: Error) {
+    return new Failure<T, Error>(error, {
+      message: error.message,
+      code: `error/${error.name}`,
       status: 1,
     });
+  }
+
+  /**
+   * Unknonw failure
+   */
+  static Unknown<T = undefined>() {
+    return new Failure<T, undefined>(undefined);
   }
 }

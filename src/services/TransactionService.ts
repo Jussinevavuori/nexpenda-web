@@ -1,11 +1,7 @@
 import { Service } from "./Service";
-import {
-  JsonTransaction,
-  isJsonTransactionArray,
-  isJsonTransaction,
-} from "../models/transactions/transactions.json";
-import { Failure, Success } from "../classes/Result/Result";
-import { Try } from "../classes/Result/Try";
+import { Failure, Success } from "../utils/Result/Result";
+import { Try } from "../utils/Result/Try";
+import { JsonTransaction, Transaction } from "../classes/Transaction";
 
 export class TransactionService extends Service {
   /**
@@ -16,7 +12,7 @@ export class TransactionService extends Service {
       const result = await Service.get("/transactions");
       if (result.isFailure()) {
         return result;
-      } else if (isJsonTransactionArray(result.value.data)) {
+      } else if (Transaction.isJsonArray(result.value.data)) {
         return new Success(result.value.data);
       } else {
         return Failure.InvalidResponse(
@@ -37,7 +33,7 @@ export class TransactionService extends Service {
       const result = await Service.post("/transactions", json);
       if (result.isFailure()) {
         return result;
-      } else if (isJsonTransaction(result.value.data)) {
+      } else if (Transaction.isJson(result.value.data)) {
         return new Success(result.value.data);
       } else {
         return Failure.InvalidResponse(
@@ -78,7 +74,7 @@ export class TransactionService extends Service {
       const result = await Service.put(`/transactions/${json.id}`, json);
       if (result.isFailure()) {
         return result;
-      } else if (isJsonTransaction(result.value.data)) {
+      } else if (Transaction.isJson(result.value.data)) {
         return new Success(result.value.data);
       } else {
         return Failure.InvalidResponse(
@@ -99,7 +95,7 @@ export class TransactionService extends Service {
       const result = await Service.patch(`/transactions/${json.id}`, json);
       if (result.isFailure()) {
         return result;
-      } else if (isJsonTransaction(result.value.data)) {
+      } else if (Transaction.isJson(result.value.data)) {
         return new Success(result.value.data);
       } else {
         return Failure.InvalidResponse(

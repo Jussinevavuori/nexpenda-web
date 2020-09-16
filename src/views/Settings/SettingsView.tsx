@@ -1,6 +1,7 @@
 import "./Settings.scss";
 import React from "react"
-import { Auth } from "../../models/authentication/auth.class";
+import { Auth } from "../../classes/Auth";
+import { readFileAsJsonTransactions } from "../../utils/xlsx/xlsx";
 
 export type SettingsViewProps = {
 	user: Auth;
@@ -8,6 +9,19 @@ export type SettingsViewProps = {
 }
 
 export function SettingsView(props: SettingsViewProps) {
+
+	function fileUploadHandler(e: React.ChangeEvent<HTMLInputElement>) {
+		readFileAsJsonTransactions(e.target).then(result => {
+			result
+				.onSuccess((value) => {
+					console.log("Success:", value)
+				})
+				.onFailure((value) => {
+					console.log("Failure:", value)
+				})
+		})
+	}
+
 
 	return <div className="Settings">
 
@@ -36,11 +50,18 @@ export function SettingsView(props: SettingsViewProps) {
 			</tbody>
 		</table>
 
-		<button onClick={props.handleLogout}>Log out</button>
+		<div>
+			<button onClick={props.handleLogout}>Log out</button>
+		</div>
 
-		<button>Import data from Excel</button>
+		<div>
+			<label>Import data from Excel</label>
+			<input type="file" onChange={fileUploadHandler} />
+		</div>
 
-		<button>Export data</button>
+		<div>
+			<button>Export data</button>
+		</div>
 
 	</div>
 }

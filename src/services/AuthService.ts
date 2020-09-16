@@ -1,7 +1,7 @@
 import { Service } from "./Service";
-import { isJsonAuth } from "../models/authentication/auth.json";
-import { Failure, Success } from "../classes/Result/Result";
-import { Try } from "../classes/Result/Try";
+import { Failure, Success } from "../utils/Result/Result";
+import { Try } from "../utils/Result/Try";
+import { Auth } from "../classes/Auth";
 
 export class AuthService extends Service {
   /**
@@ -12,7 +12,7 @@ export class AuthService extends Service {
       const result = await Service.get("/auth/profile");
       if (result.isFailure()) {
         return result;
-      } else if (isJsonAuth(result.value)) {
+      } else if (Auth.isJson(result.value)) {
         return new Success(result.value);
       } else {
         return Failure.InvalidResponse(

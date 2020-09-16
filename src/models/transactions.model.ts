@@ -8,12 +8,11 @@ import {
   ThunkOn,
   thunkOn,
 } from "easy-peasy";
-import { Transaction } from "./transactions.class";
-import { JsonTransaction } from "./transactions.json";
-import { TransactionService } from "../../services/TransactionService";
-import { StoreModel } from "../../store";
-import { groupByDate } from "../../utils/groupByDate/groupByDate";
-import { MoneyAmount } from "../../classes/MoneyAmount";
+import { JsonTransaction, Transaction } from "../classes/Transaction";
+import { TransactionService } from "../services/TransactionService";
+import { StoreModel } from "../store";
+import { groupByDate } from "../utils/groupByDate/groupByDate";
+import { MoneyAmount } from "../classes/MoneyAmount";
 import {
   filteredTransactionsModel,
   FilteredTransactionsModel,

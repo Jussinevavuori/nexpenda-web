@@ -1,7 +1,7 @@
 import "./TransactionList.scss";
 import React, { createRef, useEffect } from "react"
 import { TransactionListing } from "../TransactionListing/TransactionListing";
-import { Transaction } from "../../models/transactions/transactions.class";
+import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
