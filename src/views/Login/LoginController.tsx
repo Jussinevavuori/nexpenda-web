@@ -21,6 +21,7 @@ export const Login: React.FC<{}> = () => {
 
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
+	const requestConfirmationEmail = useStoreActions(_ => _.auth.requestConfirmationEmail)
 
 	/**
 	 * Check initial login
@@ -49,7 +50,10 @@ export const Login: React.FC<{}> = () => {
 					setError("No user exists with that email.")
 					break;
 				case "auth/email-not-confirmed":
-					setError("Confirm your email before logging in.")
+					setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
+					if (user?.email) {
+						requestConfirmationEmail({ email: user.email })
+					}
 					break;
 				case "server/unavailable":
 					setError("Could not contact server. Try again later.")

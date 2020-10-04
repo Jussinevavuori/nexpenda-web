@@ -23,7 +23,6 @@ export const Register: React.FC<{}> = () => {
 
 	async function handleSubmit(values: RegisterFormType) {
 		setError(undefined)
-		console.log("Submit")
 		const result = await register({ email: values.email, password: values.password })
 		result.onSuccess(() => setRegistered(true))
 		result.onFailure(failure => {

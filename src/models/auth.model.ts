@@ -142,6 +142,17 @@ export interface AuthModel {
     StoreModel,
     ReturnType<typeof AuthService["confirmEmail"]>
   >;
+
+  /**
+   * Request a new confirmation email for user
+   */
+  requestConfirmationEmail: Thunk<
+    AuthModel,
+    Parameters<typeof AuthService["requestConfirmationEmail"]>[0],
+    any,
+    StoreModel,
+    ReturnType<typeof AuthService["requestConfirmationEmail"]>
+  >;
 }
 
 /**
@@ -226,6 +237,11 @@ export const authModel: AuthModel = {
 
   confirmEmail: thunk(async (actions, payload) => {
     const result = await AuthService.confirmEmail(payload);
+    return result;
+  }),
+
+  requestConfirmationEmail: thunk(async (actions, payload) => {
+    const result = await AuthService.requestConfirmationEmail(payload);
     return result;
   }),
 

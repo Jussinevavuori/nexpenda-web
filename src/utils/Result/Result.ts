@@ -81,6 +81,10 @@ export class Success<T = undefined, E = undefined> implements IResult<T, E> {
     return this;
   }
 
+  static All<T, E>(array: Array<Result<T, E>>): Array<Success<T, E>> {
+    return array.filter((_) => _.isSuccess()).map((_) => _ as Success<T, E>);
+  }
+
   static From<R = any, U = any>(value: U) {
     return new Success<U, R>(value);
   }
@@ -222,6 +226,10 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
     return true;
   }
 
+  static All<T, E>(array: Array<Result<T, E>>): Array<Failure<T, E>> {
+    return array.filter((_) => _.isFailure()).map((_) => _ as Failure<T, E>);
+  }
+
   // Defining common failure types as static factory methods
 
   /**
@@ -301,7 +309,8 @@ export class Failure<T = undefined, E = undefined> implements IResult<T, E> {
   }
 
   /**
-   * Failure from thrown error
+   * Failure from thrown console.error();
+	 
    */
   static Error<T = undefined>(error: Error) {
     return new Failure<T, Error>(error, {

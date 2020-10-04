@@ -143,6 +143,29 @@ export class AuthService extends Service {
   }
 
   /**
+   * Request new confirmation email
+   */
+  static async requestConfirmationEmail(credentials: { email: string }) {
+    return Try(async () => {
+      const result = await Service.post<{ email: string }>(
+        `/auth/request_confirm_email`,
+        credentials
+      );
+      if (result.isFailure()) {
+        return result;
+      } else if (result.value.status === 200) {
+        return Success.Empty();
+      } else {
+        return Failure.InvalidResponse(
+          result.value,
+          "auth/request-confirm-email",
+          "Unable to get new confirmation email"
+        );
+      }
+    });
+  }
+
+  /**
    * Confirm a user's email
    */
   static async confirmEmail(credentials: { token: string }) {

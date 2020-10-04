@@ -1,29 +1,31 @@
 import "./Settings.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { readFileAsJsonTransactions } from "../../utils/xlsx/xlsx";
+import { Button, Drawer } from "@material-ui/core";
+import { useSmMedia } from "../../hooks/useMedia";
+import { FileUploader } from "../../components/FileUploader/FileUploader";
 
 export type SettingsViewProps = {
 	user: Auth;
 	handleLogout(): void;
+	uploaderOpen: boolean;
+	onUploaderClose(): void;
+	onUploaderOpen(): void;
 }
 
 export function SettingsView(props: SettingsViewProps) {
 
-	function fileUploadHandler(e: React.ChangeEvent<HTMLInputElement>) {
-		readFileAsJsonTransactions(e.target).then(result => {
-			result
-				.onSuccess((value) => {
-					console.log("Success:", value)
-				})
-				.onFailure((value) => {
-					console.log("Failure:", value)
-				})
-		})
-	}
-
+	const desktopLayout = useSmMedia()
 
 	return <div className="Settings">
+
+		<Drawer
+			open={props.uploaderOpen}
+			onClose={props.onUploaderClose}
+			anchor={desktopLayout ? "left" : "bottom"}
+		>
+			<FileUploader />
+		</Drawer>
 
 		{
 			props.user.photoUrl ? <img style={{ width: 64, height: 64 }} alt="profile" src={props.user.photoUrl} /> : null
@@ -55,12 +57,9 @@ export function SettingsView(props: SettingsViewProps) {
 		</div>
 
 		<div>
-			<label>Import data from Excel</label>
-			<input type="file" onChange={fileUploadHandler} />
-		</div>
-
-		<div>
-			<button>Export data</button>
+			<Button onClick={props.onUploaderOpen}>
+				{"Tuo tiedostosta"}
+			</Button>
 		</div>
 
 	</div>
