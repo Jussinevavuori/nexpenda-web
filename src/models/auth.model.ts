@@ -175,11 +175,8 @@ export const authModel: AuthModel = {
   }),
 
   _login: action((state, json) => {
-    console.log("Login action called with", json);
     if (Auth.isJson(json)) {
-      console.log("Login was valid jsonAuth");
       state.user = new Auth(json);
-      console.log("New user created to state", state.user);
     }
   }),
 
@@ -190,9 +187,7 @@ export const authModel: AuthModel = {
 
   getProfile: thunk(async (actions, payload) => {
     const profile = await AuthService.getProfile();
-    console.log("Got profile result:", profile);
     if (profile.isSuccess()) {
-      console.log("Result was success");
       actions._login(profile.value);
     }
     actions._setInitialized(true);

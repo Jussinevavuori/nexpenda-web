@@ -43,7 +43,7 @@ export class Success<T, R = string> implements IResult<T, R> {
 }
 
 export class Failure<T, R = string> implements IResult<T, R> {
-  public readonly resultType: "success" = "success";
+  public readonly resultType: "failure" = "failure";
   public readonly reason: R;
 
   constructor(reason: R) {
