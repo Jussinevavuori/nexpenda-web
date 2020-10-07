@@ -40,7 +40,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "vercel",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
