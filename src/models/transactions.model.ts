@@ -201,7 +201,9 @@ export const transactionsModel: TransactionsModel = {
 
   getTransactions: thunk(async (actions, payload) => {
     const result = await TransactionService.getTransactions();
-    result.onSuccess((json) => actions._getTransactions(json));
+    if (result.isSuccess()) {
+      actions._getTransactions(result.value);
+    }
     return result;
   }),
 
@@ -211,7 +213,9 @@ export const transactionsModel: TransactionsModel = {
 
   postTransaction: thunk(async (actions, json) => {
     const result = await TransactionService.postTransaction(json);
-    result.onSuccess((json) => actions._postTransaction(json));
+    if (result.isSuccess()) {
+      actions._postTransaction(result.value);
+    }
     return result;
   }),
 
@@ -221,7 +225,9 @@ export const transactionsModel: TransactionsModel = {
 
   deleteTransaction: thunk(async (actions, id) => {
     const result = await TransactionService.deleteTransaction(id);
-    result.onSuccess(() => actions.deleteTransaction(id));
+    if (result.isSuccess()) {
+      actions._deleteTransaction(id);
+    }
     return result;
   }),
 
@@ -231,7 +237,9 @@ export const transactionsModel: TransactionsModel = {
 
   putTransaction: thunk(async (actions, json) => {
     const result = await TransactionService.putTransaction(json);
-    result.onSuccess((json) => actions._putTransaction(json));
+    if (result.isSuccess()) {
+      actions._putTransaction(result.value);
+    }
     return result;
   }),
 
@@ -243,7 +251,9 @@ export const transactionsModel: TransactionsModel = {
 
   patchTransaction: thunk(async (actions, json) => {
     const result = await TransactionService.patchTransaction(json);
-    result.onSuccess((json) => actions._patchTransaction(json));
+    if (result.isSuccess()) {
+      actions._patchTransaction(result.value);
+    }
     return result;
   }),
 

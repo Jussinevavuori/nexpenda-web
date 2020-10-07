@@ -44,12 +44,11 @@ export function ChangePassword(props: ChangePasswordProps) {
 	useEffect(() => {
 		if (token) {
 			validateChangePasswordToken({ token }).then(result => {
-				result.onSuccess((value) => {
-					setValidTokenEmail(value)
-				})
-				result.onFailure(() => {
+				if (result.isSuccess()) {
+					setValidTokenEmail(result.value)
+				} else {
 					setValidTokenEmail(null)
-				})
+				}
 			})
 		}
 	}, []) // eslint-disable-line
@@ -68,12 +67,11 @@ export function ChangePassword(props: ChangePasswordProps) {
 	function handleSubmit(values: ChangePasswordFormType) {
 		if (token) {
 			changePassword({ ...values, token }).then(result => {
-				result.onSuccess(() => {
+				if (result.isSuccess()) {
 					setPasswordChangeSuccessful(true)
-				})
-				result.onFailure(() => {
+				} else {
 					setError("Could not change password")
-				})
+				}
 			})
 		}
 	}

@@ -1,27 +1,25 @@
 import { Service } from "./Service";
-import { Failure, Success } from "../utils/Result/Result";
-import { Try } from "../utils/Result/Try";
-import { Auth } from "../classes/Auth";
+import { Success } from "../utils/Result/Result";
+import { Auth, JsonAuth } from "../classes/Auth";
+import { InvalidServerResponseFailure } from "../utils/Failures/InvalidServerResponseFailures";
 
 export class AuthService extends Service {
   /**
    * Fetches the user's profile if the user is signed in.
    */
   static async getProfile() {
-    return Try(async () => {
-      const result = await Service.get("/auth/profile");
-      if (result.isFailure()) {
-        return result;
-      } else if (Auth.isJson(result.value)) {
-        return new Success(result.value);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/profile",
-          "Could not get profile."
-        );
-      }
-    });
+    const result = await Service.get<JsonAuth>("/auth/profile");
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Auth.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonAuth>(
+        result.value,
+        "/auth/profile"
+      );
+    }
   }
 
   /**
@@ -31,20 +29,18 @@ export class AuthService extends Service {
     email: string;
     password: string;
   }) {
-    return Try(async () => {
-      const result = await Service.post("/auth/register", credentials);
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/register",
-          "Could not register."
-        );
-      }
-    });
+    const result = await Service.post("/auth/register", credentials);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/register"
+      );
+    }
   }
 
   /**
@@ -54,66 +50,60 @@ export class AuthService extends Service {
     email: string;
     password: string;
   }) {
-    return Try(async () => {
-      const result = await Service.post("/auth/login", credentials);
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/login",
-          "Could not login."
-        );
-      }
-    });
+    const result = await Service.post("/auth/login", credentials);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/login"
+      );
+    }
   }
 
   /**
    * Sends a forgot password email to the given email address.
    */
   static async forgotPassword(credentials: { email: string }) {
-    return Try(async () => {
-      const result = await Service.post("/auth/forgot_password", credentials);
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/forgot-password",
-          "Could not send forgot password link."
-        );
-      }
-    });
+    const result = await Service.post("/auth/forgot_password", credentials);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/forgot-password"
+      );
+    }
   }
 
   /**
    * Validates a password change token
    */
   static async validatePasswordChangeToken(credentials: { token: string }) {
-    return Try(async () => {
-      const result = await Service.get(
-        `/auth/change_password/${credentials.token}`
+    const result = await Service.get(
+      `/auth/change_password/${credentials.token}`
+    );
+
+    if (result.isFailure()) {
+      return result;
+    } else if (
+      result.value.status === 200 &&
+      result.value.data &&
+      typeof result.value.data === "string"
+    ) {
+      return new Success<string>(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<string>(
+        result.value,
+        "auth/change-password"
       );
-      if (result.isFailure()) {
-        return result;
-      } else if (
-        result.value.status === 200 &&
-        result.value.data &&
-        typeof result.value.data === "string"
-      ) {
-        return new Success(result.value.data);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/change-password",
-          "Could not valildate password change token."
-        );
-      }
-    });
+    }
   }
 
   /**
@@ -123,88 +113,80 @@ export class AuthService extends Service {
     token: string;
     password: string;
   }) {
-    return Try(async () => {
-      const result = await Service.post(
-        `/auth/change_password/${credentials.token}`,
-        { password: credentials.password }
+    const result = await Service.post(
+      `/auth/change_password/${credentials.token}`,
+      { password: credentials.password }
+    );
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/change-password"
       );
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/change-password",
-          "Could not change password."
-        );
-      }
-    });
+    }
   }
 
   /**
    * Request new confirmation email
    */
   static async requestConfirmationEmail(credentials: { email: string }) {
-    return Try(async () => {
-      const result = await Service.post<{ email: string }>(
-        `/auth/request_confirm_email`,
-        credentials
+    const result = await Service.post<{ email: string }>(
+      `/auth/request_confirm_email`,
+      credentials
+    );
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/request-confirm-email"
       );
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/request-confirm-email",
-          "Unable to get new confirmation email"
-        );
-      }
-    });
+    }
   }
 
   /**
    * Confirm a user's email
    */
   static async confirmEmail(credentials: { token: string }) {
-    return Try(async () => {
-      const result = await Service.get(
-        `/auth/confirm_email/${credentials.token}`
+    const result = await Service.get(
+      `/auth/confirm_email/${credentials.token}`
+    );
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/confirm-email"
       );
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/confirm-email",
-          "Could not confirm email."
-        );
-      }
-    });
+    }
   }
 
   /**
    * Logs the user out.
    */
   static async logout() {
-    return Try(async () => {
-      const result = await Service.post(`/auth/logout`);
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "auth/logout",
-          "Could not log out."
-        );
-      }
-    });
+    const result = await Service.post(`/auth/logout`);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<undefined>(
+        result.value,
+        "auth/logout"
+      );
+    }
   }
 
   /**

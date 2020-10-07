@@ -28,28 +28,36 @@ export function ForgotPassword(props: ForgotPasswordProps) {
 	async function handleSubmit(values: ForgotPasswordFormType) {
 		setError(undefined)
 		const result = await forgotPassword(values)
-		result.onSuccess(() => setSuccess(true))
-		result.onFailure(failure => {
-			switch (failure.code) {
-				case "data/invalid-request-data":
-					setError("Invalid email or password.")
+		if (result.isSuccess()) {
+			setSuccess(true)
+		} else {
+			switch (result.reason) {
+				case "invalidServerResponse":
+					setError("Invalid response received from server.")
 					break;
-				case "auth/invalid-credentials":
-					setError("Wrong password or the user does not have a password.")
-					break;
-				case "auth/user-not-found":
-					setError("No user exists with that email.")
-					break;
-				case "server/unavailable":
-					setError("Could not contact server. Try again later.")
-					break;
-				default:
-					console.warn("Uncaught error code in login:", failure)
-					setError("An error occured while logging in. Try again.")
-					break;
+				case "network":
+					switch (result.code) {
+						case "request/invalid-request-data":
+							setError("Invalid email or password.")
+							break;
+						case "auth/invalid-credentials":
+							setError("Wrong password or the user does not have a password.")
+							break;
+						case "auth/user-not-found":
+							setError("No user exists with that email.")
+							break;
+						case "server/unavailable":
+							setError("Could not contact server. Try again later.")
+							break;
+						default:
+							console.warn("Uncaught error code in login:", result)
+							setError("An error occured while logging in. Try again.")
+							break;
+					}
 			}
-		})
+		}
 	}
+
 
 	async function handleLogin() {
 		redirect(_ => _.login)

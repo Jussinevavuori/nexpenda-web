@@ -24,24 +24,32 @@ export const Register: React.FC<{}> = () => {
 	async function handleSubmit(values: RegisterFormType) {
 		setError(undefined)
 		const result = await register({ email: values.email, password: values.password })
-		result.onSuccess(() => setRegistered(true))
-		result.onFailure(failure => {
-			switch (failure.code) {
-				case "data/invalid-request-data":
-					setError("Invalid email or password.")
+		if (result.isSuccess()) {
+			setRegistered(true)
+		} else {
+			switch (result.reason) {
+				case "invalidServerResponse":
+					setError("Invalid response received from server.")
 					break;
-				case "auth/user-already-exists":
-					setError("An user already exists with that email.")
-					break;
-				case "server/unavailable":
-					setError("Could not contact server. Try again later.")
-					break;
-				default:
-					console.warn("Uncaught error code in login:", failure)
-					setError("An error occured while logging in. Try again.")
+				case "network":
+					switch (result.code) {
+						case "request/invalid-request-data":
+							setError("Invalid email or password.")
+							break;
+						case "auth/user-already-exists":
+							setError("An user already exists with that email.")
+							break;
+						case "server/unavailable":
+							setError("Could not contact server. Try again later.")
+							break;
+						default:
+							console.warn("Uncaught error code in login:", result)
+							setError("An error occured while logging in. Try again.")
+							break;
+					}
 					break;
 			}
-		})
+		}
 	}
 
 	async function handleLogin() {

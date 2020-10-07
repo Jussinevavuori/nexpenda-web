@@ -95,49 +95,54 @@ export function TransactionForm(props: TransactionFormProps) {
 				time: time.getTime(),
 				comment: comment.trim(),
 			})
-			result.onSuccess(() => {
+			if (result.isSuccess()) {
 				setAmount("")
 				setCategory("")
 				setTime(new Date())
 				setComment("")
-			})
-			result.onFailure((failure: any) => {
-				switch (failure.code) {
-					case "data/invalid-request-data":
-						if (failure.data?.errors?.integerAmount) {
-							setAmountError(String(failure.data.errors.integerAmount))
-						}
-						if (failure.data?.errors?.category) {
-							setCategoryError(String(failure.data.errors.category))
-						}
-						if (failure.data?.errors?.comment) {
-							setCommentError(String(failure.data.errors.comment))
-						}
-						if (failure.data?.errors?.time) {
-							setTimeError(String(failure.data.errors.time))
-						}
-						if (failure.data?.errors?._root) {
-							setError(failure.data.errors._root)
-						}
-						if (failure.data?.errors?.id) {
-							setError(failure.data.errors.id)
-						}
-						if (failure.data?.errors?.uid) {
-							setError(failure.data.errors.uid)
-						}
+			} else {
+				switch (result.reason) {
+					case "invalidServerResponse":
+						setError("Invalid response received from server")
 						break;
-					case "transaction/already-exists":
-						setError("Could not post transaction due to overlapping IDs")
-						break;
-					case "server/unavailable":
-						setError("Could not react server. Try again later.")
-						break;
-					default:
-						console.warn("Uncaught failure", failure)
-						setError("Error posting transaction.")
-						break;
+					case "network":
+						switch (result.code) {
+							case "request/invalid-request-data":
+								if (result.data?.errors?.integerAmount) {
+									setAmountError(String(result.data.errors.integerAmount))
+								}
+								if (result.data?.errors?.category) {
+									setCategoryError(String(result.data.errors.category))
+								}
+								if (result.data?.errors?.comment) {
+									setCommentError(String(result.data.errors.comment))
+								}
+								if (result.data?.errors?.time) {
+									setTimeError(String(result.data.errors.time))
+								}
+								if (result.data?.errors?._root) {
+									setError(result.data.errors._root)
+								}
+								if (result.data?.errors?.id) {
+									setError(result.data.errors.id)
+								}
+								if (result.data?.errors?.uid) {
+									setError(result.data.errors.uid)
+								}
+								break;
+							case "transaction/already-exists":
+								setError("Could not post transaction due to overlapping IDs")
+								break;
+							case "server/unavailable":
+								setError("Could not react server. Try again later.")
+								break;
+							default:
+								console.warn("Uncaught failure", result)
+								setError("Error posting transaction.")
+								break;
+						}
 				}
-			})
+			}
 		}
 	}
 

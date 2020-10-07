@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet"
 import { IOJsonTransaction, TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
 import { FileUploaderView } from "./FileUploaderView"
 
@@ -8,7 +9,7 @@ export type FileUploaderProps = {
 
 export function FileUploader(props: FileUploaderProps) {
 
-	const [result, setResult] = useState<undefined | null | { success: IOJsonTransaction[], failed: number }>()
+	const [result, setResult] = useState<undefined | null | SpreadsheetReadFileResult<IOJsonTransaction>>()
 	const [parsing, setParsing] = useState(false)
 	const [uploading, setUploading] = useState(false)
 

@@ -17,9 +17,9 @@ export function Settings(props: SettingsProps) {
 
 	async function handleLogout() {
 		const result = await logout()
-		result.onSuccess(() => {
+		if (result.isSuccess()) {
 			redirect(_ => _.login)
-		})
+		}
 	}
 
 	if (!user) return null

@@ -1,27 +1,25 @@
 import { Service } from "./Service";
-import { Failure, Success } from "../utils/Result/Result";
-import { Try } from "../utils/Result/Try";
+import { Success } from "../utils/Result/Result";
 import { JsonTransaction, Transaction } from "../classes/Transaction";
+import { InvalidServerResponseFailure } from "../utils/Failures/InvalidServerResponseFailures";
 
 export class TransactionService extends Service {
   /**
    * Get all transactions for user as Result
    */
   static async getTransactions() {
-    return Try(async () => {
-      const result = await Service.get("/transactions");
-      if (result.isFailure()) {
-        return result;
-      } else if (Transaction.isJsonArray(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "transactions/get",
-          "Could not get transactions."
-        );
-      }
-    });
+    const result = await Service.get("/transactions");
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Transaction.isJsonArray(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction[]>(
+        result.value,
+        "transactions/get"
+      );
+    }
   }
 
   /**
@@ -29,40 +27,36 @@ export class TransactionService extends Service {
    * created json transaction response as Result.
    */
   static async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
-    return Try(async () => {
-      const result = await Service.post("/transactions", json);
-      if (result.isFailure()) {
-        return result;
-      } else if (Transaction.isJson(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "transactions/post",
-          "Could not post transaction."
-        );
-      }
-    });
+    const result = await Service.post("/transactions", json);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Transaction.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction>(
+        result.value,
+        "transactions/post"
+      );
+    }
   }
 
   /**
    * Delete a transaction by ID and return empty Result.
    */
   static async deleteTransaction(id: string) {
-    return Try(async () => {
-      const result = await Service.delete(`/transactions/${id}`);
-      if (result.isFailure()) {
-        return result;
-      } else if (result.value.status === 200) {
-        return Success.Empty();
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "transactions/delete",
-          "Could not delete transaction."
-        );
-      }
-    });
+    const result = await Service.delete(`/transactions/${id}`);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 200) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction[]>(
+        result.value,
+        "transactions/delete"
+      );
+    }
   }
 
   /**
@@ -70,20 +64,18 @@ export class TransactionService extends Service {
    * return upserted json transaction as Result.
    */
   static async putTransaction(json: JsonTransaction) {
-    return Try(async () => {
-      const result = await Service.put(`/transactions/${json.id}`, json);
-      if (result.isFailure()) {
-        return result;
-      } else if (Transaction.isJson(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "transactions/put",
-          "Could not put transaction"
-        );
-      }
-    });
+    const result = await Service.put(`/transactions/${json.id}`, json);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Transaction.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction[]>(
+        result.value,
+        "transactions/put"
+      );
+    }
   }
 
   /**
@@ -91,19 +83,17 @@ export class TransactionService extends Service {
    * and return updated json transaction as Result.
    */
   static async patchTransaction(json: JsonTransaction) {
-    return Try(async () => {
-      const result = await Service.patch(`/transactions/${json.id}`, json);
-      if (result.isFailure()) {
-        return result;
-      } else if (Transaction.isJson(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return Failure.InvalidResponse(
-          result.value,
-          "transactions/patch",
-          "Could not patch transaction."
-        );
-      }
-    });
+    const result = await Service.patch(`/transactions/${json.id}`, json);
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Transaction.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction[]>(
+        result.value,
+        "transactions/patch"
+      );
+    }
   }
 }

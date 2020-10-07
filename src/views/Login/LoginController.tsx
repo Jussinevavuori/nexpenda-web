@@ -36,34 +36,42 @@ export const Login: React.FC<{}> = () => {
 		setError(undefined)
 
 		const result = await loginWithEmailPassword(values)
-		result.onSuccess(() => redirect(routes => routes.dashboard))
+		if (result.isSuccess()) {
+			redirect(routes => routes.dashboard)
+		}
 
-		result.onFailure(failure => {
-			switch (failure.code) {
-				case "data/invalid-request-data":
-					setError("Invalid email or password.")
+		if (result.isFailure()) {
+			switch (result.reason) {
+				case "invalidServerResponse":
+					setError("Invalid response received from server.")
 					break;
-				case "auth/invalid-credentials":
-					setError("Wrong password or the user does not have a password.")
-					break;
-				case "auth/user-not-found":
-					setError("No user exists with that email.")
-					break;
-				case "auth/email-not-confirmed":
-					setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
-					if (user?.email) {
-						requestConfirmationEmail({ email: user.email })
+				case "network":
+					switch (result.code) {
+						case "request/invalid-request-data":
+							setError("Invalid email or password.")
+							break;
+						case "auth/invalid-credentials":
+							setError("Wrong password or the user does not have a password.")
+							break;
+						case "auth/user-not-found":
+							setError("No user exists with that email.")
+							break;
+						case "auth/email-not-confirmed":
+							setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
+							if (user?.email) {
+								requestConfirmationEmail({ email: user.email })
+							}
+							break;
+						case "server/unavailable":
+							setError("Could not contact server. Try again later.")
+							break;
+						default:
+							console.warn("Uncaught error code in login:", result)
+							setError("An error occured while logging in. Try again.")
+							break;
 					}
-					break;
-				case "server/unavailable":
-					setError("Could not contact server. Try again later.")
-					break;
-				default:
-					console.warn("Uncaught error code in login:", failure)
-					setError("An error occured while logging in. Try again.")
-					break;
 			}
-		})
+		}
 	}
 
 	async function handleGoogleSubmit() {

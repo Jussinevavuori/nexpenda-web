@@ -2,9 +2,8 @@ import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { Failure, Result } from "../utils/Result/Result";
-import { PromiseToResult } from "../utils/Result/PromiseToResult";
-import { Try } from "../utils/Result/Try";
+import { Success } from "../utils/Result/Result";
+import { NetworkFailure } from "../utils/Failures/NetworkFailures";
 
 export class Service {
   /**
@@ -100,8 +99,11 @@ export class Service {
   protected static async handleRequest<T>(
     path: string,
     config: AxiosRequestConfig | undefined,
-    requestFunction: (url: string, options: AxiosRequestConfig) => Promise<T>
-  ): Promise<Result<T, { errors?: object; response?: AxiosResponse<any> }>> {
+    requestFunction: (
+      url: string,
+      options: AxiosRequestConfig
+    ) => Promise<AxiosResponse<T>>
+  ) {
     /**
      * Run hooks
      */
@@ -114,14 +116,9 @@ export class Service {
     const options = Service.getConfig(config);
     const promise = requestFunction(url, options);
 
-    return Try(async () => {
-      const result = await PromiseToResult(promise);
-      if (result.isSuccess()) {
-        return result;
-      } else {
-        return Failure.AxiosError(result.value as AxiosError);
-      }
-    });
+    return promise
+      .then((value) => new Success<AxiosResponse<T>>(value))
+      .catch((e) => NetworkFailure.FromAxiosError<T>(e as AxiosError));
   }
 
   /**

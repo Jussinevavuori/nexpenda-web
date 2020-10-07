@@ -186,12 +186,12 @@ export const authModel: AuthModel = {
   }),
 
   getProfile: thunk(async (actions, payload) => {
-    const profileResult = await AuthService.getProfile();
-    profileResult.onSuccess((profile) => {
-      actions._login(profile);
-    });
+    const profile = await AuthService.getProfile();
+    if (profile.isSuccess()) {
+      actions._login(profile.value);
+    }
     actions._setInitialized(true);
-    return profileResult;
+    return profile;
   }),
 
   loginWithGoogle: thunk((actions, payload) => {
@@ -200,22 +200,22 @@ export const authModel: AuthModel = {
 
   loginWithEmailPassword: thunk(async (actions, payload) => {
     const result = await AuthService.loginWithEmailAndPassword(payload);
-    result.onSuccess(async () => {
-      const profileResult = await AuthService.getProfile();
-      profileResult.onSuccess((profile) => {
-        actions._login(profile);
-      });
-    });
+    if (result.isSuccess()) {
+      const profile = await AuthService.getProfile();
+      if (profile.isSuccess()) {
+        actions._login(profile.value);
+      }
+    }
     return result;
   }),
 
   registerWithEmailPassword: thunk(async (actions, payload) => {
     const result = await AuthService.registerWithEmailAndPassword(payload);
     if (result.isSuccess()) {
-      const profileResult = await AuthService.getProfile();
-      profileResult.onSuccess((profile) => {
-        actions._login(profile);
-      });
+      const profile = await AuthService.getProfile();
+      if (profile.isSuccess()) {
+        actions._login(profile.value);
+      }
     }
     return result;
   }),
@@ -247,9 +247,9 @@ export const authModel: AuthModel = {
 
   logout: thunk(async (actions, payload) => {
     const result = await AuthService.logout();
-    result.onSuccess(() => {
-      actions._logout();
-    });
+    if (result.isSuccess()) {
+      actions.logout();
+    }
     return result;
   }),
 };
