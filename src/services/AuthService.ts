@@ -155,7 +155,7 @@ export class AuthService extends Service {
    * Confirm a user's email
    */
   static async confirmEmail(credentials: { token: string }) {
-    const result = await Service.get(
+    const result = await Service.post(
       `/auth/confirm_email/${credentials.token}`
     );
 
