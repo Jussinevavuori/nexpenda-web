@@ -123,7 +123,7 @@ export class AuthService extends Service {
     } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
-      return new InvalidServerResponseFailure<undefined>(
+      return new InvalidServerResponseFailure<void>(
         result.value,
         "auth/change-password"
       );
@@ -144,7 +144,7 @@ export class AuthService extends Service {
     } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
-      return new InvalidServerResponseFailure<undefined>(
+      return new InvalidServerResponseFailure<void>(
         result.value,
         "auth/request-confirm-email"
       );
@@ -164,7 +164,7 @@ export class AuthService extends Service {
     } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
-      return new InvalidServerResponseFailure<undefined>(
+      return new InvalidServerResponseFailure<void>(
         result.value,
         "auth/confirm-email"
       );
@@ -182,7 +182,7 @@ export class AuthService extends Service {
     } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
-      return new InvalidServerResponseFailure<undefined>(
+      return new InvalidServerResponseFailure<void>(
         result.value,
         "auth/logout"
       );

@@ -57,9 +57,14 @@ export const Login: React.FC<{}> = () => {
 							setError("No user exists with that email.")
 							break;
 						case "auth/email-not-confirmed":
-							setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
 							if (user?.email) {
-								requestConfirmationEmail({ email: user.email })
+								const response = await requestConfirmationEmail({ email: user.email })
+								if (response.isSuccess()) {
+									setError("Confirm your email before logging in.")
+								} else {
+									setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
+									console.warn("Error while requesting confirmation email", response)
+								}
 							}
 							break;
 						case "server/unavailable":
