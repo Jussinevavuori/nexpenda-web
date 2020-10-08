@@ -60,9 +60,9 @@ export const Login: React.FC<{}> = () => {
 							if (user?.email) {
 								const response = await requestConfirmationEmail({ email: user.email })
 								if (response.isSuccess()) {
-									setError("Confirm your email before logging in.")
+									setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
 								} else {
-									setError("Confirm your email before logging in. We have sent you a new email confirmation link.")
+									setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
 									console.warn("Error while requesting confirmation email", response)
 								}
 							}
