@@ -2,7 +2,7 @@
 
 .AuthFrame {
   width: 100%;
-  height: 100vh;
+  height: $fullvh;
   background: white;
   @include sm {
     background: url("../../images/awar-meman-Ujt8Ti-5OQ0-unsplash.jpg");
