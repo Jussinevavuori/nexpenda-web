@@ -35,39 +35,59 @@ export const Login: React.FC<{}> = () => {
 	async function handleSubmit(values: LoginFormType) {
 		setError(undefined)
 
-		const result = await loginWithEmailPassword(values)
-		if (result.isSuccess()) {
-			redirect(routes => routes.dashboard)
-		}
+		console.group("Controller")
 
-		if (result.isFailure()) {
+		console.log("Submitting...")
+
+		const result = await loginWithEmailPassword(values)
+
+		console.log("Attempted login with email and password")
+
+		if (result.isSuccess()) {
+			console.log("Succeeded. Redirecting", result)
+			redirect(routes => routes.dashboard)
+		} else {
+			console.log("Failed with", result.reason, result)
 			switch (result.reason) {
 				case "invalidServerResponse":
+					console.log("Invalid server response detected")
 					setError("Invalid response received from server.")
 					break;
 				case "network":
+					console.log("Network error detected")
 					switch (result.code) {
 						case "request/invalid-request-data":
+							console.log("Invalid email or password.")
 							setError("Invalid email or password.")
 							break;
 						case "auth/invalid-credentials":
+							console.log("Wrong password or the user does not have a password.")
 							setError("Wrong password or the user does not have a password.")
 							break;
 						case "auth/user-not-found":
+							console.log("No user exists with that email.")
 							setError("No user exists with that email.")
 							break;
 						case "auth/email-not-confirmed":
+							console.log("Email was not confirmed")
 							if (user?.email) {
+								console.log("User email:", user.email)
 								const response = await requestConfirmationEmail({ email: user.email })
+								console.log("Requesting confirmation email:", user.email)
 								if (response.isSuccess()) {
+									console.log("Success:", response)
 									setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
 								} else {
+									console.log("Failure:", response)
 									setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
 									console.warn("Error while requesting confirmation email", response)
 								}
+							} else {
+								console.log("No user email")
 							}
 							break;
 						case "server/unavailable":
+							console.log("Could not contact server. Try again later.")
 							setError("Could not contact server. Try again later.")
 							break;
 						default:
@@ -77,6 +97,8 @@ export const Login: React.FC<{}> = () => {
 					}
 			}
 		}
+
+		console.groupEnd()
 	}
 
 	async function handleGoogleSubmit() {

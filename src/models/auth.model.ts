@@ -241,7 +241,10 @@ export const authModel: AuthModel = {
   }),
 
   requestConfirmationEmail: thunk(async (actions, payload) => {
+    console.group("Store");
+    console.log("Store request confirmation email method called");
     const result = await AuthService.requestConfirmationEmail(payload);
+    console.groupEnd();
     return result;
   }),
 
