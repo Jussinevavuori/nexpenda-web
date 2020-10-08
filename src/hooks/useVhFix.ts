@@ -5,7 +5,7 @@ export function useVhFix() {
   useEffect(() => {
     const eventHandler = () => {
       const viewportHeight = window.innerHeight;
-      root.style.setProperty("--vh", `${viewportHeight}px`);
+      root.style.setProperty("--full-vh", `${viewportHeight}px`);
       root.style.setProperty("--vh", `${viewportHeight / 100}px`);
     };
     window.addEventListener("resize", eventHandler);
