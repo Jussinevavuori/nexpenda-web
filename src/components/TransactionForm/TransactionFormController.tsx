@@ -23,14 +23,16 @@ export function TransactionForm(props: TransactionFormProps) {
 	/**
 	 * Error state
 	 */
-	const [error, setError] = useState<string>()
-	const [amountError, setAmountError] = useState<string>()
-	const [categoryError, setCategoryError] = useState<string>()
-	const [timeError, setTimeError] = useState<string>()
-	const [commentError, setCommentError] = useState<string>()
+	const [errors, setErrors] = useState<{
+		main?: string;
+		amount?: string;
+		category?: string;
+		time?: string;
+		comment?: string;
+	}>({})
 
 	/**
-	 * Validators
+	 * Validator for amount
 	 */
 	function validateAmount(): string | undefined {
 		/* eslint-disable-next-line no-useless-escape */
@@ -39,20 +41,27 @@ export function TransactionForm(props: TransactionFormProps) {
 		return undefined
 	}
 
+	/**
+	 * Validator for category
+	 */
 	function validateCategory(): string | undefined {
-		const valid = /[A-Za-z\d\-_\s]+/.test(category.trim())
-		const empty = category.trim() === ""
-		if (!valid) return "Invalid category, do not use any special characters"
-		if (empty) return "Please enter a cetegory"
+		const c = category.trim()
+		if (c === "") return "Please enter a cetegory"
 		return undefined
 	}
 
+	/**
+	 * Validator for time
+	 */
 	function validateTime(): string | undefined {
 		const valid = time.getTime() > 0 && !isNaN(time.getTime())
 		if (!valid) return "Invalid date"
 		return undefined
 	}
 
+	/**
+	 * Validator for comment
+	 */
 	function validateComment(): string | undefined {
 		return undefined
 	}
@@ -66,10 +75,12 @@ export function TransactionForm(props: TransactionFormProps) {
 		const timeValidationError = validateTime()
 		const commentValidationError = validateComment()
 
-		setAmountError(amountValidationError)
-		setCategoryError(categoryValidationError)
-		setTimeError(timeValidationError)
-		setCommentError(commentValidationError)
+		setErrors({
+			amount: amountValidationError,
+			category: categoryValidationError,
+			time: timeValidationError,
+			comment: commentValidationError,
+		})
 
 		if (
 			!amountValidationError &&
@@ -87,63 +98,62 @@ export function TransactionForm(props: TransactionFormProps) {
 	 * Handle form submission
 	 */
 	async function handleSubmit() {
+		/**
+		 * Validate form
+		 */
 		const formValid = validateForm()
-		if (formValid) {
-			const result = await postTransaction({
-				integerAmount: Math.trunc(Number(amount.trim().replace(/,/g, '.')) * 100),
-				category: category.trim(),
-				time: time.getTime(),
-				comment: comment.trim(),
-			})
-			if (result.isSuccess()) {
-				setAmount("")
-				setCategory("")
-				setTime(new Date())
-				setComment("")
-			} else {
-				switch (result.reason) {
-					case "invalidServerResponse":
-						setError("Invalid response received from server")
-						break;
-					case "network":
-						switch (result.code) {
-							case "request/invalid-request-data":
-								if (result.data?.errors?.integerAmount) {
-									setAmountError(String(result.data.errors.integerAmount))
-								}
-								if (result.data?.errors?.category) {
-									setCategoryError(String(result.data.errors.category))
-								}
-								if (result.data?.errors?.comment) {
-									setCommentError(String(result.data.errors.comment))
-								}
-								if (result.data?.errors?.time) {
-									setTimeError(String(result.data.errors.time))
-								}
-								if (result.data?.errors?._root) {
-									setError(result.data.errors._root)
-								}
-								if (result.data?.errors?.id) {
-									setError(result.data.errors.id)
-								}
-								if (result.data?.errors?.uid) {
-									setError(result.data.errors.uid)
-								}
-								break;
-							case "transaction/already-exists":
-								setError("Could not post transaction due to overlapping IDs")
-								break;
-							case "server/unavailable":
-								setError("Could not react server. Try again later.")
-								break;
-							default:
-								console.warn("Uncaught failure", result)
-								setError("Error posting transaction.")
-								break;
-						}
-				}
-			}
+		if (!formValid) return
+
+		/**
+		 * Post transaction
+		 */
+		const result = await postTransaction({
+			integerAmount: Math.trunc(Number(amount.trim().replace(/,/g, '.')) * 100),
+			category: category.trim(),
+			time: time.getTime(),
+			comment: comment.trim(),
+		})
+
+		/**
+		 * Handle success by reseting form
+		 */
+		if (result.isSuccess()) {
+			setAmount("")
+			setCategory("")
+			setTime(new Date())
+			setComment("")
+			setErrors({})
+			return
 		}
+
+		/**
+		 * Handle error messages
+		 */
+		setErrors(() => {
+			console.error(result)
+			if (result.reason === "invalidServerResponse") {
+				return { main: "Invalid response received from server" }
+			}
+			switch (result.code) {
+				case "request/invalid-request-data":
+					const e = result.data?.errors ?? {}
+					return {
+						amount: typeof e.integerAmount === "string" ? e.integerAmount : undefined,
+						comment: typeof e.comment === "string" ? e.comment : undefined,
+						category: typeof e.category === "string" ? e.category : undefined,
+						time: typeof e.time === "string" ? e.time : undefined,
+						main: typeof e._root === "string" ? e._root
+							: typeof e.id === "string" ? e.id
+								: typeof e.uid === "string" ? e.uid : undefined
+					}
+				case "transaction/already-exists":
+					return { main: "Could not post transaction due to overlapping IDs" }
+				case "server/unavailable":
+					return { main: "Could not react server. Try again later." }
+				default:
+					return { main: "Error posting transaction." }
+			}
+		})
 	}
 
 	return <TransactionFormView
@@ -156,13 +166,7 @@ export function TransactionForm(props: TransactionFormProps) {
 		onCategoryChange={value => setCategory(value)}
 		onTimeChange={value => setTime(value)}
 		onCommentChange={value => setComment(value)}
-		errors={{
-			main: error,
-			amount: amountError,
-			category: categoryError,
-			time: timeError,
-			comment: commentError,
-		}}
+		errors={errors}
 		categories={categories}
 	/>
 }
