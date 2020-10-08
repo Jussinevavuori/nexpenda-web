@@ -12,8 +12,6 @@ export function AnalyticsView(props: AnalyticsViewProps) {
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
-		console.log("Handling change")
-
 		if (!e.target.files) throw new Error("No files array")
 
 		const file = e.target.files[0]

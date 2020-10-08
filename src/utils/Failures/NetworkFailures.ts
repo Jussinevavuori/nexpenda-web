@@ -56,7 +56,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         message:
           typeof data?.message === "string"
             ? data.message
-            : "Unknown server error",
+            : "Unknown server error. Try again later.",
         code: typeof data?.code === "string" ? data.code : "server/unknown",
         data:
           data.errors && typeof data.errors === "object"
@@ -67,14 +67,14 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
       return new NetworkFailure<T, { errors?: object }>({
         status: 0,
         code: "server/unavailable",
-        message: "Could not reach server",
+        message: "Could not contact server. Try again later.",
         data: {},
       });
     } else {
       return new NetworkFailure<T, { errors?: object }>({
         status: 0,
         code: "server/failure-formulating-request",
-        message: "Could not formulate request to server",
+        message: "Could not formulate request to server.",
         data: {},
       });
     }

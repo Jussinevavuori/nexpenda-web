@@ -38,51 +38,63 @@ export function Login() {
 		}
 	}, [user, redirect])
 
+	/**
+	 * Handle submitting of form
+	 */
 	async function handleSubmit(values: LoginFormType) {
 		setError(undefined)
 
-		const email = values.email
-
+		/**
+		 * Attempt login
+		 */
 		const result = await loginWithEmailPassword(values)
 
+		/**
+		 *  On success redirect
+		 */
 		if (result.isSuccess()) {
-			redirect(routes => routes.dashboard)
-		} else {
-			switch (result.reason) {
-				case "invalidServerResponse":
-					setError("Invalid response received from server.")
-					break;
-				case "network":
-					console.log("Network error detected")
-					switch (result.code) {
-						case "request/invalid-request-data":
-							setError("Invalid email or password.")
-							break;
-						case "auth/invalid-credentials":
-							setError("Wrong password or the user does not have a password.")
-							break;
-						case "auth/user-not-found":
-							setError("No user exists with that email.")
-							break;
-						case "auth/email-not-confirmed":
-							const response = await requestConfirmationEmail({ email })
-							if (response.isSuccess()) {
-								console.log("Success:", response)
-								setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
-							} else {
-								setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
-							}
-							break;
-						case "server/unavailable":
-							setError("Could not contact server. Try again later.")
-							break;
-						default:
-							setError("An error occured while logging in. Try again.")
-							break;
-					}
+			return redirect(routes => routes.dashboard)
+		}
+
+		console.error(result)
+
+		/**
+		 * On failure, first attempt to recover from email-not-confirmed error
+		 * by sending another email confirmation link.
+		 */
+		if (result.reason === "network" && result.code === "auth/email-not-confirmed") {
+			const confirmationEmailRequest = await requestConfirmationEmail({ email: values.email })
+			if (confirmationEmailRequest.isSuccess()) {
+				setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
+			} else {
+				setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
 			}
 		}
 
+		/**
+		 * Else display correct error message
+		 */
+		setError(() => {
+			switch (result.reason) {
+				case "invalidServerResponse":
+					return "Invalid response received from server."
+				case "network":
+					switch (result.code) {
+						case "request/invalid-request-data":
+							return "Invalid email or password."
+						case "auth/invalid-credentials":
+							return "Wrong password or the user does not have a password."
+						case "auth/user-not-found":
+							return "No user exists with that email."
+						case "server/unavailable":
+							return "Could not contact server. Try again later."
+						default:
+							return "An error occured while logging in. Try again."
+					}
+				default:
+					return "An unknown error occured. Try again later."
+			}
+		})
 	}
 
 	async function handleGoogleSubmit() {
@@ -90,11 +102,11 @@ export function Login() {
 	}
 
 	async function handleForgotPassword() {
-		redirect(_ => _.forgotPassword)
+		redirect(routes => routes.forgotPassword)
 	}
 
 	async function handleCreateAccount() {
-		redirect(_ => _.register)
+		redirect(routes => routes.register)
 	}
 
 	return <FormProvider {...form}>

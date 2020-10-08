@@ -247,8 +247,9 @@ export const authModel: AuthModel = {
 
   logout: thunk(async (actions, payload) => {
     const result = await AuthService.logout();
+    console.trace("Logged out:", result);
     if (result.isSuccess()) {
-      actions.logout();
+      actions._logout();
     }
     return result;
   }),
