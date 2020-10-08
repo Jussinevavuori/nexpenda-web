@@ -22,13 +22,12 @@ export type LoginViewProps = {
 }
 
 export const LoginView: React.FC<LoginViewProps> = (props) => {
+	const form = useFormContext<LoginFormType>()
 
 	/**
 	 * Password visible state
 	 */
 	const [passwordVisible, setPasswordVisible] = useState(false)
-
-	const form = useFormContext<LoginFormType>()
 
 	/**
 	 * Email and password error shorthands for react hook form

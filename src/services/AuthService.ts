@@ -134,22 +134,16 @@ export class AuthService extends Service {
    * Request new confirmation email
    */
   static async requestConfirmationEmail(credentials: { email: string }) {
-    console.group("AuthService");
-    console.log("Contacting server");
     const result = await Service.post<{ email: string }>(
       `/auth/request_confirm_email`,
       credentials
     );
-    console.log("Received result", result);
 
     if (result.isFailure()) {
-      console.log("Result was failure");
       return result;
     } else if (result.value.status === 200) {
-      console.log("Result was successful");
       return Success.Empty();
     } else {
-      console.log("Invalid server response");
       return new InvalidServerResponseFailure<void>(
         result.value,
         "auth/request-confirm-email"
