@@ -1,8 +1,5 @@
 import "./Login.scss";
 import React, { useState } from 'react';
-import { useForm } from "react-hook-form"
-import { loginValidationSchema, LoginFormType } from './LoginController';
-import { yupResolver } from '@hookform/resolvers';
 import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core";
 import googleLogo from "../../images/logo_google.png"
 import {
@@ -12,12 +9,15 @@ import {
 } from "@material-ui/icons";
 import { AuthFrame } from "../../components/AuthFrame/AuthFrame";
 import { Type } from "../../components/Type/Type";
+import { LoginFormType } from "./LoginController";
+import { useFormContext } from "react-hook-form";
 
 export type LoginViewProps = {
 	handleSubmit(values: LoginFormType): Promise<void>;
 	handleGoogleSubmit(): Promise<void>;
 	handleForgotPassword(): Promise<void>;
 	handleCreateAccount(): Promise<void>;
+	form: any;
 	error?: string;
 }
 
@@ -28,18 +28,13 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 	 */
 	const [passwordVisible, setPasswordVisible] = useState(false)
 
-	/**
-	 * React hook form
-	 */
-	const { register, handleSubmit, errors, formState, ...form } = useForm<LoginFormType>({
-		resolver: yupResolver(loginValidationSchema),
-	})
+	const form = useFormContext<LoginFormType>()
 
 	/**
 	 * Email and password error shorthands for react hook form
 	 */
-	const emailError = formState.touched.email && errors.email?.message
-	const passwordError = formState.touched.password && errors.password?.message
+	const emailError = form.formState.touched.email && form.errors.email?.message
+	const passwordError = form.formState.touched.password && form.errors.password?.message
 
 	return <div className="Login">
 		<AuthFrame
@@ -47,13 +42,13 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 			header="Login to Expence"
 
 			body={
-				<form noValidate onSubmit={handleSubmit(props.handleSubmit)}>
+				<form noValidate onSubmit={form.handleSubmit(props.handleSubmit)}>
 
 					<TextField
 						id="login-email"
 						name="email"
 						type="text"
-						inputRef={register}
+						inputRef={form.register}
 						label="Email"
 						variant="outlined"
 						error={!!emailError}
@@ -70,7 +65,7 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 						id="login-password"
 						name="password"
 						type={passwordVisible ? "text" : "password"}
-						inputRef={register}
+						inputRef={form.register}
 						label="Password"
 						variant="outlined"
 						error={!!passwordError}

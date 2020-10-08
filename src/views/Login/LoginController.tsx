@@ -3,6 +3,8 @@ import { LoginView } from './LoginView';
 import * as yup from "yup"
 import { useStoreActions, useStoreState } from '../../store';
 import { useRedirect } from '../../hooks/useRedirect';
+import { FormProvider, useForm } from "react-hook-form"
+import { yupResolver } from '@hookform/resolvers';
 
 export const loginValidationSchema = yup.object({
 	email: yup.string().defined().email(),
@@ -11,11 +13,15 @@ export const loginValidationSchema = yup.object({
 
 export type LoginFormType = yup.InferType<typeof loginValidationSchema>
 
-export const Login: React.FC<{}> = () => {
+export function Login() {
 
 	const [error, setError] = useState<string>()
 
 	const redirect = useRedirect()
+
+	const form = useForm<LoginFormType>({
+		resolver: yupResolver(loginValidationSchema),
+	})
 
 	const user = useStoreState(_ => _.auth.user)
 
@@ -38,6 +44,8 @@ export const Login: React.FC<{}> = () => {
 		console.group("Controller")
 
 		console.log("Submitting...")
+
+		const email = values.email
 
 		const result = await loginWithEmailPassword(values)
 
@@ -70,20 +78,16 @@ export const Login: React.FC<{}> = () => {
 							break;
 						case "auth/email-not-confirmed":
 							console.log("Email was not confirmed")
-							if (user?.email) {
-								console.log("User email:", user.email)
-								const response = await requestConfirmationEmail({ email: user.email })
-								console.log("Requesting confirmation email:", user.email)
-								if (response.isSuccess()) {
-									console.log("Success:", response)
-									setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
-								} else {
-									console.log("Failure:", response)
-									setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
-									console.warn("Error while requesting confirmation email", response)
-								}
+							console.log("User email:", email)
+							const response = await requestConfirmationEmail({ email })
+							console.log("Requesting confirmation email:", email)
+							if (response.isSuccess()) {
+								console.log("Success:", response)
+								setError("Confirm your email before logging in. We were unable to send you a new email confirmation link.")
 							} else {
-								console.log("No user email")
+								console.log("Failure:", response)
+								setError("Confirm your email before logging in. We have sent you a new email confirmation link to your email address.")
+								console.warn("Error while requesting confirmation email", response)
 							}
 							break;
 						case "server/unavailable":
@@ -113,11 +117,14 @@ export const Login: React.FC<{}> = () => {
 		redirect(_ => _.register)
 	}
 
-	return <LoginView {...{
-		handleGoogleSubmit,
-		handleSubmit,
-		handleForgotPassword,
-		handleCreateAccount,
-		error,
-	}} />
+	return <FormProvider {...form}>
+		<LoginView
+			handleGoogleSubmit={handleGoogleSubmit}
+			handleSubmit={handleSubmit}
+			handleForgotPassword={handleForgotPassword}
+			handleCreateAccount={handleCreateAccount}
+			error={error}
+			form={form}
+		/>
+	</FormProvider>
 }
