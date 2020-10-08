@@ -4,6 +4,7 @@ import { Type } from "../Type/Type";
 import { IOJsonTransaction } from "../../utils/FileIO/TransactionSpreadsheet";
 import { Button, CircularProgress } from "@material-ui/core";
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet";
+import { ProcessQueueProgress } from "../../utils/ProcessQueue/ProcessQueue";
 
 export type FileUploaderViewProps = {
 	handleFileUpload(e: React.ChangeEvent<HTMLInputElement>): Promise<void>;
@@ -11,6 +12,7 @@ export type FileUploaderViewProps = {
 	parsing: boolean;
 	uploading: boolean;
 	result: undefined | null | SpreadsheetReadFileResult<IOJsonTransaction>;
+	progress?: ProcessQueueProgress<any>;
 }
 
 export function FileUploaderView(props: FileUploaderViewProps) {
@@ -49,10 +51,20 @@ export function FileUploaderView(props: FileUploaderViewProps) {
 					onClick={props.handleUpload}
 				>
 					{
-						props.uploading ? <>
-							{"Tiedostoa ladataan..."}
-							<CircularProgress />
-						</> : <>
+						props.uploading ?
+							props.progress
+								? <>
+									{`Tiedostoa ladataan... ${props.progress.completed} / ${props.progress.total}`}
+									<CircularProgress variant="static" value={(() => {
+										if (props.progress.total <= 0) return 0
+										else return 100 * (props.progress.completed / props.progress.total)
+									})()} />
+								</>
+								: <>
+									{"Tiedostoa ladataan... "}
+									<CircularProgress />
+								</>
+							: <>
 								{"Lataa tiedostot"}
 							</>
 					}

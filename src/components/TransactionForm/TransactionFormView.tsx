@@ -59,13 +59,16 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			id="transaction-amount"
 			variant="outlined"
 			name="amount"
-			type="numeric"
+			type="number"
 			label="Amount"
 			error={!!props.errors.amount}
 			helperText={props.errors.amount}
 			fullWidth
 			required
 			size="small"
+			inputProps={{
+
+			}}
 			InputProps={{
 				endAdornment: <InputAdornment position="end">
 					<Type>
@@ -76,8 +79,10 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 		/>
 
 		<Autocomplete
-			value={props.category}
-			onChange={(e, v) => props.onCategoryChange(v)}
+			inputValue={props.category}
+			onInputChange={(e, v) => {
+				props.onCategoryChange(v)
+			}}
 			id="transaction-category"
 			freeSolo
 			openOnFocus

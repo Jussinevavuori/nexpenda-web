@@ -3,6 +3,11 @@
 .TransactionList {
   width: 100%;
   height: 100%;
+
+  & .ReactVirtualized__Grid.ReactVirtualized__List.virtualizedList {
+    outline: none;
+  }
+
   & .dateGroup {
     & > p {
       color: $color-text-default;
