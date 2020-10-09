@@ -1,0 +1,36 @@
+@import "main";
+
+.TransactionTableHeader {
+  display: grid;
+  grid-template-columns: 2fr 36px 5fr 8fr 3fr 60px 8px;
+  grid-template-areas: "amount padding category comment date actions scrollbarpadding";
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid $color-divider;
+
+  & .amount {
+    grid-area: amount;
+    justify-self: end;
+  }
+
+  & .category {
+    grid-area: category;
+  }
+
+  & .comment {
+    grid-area: comment;
+  }
+
+  & .date {
+    grid-area: date;
+  }
+
+  & .actions {
+    grid-area: actions;
+  }
+
+  & p {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+}

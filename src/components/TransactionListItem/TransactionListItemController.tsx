@@ -1,13 +1,13 @@
 import React, { useCallback } from "react"
-import { TransactionListingView } from "./TransactionListingView"
+import { TransactionListItemView } from "./TransactionListItemView"
 import { Transaction } from "../../classes/Transaction"
 import { useStoreActions } from "../../store"
 
-export type TransactionListingProps = {
+export type TransactionListItemProps = {
 	transaction: Transaction;
 }
 
-export function TransactionListing(props: TransactionListingProps) {
+export function TransactionListItem(props: TransactionListItemProps) {
 
 	const deleteTransaction = useStoreActions(_ => _.transactions.deleteTransaction)
 
@@ -15,7 +15,7 @@ export function TransactionListing(props: TransactionListingProps) {
 		deleteTransaction(props.transaction.id)
 	}, [props.transaction, deleteTransaction])
 
-	return <TransactionListingView
+	return <TransactionListItemView
 		transaction={props.transaction}
 		handleDelete={handleDelete}
 	/>

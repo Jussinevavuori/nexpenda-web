@@ -1,19 +1,19 @@
-import "./TransactionListing.scss";
+import "./TransactionListItem.scss";
 import React from "react"
 import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import { Plus as PlusIcon, Minus as MinusIcon } from "react-feather"
 
-export type TransactionListingViewProps = {
+export type TransactionListItemViewProps = {
 	transaction: Transaction;
 	handleDelete: Function;
 }
 
-export function TransactionListingView(props: TransactionListingViewProps) {
+export function TransactionListItemView(props: TransactionListItemViewProps) {
 
 	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
-	return <div className="TransactionListing">
+	return <div className="TransactionListItem">
 		<div className={cx("icon", signClass)}>
 			<div className="iconContainer">
 				{

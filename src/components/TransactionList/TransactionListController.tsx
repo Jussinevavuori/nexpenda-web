@@ -9,7 +9,6 @@ export type TransactionListProps = {
 export function TransactionList(props: TransactionListProps) {
 
 	const itemsByDates = useStoreState(_ => _.transactions.itemsByDates)
-
 	const filteredItemsByDates = useStoreState(_ => _.transactions.filtered.itemsByDates)
 
 	return <TransactionListView

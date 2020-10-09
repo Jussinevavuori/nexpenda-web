@@ -1,7 +1,7 @@
 import { Action, action, Computed, computed } from "easy-peasy";
 import * as datefns from "date-fns";
-import { compareDate } from "../utils/compareDate/compareDate";
 import { MINIMUM_DATE, MAXIMUM_DATE } from "../constants";
+import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export type IntervalModel = {
   /**
@@ -157,7 +157,7 @@ export const intervalModel: IntervalModel = {
   endDate: datefns.endOfMonth(new Date()),
 
   setStartDate: action((state, date) => {
-    if (compareDate(date, ">", state.endDate)) {
+    if (DateUtils.compareDate(date, ">", state.endDate)) {
       throw new Error("Start date cannot be after end date");
     } else {
       state.startDate = date;
@@ -165,7 +165,7 @@ export const intervalModel: IntervalModel = {
   }),
 
   setEndDate: action((state, date) => {
-    if (compareDate(date, "<", state.startDate)) {
+    if (DateUtils.compareDate(date, "<", state.startDate)) {
       throw new Error("End date cannot be before start date");
     } else {
       state.endDate = date;
@@ -173,7 +173,7 @@ export const intervalModel: IntervalModel = {
   }),
 
   setInterval: action((state, dates) => {
-    if (compareDate(dates.startDate, ">", dates.endDate)) {
+    if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
       throw new Error("End date cannot be before start date");
     } else {
       state.startDate = dates.startDate;
@@ -266,8 +266,8 @@ export const intervalModel: IntervalModel = {
 
   isAll: computed((state) => {
     return (
-      compareDate(state.startDate, "==", MINIMUM_DATE) &&
-      compareDate(state.endDate, "==", MAXIMUM_DATE)
+      DateUtils.compareDate(state.startDate, "==", MINIMUM_DATE) &&
+      DateUtils.compareDate(state.endDate, "==", MAXIMUM_DATE)
     );
   }),
 
@@ -302,8 +302,8 @@ export const intervalModel: IntervalModel = {
   includesToday: computed((state) => {
     const today = new Date();
     return (
-      compareDate(today, ">=", state.startDate) &&
-      compareDate(today, "<=", state.endDate)
+      DateUtils.compareDate(today, ">=", state.startDate) &&
+      DateUtils.compareDate(today, "<=", state.endDate)
     );
   }),
 

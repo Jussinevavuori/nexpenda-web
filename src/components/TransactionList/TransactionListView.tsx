@@ -1,6 +1,6 @@
 import "./TransactionList.scss";
 import React, { createRef, useEffect } from "react"
-import { TransactionListing } from "../TransactionListing/TransactionListing";
+import { TransactionListItem } from "../TransactionListItem/TransactionListItemController";
 import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
@@ -56,7 +56,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 								{
 									entry.items.map(item => {
 										return <li key={item.id}>
-											<TransactionListing transaction={item} />
+											<TransactionListItem transaction={item} />
 										</li>
 									})
 								}

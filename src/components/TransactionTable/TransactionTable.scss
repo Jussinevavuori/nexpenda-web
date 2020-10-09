@@ -1,0 +1,28 @@
+@import "main";
+
+.TransactionTable {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+
+  & .listContainer {
+    flex: 1;
+  }
+
+  & .virtualizedList {
+    width: 100%;
+    height: 100%;
+    outline: none;
+  }
+
+  & li {
+    list-style: none;
+  }
+
+  & .noTransactions {
+    height: 4rem;
+    display: grid;
+    place-items: center;
+  }
+}

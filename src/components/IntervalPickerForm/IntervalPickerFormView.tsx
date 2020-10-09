@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Today as CalendarIcon } from "@material-ui/i
 import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
 import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
-import { compareDate } from "../../utils/compareDate/compareDate";
+import { DateUtils } from "../../utils/DateUtils/DateUtils";
 
 export type IntervalPickerFormViewProps = {
 	onConfirm?(): void;
@@ -130,7 +130,7 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 		<section className="dateSection">
 
 			<DatePicker
-				value={compareDate(props.startDate, "==", MINIMUM_DATE) ? null : props.startDate}
+				value={DateUtils.compareDate(props.startDate, "==", MINIMUM_DATE) ? null : props.startDate}
 				onChange={d => props.setStartDate(d as Date)}
 				format="dd/MM/yyyy"
 				inputVariant="outlined"
@@ -145,7 +145,7 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 		<section className="dateSection">
 
 			<DatePicker
-				value={compareDate(props.endDate, "==", MAXIMUM_DATE) ? null : props.endDate}
+				value={DateUtils.compareDate(props.endDate, "==", MAXIMUM_DATE) ? null : props.endDate}
 				onChange={d => props.setEndDate(d as Date)}
 				format="dd/MM/yyyy"
 				inputVariant="outlined"

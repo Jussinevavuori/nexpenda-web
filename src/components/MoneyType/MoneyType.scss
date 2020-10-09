@@ -1,4 +1,16 @@
 @import "main";
 
 .MoneyType {
+  &.bold * {
+    font-weight: bold;
+  }
+
+  &.applyColor {
+    &.positive {
+      color: $color-positive-main;
+    }
+    &.negative {
+      color: $color-negative-main;
+    }
+  }
 }

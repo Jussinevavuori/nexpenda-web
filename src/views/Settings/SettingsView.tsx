@@ -3,7 +3,7 @@ import React from "react"
 import { Auth } from "../../classes/Auth";
 import { Button, Drawer } from "@material-ui/core";
 import { useSmMedia } from "../../hooks/useMedia";
-import { FileUploader } from "../../components/FileUploader/FileUploader";
+import { FileUploader } from "../../components/FileUploader/FileUploaderController";
 
 export type SettingsViewProps = {
 	user: Auth;

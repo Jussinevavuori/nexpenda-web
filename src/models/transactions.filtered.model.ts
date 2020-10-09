@@ -1,9 +1,8 @@
 import { computed, Computed } from "easy-peasy";
 import { Transaction } from "../classes/Transaction";
 import { MoneyAmount } from "../classes/MoneyAmount";
-import { groupByDate } from "../utils/groupByDate/groupByDate";
 import { StoreModel } from "../store";
-import { compareDate } from "../utils/compareDate/compareDate";
+import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export interface FilteredTransactionsModel {
   /**
@@ -61,12 +60,12 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
     ) => {
       return items.filter((item) => {
         // Filter by start date
-        if (compareDate(item.date, "<", startDate)) {
+        if (DateUtils.compareDate(item.date, "<", startDate)) {
           return false;
         }
 
         // Filter by end date
-        if (compareDate(item.date, ">", endDate)) {
+        if (DateUtils.compareDate(item.date, ">", endDate)) {
           return false;
         }
 
@@ -105,7 +104,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
   itemsByDates: computed(
     [(_, storeState) => storeState.transactions.filtered.items],
     (items) => {
-      return groupByDate(items, (_) => _.date, { sort: true });
+      return DateUtils.groupByDate(items, (_) => _.date, { sort: true });
     }
   ),
 

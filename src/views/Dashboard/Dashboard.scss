@@ -21,7 +21,7 @@
   & .transactionsList {
     grid-area: transactionsList;
     padding: 4px $spacing-sm;
-    margin-top: 1rem;
+    margin: 1rem 0;
     overflow-y: auto;
   }
 

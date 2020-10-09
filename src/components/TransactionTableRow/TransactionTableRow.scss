@@ -1,0 +1,44 @@
+@import "main";
+
+.TransactionTableRow {
+  height: 36px;
+  display: grid;
+  grid-template-columns: 2fr 36px 5fr 8fr 3fr 60px;
+  grid-template-areas: "amount padding category comment date actions";
+  align-items: center;
+
+  & .amount {
+    grid-area: amount;
+    justify-self: end;
+  }
+
+  & .category {
+    grid-area: category;
+  }
+
+  & .comment {
+    grid-area: comment;
+  }
+
+  & .date {
+    grid-area: date;
+  }
+
+  & .actions {
+    grid-area: actions;
+    display: none;
+    & .primary-action:hover {
+      color: $color-primary-main;
+    }
+    & .delete-action:hover {
+      color: $color-error-main;
+    }
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    & .actions {
+      display: block;
+    }
+  }
+}

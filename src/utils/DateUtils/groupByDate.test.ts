@@ -1,5 +1,5 @@
 import * as datefns from "date-fns";
-import { groupByDate } from "./groupByDate";
+import { DateUtils } from "./DateUtils";
 
 const items = [
   {
@@ -26,7 +26,7 @@ const items = [
 
 describe("group by date", () => {
   it("should correctly group items by dates", () => {
-    const result = groupByDate(items, (_) => _.date);
+    const result = DateUtils.groupByDate(items, (_) => _.date);
     expect(result).toHaveLength(4);
     const target = new Date("2020-01-11");
     const group = result.find((_) => datefns.isSameDay(_.date, target));
@@ -39,7 +39,7 @@ describe("group by date", () => {
   });
 
   it("should return groups in sorted order when required", () => {
-    const result = groupByDate(items, (_) => _.date, { sort: true });
+    const result = DateUtils.groupByDate(items, (_) => _.date, { sort: true });
     expect(datefns.isAfter(result[0].date, result[1].date)).toBeTruthy();
     expect(datefns.isAfter(result[1].date, result[2].date)).toBeTruthy();
     expect(datefns.isAfter(result[2].date, result[3].date)).toBeTruthy();

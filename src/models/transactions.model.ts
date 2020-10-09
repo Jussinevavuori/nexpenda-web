@@ -11,12 +11,12 @@ import {
 import { JsonTransaction, Transaction } from "../classes/Transaction";
 import { TransactionService } from "../services/TransactionService";
 import { StoreModel } from "../store";
-import { groupByDate } from "../utils/groupByDate/groupByDate";
 import { MoneyAmount } from "../classes/MoneyAmount";
 import {
   filteredTransactionsModel,
   FilteredTransactionsModel,
 } from "./transactions.filtered.model";
+import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export interface TransactionsModel {
   /**
@@ -162,7 +162,7 @@ export const transactionsModel: TransactionsModel = {
   items: [],
 
   itemsByDates: computed((state) => {
-    return groupByDate(state.items, (_) => _.date, { sort: true });
+    return DateUtils.groupByDate(state.items, (_) => _.date, { sort: true });
   }),
 
   count: computed((state) => state.items.length),
