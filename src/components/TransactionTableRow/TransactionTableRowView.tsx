@@ -4,7 +4,7 @@ import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
-import { IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import {
 	Edit as EditIcon,
 	Delete as DeleteIcon,
@@ -14,23 +14,48 @@ import { HslColor } from "../../utils/ColorUtils/Color";
 
 export type TransactionTableRowViewProps = {
 	transaction: Transaction;
+	deleting?: boolean;
+	onDelete(): void;
+	onCancelDelete(): void;
 }
 
 export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 
-	const color = HslColor.getRandomColorFromString(props.transaction.category, {
-		lightness: 48,
-		saturation: 58,
-	})
+	/**
+	 * Generate a random color to use as the label color for the category.
+	 */
+	const color = HslColor.getRandomColorFromString(
+		props.transaction.category,
+		{
+			lightness: 48,
+			saturation: 58,
+		}
+	)
 
-	console.log(color.toHexString())
+	/**
+	 * When deleting (delete button clicked and waiting to commit),
+	 * show message and enable user to cancel deletion.
+	 */
+	if (props.deleting) {
+		return <div className="TransactionTableRow deleting">
+			<Type color="error">
+				{"Deleted transaction."}
+			</Type>
+			<Button
+				size="small"
+				onClick={props.onCancelDelete}
+			>
+				{"Cancel"}
+			</Button>
+		</div>
+	}
 
 	return <div className="TransactionTableRow">
 		<div className="category">
 			<IconButton size="small">
 				<LabelIcon style={{ color: color.toHexString() }} />
 			</IconButton>
-			<Type>
+			<Type variant="subtitle2">
 				{props.transaction.category}
 			</Type>
 		</div>
@@ -42,12 +67,12 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 			/>
 		</div>
 		<div className="comment">
-			<Type>
+			<Type variant="body2">
 				{props.transaction.comment}
 			</Type>
 		</div>
 		<div className="date">
-			<Type>
+			<Type variant="subtitle2">
 				{toDatestring(props.transaction.date)}
 			</Type>
 		</div>
@@ -55,7 +80,11 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 			<IconButton className="primary-action" size="small">
 				<EditIcon />
 			</IconButton>
-			<IconButton className="delete-action" size="small">
+			<IconButton
+				onClick={props.onDelete}
+				className="delete-action"
+				size="small"
+			>
 				<DeleteIcon />
 			</IconButton>
 		</div>
@@ -64,8 +93,8 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 
 function toDatestring(date: Date) {
 	return date.getFullYear() === currentYear
-		? format(date, "dd.MM.")
-		: format(date, "dd.MM.yyyy")
+		? format(date, "d.M.")
+		: format(date, "d.M.yyyy")
 }
 
 const currentYear = new Date().getFullYear()

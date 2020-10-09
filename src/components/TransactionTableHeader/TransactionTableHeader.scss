@@ -2,7 +2,7 @@
 
 .TransactionTableHeader {
   display: grid;
-  grid-template-columns: 1fr 1fr 32px 3fr 1fr 60px 8px;
+  grid-template-columns: 12rem 1fr 32px 3fr 8rem 5rem 8px;
   grid-template-areas: "category amount p1 comment date actions scrollbarpadding";
   padding-bottom: 0.5rem;
   border-bottom: 1px solid $color-divider;
@@ -22,6 +22,7 @@
 
   & .date {
     grid-area: date;
+    justify-self: end;
   }
 
   & .actions {
