@@ -1,27 +1,38 @@
 @import "main";
 
 .TransactionTableRow {
-  height: 36px;
   display: grid;
-  grid-template-columns: 2fr 36px 5fr 8fr 3fr 60px;
-  grid-template-areas: "amount padding category comment date actions";
+  grid-template-columns: 160px 1fr 32px 3fr 1fr 60px;
+  grid-template-areas: "category amount p1 comment date actions";
+  height: 36px;
   align-items: center;
 
   & .amount {
     grid-area: amount;
     justify-self: end;
+    color: rgba(0, 0, 0, 0.9);
   }
 
   & .category {
     grid-area: category;
+    display: flex;
+    align-items: center;
+    & .MuiIconButton-root {
+      margin-right: 0.5rem;
+      & svg {
+        font-size: 1.2rem;
+      }
+    }
   }
 
   & .comment {
     grid-area: comment;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   & .date {
     grid-area: date;
+    color: rgba(0, 0, 0, 0.9);
   }
 
   & .actions {

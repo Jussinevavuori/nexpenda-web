@@ -1,5 +1,8 @@
 export type Color = RgbColor | HslColor;
 
+/**
+ * Color base class
+ */
 export abstract class BaseColor {
   /**
    * Clamp a value between the min and max values.
@@ -8,10 +11,20 @@ export abstract class BaseColor {
     return Math.min(max, Math.max(min, n));
   }
 
+  /**
+   * Converts the current color to an RGB color
+   */
   abstract toRgb(): RgbColor;
+
+  /**
+   * Converts the current color to an HSL color
+   */
   abstract toHsl(): HslColor;
 }
 
+/**
+ * RGB color
+ */
 export class RgbColor extends BaseColor {
   /**
    * Red value between 0 and 255
@@ -28,6 +41,15 @@ export class RgbColor extends BaseColor {
    */
   b: number;
 
+  /**
+   * Create an RGB from three values, the R, G and B
+   * values, each one which is expected and clamped to be in
+   * the range between 0 and 255.
+   *
+   * @param r Red value (0 - 255)
+   * @param g Green value (0 - 255)
+   * @param b Blue value (0 - 255)
+   */
   constructor(r: number, g: number, b: number) {
     super();
     this.r = this.clamp(r, 0, 255);
@@ -39,9 +61,9 @@ export class RgbColor extends BaseColor {
    * Return #rrggbb hex string representation.
    */
   toHexString(options?: { omitHash?: boolean }): string {
-    const rr = this.r.toString(16).padStart(2, "0");
-    const gg = this.g.toString(16).padStart(2, "0");
-    const bb = this.b.toString(16).padStart(2, "0");
+    const rr = Math.floor(this.r).toString(16).padStart(2, "0");
+    const gg = Math.floor(this.g).toString(16).padStart(2, "0");
+    const bb = Math.floor(this.b).toString(16).padStart(2, "0");
     const prefix = options?.omitHash ? "" : "#";
     return `${prefix}${rr}${gg}${bb}`;
   }
@@ -103,9 +125,20 @@ export class HslColor extends BaseColor {
    */
   l: number;
 
+  /**
+   * Create an HSL from three values, the H, S and L
+   * values, where the hue H is "moduloed" to be in the
+   * range of 0 - 360 (H % 360) and and the saturation S and
+   * lightness L are expected and clamped to be in the
+   * range between 0 and 100.
+   *
+   * @param h Red value (0 - 360)
+   * @param s Green value (0 - 100)
+   * @param l Blue value (0 - 100)
+   */
   constructor(h: number, s: number, l: number) {
     super();
-    this.h = this.clamp(h, 0, 360);
+    this.h = h % 360;
     this.s = this.clamp(s, 0, 100);
     this.l = this.clamp(l, 0, 100);
   }
@@ -147,5 +180,28 @@ export class HslColor extends BaseColor {
 
       return new RgbColor(r * 255, g * 255, b * 255);
     }
+  }
+
+  /**
+   * Takes in any string, and maps it deterministically to
+   * a value, which is used as the hue value. The values of
+   * saturation and lightness can be set manually in the options.
+   *
+   * @param string String to use as seed for generating hue
+   * @param options Options for generating color
+   */
+  static getRandomColorFromString(
+    string: string,
+    options?: {
+      saturation: number;
+      lightness: number;
+    }
+  ): HslColor {
+    const h = Array.from(string)
+      .map((_) => _.charCodeAt(0) ?? 0)
+      .reduce((sum, code) => sum + code, 0);
+    const s = options?.saturation ?? 50;
+    const l = options?.lightness ?? 75;
+    return new HslColor(h, s, l);
   }
 }

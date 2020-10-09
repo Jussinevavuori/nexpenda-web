@@ -8,14 +8,14 @@ export type TransactionTableHeaderViewProps = {
 
 export function TransactionTableHeaderView(props: TransactionTableHeaderViewProps) {
 	return <div className="TransactionTableHeader">
-		<div className="amount">
-			<Type>
-				{"Määrä"}
-			</Type>
-		</div>
 		<div className="category">
 			<Type>
 				{"Kategoria"}
+			</Type>
+		</div>
+		<div className="amount">
+			<Type>
+				{"Määrä"}
 			</Type>
 		</div>
 		<div className="comment">

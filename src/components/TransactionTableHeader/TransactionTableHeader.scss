@@ -2,8 +2,8 @@
 
 .TransactionTableHeader {
   display: grid;
-  grid-template-columns: 2fr 36px 5fr 8fr 3fr 60px 8px;
-  grid-template-areas: "amount padding category comment date actions scrollbarpadding";
+  grid-template-columns: 1fr 1fr 32px 3fr 1fr 60px 8px;
+  grid-template-areas: "category amount p1 comment date actions scrollbarpadding";
   padding-bottom: 0.5rem;
   border-bottom: 1px solid $color-divider;
 

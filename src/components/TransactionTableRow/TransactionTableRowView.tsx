@@ -7,26 +7,39 @@ import { Type } from "../Type/Type";
 import { IconButton } from "@material-ui/core";
 import {
 	Edit as EditIcon,
-	Delete as DeleteIcon
+	Delete as DeleteIcon,
+	Label as LabelIcon
 } from "@material-ui/icons"
+import { HslColor } from "../../utils/ColorUtils/Color";
 
 export type TransactionTableRowViewProps = {
 	transaction: Transaction;
 }
 
 export function TransactionTableRowView(props: TransactionTableRowViewProps) {
+
+	const color = HslColor.getRandomColorFromString(props.transaction.category, {
+		lightness: 48,
+		saturation: 58,
+	})
+
+	console.log(color.toHexString())
+
 	return <div className="TransactionTableRow">
+		<div className="category">
+			<IconButton size="small">
+				<LabelIcon style={{ color: color.toHexString() }} />
+			</IconButton>
+			<Type>
+				{props.transaction.category}
+			</Type>
+		</div>
 		<div className="amount">
 			<MoneyType
 				amount={props.transaction.amount}
 				applyColor
 				bold
 			/>
-		</div>
-		<div className="category">
-			<Type>
-				{props.transaction.category}
-			</Type>
 		</div>
 		<div className="comment">
 			<Type>
