@@ -7,6 +7,7 @@
   height: $app-header-height;
   color: white;
   .texture {
+    pointer-events: none;
     position: absolute;
     top: 0;
     left: 0;

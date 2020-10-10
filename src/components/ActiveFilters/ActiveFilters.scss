@@ -1,0 +1,15 @@
+@import "main";
+
+.ActiveFilters {
+  display: grid;
+  width: fit-content;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+
+  & .activeFilterChip {
+    border-color: white;
+    & * {
+      color: white;
+    }
+  }
+}

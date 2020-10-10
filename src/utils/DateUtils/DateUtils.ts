@@ -75,22 +75,34 @@ export class DateUtils {
   }
 
   /**
+   * Serializer options
+   */
+  static DateSerializer = {
+    yearFactor: 10000,
+    monthFactor: 100,
+    dateFactor: 1,
+  };
+
+  /**
    * Deserializes a date serialized with the `DateUtils.serializeDate`
    * function to the original date.
    *
    * @param serial Serialized number
    */
   static deserializeDate(serial: number) {
-    const year = Math.floor(serial / 341)
-      .toString()
-      .padStart(4, "0");
-    const month = Math.floor((serial % 341) / 31)
-      .toString()
-      .padStart(2, "0");
-    const date = Math.floor((serial % 341) % 31)
-      .toString()
-      .padStart(2, "0");
-    return new Date(`${year}-${month}-${date}`);
+    let remainder = serial;
+    const year = Math.floor(remainder / DateUtils.DateSerializer.yearFactor);
+    remainder = remainder % DateUtils.DateSerializer.yearFactor;
+    const month = Math.floor(remainder / DateUtils.DateSerializer.monthFactor);
+    remainder = remainder % DateUtils.DateSerializer.monthFactor;
+    const date = Math.floor(remainder / DateUtils.DateSerializer.dateFactor);
+    remainder = remainder % DateUtils.DateSerializer.dateFactor;
+
+    const yyyy = year.toString().padStart(4, "0");
+    const mm = month.toString().padStart(2, "0");
+    const dd = date.toString().padStart(2, "0");
+
+    return new Date(`${yyyy}-${mm}-${dd}`);
   }
 
   /**
@@ -100,6 +112,12 @@ export class DateUtils {
    * @param date Date to serialize
    */
   static serializeDate(date: Date) {
-    return date.getFullYear() * 341 + date.getMonth() * 31 + date.getDate();
+    return (
+      date.getFullYear() * DateUtils.DateSerializer.yearFactor +
+      (date.getMonth() + 1) * DateUtils.DateSerializer.monthFactor +
+      date.getDate() * DateUtils.DateSerializer.dateFactor
+    );
   }
 }
+
+(window as any).DateUtils = DateUtils;

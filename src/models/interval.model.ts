@@ -246,7 +246,9 @@ export const intervalModel: IntervalModel = {
 
   now: action((state) => {
     const today = new Date();
-    if (state.isYear) {
+    if (state.isAll) {
+      return;
+    } else if (state.isYear) {
       state.startDate = datefns.startOfYear(today);
       state.endDate = datefns.endOfYear(today);
     } else if (state.isMonth) {

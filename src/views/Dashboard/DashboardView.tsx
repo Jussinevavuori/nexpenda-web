@@ -4,10 +4,10 @@ import { TransactionList } from "../../components/TransactionList/TransactionLis
 import { Auth } from "../../classes/Auth";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
-import { MoneyType } from "../../components/MoneyType/MoneyType";
 import { FiltersPanel } from "../../components/FiltersPanel/FiltersPanelController";
 import { useLgMedia } from "../../hooks/useMedia";
 import { TransactionTable } from "../../components/TransactionTable/TransactionTableController";
+import { ActiveFilters } from "../../components/ActiveFilters/ActiveFiltersController";
 
 export type DashboardViewProps = {
 	user: Auth;
@@ -26,12 +26,11 @@ export function DashboardView(props: DashboardViewProps) {
 
 		<PageHeader>
 
-			<div className="totals">
+			<div className="pageHeaderContent">
 
-				<MoneyType
-					amount={props.filteredSum}
-					variant="h4"
-				/>
+				<div className="activeFilters">
+					<ActiveFilters />
+				</div>
 
 			</div>
 

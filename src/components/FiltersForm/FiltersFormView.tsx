@@ -10,25 +10,24 @@ export type FiltersFormViewProps = {
 
 	onResetAll(): void;
 
-	onResetSearchTerm(): void;
-	onResetAmount(): void;
-	onResetExcludedCategories(): void;
+	onResetSearchTermFilter(): void;
+	onResetAmountFilter(): void;
+	onResetCategoriesFilter(): void;
 
 	categories: string[];
 
-	searchTerm: string;
-	minAmount: number;
-	maxAmount: number;
-	excludedCategories: string[];
+	searchTermFilter: string;
+	minAmountFilter: number;
+	maxAmountFilter: number;
+	categoriesFilter: string[];
 
-	setSearchTerm(value: string): void;
-	setAmount(values: [number | undefined, number | undefined]): void;
-	excludeCategory(value: string | string[]): void;
-	includeCategory(value: string): void;
+	setSearchTermFilter(value: string): void;
+	setAmountFilter(values: [number | undefined, number | undefined]): void;
+	selectCategoryFilter(value: string | string[]): void;
+	deselectCategoryFilter(value: string): void;
 
 	minPossibleAmount: number;
 	maxPossibleAmount: number;
-
 }
 
 export function FiltersFormView(props: FiltersFormViewProps) {
@@ -63,14 +62,14 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 			</div>
 
 			<TextField
-				value={props.searchTerm}
-				onChange={e => props.setSearchTerm(e.target.value)}
+				value={props.searchTermFilter}
+				onChange={e => props.setSearchTermFilter(e.target.value)}
 				variant="outlined"
 				size="small"
 				fullWidth
 				InputProps={{
 					endAdornment: <InputAdornment position="end">
-						<IconButton size="small" onClick={props.onResetSearchTerm}>
+						<IconButton size="small" onClick={props.onResetSearchTermFilter}>
 							<ClearIcon />
 						</IconButton>
 					</InputAdornment>
@@ -89,7 +88,7 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 
 				<Button
 					variant="text"
-					onClick={props.onResetAmount}
+					onClick={props.onResetAmountFilter}
 				>
 					{"Reset"}
 				</Button>
@@ -99,16 +98,16 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 			<div className="sliderLabel">
 				<Type>
 					{
-						props.minAmount <= props.minPossibleAmount
+						props.minAmountFilter <= props.minPossibleAmount
 							? "N/A"
-							: Math.floor(props.minAmount / 100) + " €"
+							: Math.floor(props.minAmountFilter / 100) + " €"
 					}
 				</Type>
 				<Type>
 					{
-						props.maxAmount >= props.maxPossibleAmount
+						props.maxAmountFilter >= props.maxPossibleAmount
 							? "N/A"
-							: Math.ceil(props.maxAmount / 100) + " €"
+							: Math.ceil(props.maxAmountFilter / 100) + " €"
 					}
 				</Type>
 			</div>
@@ -116,9 +115,9 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 			<div className="sliderContainer">
 
 				<Slider
-					value={[Math.floor(props.minAmount / 100), Math.ceil(props.maxAmount / 100)]}
+					value={[Math.floor(props.minAmountFilter / 100), Math.ceil(props.maxAmountFilter / 100)]}
 					onChange={(e, value) => Array.isArray(value) && value.length === 2
-						? props.setAmount(value.map(_ => _ * 100) as [number, number])
+						? props.setAmountFilter(value.map(_ => _ * 100) as [number, number])
 						: console.error("Slider returned value which is not a numeric tuple:", value)
 					}
 					step={1}
@@ -142,7 +141,7 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 
 				<Button
 					variant="text"
-					onClick={props.onResetExcludedCategories}
+					onClick={props.onResetCategoriesFilter}
 				>
 					{"Reset"}
 				</Button>
@@ -152,44 +151,24 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 			<div className="categoryChips">
 
 				{props.categories.map(category => {
-					const excluded = props.excludedCategories.includes(category)
+					const selected = props.categoriesFilter.includes(category)
 					return <Chip
 						onClick={() => {
-							if (excluded) { props.includeCategory(category) }
-							else { props.excludeCategory(category) }
+							if (selected) { props.deselectCategoryFilter(category) }
+							else { props.selectCategoryFilter(category) }
 						}}
-						color={excluded ? "default" : "primary"}
+						color={selected ? "primary" : "default"}
 						label={category}
 					/>
 				})}
 
 			</div>
 
-			<div className="categoryActions">
-
-				<Button
-					variant="text"
-					onClick={props.onResetExcludedCategories}
-				>
-					{"Select all"}
-				</Button>
-
-				<Button
-					variant="text"
-					onClick={() => props.excludeCategory(props.categories)}
-				>
-					{"Deselect all"}
-				</Button>
-
-			</div>
-
-
-
 		</section>
 
 		{
 			props.onConfirm === undefined ? null :
-				<section className="ok">
+				<section className="submit">
 					<Button
 						color="primary"
 						variant="contained"

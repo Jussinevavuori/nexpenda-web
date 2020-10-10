@@ -11,16 +11,11 @@ export function Dashboard() {
 	const filteredSums = useStoreState(_ => _.transactions.filtered.sums)
 
 	if (!user) return null
-
 	return <DashboardView
-
 		intervalString={smartDisplayString}
-
 		filteredSum={filteredSums.all}
 		filteredIncomesSum={filteredSums.incomes}
 		filteredExpensesSum={filteredSums.expenses}
-
 		user={user}
-
 	/>
 }

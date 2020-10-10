@@ -18,6 +18,20 @@
     grid-area: pageHeader;
   }
 
+  & .pageHeaderContent {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template:
+      "empty" 1fr
+      "activeFilters" auto / 1fr;
+
+    & .activeFilters {
+      padding: 0.5rem;
+      grid-area: activeFilters;
+    }
+  }
+
   & .transactionsList {
     grid-area: transactionsList;
     padding: 4px $spacing-sm;

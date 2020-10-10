@@ -47,7 +47,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
       (_, storeState) => storeState.filters.searchTerm,
       (_, storeState) => storeState.filters.minAmount,
       (_, storeState) => storeState.filters.maxAmount,
-      (_, storeState) => storeState.filters.excludedCategories,
+      (_, storeState) => storeState.filters.categories,
     ],
     (
       items,
@@ -56,7 +56,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
       searchTerm,
       minAmount,
       maxAmount,
-      excludedCategories
+      categories
     ) => {
       return items.filter((item) => {
         // Filter by start date
@@ -79,8 +79,8 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
           return false;
         }
 
-        // Filter by category
-        if (excludedCategories.includes(item.category)) {
+        // Filter by category (if categories filter activated)
+        if (categories.length > 0 && !categories.includes(item.category)) {
           return false;
         }
 

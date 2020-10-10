@@ -20,10 +20,11 @@ export type FiltersModel = {
   maxAmount: number;
 
   /**
-   * Categories to exclude while filtering.
-   * Defaults to [].
+   * Categories filter: when this is empty, all categories are shown.
+   * Only when categories are included in this array, only those categories
+   * will be shown.
    */
-  excludedCategories: string[];
+  categories: string[];
 
   /**
    * Reset all filters action
@@ -59,30 +60,30 @@ export type FiltersModel = {
   /**
    * Exclude a category
    */
-  excludeCategory: Action<FiltersModel, string | string[]>;
+  selectCategory: Action<FiltersModel, string | string[]>;
 
   /**
    * Include a category
    */
-  includeCategory: Action<FiltersModel, string>;
+  deselectCategory: Action<FiltersModel, string>;
 
   /**
    * Reset excluded categories action
    */
-  resetExcludedCategories: Action<FiltersModel, void>;
+  resetCategories: Action<FiltersModel, void>;
 };
 
 export const filtersModel: FiltersModel = {
   searchTerm: "",
   minAmount: Number.NEGATIVE_INFINITY,
   maxAmount: Number.POSITIVE_INFINITY,
-  excludedCategories: [],
+  categories: [],
 
   resetAll: action((state) => {
     state.searchTerm = "";
     state.minAmount = Number.NEGATIVE_INFINITY;
     state.maxAmount = Number.POSITIVE_INFINITY;
-    state.excludedCategories = [];
+    state.categories = [];
   }),
 
   setSearchTerm: action((state, value) => {
@@ -107,19 +108,15 @@ export const filtersModel: FiltersModel = {
     state.maxAmount = Number.POSITIVE_INFINITY;
   }),
 
-  excludeCategory: action((state, category) => {
-    state.excludedCategories.push(
-      ...(Array.isArray(category) ? category : [category])
-    );
+  selectCategory: action((state, category) => {
+    state.categories.push(...(Array.isArray(category) ? category : [category]));
   }),
 
-  includeCategory: action((state, category) => {
-    state.excludedCategories = state.excludedCategories.filter(
-      (_) => _ !== category
-    );
+  deselectCategory: action((state, category) => {
+    state.categories = state.categories.filter((_) => _ !== category);
   }),
 
-  resetExcludedCategories: action((state) => {
-    state.excludedCategories = [];
+  resetCategories: action((state) => {
+    state.categories = [];
   }),
 };

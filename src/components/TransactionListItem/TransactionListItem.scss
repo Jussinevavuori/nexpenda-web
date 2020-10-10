@@ -1,6 +1,9 @@
 @import "main";
 
 .TransactionListItem {
+  padding: 6px 0;
+  height: 68px;
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto auto;
@@ -8,6 +11,10 @@
     "icon category amount"
     "icon comment amount";
   grid-gap: 0 24px;
+
+  &.pressed {
+    background: rgba(0, 0, 0, 0.1);
+  }
 
   & .icon {
     grid-area: icon;
@@ -67,6 +74,44 @@
 
     &.negative {
       color: $color-negative-main;
+    }
+  }
+
+  &.deleting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  & .actionOverlay {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & .MuiIconButton-root {
+      // border: 1px solid gray;
+      margin-left: 1rem;
+      background: white;
+    }
+
+    & .editAction {
+      background: $color-primary-main;
+      // border-color: $color-primary-main;
+      color: white;
+    }
+
+    & .deleteAction {
+      background: $color-error-main;
+      // border-color: $color-error-main;
+      color: white;
     }
   }
 }

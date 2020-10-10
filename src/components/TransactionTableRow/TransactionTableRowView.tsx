@@ -17,6 +17,7 @@ export type TransactionTableRowViewProps = {
 	deleting?: boolean;
 	onDelete(): void;
 	onCancelDelete(): void;
+	onSelectCategory(): void;
 }
 
 export function TransactionTableRowView(props: TransactionTableRowViewProps) {
@@ -52,7 +53,10 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 
 	return <div className="TransactionTableRow">
 		<div className="category">
-			<IconButton size="small">
+			<IconButton
+				size="small"
+				onClick={props.onSelectCategory}
+			>
 				<LabelIcon style={{ color: color.toHexString() }} />
 			</IconButton>
 			<Type variant="subtitle2">
