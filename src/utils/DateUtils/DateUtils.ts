@@ -119,5 +119,3 @@ export class DateUtils {
     );
   }
 }
-
-(window as any).DateUtils = DateUtils;

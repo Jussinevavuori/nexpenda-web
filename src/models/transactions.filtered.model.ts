@@ -3,6 +3,8 @@ import { Transaction } from "../classes/Transaction";
 import { MoneyAmount } from "../classes/MoneyAmount";
 import { StoreModel } from "../store";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
+import { DataUtils } from "../utils/DataUtils/DataUtils";
+import { lightFormat } from "date-fns";
 
 export interface FilteredTransactionsModel {
   /**
@@ -86,10 +88,15 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
 
         // Filter by search term
         if (
-          !(
-            item.amount.format().toLowerCase().includes(searchTerm) ||
-            item.category.toLowerCase().includes(searchTerm) ||
-            item.comment.toLowerCase().includes(searchTerm)
+          searchTerm &&
+          !DataUtils.textSearch(
+            searchTerm,
+            ...[
+              item.amount.format(),
+              item.category,
+              item.comment,
+              lightFormat(item.date, "d.M.yyyy"),
+            ]
           )
         ) {
           return false;

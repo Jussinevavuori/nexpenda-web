@@ -123,4 +123,14 @@ export class DataUtils {
       return { ...object, [key]: fn(obj[key]) };
     }, {} as Record<ObjectIndexable, B>);
   }
+
+  /**
+   * Searches text
+   */
+  static textSearch(search: string, ...match: string[]) {
+    const searchTerm = search.toLowerCase();
+    return match.some((matchable) => {
+      return matchable.toLowerCase().includes(searchTerm);
+    });
+  }
 }
