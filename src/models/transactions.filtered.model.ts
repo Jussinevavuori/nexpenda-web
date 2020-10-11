@@ -50,6 +50,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
       (_, storeState) => storeState.filters.minAmount,
       (_, storeState) => storeState.filters.maxAmount,
       (_, storeState) => storeState.filters.categories,
+      (_, storeState) => storeState.filters.hiddenIds,
     ],
     (
       items,
@@ -58,9 +59,15 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
       searchTerm,
       minAmount,
       maxAmount,
-      categories
+      categories,
+      hiddenIds
     ) => {
       return items.filter((item) => {
+        // Filter by hidden
+        if (hiddenIds.includes(item.id)) {
+          return false;
+        }
+
         // Filter by start date
         if (DateUtils.compareDate(item.date, "<", startDate)) {
           return false;

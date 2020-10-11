@@ -1,8 +1,7 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import { TransactionListItemView } from "./TransactionListItemView"
 import { Transaction } from "../../classes/Transaction"
-import { useStoreActions } from "../../store"
-import { useDelayedAction } from "../../hooks/useDelayedAction"
+import { useStoreActions, useStoreState } from "../../store"
 
 export type TransactionListItemProps = {
 	transaction: Transaction;
@@ -10,22 +9,41 @@ export type TransactionListItemProps = {
 
 export function TransactionListItem(props: TransactionListItemProps) {
 
-	const deleteTransaction = useStoreActions(_ => _.transactions.deleteTransaction)
+	/**
+	 * Selected
+	 */
+	const selection = useStoreState(_ => _.selection.selection)
+	const selected = useMemo(() => {
+		return selection.some(_ => _.id === props.transaction.id)
+	}, [props.transaction, selection])
 
-	const handleDelete = useCallback(async () => {
-		const deletion = await deleteTransaction(props.transaction.id)
-		if (deletion.isFailure()) {
-			console.error(deletion)
-		}
-	}, [deleteTransaction, props.transaction])
+	/**
+	 * Handle selection
+	 */
+	const select = useStoreActions(_ => _.selection.select)
+	const handleSelect = useCallback(() => {
+		select(props.transaction.id)
+	}, [props.transaction, select])
 
-	const delayedDeleteAction = useDelayedAction(handleDelete, 5000)
+	/**
+	 * Handle deselection
+	 */
+	const deselect = useStoreActions(_ => _.selection.deselect)
+	const handleDeselect = useCallback(() => {
+		deselect(props.transaction.id)
+	}, [props.transaction, deselect])
+
+	/**
+	 * Selection active
+	 */
+	const selectionActive = useStoreState(_ => _.selection.selectionActive)
 
 	return <TransactionListItemView
 		transaction={props.transaction}
-		onDelete={delayedDeleteAction.start}
-		onCancelDelete={delayedDeleteAction.cancel}
-		deleting={delayedDeleteAction.active}
-		onEdit={() => void 0}
+
+		selected={selected}
+		onSelect={handleSelect}
+		onDeselect={handleDeselect}
+		selectionActive={selectionActive}
 	/>
 }

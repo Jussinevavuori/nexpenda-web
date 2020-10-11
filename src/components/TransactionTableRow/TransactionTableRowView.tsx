@@ -4,20 +4,25 @@ import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
-import { Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import {
-	Edit as EditIcon,
-	Delete as DeleteIcon,
-	Label as LabelIcon
+	Label as LabelIcon,
+	CheckBox as SelectedIcon,
+	CheckBoxOutlineBlank as UnselectedIcon,
 } from "@material-ui/icons"
 import { HslColor } from "../../utils/ColorUtils/Color";
 
 export type TransactionTableRowViewProps = {
 	transaction: Transaction;
-	deleting?: boolean;
-	onDelete(): void;
-	onCancelDelete(): void;
+
 	onSelectCategory(): void;
+
+	onClick(e: React.MouseEvent): void;
+
+	selected: boolean;
+	onSelect(): void;
+	onDeselect(): void;
+	selectionActive: boolean;
 }
 
 export function TransactionTableRowView(props: TransactionTableRowViewProps) {
@@ -33,32 +38,39 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 		}
 	)
 
-	/**
-	 * When deleting (delete button clicked and waiting to commit),
-	 * show message and enable user to cancel deletion.
-	 */
-	if (props.deleting) {
-		return <div className="TransactionTableRow deleting">
-			<Type color="error">
-				{"Deleted transaction."}
-			</Type>
-			<Button
-				size="small"
-				onClick={props.onCancelDelete}
-			>
-				{"Cancel"}
-			</Button>
+	return <div
+		className="TransactionTableRow"
+		onClick={props.onClick}
+	>
+		<div className="action">
+			{
+				props.selectionActive
+					? props.selected
+						? <IconButton
+							onClick={e => {
+								e.stopPropagation()
+								props.onDeselect()
+							}}
+							children={<SelectedIcon />}
+						/>
+						: <IconButton
+							onClick={(e) => {
+								e.stopPropagation()
+								props.onSelect()
+							}}
+							children={<UnselectedIcon />}
+						/>
+					: <IconButton
+						onClick={(e) => {
+							e.stopPropagation()
+							props.onSelectCategory()
+						}}
+					>
+						<LabelIcon style={{ color: color.toHexString() }} />
+					</IconButton>
+			}
 		</div>
-	}
-
-	return <div className="TransactionTableRow">
 		<div className="category">
-			<IconButton
-				size="small"
-				onClick={props.onSelectCategory}
-			>
-				<LabelIcon style={{ color: color.toHexString() }} />
-			</IconButton>
 			<Type variant="subtitle2">
 				{props.transaction.category}
 			</Type>
@@ -79,18 +91,6 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 			<Type variant="subtitle2">
 				{toDatestring(props.transaction.date)}
 			</Type>
-		</div>
-		<div className="actions">
-			<IconButton className="primary-action" size="small">
-				<EditIcon />
-			</IconButton>
-			<IconButton
-				onClick={props.onDelete}
-				className="delete-action"
-				size="small"
-			>
-				<DeleteIcon />
-			</IconButton>
 		</div>
 	</div>
 }

@@ -12,12 +12,12 @@ export type JsonTransaction = {
 };
 
 export class Transaction {
-  date: Date;
-  category: string;
-  comment: string;
-  amount: MoneyAmount;
-  id: string;
-  uid: string;
+  public date: Date;
+  public category: string;
+  public comment: string;
+  public amount: MoneyAmount;
+  public id: string;
+  public uid: string;
 
   constructor(json: JsonTransaction) {
     this.date = new Date(json.time);

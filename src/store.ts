@@ -10,10 +10,12 @@ import {
   notificationModel,
   NotificationModel,
 } from "./models/notification.model";
+import { selectionModel, SelectionModel } from "./models/selection.model";
 
 export interface StoreModel {
   notification: NotificationModel;
   transactions: TransactionsModel;
+  selection: SelectionModel;
   interval: IntervalModel;
   filters: FiltersModel;
   auth: AuthModel;
@@ -22,6 +24,7 @@ export interface StoreModel {
 const storeModel: StoreModel = {
   notification: notificationModel,
   transactions: transactionsModel,
+  selection: selectionModel,
   interval: intervalModel,
   filters: filtersModel,
   auth: authModel,

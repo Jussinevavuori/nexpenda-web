@@ -32,12 +32,16 @@
       color: white;
     }
 
-    &.positive .iconContainer {
+    &.positive:not(.selectionActive) .iconContainer {
       background-color: $color-positive-main;
     }
 
-    &.negative .iconContainer {
+    &.negative:not(.selectionActive) .iconContainer {
       background-color: $color-negative-main;
+    }
+
+    &.selectionActive.selected .iconContainer {
+      background-color: $color-primary-main;
     }
   }
 

@@ -153,6 +153,7 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 				{props.categories.map(category => {
 					const selected = props.categoriesFilter.includes(category)
 					return <Chip
+						key={category}
 						onClick={() => {
 							if (selected) { props.deselectCategoryFilter(category) }
 							else { props.selectCategoryFilter(category) }

@@ -8,6 +8,8 @@ import { FiltersPanel } from "../../components/FiltersPanel/FiltersPanelControll
 import { useLgMedia } from "../../hooks/useMedia";
 import { TransactionTable } from "../../components/TransactionTable/TransactionTableController";
 import { ActiveFilters } from "../../components/ActiveFilters/ActiveFiltersController";
+import { Transaction } from "../../classes/Transaction";
+import { SelectionPanel } from "../../components/SelectionPanel/SelectionPanelController";
 
 export type DashboardViewProps = {
 	user: Auth;
@@ -16,6 +18,11 @@ export type DashboardViewProps = {
 	filteredSum: MoneyAmount;
 	filteredIncomesSum: MoneyAmount;
 	filteredExpensesSum: MoneyAmount;
+
+	selectionActive: boolean;
+	selection: Transaction[];
+	onSelectAll(): void;
+	onDeselectAll(): void;
 }
 
 export function DashboardView(props: DashboardViewProps) {
@@ -36,9 +43,13 @@ export function DashboardView(props: DashboardViewProps) {
 
 		</PageHeader>
 
-		<section className="filtersPanel">
+		<section className="panel">
 
-			<FiltersPanel />
+			{
+				props.selectionActive
+					? <SelectionPanel />
+					: <FiltersPanel />
+			}
 
 		</section>
 

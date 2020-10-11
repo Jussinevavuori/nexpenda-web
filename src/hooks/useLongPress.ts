@@ -14,7 +14,7 @@ export default function useLongPress(
     if (options?.pressTimeInMs) {
       return options.pressTimeInMs;
     }
-    return 500;
+    return 300;
   }, [options]);
 
   /**
@@ -74,7 +74,7 @@ export default function useLongPress(
    * Disable the current long press (still show as pressed),
    * for example when user scrolls
    */
-  const disableLongPress = useCallback(() => {
+  const cancelLongPress = useCallback(() => {
     if (timeout.current) {
       clearTimeout(timeout.current);
       timeout.current = null;
@@ -100,7 +100,8 @@ export default function useLongPress(
       onMouseLeave: endLongPress,
       onTouchStart: startLongPress,
       onTouchEnd: endLongPress,
-      onTouchMove: disableLongPress,
+      onTouchMove: cancelLongPress,
+      onTouchCancel: cancelLongPress,
     },
   };
 }

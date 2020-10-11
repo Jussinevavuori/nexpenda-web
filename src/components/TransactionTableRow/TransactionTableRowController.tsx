@@ -1,6 +1,5 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import { Transaction } from "../../classes/Transaction"
-import { useDelayedAction } from "../../hooks/useDelayedAction"
 import { useStoreActions, useStoreState } from "../../store"
 import { TransactionTableRowView } from "./TransactionTableRowView"
 
@@ -10,23 +9,12 @@ export type TransactionTableRowProps = {
 
 export function TransactionTableRow(props: TransactionTableRowProps) {
 
-	const deleteTransaction = useStoreActions(_ => _.transactions.deleteTransaction)
-	const selectCategoryFilter = useStoreActions(_ => _.filters.selectCategory)
-	const deselectCategoryFilter = useStoreActions(_ => _.filters.deselectCategory)
-	const categoryFilter = useStoreState(_ => _.filters.categories)
-
-	const handleDelete = useCallback(async () => {
-		const deletion = await deleteTransaction(props.transaction.id)
-		if (deletion.isFailure()) {
-			console.error(deletion)
-		}
-	}, [deleteTransaction, props.transaction])
-
-	const delayedDeleteAction = useDelayedAction(handleDelete, 5000)
-
 	/**
 	 * Handle category select and deselect
 	 */
+	const categoryFilter = useStoreState(_ => _.filters.categories)
+	const selectCategoryFilter = useStoreActions(_ => _.filters.selectCategory)
+	const deselectCategoryFilter = useStoreActions(_ => _.filters.deselectCategory)
 	const handleCategorySelect = useCallback(() => {
 		const category = props.transaction.category
 		if (categoryFilter.includes(category)) {
@@ -36,11 +24,56 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 		}
 	}, [categoryFilter, deselectCategoryFilter, selectCategoryFilter, props.transaction])
 
+	/**
+	 * Selected
+	 */
+	const selection = useStoreState(_ => _.selection.selection)
+	const selected = useMemo(() => {
+		return selection.some(_ => _.id === props.transaction.id)
+	}, [props.transaction, selection])
+
+	/**
+	 * Handle selection
+	 */
+	const select = useStoreActions(_ => _.selection.select)
+	const handleSelect = useCallback(() => {
+		select(props.transaction.id)
+	}, [props.transaction, select])
+
+	/**
+	 * Handle deselection
+	 */
+	const deselect = useStoreActions(_ => _.selection.deselect)
+	const handleDeselect = useCallback(() => {
+		deselect(props.transaction.id)
+	}, [props.transaction, deselect])
+
+	/**
+	 * Selection active
+	 */
+	const selectionActive = useStoreState(_ => _.selection.selectionActive)
+
+	/**
+	 * Handle click
+	 */
+	const handleClick = useCallback((e: React.MouseEvent) => {
+		if (selected) {
+			handleDeselect()
+		} else {
+			handleSelect()
+		}
+	}, [handleDeselect, handleSelect, selected])
+
 	return <TransactionTableRowView
 		transaction={props.transaction}
-		deleting={delayedDeleteAction.active}
-		onDelete={delayedDeleteAction.start}
-		onCancelDelete={delayedDeleteAction.cancel}
+
 		onSelectCategory={handleCategorySelect}
+
+		onClick={handleClick}
+
+		selected={selected}
+		selectionActive={selectionActive}
+		onSelect={handleSelect}
+		onDeselect={handleDeselect}
 	/>
 }

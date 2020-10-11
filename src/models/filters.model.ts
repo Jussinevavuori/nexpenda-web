@@ -27,6 +27,11 @@ export type FiltersModel = {
   categories: string[];
 
   /**
+   * Filter to manually hide certain transactions
+   */
+  hiddenIds: string[];
+
+  /**
    * Reset all filters action
    */
   resetAll: Action<FiltersModel, void>;
@@ -71,6 +76,21 @@ export type FiltersModel = {
    * Reset excluded categories action
    */
   resetCategories: Action<FiltersModel, void>;
+
+  /**
+   * Hide an ID
+   */
+  hideId: Action<FiltersModel, string>;
+
+  /**
+   * Unhide an ID
+   */
+  showId: Action<FiltersModel, string>;
+
+  /**
+   * Resets all hidden IDs
+   */
+  resetHiddenIds: Action<FiltersModel, void>;
 };
 
 export const filtersModel: FiltersModel = {
@@ -78,6 +98,7 @@ export const filtersModel: FiltersModel = {
   minAmount: Number.NEGATIVE_INFINITY,
   maxAmount: Number.POSITIVE_INFINITY,
   categories: [],
+  hiddenIds: [],
 
   resetAll: action((state) => {
     state.searchTerm = "";
@@ -118,5 +139,17 @@ export const filtersModel: FiltersModel = {
 
   resetCategories: action((state) => {
     state.categories = [];
+  }),
+
+  hideId: action((state, id) => {
+    state.hiddenIds.push(id);
+  }),
+
+  showId: action((state, id) => {
+    state.hiddenIds = state.hiddenIds.filter((_) => _ !== id);
+  }),
+
+  resetHiddenIds: action((state) => {
+    state.hiddenIds = [];
   }),
 };
