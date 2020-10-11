@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React from "react"
 import { SidebarView } from "./SidebarView"
 import { useRouteMatch } from "react-router-dom"
 import { routes } from "../../Routes"
 import { useRedirect } from "../../hooks/useRedirect"
 import { useStoreState, useStoreActions } from "../../store"
+import { useHashOpenState } from "../../hooks/useHashOpenState"
 
 export type SidebarProps = {
 
@@ -22,7 +23,7 @@ export function Sidebar(props: SidebarProps) {
 
 	const redirect = useRedirect()
 
-	const [transactionFormOpen, setTransactionFormOpen] = useState(false)
+	const [transactionFormOpen, setTransactionFormOpen] = useHashOpenState("new")
 
 	if (!user) return null
 

@@ -5,7 +5,7 @@ import { Button, Drawer, IconButton, Menu, } from "@material-ui/core";
 import { useLgMedia, useMdMedia } from "../../hooks/useMedia";
 import { FiltersForm } from "../FiltersForm/FiltersFormController";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerFormController";
-import { useBooleanQueryState } from "../../hooks/useBooleanQueryState";
+import { useHashOpenState } from "../../hooks/useHashOpenState";
 
 export type FiltersPanelViewProps = {
 	intervalString: string;
@@ -31,7 +31,7 @@ export type FiltersPanelViewProps = {
 
 export function FiltersPanelView(props: FiltersPanelViewProps) {
 
-	const [filtersFormDrawerOpen, setFiltersFormDrawerOpen] = useBooleanQueryState("filters", "open")
+	const [filtersFormDrawerOpen, setFiltersFormDrawerOpen] = useHashOpenState("filters")
 
 	const [intervalPickerMenuAnchor, setIntervalPickerMenuAnchor] = useState<HTMLElement>()
 
