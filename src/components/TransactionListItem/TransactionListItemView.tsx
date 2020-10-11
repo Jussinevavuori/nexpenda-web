@@ -1,5 +1,5 @@
 import "./TransactionListItem.scss";
-import React, { useCallback, useState } from "react"
+import React, { useCallback } from "react"
 import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import {
@@ -9,11 +9,12 @@ import {
 import {
 	Edit as EditIcon,
 	Delete as DeleteIcon,
-	Close as CloseIcon
 } from "@material-ui/icons"
 import useLongPress from "../../hooks/useLongPress";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, Drawer } from "@material-ui/core";
 import { Type } from "../Type/Type";
+import { useHashOpenState } from "../../hooks/useHashOpenState";
+import { useLgMedia } from "../../hooks/useMedia";
 
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
@@ -27,11 +28,13 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 
 	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
-	const [actionOverlayActive, setActionOverlayActive] = useState(false)
+	const [drawerOpen, setDrawerOpen] = useHashOpenState(`options-${props.transaction.id}`)
 
-	const handleLongPress = useCallback(() => setActionOverlayActive(true), [])
+	const handleLongPress = useCallback(() => setDrawerOpen(true), [setDrawerOpen])
 
 	const longPress = useLongPress(handleLongPress)
+
+	const largeScreen = useLgMedia()
 
 	/**
 	 * After deleting, show "deleted" screen with cancel delete option
@@ -50,67 +53,75 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 		</div>
 	}
 
-	return <div
-		className={cx("TransactionListItem", { pressed: longPress.pressed })}
-		{...longPress.props}
-	>
+	return <>
 
-		{
-			/**
-			 * After long press, show the action overlay screen
-			 */
-			actionOverlayActive ? <div
-				className="actionOverlay"
-				onClick={e => {
-					if (e.target === e.currentTarget) {
-						setActionOverlayActive(false)
-					}
-				}}
-			>
-				<IconButton
+		<Drawer
+			className="TransactionListItem_actionsDrawer"
+			open={drawerOpen}
+			onClose={() => setDrawerOpen(false)}
+			anchor={largeScreen ? "right" : "bottom"}
+		>
+			<div className="actionsDrawerActions">
+				<Button
+					color="primary"
 					className="editAction"
-					onClick={props.onEdit}
+					onClick={() => {
+						setDrawerOpen(false)
+						props.onEdit()
+					}}
+					startIcon={<EditIcon />}
 				>
-					<EditIcon />
-				</IconButton>
-				<IconButton
+					{"Edit"}
+				</Button>
+				<Button
 					className="deleteAction"
-					onClick={props.onDelete}
+					onClick={() => {
+						setDrawerOpen(false)
+						props.onDelete()
+					}}
+					startIcon={<DeleteIcon />}
 				>
-					<DeleteIcon />
-				</IconButton>
-				<IconButton
+					{"Delete"}
+				</Button>
+				<Button
 					className="closeAction"
-					onClick={() => { setActionOverlayActive(false) }}
+					onClick={() => setDrawerOpen(false)}
 				>
-					<CloseIcon />
-				</IconButton>
-			</div> : null
-		}
+					{"Close"}
+				</Button>
+			</div>
+		</Drawer>
 
-		<div className={cx("icon", signClass)}>
-			<div className="iconContainer">
-				{
-					props.transaction.amount.isPositive
-						? <PlusIcon />
-						: <MinusIcon />
-				}
+
+		<div
+			className={cx("TransactionListItem", { pressed: longPress.pressed })}
+			{...longPress.props}
+		>
+			<div className={cx("icon", signClass)}>
+				<div className="iconContainer">
+					{
+						props.transaction.amount.isPositive
+							? <PlusIcon />
+							: <MinusIcon />
+					}
+				</div>
+			</div>
+			<div className="category">
+				<span>
+					{props.transaction.category}
+				</span>
+			</div>
+			<div className="comment">
+				<span>
+					{props.transaction.comment}
+				</span>
+			</div>
+			<div className={cx("amount", signClass)}>
+				<span>
+					{props.transaction.amount.format()}
+				</span>
 			</div>
 		</div>
-		<div className="category">
-			<span>
-				{props.transaction.category}
-			</span>
-		</div>
-		<div className="comment">
-			<span>
-				{props.transaction.comment}
-			</span>
-		</div>
-		<div className={cx("amount", signClass)}>
-			<span>
-				{props.transaction.amount.format()}
-			</span>
-		</div>
-	</div>
+
+	</>
 }

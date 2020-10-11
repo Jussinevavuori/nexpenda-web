@@ -1,9 +1,11 @@
 import "./Settings.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { Button, Drawer } from "@material-ui/core";
+import { Button, CircularProgress, Drawer } from "@material-ui/core";
 import { useSmMedia } from "../../hooks/useMedia";
 import { FileUploader } from "../../components/FileUploader/FileUploaderController";
+import { ProcessQueueProgress } from "../../utils/ProcessQueue/ProcessQueue";
+import { Type } from "../../components/Type/Type";
 
 export type SettingsViewProps = {
 	user: Auth;
@@ -11,6 +13,9 @@ export type SettingsViewProps = {
 	uploaderOpen: boolean;
 	onUploaderClose(): void;
 	onUploaderOpen(): void;
+
+	onDeleteAll(): void;
+	deleteAllProgress?: ProcessQueueProgress<any>
 }
 
 export function SettingsView(props: SettingsViewProps) {
@@ -60,6 +65,24 @@ export function SettingsView(props: SettingsViewProps) {
 			<Button onClick={props.onUploaderOpen}>
 				{"Tuo tiedostosta"}
 			</Button>
+		</div>
+
+		<div>
+			{
+				props.deleteAllProgress
+					? <div>
+						<CircularProgress
+							variant="static"
+							value={(props.deleteAllProgress.completed / Math.max(1, props.deleteAllProgress.total)) * 100}
+						/>
+						<Type>
+							{`Alustetaan ${props.deleteAllProgress.completed}/${props.deleteAllProgress.total}`}
+						</Type>
+					</div>
+					: <Button onClick={props.onDeleteAll}>
+						{"Alusta"}
+					</Button>
+			}
 		</div>
 
 	</div>

@@ -33,6 +33,7 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 
 	const [filtersFormDrawerOpen, setFiltersFormDrawerOpen] = useHashOpenState("filters")
 
+	const [intervalPickerOpen, setIntervalPickerOpen] = useHashOpenState("interval")
 	const [intervalPickerMenuAnchor, setIntervalPickerMenuAnchor] = useState<HTMLElement>()
 
 	const mediumScreen = useMdMedia()
@@ -60,24 +61,36 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 			 */
 			mediumScreen
 				? <Menu
-					open={!!intervalPickerMenuAnchor}
-					onClose={() => setIntervalPickerMenuAnchor(undefined)}
+					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
+					onClose={() => {
+						setIntervalPickerMenuAnchor(undefined)
+						setIntervalPickerOpen(false)
+					}}
 					anchorEl={intervalPickerMenuAnchor}
 				>
 					<div className="FiltersPanel_intervalPickerMenu">
 						<IntervalPickerForm
-							onConfirm={() => setIntervalPickerMenuAnchor(undefined)}
+							onConfirm={() => {
+								setIntervalPickerMenuAnchor(undefined)
+								setIntervalPickerOpen(false)
+							}}
 						/>
 					</div>
 				</Menu>
 				: <Drawer
-					open={!!intervalPickerMenuAnchor}
-					onClose={() => setIntervalPickerMenuAnchor(undefined)}
+					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
+					onClose={() => {
+						setIntervalPickerMenuAnchor(undefined)
+						setIntervalPickerOpen(false)
+					}}
 					anchor="bottom"
 				>
 					<div className="FiltersPanel_intervalPickerDrawer">
 						<IntervalPickerForm
-							onConfirm={() => setIntervalPickerMenuAnchor(undefined)}
+							onConfirm={() => {
+								setIntervalPickerMenuAnchor(undefined)
+								setIntervalPickerOpen(false)
+							}}
 						/>
 					</div>
 				</Drawer>
@@ -91,7 +104,10 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 				<Button
 					variant="text"
 					startIcon={<CalendarIcon />}
-					onClick={e => setIntervalPickerMenuAnchor(e.currentTarget)}
+					onClick={e => {
+						setIntervalPickerOpen(true)
+						setIntervalPickerMenuAnchor(e.currentTarget)
+					}}
 				>
 					{props.intervalString}
 				</Button>

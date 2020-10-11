@@ -1,4 +1,4 @@
-import { Process } from "../Process/Process";
+type Process<T> = () => T | Promise<T>;
 
 export type ProcessQueueProgress<T> = {
   results: T[];
@@ -121,7 +121,7 @@ export class ProcessQueue<T> {
         /**
          * Execute all processes simultaneously
          */
-        const executions = chunk.map((process) => process.run());
+        const executions = chunk.map((process) => process());
         const results = await Promise.all(executions);
         const n = results.length;
 

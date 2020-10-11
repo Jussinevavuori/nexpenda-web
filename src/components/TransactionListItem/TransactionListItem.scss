@@ -1,7 +1,7 @@
 @import "main";
 
 .TransactionListItem {
-  padding: 6px 0;
+  padding: 6px 1rem 6px 0;
   height: 68px;
   position: relative;
   display: grid;
@@ -82,36 +82,23 @@
     align-items: center;
     justify-content: space-between;
   }
+}
 
-  & .actionOverlay {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.5);
+.TransactionListItem_actionsDrawer {
+  padding: $spacing-sm;
+  min-height: 50vh;
+  max-height: 80vh;
+  @include lg {
+    max-width: 50vw;
+  }
 
+  & .actionsDrawerActions {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    & .MuiIconButton-root {
-      // border: 1px solid gray;
-      margin-left: 1rem;
-      background: white;
-    }
-
-    & .editAction {
-      background: $color-primary-main;
-      // border-color: $color-primary-main;
-      color: white;
-    }
-
-    & .deleteAction {
-      background: $color-error-main;
-      // border-color: $color-error-main;
-      color: white;
-    }
+  & .deleteAction {
+    color: $color-error-main;
   }
 }

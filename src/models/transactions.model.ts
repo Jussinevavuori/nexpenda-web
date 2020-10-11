@@ -223,10 +223,12 @@ export const transactionsModel: TransactionsModel = {
     state.items.push(new Transaction(json));
   }),
 
-  deleteTransaction: thunk(async (actions, id) => {
+  deleteTransaction: thunk(async (actions, id, { getState }) => {
+    const transaction = getState().items.find((_) => _.id === id);
+    actions._deleteTransaction(id);
     const result = await TransactionService.deleteTransaction(id);
-    if (result.isSuccess()) {
-      actions._deleteTransaction(id);
+    if (result.isFailure() && transaction) {
+      actions._putTransaction(transaction?.toJson());
     }
     return result;
   }),
@@ -244,9 +246,14 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   _putTransaction: action((state, json) => {
-    state.items = state.items.map((item) =>
-      item.id === json.id ? new Transaction(json) : item
-    );
+    const exists = state.items.find((_) => _.id === json.id);
+    if (exists) {
+      state.items = state.items.map((item) =>
+        item.id === json.id ? new Transaction(json) : item
+      );
+    } else {
+      state.items.push(new Transaction(json));
+    }
   }),
 
   patchTransaction: thunk(async (actions, json) => {
