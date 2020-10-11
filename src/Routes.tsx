@@ -10,6 +10,7 @@ import { ForgotPassword } from "./views/ForgotPassword/ForgotPasswordController"
 import { AppFrame } from "./views/AppFrame/AppFrameController";
 import { ChangePassword } from "./views/ChangePassword/ChangePasswordController";
 import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmailController";
+import { Budget } from "./views/Budget/BudgetController";
 
 export const routes = {
 	approot: "/app",
@@ -66,7 +67,7 @@ export function Routes() {
 
 		<ProtectedRoute exact path={routes.budget}>
 			<AppFrame>
-				<p>Budget placeholder</p>
+				<Budget />
 			</AppFrame>
 		</ProtectedRoute>
 
@@ -75,10 +76,6 @@ export function Routes() {
 				<Settings />
 			</AppFrame>
 		</ProtectedRoute>
-
-		<Route exact path="/v">
-			Version number 0.0.1
-		</Route>
 
 		<Route path="/">
 			<Redirect to={routes.dashboard} />
