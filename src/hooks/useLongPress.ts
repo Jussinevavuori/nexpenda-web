@@ -71,6 +71,17 @@ export default function useLongPress(
   }, [setPressed, timeout]);
 
   /**
+   * Disable the current long press (still show as pressed),
+   * for example when user scrolls
+   */
+  const disableLongPress = useCallback(() => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+      timeout.current = null;
+    }
+  }, [timeout]);
+
+  /**
    * Cleaning out any timeouts
    */
   useEffect(() => {
@@ -89,6 +100,7 @@ export default function useLongPress(
       onMouseLeave: endLongPress,
       onTouchStart: startLongPress,
       onTouchEnd: endLongPress,
+      onTouchMove: disableLongPress,
     },
   };
 }
