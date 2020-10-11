@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useVhFix } from './hooks/useVhFix';
 import { Routes } from './Routes';
 import { useStoreActions } from './store';
+import { Notification } from "./components/Notification/NotificationController"
 
 function App() {
 
@@ -18,7 +19,10 @@ function App() {
 		getProfile()
 	}, [getProfile])
 
-	return <Routes />
+	return <>
+		<Notification />
+		<Routes />
+	</>
 }
 
 export default App;

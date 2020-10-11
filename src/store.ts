@@ -6,8 +6,13 @@ import {
 } from "./models/transactions.model";
 import { intervalModel, IntervalModel } from "./models/interval.model";
 import { FiltersModel, filtersModel } from "./models/filters.model";
+import {
+  notificationModel,
+  NotificationModel,
+} from "./models/notification.model";
 
 export interface StoreModel {
+  notification: NotificationModel;
   transactions: TransactionsModel;
   interval: IntervalModel;
   filters: FiltersModel;
@@ -15,6 +20,7 @@ export interface StoreModel {
 }
 
 const storeModel: StoreModel = {
+  notification: notificationModel,
   transactions: transactionsModel,
   interval: intervalModel,
   filters: filtersModel,

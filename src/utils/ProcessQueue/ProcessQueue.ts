@@ -1,6 +1,6 @@
 type Process<T> = () => T | Promise<T>;
 
-export type ProcessQueueProgress<T> = {
+export type ProcessQueueProgress<T = any> = {
   results: T[];
   completed: number;
   remaining: number;
