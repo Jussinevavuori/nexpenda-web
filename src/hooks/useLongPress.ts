@@ -54,7 +54,7 @@ export default function useLongPress(
       callback();
       setPressed(false);
       if (!disableVibrate) {
-        window.navigator.vibrate(200);
+        window.navigator.vibrate(100);
       }
     }, pressTimeInMs);
   }, [callback, setPressed, timeout, pressTimeInMs, disableVibrate]);
