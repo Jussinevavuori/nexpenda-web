@@ -99,6 +99,7 @@ export default function useLongPress(
       onPointerUp: endLongPress,
       onMouseUp: endLongPress,
       onTouchUp: endLongPress,
+      onPointerLeave: endLongPress,
       onPointerMove: cancelLongPress,
       onPointerCancel: cancelLongPress,
     },
