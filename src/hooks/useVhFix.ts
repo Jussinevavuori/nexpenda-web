@@ -8,6 +8,7 @@ export function useVhFix() {
       root.style.setProperty("--full-vh", `${viewportHeight}px`);
       root.style.setProperty("--vh", `${viewportHeight / 100}px`);
     };
+    eventHandler();
     window.addEventListener("resize", eventHandler);
     return () => {
       window.removeEventListener("resize", eventHandler);
