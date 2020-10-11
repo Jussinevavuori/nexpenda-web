@@ -1,9 +1,32 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 export default function useLongPress(
   callback: () => void,
-  pressTimeInMs: number = 300
+  options?: {
+    pressTimeInMs?: number;
+    disableVibrate?: boolean;
+  }
 ) {
+  /**
+   * Default press time in MS to 500 unless overridden in options
+   */
+  const pressTimeInMs = useMemo(() => {
+    if (options?.pressTimeInMs) {
+      return options.pressTimeInMs;
+    }
+    return 500;
+  }, [options]);
+
+  /**
+   * Default to enabled vibrate unless disabled in options
+   */
+  const disableVibrate = useMemo(() => {
+    if (options?.disableVibrate) {
+      return true;
+    }
+    return false;
+  }, [options]);
+
   /**
    * Is the press currently occuring
    */
@@ -30,8 +53,11 @@ export default function useLongPress(
     timeout.current = setTimeout(() => {
       callback();
       setPressed(false);
+      if (!disableVibrate) {
+        window.navigator.vibrate(200);
+      }
     }, pressTimeInMs);
-  }, [callback, setPressed, timeout, pressTimeInMs]);
+  }, [callback, setPressed, timeout, pressTimeInMs, disableVibrate]);
 
   /**
    * End long press function
