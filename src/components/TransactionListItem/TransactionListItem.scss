@@ -80,29 +80,4 @@
       color: $color-negative-main;
     }
   }
-
-  &.deleting {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.TransactionListItem_actionsDrawer {
-  padding: $spacing-sm;
-  min-height: 50vh;
-  max-height: 80vh;
-  @include lg {
-    max-width: 50vw;
-  }
-
-  & .actionsDrawerActions {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  & .deleteAction {
-    color: $color-error-main;
-  }
 }

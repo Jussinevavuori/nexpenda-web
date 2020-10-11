@@ -95,13 +95,10 @@ export default function useLongPress(
   return {
     pressed,
     props: {
-      onMouseDown: startLongPress,
-      onMouseUp: endLongPress,
-      onMouseLeave: endLongPress,
-      onTouchStart: startLongPress,
-      onTouchEnd: endLongPress,
-      onTouchMove: cancelLongPress,
-      onTouchCancel: cancelLongPress,
+      onPointerDown: startLongPress,
+      onPointerUp: endLongPress,
+      onPointerMove: cancelLongPress,
+      onPointerCancel: cancelLongPress,
     },
   };
 }
