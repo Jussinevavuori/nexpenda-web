@@ -2,8 +2,8 @@
 
 .TransactionTableRow {
   display: grid;
-  grid-template-columns: 36px calc(12rem - 36px) 1fr 32px 3fr 8rem;
-  grid-template-areas: "action category amount p1 comment date ";
+  grid-template-columns: 36px calc(12rem - 36px) 1fr 32px 3fr 8rem 1rem;
+  grid-template-areas: "action category amount p1 comment date p2";
   height: 36px;
   align-items: center;
 
