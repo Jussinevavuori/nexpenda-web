@@ -2,8 +2,8 @@ import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { Success } from "../utils/Result/Result";
-import { NetworkFailure } from "../utils/Failures/NetworkFailures";
+import { Success } from "../result/Success";
+import { NetworkFailure } from "../result/NetworkFailures";
 
 export class Service {
   /**

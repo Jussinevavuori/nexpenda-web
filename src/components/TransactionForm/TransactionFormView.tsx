@@ -66,9 +66,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			fullWidth
 			required
 			size="small"
-			inputProps={{
-
-			}}
+			autoFocus
 			InputProps={{
 				endAdornment: <InputAdornment position="end">
 					<Type>
@@ -106,6 +104,20 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			)}
 		/>
 
+		<TextField
+			value={props.comment}
+			onChange={e => props.onCommentChange(e.target.value)}
+			id="transaction-comment"
+			variant="outlined"
+			name="comment"
+			type="text"
+			label="Comment"
+			error={!!props.errors.comment}
+			helperText={props.errors.comment}
+			fullWidth
+			size="small"
+		/>
+
 		<KeyboardDatePicker
 			value={props.time}
 			onChange={d => props.onTimeChange(d as Date)}
@@ -118,20 +130,6 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			helperText={props.errors.time}
 			fullWidth
 			required
-			size="small"
-		/>
-
-		<TextField
-			value={props.comment}
-			onChange={e => props.onCommentChange(e.target.value)}
-			id="transaction-comment"
-			variant="outlined"
-			name="comment"
-			type="text"
-			label="Comment"
-			error={!!props.errors.comment}
-			helperText={props.errors.comment}
-			fullWidth
 			size="small"
 		/>
 

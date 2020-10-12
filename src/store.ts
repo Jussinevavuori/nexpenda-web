@@ -11,12 +11,14 @@ import {
   NotificationModel,
 } from "./models/notification.model";
 import { selectionModel, SelectionModel } from "./models/selection.model";
+import { historyModel, HistoryModel } from "./models/history.model";
 
 export interface StoreModel {
   notification: NotificationModel;
   transactions: TransactionsModel;
   selection: SelectionModel;
   interval: IntervalModel;
+  history: HistoryModel;
   filters: FiltersModel;
   auth: AuthModel;
 }
@@ -26,6 +28,7 @@ const storeModel: StoreModel = {
   transactions: transactionsModel,
   selection: selectionModel,
   interval: intervalModel,
+  history: historyModel,
   filters: filtersModel,
   auth: authModel,
 };

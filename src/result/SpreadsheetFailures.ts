@@ -1,4 +1,4 @@
-import { Failure } from "../Result/Result";
+import { Failure } from "./Failure";
 
 export class SpreadsheetReadRowFailure<T> extends Failure<
   T,

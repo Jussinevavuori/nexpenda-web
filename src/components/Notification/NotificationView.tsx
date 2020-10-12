@@ -1,8 +1,8 @@
 import "./Notification.scss";
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Notification } from "../../classes/Notification";
 import { Alert } from "@material-ui/lab";
-import { Grow, Snackbar } from "@material-ui/core";
+import { Button, Grow, Icon, IconButton, Snackbar } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";
 
 export type NotificationViewProps = {
@@ -18,6 +18,24 @@ export function NotificationView(props: NotificationViewProps) {
 
 	const [open, setOpen] = useState(true)
 
+	const action = useMemo(() => props.notification.action, [props])
+
+	const actionElement = action ?
+		action.buttonType === "iconButton"
+			? <IconButton
+				color="inherit"
+				children={<Icon children={action.iconButtonIcon ?? "notification_important"} />}
+				onClick={action.onClick}
+			/>
+			: <Button
+				color="inherit"
+				children={action.label}
+				startIcon={action.startIcon ? <Icon children={action.startIcon} /> : null}
+				endIcon={action.endIcon ? <Icon children={action.endIcon} /> : null}
+				onClick={action.onClick}
+			/>
+		: null
+
 	return <>
 		<Snackbar
 			id={props.notification.id}
@@ -30,11 +48,11 @@ export function NotificationView(props: NotificationViewProps) {
 				horizontal: props.notification.horizontalPosition,
 			}}
 			TransitionComponent={GrowTransition}
-			action={props.notification.action}
 		>
 			<Alert
 				severity={props.notification.severity}
 				variant={props.notification.variant}
+				action={actionElement}
 			>
 				{props.notification.message}
 			</Alert>

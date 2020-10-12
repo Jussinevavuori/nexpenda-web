@@ -1,7 +1,7 @@
 import { Service } from "./Service";
-import { Success } from "../utils/Result/Result";
 import { Auth, JsonAuth } from "../classes/Auth";
-import { InvalidServerResponseFailure } from "../utils/Failures/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { Success } from "../result/Success";
 
 export class AuthService extends Service {
   /**

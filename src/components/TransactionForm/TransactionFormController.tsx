@@ -3,7 +3,7 @@ import { TransactionFormView } from "./TransactionFormView"
 import { useStoreActions, useStoreState } from "../../store"
 
 export type TransactionFormProps = {
-
+	onClose?(): void;
 }
 
 export function TransactionForm(props: TransactionFormProps) {
@@ -123,6 +123,9 @@ export function TransactionForm(props: TransactionFormProps) {
 			setTime(new Date())
 			setComment("")
 			setErrors({})
+			if (props.onClose) {
+				props.onClose()
+			}
 			return
 		}
 

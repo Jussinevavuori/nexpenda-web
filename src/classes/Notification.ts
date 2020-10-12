@@ -43,7 +43,14 @@ export type NotificationOptions = {
   /**
    * Action for creating an action button
    */
-  action: React.ReactNode;
+  action: null | {
+    buttonType?: "button" | "iconButton";
+    label?: string;
+    iconButtonIcon?: string;
+    startIcon?: string;
+    endIcon?: string;
+    onClick(): void;
+  };
 };
 
 export class Notification implements NotificationOptions {
@@ -61,7 +68,7 @@ export class Notification implements NotificationOptions {
     this.action = options.action ?? null;
     this.message = options.message ?? "";
     this.timeout = options.timeout || 3000;
-    this.variant = options.variant ?? "standard";
+    this.variant = options.variant ?? "filled";
     this.severity = options.severity ?? "info";
     this.verticalPosition = options.verticalPosition ?? "bottom";
     this.horizontalPosition = options.horizontalPosition ?? "center";

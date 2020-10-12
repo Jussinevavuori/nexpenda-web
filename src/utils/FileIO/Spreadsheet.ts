@@ -1,11 +1,12 @@
 import XLSX from "xlsx";
 import * as yup from "yup";
-import { ErrorFailure } from "../Failures/GenericFailures";
+import { Failure } from "../../result/Failure";
+import { ErrorFailure } from "../../result/GenericFailures";
 import {
   SpreadsheetReadFileFailure,
   SpreadsheetReadRowFailure,
-} from "../Failures/SpreadsheetFailures";
-import { Failure, Success } from "../Result/Result";
+} from "../../result/SpreadsheetFailures";
+import { Success } from "../../result/Success";
 import { FileIO } from "./FileIO";
 
 export type SpreadsheetReadFileResult<T> = {

@@ -3,6 +3,7 @@ import { useVhFix } from './hooks/useVhFix';
 import { Routes } from './Routes';
 import { useStoreActions } from './store';
 import { Notification } from "./components/Notification/NotificationController"
+import { useHistoryNotifications } from './hooks/useHistoryNotifications';
 
 function App() {
 
@@ -10,6 +11,11 @@ function App() {
 	 * Fix viewheight for mobile from root
 	 */
 	useVhFix()
+
+	/**
+	 * Notify on certain history events
+	 */
+	useHistoryNotifications()
 
 	/**
 	 * Initialize by fetching the user's profile if any

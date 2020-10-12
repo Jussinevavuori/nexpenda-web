@@ -17,40 +17,13 @@ export type SelectionPanelViewProps = {
 	allSelected: boolean;
 	onSelectAll(): void;
 	onDeselectAll(): void;
-
 	onDelete(): void;
-	onCancelDelete(): void;
-	deleted: boolean;
 
 }
 
 export function SelectionPanelView(props: SelectionPanelViewProps) {
 
 	const isDesktopLayout = useMdMedia()
-
-	if (props.deleted) {
-
-		return <div className="SelectionPanel">
-
-			<div className="floatLeft">
-				<Type>
-					{`Deleted ${props.selection.length} ${props.selection.length > 1 ? "transactions" : "transaction"}`}
-				</Type>
-			</div>
-
-			<div className="floatRight">
-				<Button
-					onClick={() => {
-						props.onDeselectAll()
-						props.onCancelDelete()
-					}}
-					children={"Cancel"}
-				/>
-			</div>
-
-		</div>
-
-	}
 
 	return <div className="SelectionPanel">
 

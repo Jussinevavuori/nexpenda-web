@@ -17,6 +17,8 @@ import {
   FilteredTransactionsModel,
 } from "./transactions.filtered.model";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
+import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
+import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
 
 export interface TransactionsModel {
   /**
@@ -111,6 +113,17 @@ export interface TransactionsModel {
     any,
     StoreModel,
     ReturnType<typeof TransactionService["deleteTransaction"]>
+  >;
+
+  /**
+   * Delete and remove multiple transactions from state
+   */
+  deleteTransactions: Thunk<
+    TransactionsModel,
+    string[],
+    any,
+    StoreModel,
+    ReturnType<typeof TransactionService["deleteTransactions"]>
   >;
 
   /**
@@ -223,15 +236,61 @@ export const transactionsModel: TransactionsModel = {
     state.items.push(new Transaction(json));
   }),
 
-  deleteTransaction: thunk(async (actions, id, { getState }) => {
-    const transaction = getState().items.find((_) => _.id === id);
-    actions._deleteTransaction(id);
-    const result = await TransactionService.deleteTransaction(id);
-    if (result.isFailure() && transaction) {
-      actions._putTransaction(transaction?.toJson());
+  deleteTransaction: thunk(
+    async (actions, id, { getState, getStoreActions }) => {
+      // Get transaction and ensure one exists
+      const transaction = getState().items.find((_) => _.id === id);
+
+      // Delete the transaction
+      actions._deleteTransaction(id);
+      const result = await TransactionService.deleteTransaction(id);
+
+      // If deletion succeeds, create deletion event
+      if (result.isSuccess() && transaction) {
+        getStoreActions().history.pushEvent(
+          new DeleteTransactionEvent(transaction)
+        );
+      }
+
+      // If deletion fails, put transaction back
+      else if (result.isFailure() && transaction) {
+        actions._putTransaction(transaction?.toJson());
+      }
+      return result;
     }
-    return result;
-  }),
+  ),
+
+  deleteTransactions: thunk(
+    async (actions, ids, { getState, getStoreActions }) => {
+      // Get the transactions
+      const transactions = getState().items.filter((_) => {
+        return ids.includes(_.id);
+      });
+
+      // Delete the transactions from the state
+      transactions.forEach((transaction) => {
+        actions._deleteTransaction(transaction.id);
+      });
+      const result = await TransactionService.deleteTransactions(
+        transactions.map((_) => _.id)
+      );
+
+      // If deletion succeeds, create mass deletion event
+      if (result.isSuccess()) {
+        getStoreActions().history.pushEvent(
+          new DeleteTransactionsEvent(transactions)
+        );
+      }
+
+      // If deletion fails, put transaction back
+      else if (result.isFailure()) {
+        transactions.forEach((transaction) => {
+          actions._putTransaction(transaction.toJson());
+        });
+      }
+      return result;
+    }
+  ),
 
   _deleteTransaction: action((state, id) => {
     state.items = state.items.filter((item) => item.id !== id);

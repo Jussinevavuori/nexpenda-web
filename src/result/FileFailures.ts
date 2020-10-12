@@ -1,4 +1,4 @@
-import { Failure } from "../Result/Result";
+import { Failure } from "./Failure";
 
 export class FileReaderFailure<T> extends Failure<T, "file-reader-failure"> {
   public readonly event?: ProgressEvent<FileReader>;

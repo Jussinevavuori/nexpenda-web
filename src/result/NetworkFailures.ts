@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { Failure } from "../Result/Result";
+import { Failure } from "./Failure";
 
 export type ServerFailureCode =
   | "server/unavailable"

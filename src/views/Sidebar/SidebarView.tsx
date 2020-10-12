@@ -48,7 +48,9 @@ export function SidebarView(props: SidebarViewProps) {
 			onClose={props.onTransactionFormClose}
 			anchor={sidebarView ? "left" : "bottom"}
 		>
-			<TransactionForm />
+			<TransactionForm
+				onClose={props.onTransactionFormClose}
+			/>
 		</Drawer>
 
 		<div className="Sidebar">

@@ -4,8 +4,8 @@ import {
   FileReaderInvalidTypeFailure,
   FileReaderMissingFileFailure,
   FileReaderNoEventTargetFailure,
-} from "../Failures/FileFailures";
-import { Success } from "../Result/Result";
+} from "../../result/FileFailures";
+import { Success } from "../../result/Success";
 
 type FileReaderResult<T> =
   | Success<T>

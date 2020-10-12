@@ -1,7 +1,7 @@
 import { Service } from "./Service";
-import { Success } from "../utils/Result/Result";
 import { JsonTransaction, Transaction } from "../classes/Transaction";
-import { InvalidServerResponseFailure } from "../utils/Failures/InvalidServerResponseFailures";
+import { Success } from "../result/Success";
+import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 
 export class TransactionService extends Service {
   /**
@@ -60,6 +60,24 @@ export class TransactionService extends Service {
   }
 
   /**
+   * Delete many transactions by IDs and return empty Result.
+   */
+  static async deleteTransactions(ids: string[]) {
+    const result = await Service.post(`/transactions/mass/delete`, { ids });
+
+    if (result.isFailure()) {
+      return result;
+    } else if (result.value.status === 204) {
+      return Success.Empty();
+    } else {
+      return new InvalidServerResponseFailure<void>(
+        result.value,
+        "transactions/mass/delete"
+      );
+    }
+  }
+
+  /**
    * Put a transaction on the server as json (upsert) and
    * return upserted json transaction as Result.
    */
@@ -71,7 +89,7 @@ export class TransactionService extends Service {
     } else if (Transaction.isJson(result.value.data)) {
       return new Success(result.value.data);
     } else {
-      return new InvalidServerResponseFailure<JsonTransaction[]>(
+      return new InvalidServerResponseFailure<JsonTransaction>(
         result.value,
         "transactions/put"
       );
