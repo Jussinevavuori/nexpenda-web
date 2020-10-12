@@ -1,6 +1,5 @@
 import { computed, Computed } from "easy-peasy";
 import { Transaction } from "../classes/Transaction";
-import { MoneyAmount } from "../classes/MoneyAmount";
 import { StoreModel } from "../store";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
@@ -25,19 +24,6 @@ export interface FilteredTransactionsModel {
    * Filtered amount of transactions
    */
   count: Computed<FilteredTransactionsModel, number, StoreModel>;
-
-  /**
-   * Sums of filtered transactions
-   */
-  sums: Computed<
-    FilteredTransactionsModel,
-    {
-      all: MoneyAmount;
-      expenses: MoneyAmount;
-      incomes: MoneyAmount;
-    },
-    StoreModel
-  >;
 }
 
 export const filteredTransactionsModel: FilteredTransactionsModel = {
@@ -126,23 +112,6 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
     [(_, storeState) => storeState.transactions.filtered.items],
     (items) => {
       return items.length;
-    }
-  ),
-
-  sums: computed(
-    [(_, storeState) => storeState.transactions.filtered.items],
-    (items) => {
-      const incomes = items
-        .filter((_) => _.amount.isPositive)
-        .reduce((sum, item) => sum + item.amount.value, 0);
-      const expenses = items
-        .filter((_) => _.amount.isNegative)
-        .reduce((sum, item) => sum + item.amount.value, 0);
-      return {
-        all: new MoneyAmount(incomes + expenses),
-        incomes: new MoneyAmount(incomes),
-        expenses: new MoneyAmount(expenses),
-      };
     }
   ),
 };

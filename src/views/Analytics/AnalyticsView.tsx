@@ -1,6 +1,6 @@
 import "./Analytics.scss";
 import React from "react"
-import { Type } from "react-feather";
+import { Type } from "../../components/Type/Type";
 
 export type AnalyticsViewProps = {
 

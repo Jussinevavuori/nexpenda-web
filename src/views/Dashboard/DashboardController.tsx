@@ -8,8 +8,6 @@ export function Dashboard() {
 
 	const smartDisplayString = useStoreState(_ => _.interval.smartDisplayString)
 
-	const filteredSums = useStoreState(_ => _.transactions.filtered.sums)
-
 	const filteredTransactions = useStoreState(_ => _.transactions.filtered.items)
 
 	const selectionActive = useStoreState(_ => _.selection.selectionActive)
@@ -24,10 +22,6 @@ export function Dashboard() {
 	if (!user) return null
 	return <DashboardView
 		intervalString={smartDisplayString}
-
-		filteredSum={filteredSums.all}
-		filteredIncomesSum={filteredSums.incomes}
-		filteredExpensesSum={filteredSums.expenses}
 
 		user={user}
 

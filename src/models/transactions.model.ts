@@ -40,18 +40,6 @@ export interface TransactionsModel {
   count: Computed<TransactionsModel, number>;
 
   /**
-   * Sum of transactions
-   */
-  sums: Computed<
-    TransactionsModel,
-    {
-      all: MoneyAmount;
-      expenses: MoneyAmount;
-      incomes: MoneyAmount;
-    }
-  >;
-
-  /**
    * Filtered properties (copies of the above properties using only
    * filtered items)
    */
@@ -179,20 +167,6 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   count: computed((state) => state.items.length),
-
-  sums: computed((state) => {
-    const incomes = state.items
-      .filter((_) => _.amount.isPositive)
-      .reduce((sum, item) => sum + item.amount.value, 0);
-    const expenses = state.items
-      .filter((_) => _.amount.isNegative)
-      .reduce((sum, item) => sum + item.amount.value, 0);
-    return {
-      all: new MoneyAmount(incomes + expenses),
-      incomes: new MoneyAmount(incomes),
-      expenses: new MoneyAmount(expenses),
-    };
-  }),
 
   filtered: filteredTransactionsModel,
 
