@@ -2,7 +2,7 @@ import React from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Login } from './views/Login/LoginController';
 import { Register } from './views/Register/RegisterController';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRouteController';
 import { Dashboard } from './views/Dashboard/DashboardController';
 import { Settings } from "./views/Settings/SettingsController";
 import { Analytics } from "./views/Analytics/AnalyticsController";

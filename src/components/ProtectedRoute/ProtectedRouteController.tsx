@@ -2,6 +2,7 @@ import React from "react";
 import { Route, RouteProps, Redirect } from "react-router-dom";
 import { useStoreState } from "../../store";
 import { routes } from "../../Routes";
+import { ProtectedRouteViewView } from "./ProtectedRouteView";
 
 export type ProtectedRouteProps = {
 	fallbackRoute?: string;
@@ -25,7 +26,7 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
 	/**
 	 * If the user is being loaded, show nothing
 	 */
-	if (!initialized) return null
+	if (!initialized) return <ProtectedRouteViewView />
 
 	/**
 	 * Else if user is not logged in redirect to fallback route or default fallback route
