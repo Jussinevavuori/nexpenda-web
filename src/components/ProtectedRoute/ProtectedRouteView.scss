@@ -7,7 +7,7 @@
   display: grid;
   place-items: center;
   position: relative;
-  overflow: none;
+  overflow: hidden;
 
   & .texture {
     pointer-events: none;
