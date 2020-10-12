@@ -37,6 +37,11 @@ export class HistoryEvent<T = void> {
   }
 
   /**
+   * Has this history event already been displayed to the user
+   */
+  displayed: boolean = false;
+
+  /**
    * The restoration function to use upon undo
    */
   readonly restorationStrategy: () => MaybePromise<T>;

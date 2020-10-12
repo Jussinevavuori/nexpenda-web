@@ -24,10 +24,11 @@ export function useHistoryNotifications() {
 	}, [notify, restore])
 
 	useEffect(() => {
-		if (!latest) return;
+		if (!latest || latest.displayed) return;
 
 		if (latest instanceof DeleteTransactionEvent) {
 			notifyEvent(latest.id, "Deleted transaction")
+			latest.displayed = true;
 		}
 
 		else if (latest instanceof DeleteTransactionsEvent) {
@@ -36,6 +37,7 @@ export function useHistoryNotifications() {
 				latest.transactions.length,
 				latest.transactions.length === 1 ? "transaction" : "transactions"
 			].join(" "))
+			latest.displayed = true;
 		}
 
 	}, [latest, notifyEvent]);
