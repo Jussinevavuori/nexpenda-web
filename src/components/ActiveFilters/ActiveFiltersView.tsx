@@ -47,7 +47,12 @@ export function ActiveFiltersView(props: ActiveFiltersViewProps) {
 			props.categoryFilterActive ? <Chip
 				className="activeFilterChip category"
 				icon={<CategoryIcon />}
-				label={props.categoryFilter.join(", ")}
+				label={(() => {
+					if (props.categoryFilter.length > 2) {
+						return `${props.categoryFilter.length} categories`
+					}
+					return props.categoryFilter.join(", ")
+				})()}
 				onDelete={props.onResetCategoryFilter}
 				variant="outlined"
 			/> : null

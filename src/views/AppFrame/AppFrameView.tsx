@@ -11,7 +11,7 @@ export function AppFrameView(props: AppFrameViewProps) {
 		<div className="sidebar">
 			<Sidebar />
 		</div>
-		<div className="content">
+		<div className="main">
 			{props.children}
 		</div>
 	</div>

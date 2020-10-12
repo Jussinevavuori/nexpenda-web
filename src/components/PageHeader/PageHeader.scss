@@ -2,16 +2,27 @@
 
 .PageHeader {
   position: relative;
+  display: block;
   background: $color-primary-main;
-  width: 100%;
   height: $app-header-height;
   color: white;
-  .texture {
+  width: 100%;
+  max-width: 100vw;
+
+  & .pageHeaderChildren {
+    height: 100%;
+    width: 100%;
+  }
+
+  & .texture {
     pointer-events: none;
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
+    max-width: 100%;
     height: 100%;
     opacity: 0.3;
     object-fit: cover;

@@ -9,6 +9,8 @@ export type PageHeaderProps = {
 export function PageHeader(props: PageHeaderProps) {
 	return <header className="PageHeader">
 		<img src={textureImg} alt="" className="texture" />
-		{props.children}
+		<div className="pageHeaderChildren">
+			{props.children}
+		</div>
 	</header>
 }
