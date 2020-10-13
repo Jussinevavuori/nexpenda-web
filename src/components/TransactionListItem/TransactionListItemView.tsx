@@ -31,9 +31,9 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	return <div
 		className={cx("TransactionListItem", { pressed: longPress.pressed })}
 		{...(props.selectionActive ? {
-			onPointerDown() {
+			onClick() {
 				props.selected ? props.onDeselect() : props.onSelect()
-			}
+			},
 		} : longPress.props)}
 	>
 		<div className={cx("icon", signClass, { selected: props.selected, selectionActive: props.selectionActive })}>

@@ -1,0 +1,21 @@
+@import "main";
+
+.ResponsiveDrawer {
+  display: grid;
+  grid-template:
+    "header" auto
+    "content" 1fr
+    "footer" auto / 1fr;
+
+  & .ResponsiveDrawerFooter {
+    grid-area: footer;
+  }
+
+  & .ResponsiveDrawerContent {
+    grid-area: content;
+  }
+
+  & .ResponsiveDrawerHeader {
+    grid-area: header;
+  }
+}

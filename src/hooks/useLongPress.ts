@@ -1,12 +1,23 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  HTMLProps,
+} from "react";
 
 export default function useLongPress(
   callback: () => void,
   options?: {
     pressTimeInMs?: number;
     disableVibrate?: boolean;
+    shouldPreventDefault?: boolean;
   }
-) {
+): {
+  pressed: boolean;
+  props: Partial<HTMLProps<HTMLDivElement>>;
+} {
   /**
    * Default press time in MS to 500 unless overridden in options
    */
@@ -28,6 +39,16 @@ export default function useLongPress(
   }, [options]);
 
   /**
+   * Default to prevent default
+   */
+  const shouldPreventDefault = useMemo(() => {
+    if (options?.shouldPreventDefault === false) {
+      return false;
+    }
+    return true;
+  }, [options]);
+
+  /**
    * Is the press currently occuring
    */
   const [pressed, setPressed] = useState(false);
@@ -38,48 +59,140 @@ export default function useLongPress(
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
   /**
+   * Latest click position
+   */
+  const origin = useRef<null | { x: number; y: number }>(null);
+
+  /**
    * Start long press function
    */
-  const startLongPress = useCallback(() => {
-    // Clear any previous timeouts
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-    }
-
-    // Set pressed state to true
-    setPressed(true);
-
-    // Set new timeout
-    timeout.current = setTimeout(() => {
-      callback();
-      setPressed(false);
-      if (!disableVibrate) {
-        window.navigator.vibrate(100);
+  const startLongPress = useCallback(
+    (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
+      if (shouldPreventDefault) {
+        e.preventDefault();
       }
-    }, pressTimeInMs);
-  }, [callback, setPressed, timeout, pressTimeInMs, disableVibrate]);
+
+      // Set latest start position
+      if ("clientX" in e && "clientY" in e) {
+        origin.current = {
+          x: e.clientX,
+          y: e.clientY,
+        };
+      } else {
+        if (e.touches.length > 1) {
+          return;
+        } else {
+          const touch = e.touches[0];
+          origin.current = {
+            x: touch.clientX,
+            y: touch.clientY,
+          };
+        }
+      }
+
+      // Clear any previous timeouts
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+
+      // Set pressed state to true
+      setPressed(true);
+
+      // Set new timeout
+      timeout.current = setTimeout(() => {
+        callback();
+        setPressed(false);
+        if (!disableVibrate) {
+          window.navigator.vibrate(100);
+        }
+      }, pressTimeInMs);
+    },
+    [
+      shouldPreventDefault,
+      callback,
+      setPressed,
+      timeout,
+      pressTimeInMs,
+      disableVibrate,
+    ]
+  );
 
   /**
    * End long press function
    */
-  const endLongPress = useCallback(() => {
-    setPressed(false);
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-      timeout.current = null;
-    }
-  }, [setPressed, timeout]);
+  const endLongPress = useCallback(
+    (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
+      if (shouldPreventDefault) {
+        e.preventDefault();
+      }
+
+      origin.current = null;
+
+      setPressed(false);
+
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+        timeout.current = null;
+      }
+    },
+    [shouldPreventDefault, setPressed, timeout]
+  );
 
   /**
    * Disable the current long press (still show as pressed),
    * for example when user scrolls
    */
-  const cancelLongPress = useCallback(() => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-      timeout.current = null;
-    }
-  }, [timeout]);
+  const cancelLongPress = useCallback(
+    (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
+      if (shouldPreventDefault) {
+        e.preventDefault();
+      }
+
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+        timeout.current = null;
+      }
+    },
+    [shouldPreventDefault, timeout]
+  );
+
+  /**
+   * Handle move: do not cancel on small movements
+   */
+  const cancelLongPressOnMove = useCallback(
+    (e: React.PointerEvent | React.TouchEvent | React.MouseEvent) => {
+      let x = 0;
+      let y = 0;
+
+      if (!origin.current) {
+        return;
+      }
+
+      if ("touches" in e) {
+        if (e.touches.length > 1) {
+          cancelLongPress(e);
+        } else {
+          x = e.touches[0].clientX;
+          y = e.touches[0].clientY;
+        }
+      } else {
+        x = e.clientX;
+        y = e.clientY;
+      }
+
+      /**
+       * Calculate distance from touch origin
+       */
+      const dx = x - origin.current.x;
+      const dy = y - origin.current.y;
+      const d2 = dx * dx + dy * dy;
+
+      if (d2 > movementCancelThreshold) {
+        cancelLongPress(e);
+      }
+    },
+    [cancelLongPress]
+  );
 
   /**
    * Cleaning out any timeouts
@@ -95,13 +208,19 @@ export default function useLongPress(
   return {
     pressed,
     props: {
-      onPointerDown: startLongPress,
-      onPointerUp: endLongPress,
+      onTouchStart: startLongPress,
+      onTouchEnd: endLongPress,
+      onTouchMove: cancelLongPressOnMove,
+      onTouchCancel: cancelLongPress,
+
+      onMouseDown: startLongPress,
       onMouseUp: endLongPress,
-      onTouchUp: endLongPress,
-      onPointerLeave: endLongPress,
-      onPointerMove: cancelLongPress,
-      onPointerCancel: cancelLongPress,
+      onMouseLeave: endLongPress,
+      onMouseOut: endLongPress,
     },
   };
 }
+
+const movementCancelThresholdInPx = 10;
+const movementCancelThreshold =
+  movementCancelThresholdInPx * movementCancelThresholdInPx;

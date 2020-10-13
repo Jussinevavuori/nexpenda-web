@@ -1,11 +1,12 @@
 import "./FiltersPanel.scss";
 import React, { useState } from "react"
 import { Today as CalendarIcon, Sort as FilterIcon, ChevronLeft, ChevronRight } from "@material-ui/icons"
-import { Button, Drawer, IconButton, Menu, } from "@material-ui/core";
+import { Button, IconButton, Menu, } from "@material-ui/core";
 import { useLgMedia, useMdMedia } from "../../hooks/useMedia";
 import { FiltersForm } from "../FiltersForm/FiltersFormController";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerFormController";
 import { useHashOpenState } from "../../hooks/useHashOpenState";
+import { ResponsiveDrawer } from "../ResponsiveDrawer/ResponsiveDrawerController";
 
 export type FiltersPanelViewProps = {
 	intervalString: string;
@@ -42,17 +43,17 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 
 	return <>
 
-		<Drawer
+		<ResponsiveDrawer
 			open={filtersFormDrawerOpen}
 			onClose={() => setFiltersFormDrawerOpen(false)}
-			anchor={largeScreen ? "right" : "bottom"}
+			anchor={"right"}
 		>
 			<div className="FiltersPanel_filtersFormDrawer">
 				<FiltersForm
 					onConfirm={() => setFiltersFormDrawerOpen(false)}
 				/>
 			</div>
-		</Drawer>
+		</ResponsiveDrawer>
 
 		{
 			/**
@@ -77,7 +78,7 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 						/>
 					</div>
 				</Menu>
-				: <Drawer
+				: <ResponsiveDrawer
 					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
 					onClose={() => {
 						setIntervalPickerMenuAnchor(undefined)
@@ -93,7 +94,7 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 							}}
 						/>
 					</div>
-				</Drawer>
+				</ResponsiveDrawer>
 		}
 
 

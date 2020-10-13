@@ -1,9 +1,9 @@
 import "./Settings.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { Button, Drawer } from "@material-ui/core";
-import { useSmMedia } from "../../hooks/useMedia";
+import { Button } from "@material-ui/core";
 import { FileUploader } from "../../components/FileUploader/FileUploaderController";
+import { ResponsiveDrawer } from "../../components/ResponsiveDrawer/ResponsiveDrawerController";
 
 export type SettingsViewProps = {
 	user: Auth;
@@ -16,17 +16,14 @@ export type SettingsViewProps = {
 
 export function SettingsView(props: SettingsViewProps) {
 
-	const desktopLayout = useSmMedia()
-
 	return <div className="Settings">
 
-		<Drawer
+		<ResponsiveDrawer
 			open={props.uploaderOpen}
 			onClose={props.onUploaderClose}
-			anchor={desktopLayout ? "left" : "bottom"}
 		>
 			<FileUploader />
-		</Drawer>
+		</ResponsiveDrawer>
 
 		{
 			props.user.photoUrl ? <img style={{ width: 64, height: 64 }} alt="profile" src={props.user.photoUrl} /> : null
