@@ -50,8 +50,7 @@ export function ProtectedRouteViewView(props: ProtectedRouteViewViewProps) {
 }
 
 const messages = {
-	3: "This may take some time...",
-	6: "Waiting for server...",
-	9: "It should not be taking this long...",
-	12: "Be patient, please",
+	5: "This may take some time...",
+	10: "Waiting for server...",
+	15: "The server is starting up..."
 } 

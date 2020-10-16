@@ -77,7 +77,7 @@ export interface TransactionsModel {
   _getTransactions: Action<TransactionsModel, JsonTransaction[]>;
 
   /**
-   * Post and update transaction to state
+   * Post transaction to state
    */
   postTransaction: Thunk<
     TransactionsModel,
@@ -85,6 +85,17 @@ export interface TransactionsModel {
     any,
     StoreModel,
     ReturnType<typeof TransactionService["postTransaction"]>
+  >;
+
+  /**
+   * Post and multiple transactions to state
+   */
+  postTransactions: Thunk<
+    TransactionsModel,
+    Parameters<typeof TransactionService["postTransactions"]>[0],
+    any,
+    StoreModel,
+    ReturnType<typeof TransactionService["postTransactions"]>
   >;
 
   /**
@@ -202,6 +213,16 @@ export const transactionsModel: TransactionsModel = {
     const result = await TransactionService.postTransaction(json);
     if (result.isSuccess()) {
       actions._postTransaction(result.value);
+    }
+    return result;
+  }),
+
+  postTransactions: thunk(async (actions, jsons) => {
+    const result = await TransactionService.postTransactions(jsons);
+    if (result.isSuccess()) {
+      result.value.forEach((transaction) => {
+        actions._postTransaction(transaction);
+      });
     }
     return result;
   }),

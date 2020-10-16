@@ -42,6 +42,31 @@ export class TransactionService extends Service {
   }
 
   /**
+   * Post many transactions by IDs and return created json transactions as result.
+   */
+  static async postTransactions(
+    jsons: Array<Omit<JsonTransaction, "id" | "uid">>
+  ) {
+    const result = await Service.post(`/transactions/mass/post`, {
+      transactions: jsons,
+    });
+
+    if (result.isFailure()) {
+      return result;
+    } else if (
+      result.value.status === 201 &&
+      Transaction.isJsonArray(result.value.data)
+    ) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonTransaction[]>(
+        result.value,
+        "transactions/mass/post"
+      );
+    }
+  }
+
+  /**
    * Delete a transaction by ID and return empty Result.
    */
   static async deleteTransaction(id: string) {

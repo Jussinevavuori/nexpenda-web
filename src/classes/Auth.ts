@@ -24,6 +24,19 @@ export class Auth {
   }
 
   /**
+   * Gets the user's 2 first initials
+   */
+  get initials() {
+    return (this.displayName ?? this.email ?? "")
+      .split(/[^a-zA-Z]/g)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((_) => _.charAt(0))
+      .map((_) => _.toUpperCase())
+      .join("");
+  }
+
+  /**
    * JsonSchema defining shape of JsonAuth for yup validatioin
    */
   static JsonSchema: ObjectSchema<JsonAuth> = object({

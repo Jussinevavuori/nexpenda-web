@@ -2,9 +2,9 @@ import "./FileUploader.scss";
 import React from "react"
 import { Type } from "../Type/Type";
 import { IOJsonTransaction } from "../../utils/FileIO/TransactionSpreadsheet";
-import { Button, CircularProgress } from "@material-ui/core";
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet";
 import { ProcessQueueProgress } from "../../utils/ProcessQueue/ProcessQueue";
+import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 
 export type FileUploaderViewProps = {
 	handleFileUpload(e: React.ChangeEvent<HTMLInputElement>): Promise<void>;
@@ -19,59 +19,51 @@ export function FileUploaderView(props: FileUploaderViewProps) {
 
 	return <div className="FileUploader">
 
-		<Type>
-			{"Tuo tiedostosta"}
-		</Type>
+		<EnhancedButton
+			component="label"
+			color="primary"
+			variant="contained"
+			loading
+		>
+			{"Test"}
+			{/* 
+			{
+				props.result === null
+					? "Error"
+					: props.result
+						? "Upload"
+						: props.uploading
+							? "Uploading..."
+							: props.parsing
+								? "Reading file..."
+								: "Upload file"
+			}
 
-		<input type="file" onChange={props.handleFileUpload} />
+			<input
+				type="file"
+				style={{ display: "none" }}
+				onChange={props.handleFileUpload}
+			/> */}
+
+		</EnhancedButton>
 
 		{
-			props.parsing ? <>
-				<Type>
-					{"Tiedostoa luetaan..."}
-				</Type>
-				<CircularProgress />
-			</> : null
-		}
+			(() => {
 
-		{
-			props.result === null ? <>
-				<Type>{"Tiedostoa ei pystytty lukemaan"}</Type>
-			</> : props.result ? <>
-				<Type>{"Tiedosto luettu"}</Type>
-				<Type>{`Löytyi ${props.result.total} tapahtumaa`}</Type>
-				{
-					props.result.failed > 0
-						? <Type color="error">{`${props.result.failed} tapahtumaa epäonnistui`}</Type>
-						: <Type>{"Kaikki tapahtumat onnistuivat"}</Type>
+				if (props.result === null) {
+					return <Type color="error" variant="subtitle1">
+						{"Invalid file"}
+					</Type>
 				}
-				<Button
-					disabled={props.uploading}
-					variant="outlined"
-					onClick={props.handleUpload}
-				>
-					{
-						props.uploading ?
-							props.progress
-								? <>
-									{`Tiedostoa ladataan... ${props.progress.completed} / ${props.progress.total}`}
-									<CircularProgress variant="static" value={(() => {
-										if (props.progress.total <= 0) return 0
-										else return 100 * (props.progress.completed / props.progress.total)
-									})()} />
-								</>
-								: <>
-									{"Tiedostoa ladataan... "}
-									<CircularProgress />
-								</>
-							: <>
-								{"Lataa tiedostot"}
-							</>
-					}
-				</Button>
-			</> : null
-		}
 
+				else if (props.result) {
+					return <Type>
+						{`File read (${props.result.succeeded}/ ${props.result.total} rows)`}
+					</Type>
+				}
+
+			})()
+		}
 
 	</div>
 }

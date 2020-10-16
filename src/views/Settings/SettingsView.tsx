@@ -1,63 +1,77 @@
 import "./Settings.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { Button } from "@material-ui/core";
+import { Avatar, Button } from "@material-ui/core";
+import { ExitToApp as LogoutIcon } from "@material-ui/icons";
+import { PageHeader } from "../../components/PageHeader/PageHeader";
+import { Type } from "../../components/Type/Type";
 import { FileUploader } from "../../components/FileUploader/FileUploaderController";
-import { ResponsiveDrawer } from "../../components/ResponsiveDrawer/ResponsiveDrawerController";
 
 export type SettingsViewProps = {
 	user: Auth;
 	handleLogout(): void;
-
-	uploaderOpen: boolean;
-	onUploaderClose(): void;
-	onUploaderOpen(): void;
 }
 
 export function SettingsView(props: SettingsViewProps) {
 
 	return <div className="Settings">
 
-		<ResponsiveDrawer
-			open={props.uploaderOpen}
-			onClose={props.onUploaderClose}
-		>
-			<FileUploader />
-		</ResponsiveDrawer>
+		<PageHeader>
 
-		{
-			props.user.photoUrl ? <img style={{ width: 64, height: 64 }} alt="profile" src={props.user.photoUrl} /> : null
-		}
+			<div className="pageHeaderContent">
 
-		<table>
-			<tbody>
-				<tr>
-					<td>Display name</td>
-					<td>{props.user.displayName}</td>
-				</tr>
-				<tr>
-					<td>Email</td>
-					<td>{props.user.email}</td>
-				</tr>
-				<tr>
-					<td>ID</td>
-					<td>{props.user.id}</td>
-				</tr>
-				<tr>
-					<td>Google ID</td>
-					<td>{props.user.googleId}</td>
-				</tr>
-			</tbody>
-		</table>
+				<div className="pageHeaderAvatarContainer">
+					<Avatar>
+						{
+							props.user.photoUrl
+								? <img alt="profileimage" src={props.user.photoUrl} />
+								: props.user.initials
+						}
+					</Avatar>
+				</div>
 
-		<div>
-			<button onClick={props.handleLogout}>Log out</button>
-		</div>
+			</div>
 
-		<div>
-			<Button onClick={props.onUploaderOpen}>
-				{"Tuo tiedostosta"}
-			</Button>
+		</PageHeader>
+
+		<div className="content">
+
+			<div className="profileDetails">
+
+				<div className="row">
+					<Type>
+						{"Name"}
+					</Type>
+					<Type>
+						{props.user.displayName}
+					</Type>
+				</div>
+
+				<div className="row">
+					<Type>
+						{"Email"}
+					</Type>
+					<Type>
+						{props.user.email}
+					</Type>
+				</div>
+			</div>
+
+			<div className="uploader">
+				<FileUploader />
+			</div>
+
+			<div className="logOutContainer">
+				<Button
+					color="primary"
+					variant="contained"
+					onClick={props.handleLogout}
+					startIcon={<LogoutIcon />}
+				>
+					{"Log out"}
+				</Button>
+			</div>
+
 		</div>
 
 	</div>
