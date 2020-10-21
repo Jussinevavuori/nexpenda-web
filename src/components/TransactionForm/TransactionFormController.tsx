@@ -108,7 +108,7 @@ export function TransactionForm(props: TransactionFormProps) {
 		 * Post transaction
 		 */
 		const result = await postTransaction({
-			integerAmount: Math.trunc(Number(amount.trim().replace(/,/g, '.')) * 100),
+			integerAmount: Math.round(Number(amount.trim().replace(/,/g, '.')) * 100),
 			category: category.trim(),
 			time: time.getTime(),
 			comment: comment.trim(),
