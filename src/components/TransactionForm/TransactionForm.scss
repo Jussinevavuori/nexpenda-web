@@ -4,14 +4,26 @@
   display: grid;
   grid-auto-flow: row;
   grid-gap: 1rem;
-  padding: $spacing-sm;
+	padding: $spacing-sm;
+	
+	& .transactionAmountContainer {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: row;
+
+		& .MuiButtonGroup-root {
+			margin-right: 0.5rem;
+			& .MuiButton-contained {
+				box-shadow: none;
+			}
+		}
+	}
 
   @include sm {
     padding: $spacing-md;
     grid-gap: 1.5rem;
-    width: 22rem;
-    & > button {
-      margin-top: 1rem;
-    }
+		width: 22rem;
   }
 }

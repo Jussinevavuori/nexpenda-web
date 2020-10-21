@@ -1,10 +1,9 @@
 import "./FileUploader.scss";
 import React from "react"
-import { Type } from "../Type/Type";
 import { IOJsonTransaction } from "../../utils/FileIO/TransactionSpreadsheet";
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet";
-import { ProcessQueueProgress } from "../../utils/ProcessQueue/ProcessQueue";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
+import { Publish as UploadIcon } from "@material-ui/icons"
 
 export type FileUploaderViewProps = {
 	handleFileUpload(e: React.ChangeEvent<HTMLInputElement>): Promise<void>;
@@ -12,7 +11,6 @@ export type FileUploaderViewProps = {
 	parsing: boolean;
 	uploading: boolean;
 	result: undefined | null | SpreadsheetReadFileResult<IOJsonTransaction>;
-	progress?: ProcessQueueProgress<any>;
 }
 
 export function FileUploaderView(props: FileUploaderViewProps) {
@@ -22,48 +20,44 @@ export function FileUploaderView(props: FileUploaderViewProps) {
 		<EnhancedButton
 			component="label"
 			color="primary"
-			variant="contained"
-			loading
+			variant={props.result ? "contained" : "outlined"}
+			onClick={() => {
+				if (props.result) {
+					props.handleUpload()
+				}
+			}}
+			fullWidth
+			loading={props.uploading || props.parsing}
+			endIcon={props.result ? <UploadIcon /> : null}
 		>
-			{"Test"}
-			{/* 
+
 			{
-				props.result === null
-					? "Error"
-					: props.result
-						? "Upload"
-						: props.uploading
-							? "Uploading..."
-							: props.parsing
-								? "Reading file..."
-								: "Upload file"
+				(() => {
+					if (props.result === null) {
+						return "Error"
+					} else if (props.result) {
+						return `Upload ${props.result.succeeded}`
+					} else if (props.uploading) {
+						return "Uploading..."
+					} else if (props.parsing) {
+						return "Reading file..."
+					} else {
+						return "Upload file"
+					}
+				})()
 			}
 
-			<input
-				type="file"
-				style={{ display: "none" }}
-				onChange={props.handleFileUpload}
-			/> */}
+			{
+				props.result
+					? null
+					: <input
+						type="file"
+						style={{ display: "none" }}
+						onChange={props.handleFileUpload}
+					/>
+			}
 
 		</EnhancedButton>
-
-		{
-			(() => {
-
-				if (props.result === null) {
-					return <Type color="error" variant="subtitle1">
-						{"Invalid file"}
-					</Type>
-				}
-
-				else if (props.result) {
-					return <Type>
-						{`File read (${props.result.succeeded}/ ${props.result.total} rows)`}
-					</Type>
-				}
-
-			})()
-		}
 
 	</div>
 }

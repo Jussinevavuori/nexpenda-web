@@ -1,12 +1,11 @@
 import "./FiltersPanel.scss";
 import React, { useState } from "react"
 import { Today as CalendarIcon, Sort as FilterIcon, ChevronLeft, ChevronRight } from "@material-ui/icons"
-import { Button, IconButton, Menu, } from "@material-ui/core";
-import { useLgMedia, useMdMedia } from "../../hooks/useMedia";
+import { Button, Drawer, IconButton, Menu, } from "@material-ui/core";
+import { useLgMedia, useMdMedia, useSmMedia } from "../../hooks/useMedia";
 import { FiltersForm } from "../FiltersForm/FiltersFormController";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerFormController";
 import { useHashOpenState } from "../../hooks/useHashOpenState";
-import { ResponsiveDrawer } from "../ResponsiveDrawer/ResponsiveDrawerController";
 
 export type FiltersPanelViewProps = {
 	intervalString: string;
@@ -41,19 +40,21 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 
 	const largeScreen = useLgMedia()
 
+	const desktopLayout = useSmMedia()
+
 	return <>
 
-		<ResponsiveDrawer
+		<Drawer
 			open={filtersFormDrawerOpen}
 			onClose={() => setFiltersFormDrawerOpen(false)}
-			anchor={"right"}
+			anchor={desktopLayout ? "right" : "bottom"}
 		>
 			<div className="FiltersPanel_filtersFormDrawer">
 				<FiltersForm
 					onConfirm={() => setFiltersFormDrawerOpen(false)}
 				/>
 			</div>
-		</ResponsiveDrawer>
+		</Drawer>
 
 		{
 			/**
@@ -78,13 +79,13 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 						/>
 					</div>
 				</Menu>
-				: <ResponsiveDrawer
+				: <Drawer
 					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
 					onClose={() => {
 						setIntervalPickerMenuAnchor(undefined)
 						setIntervalPickerOpen(false)
 					}}
-					anchor="bottom"
+					anchor={"bottom"}
 				>
 					<div className="FiltersPanel_intervalPickerDrawer">
 						<IntervalPickerForm
@@ -94,7 +95,7 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 							}}
 						/>
 					</div>
-				</ResponsiveDrawer>
+				</Drawer>
 		}
 
 
@@ -187,7 +188,7 @@ export function FiltersPanelView(props: FiltersPanelViewProps) {
 				<div className="filtersButton">
 
 					<Button
-						variant={largeScreen ? "outlined" : "text"}
+						variant={"text"}
 						endIcon={<FilterIcon />}
 						onClick={() => setFiltersFormDrawerOpen(true)}
 					>

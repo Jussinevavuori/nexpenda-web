@@ -1,7 +1,7 @@
 import "./Sidebar.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { IconButton, Button } from "@material-ui/core";
+import { IconButton, Button, Drawer } from "@material-ui/core";
 import {
 	Home as DashboardIcon,
 	BarChart2 as AnalyticsIcon,
@@ -15,7 +15,6 @@ import cx from "classnames"
 import { TransactionForm } from "../../components/TransactionForm/TransactionFormController";
 import { useSmMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
-import { ResponsiveDrawer } from "../../components/ResponsiveDrawer/ResponsiveDrawerController";
 
 export type SidebarViewProps = {
 	isDashboard: boolean;
@@ -44,14 +43,15 @@ export function SidebarView(props: SidebarViewProps) {
 
 	return <>
 
-		<ResponsiveDrawer
+		<Drawer
 			open={props.transactionFormOpen}
 			onClose={props.onTransactionFormClose}
+			anchor={sidebarView ? "left" : "bottom"}
 		>
 			<TransactionForm
 				onClose={props.onTransactionFormClose}
 			/>
-		</ResponsiveDrawer>
+		</Drawer>
 
 		<div className="Sidebar">
 

@@ -42,7 +42,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 						return props.itemsByDates[index].items.length * 68 + 48
 					}}
 					noRowsRenderer={() => {
-						return <Type>
+						return <Type className="emptyTransactions">
 							{"No transactions"}
 						</Type>
 					}}

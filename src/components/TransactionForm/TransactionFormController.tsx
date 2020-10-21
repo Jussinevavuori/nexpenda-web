@@ -15,6 +15,7 @@ export function TransactionForm(props: TransactionFormProps) {
 	/**
 	 * Input state
 	 */
+	const [sign, setSign] = useState<"+" | "-">("-")
 	const [amount, setAmount] = useState<string>("")
 	const [category, setCategory] = useState<string>("")
 	const [time, setTime] = useState<Date>(new Date())
@@ -108,7 +109,13 @@ export function TransactionForm(props: TransactionFormProps) {
 		 * Post transaction
 		 */
 		const result = await postTransaction({
-			integerAmount: Math.round(Number(amount.trim().replace(/,/g, '.')) * 100),
+			integerAmount: Math.round(
+				Math.abs(
+					100 * Number(
+						amount.trim().replace(/,/g, '.')
+					)
+				)
+			) * (sign === "+" ? 1 : -1),
 			category: category.trim(),
 			time: time.getTime(),
 			comment: comment.trim(),
@@ -161,10 +168,12 @@ export function TransactionForm(props: TransactionFormProps) {
 
 	return <TransactionFormView
 		onSubmit={handleSubmit}
+		sign={sign}
 		amount={amount}
 		category={category}
 		time={time}
 		comment={comment}
+		onSignChange={value => setSign(value)}
 		onAmountChange={value => setAmount(value)}
 		onCategoryChange={value => setCategory(value)}
 		onTimeChange={value => setTime(value)}

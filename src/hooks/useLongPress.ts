@@ -22,7 +22,7 @@ export default function useLongPress(
    * Default press time in MS to 500 unless overridden in options
    */
   const pressTimeInMs = useMemo(() => {
-    if (options?.pressTimeInMs) {
+    if (options?.pressTimeInMs !== undefined) {
       return options.pressTimeInMs;
     }
     return 300;
@@ -70,7 +70,7 @@ export default function useLongPress(
     (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
       if (shouldPreventDefault) {
         e.preventDefault();
-      }
+			}
 
       // Set latest start position
       if ("clientX" in e && "clientY" in e) {
@@ -101,7 +101,6 @@ export default function useLongPress(
       // Set new timeout
       timeout.current = setTimeout(() => {
         callback();
-        setPressed(false);
         if (!disableVibrate) {
           window.navigator.vibrate(100);
         }
@@ -216,7 +215,7 @@ export default function useLongPress(
       onMouseDown: startLongPress,
       onMouseUp: endLongPress,
       onMouseLeave: endLongPress,
-      onMouseOut: endLongPress,
+			onMouseOut: endLongPress,
     },
   };
 }

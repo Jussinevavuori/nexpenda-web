@@ -32,11 +32,12 @@
 
   & .transactionsList {
     grid-area: transactionsList;
-    padding: 4px 0 0;
-
-    margin-top: 4px;
-    @include sm {
-      margin-top: 1rem;
+		padding:0;
+    margin-top: 0;
+    @include md {
+			margin-top: 1rem;
+			padding-left: $spacing-sm;
+			padding-right: $spacing-sm;
     }
 
     overflow-y: auto;

@@ -19,7 +19,21 @@
     align-items: center;
     justify-content: flex-end;
     & .filtersButton {
-      margin-left: 1.6rem;
+			margin-left: 1.6rem;
+
+			@include md {
+				position: relative;
+				&::before {
+					content: "";
+					display: block;
+					position: absolute;
+					height: calc(100% - 0.8rem);
+					width: 1px;
+					background: rgba(0,0,0,0.3);
+					left: -0.8rem;
+					margin: 0.4rem 0;
+				}
+			}
     }
   }
 }

@@ -1,12 +1,15 @@
 @import "main";
 
 .EnhancedButton {
-  position: relative;
+	position: relative;
 
-  & .MuiCircularProgress-root {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+	& .enhancedButtonLoader {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
 }

@@ -1,9 +1,10 @@
 import "./TransactionForm.scss";
 import React from "react"
-import { TextField, InputAdornment, Button } from "@material-ui/core";
+import { TextField, InputAdornment, Button, ButtonGroup } from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
+import { useSmMedia } from "../../hooks/useMedia";
 
 export type TransactionFormViewProps = {
 
@@ -13,6 +14,7 @@ export type TransactionFormViewProps = {
 	 * Form state
 	 */
 	amount: string;
+	sign: "+" | "-";
 	category: string;
 	time: Date;
 	comment: string;
@@ -20,6 +22,7 @@ export type TransactionFormViewProps = {
 	/**
 	 * Form change handlers
 	 */
+	onSignChange(sign: "+" | "-"): void;
 	onAmountChange(value: string): void;
 	onCategoryChange(value: string): void;
 	onTimeChange(value: Date): void;
@@ -47,34 +50,72 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 		props.onSubmit()
 	}
 
+	const largerLayout = useSmMedia()
+
 	return <form className="TransactionForm" onSubmit={handleSubmit}>
 
 		<Type variant="button">
 			{"New transaction"}
 		</Type>
 
-		<TextField
-			value={props.amount}
-			onChange={e => props.onAmountChange(e.target.value)}
-			id="transaction-amount"
-			variant="outlined"
-			name="amount"
-			type="number"
-			label="Amount"
-			error={!!props.errors.amount}
-			helperText={props.errors.amount}
-			fullWidth
-			required
-			size="small"
-			autoFocus
-			InputProps={{
-				endAdornment: <InputAdornment position="end">
-					<Type>
-						{"EUR"}
-					</Type>
-				</InputAdornment>
-			}}
-		/>
+		<div className="transactionAmountContainer">
+
+			<ButtonGroup
+				size="small"
+			>
+				<Button
+					size="small"
+					color="primary"
+					variant={props.sign === "+" ? "contained" : "outlined"}
+					onClick={() => props.onSignChange("+")}
+				>
+					{"+"}
+				</Button>
+				<Button
+					size="small"
+					color="primary"
+					variant={props.sign === "-" ? "contained" : "outlined"}
+					onClick={() => props.onSignChange("-")}
+				>
+					{"-"}
+				</Button>
+			</ButtonGroup>
+
+			<TextField
+				value={props.amount}
+				onChange={e => props.onAmountChange(e.target.value)}
+				onKeyPress={e => {
+					switch (e.key) {
+						case "-":
+							props.onSignChange("-")
+							break;
+						case "+":
+							props.onSignChange("+")
+							break;
+					}
+				}}
+				id="transaction-amount"
+				variant="outlined"
+				name="amount"
+				type="number"
+				label="Amount"
+				error={!!props.errors.amount}
+				helperText={props.errors.amount}
+				fullWidth
+				required
+				size="small"
+				autoFocus
+				autoComplete="off"
+				InputProps={{
+					endAdornment: <InputAdornment position="end">
+						<Type>
+							{"EUR"}
+						</Type>
+					</InputAdornment>
+				}}
+			/>
+
+		</div>
 
 		<Autocomplete
 			inputValue={props.category}
@@ -89,6 +130,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			disableClearable
 			fullWidth
 			size="small"
+			autoComplete
 			options={props.categories}
 			renderInput={(params) => (
 				<TextField
@@ -96,6 +138,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 					name="category"
 					type="text"
 					label="Category"
+					autoComplete="off"
 					error={!!props.errors.category}
 					helperText={props.errors.category}
 					required
@@ -123,7 +166,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			onChange={d => props.onTimeChange(d as Date)}
 			format="dd/MM/yyyy"
 			id="transaction-time"
-			variant="inline"
+			variant={largerLayout ? "inline" : "dialog"}
 			inputVariant="outlined"
 			label="Date"
 			error={!!props.errors.time}

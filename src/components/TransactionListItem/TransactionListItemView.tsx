@@ -1,5 +1,5 @@
 import "./TransactionListItem.scss";
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import {
@@ -20,21 +20,35 @@ export type TransactionListItemViewProps = {
 
 export function TransactionListItemView(props: TransactionListItemViewProps) {
 
-	const { onSelect } = props
+	const { selected, onSelect, onDeselect, selectionActive } = props
 
 	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
-	const handleLongPress = useCallback(() => onSelect(), [onSelect])
+	/**
+	 * Long presses acts as toggle
+	 */
+	const handleLongPress = useCallback(() => {
+		if (selected) {
+			onDeselect()
+		} else {
+			onSelect()
+		}
+	}, [onSelect, onDeselect, selected])
 
-	const longPress = useLongPress(handleLongPress)
+	/**
+	 * No timeout when selected, else default timeout
+	 */
+	const longPressTimeout = useMemo(() => {
+		return selectionActive ? 0 : undefined
+	}, [selectionActive])
+
+	const pressHandler = useLongPress(handleLongPress, {
+		pressTimeInMs: longPressTimeout
+	})
 
 	return <div
-		className={cx("TransactionListItem", { pressed: longPress.pressed })}
-		{...(props.selectionActive ? {
-			onClick() {
-				props.selected ? props.onDeselect() : props.onSelect()
-			},
-		} : longPress.props)}
+		className={cx("TransactionListItem", { pressed: pressHandler.pressed })}
+		{...pressHandler.props}
 	>
 		<div className={cx("icon", signClass, { selected: props.selected, selectionActive: props.selectionActive })}>
 			<div

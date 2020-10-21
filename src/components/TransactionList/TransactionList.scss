@@ -6,7 +6,11 @@
 
   & .ReactVirtualized__Grid.ReactVirtualized__List.virtualizedList {
     outline: none;
-  }
+	}
+	
+	& .emptyTransactions {
+		margin: 0 $spacing-sm;
+	}
 
   & .dateGroup {
     & > p {
