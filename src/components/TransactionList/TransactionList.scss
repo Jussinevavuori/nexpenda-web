@@ -11,7 +11,8 @@
   & .dateGroup {
     & > p {
       color: $color-text-default;
-      font-size: 1rem;
+			font-size: 1rem;
+			margin-left: $spacing-sm;
     }
     & > ul {
       padding: 8px 0 16px 0;

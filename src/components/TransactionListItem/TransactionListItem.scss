@@ -1,7 +1,7 @@
 @import "main";
 
 .TransactionListItem {
-  padding: 6px 1rem 6px 0;
+  padding: 6px calc(#{$spacing-sm} + 1rem) 6px $spacing-sm;
   height: 68px;
   position: relative;
   display: grid;
