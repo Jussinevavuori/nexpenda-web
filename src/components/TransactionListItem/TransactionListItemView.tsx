@@ -31,8 +31,10 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	 * Long presses acts as toggle
 	 */
 	const handleLongPress = useCallback(() => {
-		if (selected) {
+		if (selectionActive) {
 			vibrate("weak")
+		}
+		if (selected) {
 			onDeselect()
 		} else {
 			onSelect()
@@ -48,7 +50,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 
 	const pressHandler = useLongPress(handleLongPress, {
 		pressTimeInMs: longPressTimeout,
-		disableVibrate: longPressTimeout === 0,
+		disableVibrate: selectionActive,
 	})
 
 	return <div
