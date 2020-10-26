@@ -6,6 +6,7 @@ import {
   useMemo,
   HTMLProps,
 } from "react";
+import { useVibration } from "./useVibration";
 
 export default function useLongPress(
   callback: () => void,
@@ -19,6 +20,11 @@ export default function useLongPress(
   props: Partial<HTMLProps<HTMLDivElement>>;
   childlockProps: Partial<HTMLProps<HTMLDivElement>>;
 } {
+  /**
+   * Vibration
+   */
+  const vibrate = useVibration();
+
   /**
    * Default press time in MS to 500 unless overridden in options
    */
@@ -103,7 +109,7 @@ export default function useLongPress(
       timeout.current = setTimeout(() => {
         callback();
         if (!disableVibrate) {
-          window.navigator.vibrate(100);
+          vibrate("default");
         }
       }, pressTimeInMs);
     },

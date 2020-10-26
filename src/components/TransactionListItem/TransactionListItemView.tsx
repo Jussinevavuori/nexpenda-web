@@ -8,6 +8,7 @@ import {
 	Check as SelectedIcon,
 } from "react-feather"
 import useLongPress from "../../hooks/useLongPress";
+import { useVibration } from "../../hooks/useVibration";
 
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
@@ -22,6 +23,8 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 
 	const { selected, onSelect, onDeselect, selectionActive } = props
 
+	const vibrate = useVibration()
+
 	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
 	/**
@@ -29,6 +32,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	 */
 	const handleLongPress = useCallback(() => {
 		if (selected) {
+			vibrate("weak")
 			onDeselect()
 		} else {
 			onSelect()
@@ -60,6 +64,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 					} else {
 						props.onSelect()
 					}
+					vibrate("weak")
 				}}
 				{...pressHandler.childlockProps}
 			>
