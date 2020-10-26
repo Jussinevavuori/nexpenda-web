@@ -15,6 +15,8 @@ export type TransactionFormProps = {
 
 export function TransactionForm(props: TransactionFormProps) {
 
+	const notify = useStoreActions(_ => _.notification.notify)
+
 	const editTransaction = props.editTransaction
 
 	const categories = useStoreState(_ => _.transactions.categories)
@@ -170,6 +172,13 @@ export function TransactionForm(props: TransactionFormProps) {
 		 * Handle success by reseting form
 		 */
 		if (result.isSuccess()) {
+
+			if (editTransaction) {
+				notify({
+					message: "Changes saved"
+				})
+			}
+
 			setAmount("")
 			setCategory("")
 			setTime(new Date())

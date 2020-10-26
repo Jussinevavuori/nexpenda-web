@@ -1,0 +1,15 @@
+@import "main";
+
+.TransactionContextMenu {
+  & .MuiMenuItem-root {
+    & svg {
+      margin-right: 0.5rem;
+    }
+    &.editItem svg {
+      color: $color-primary-main;
+    }
+    &.deleteItem svg {
+      color: $color-error-main;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import { Transaction } from "../../classes/Transaction"
+import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useStoreActions, useStoreState } from "../../store"
 import { TransactionTableRowView } from "./TransactionTableRowView"
 
@@ -64,14 +65,31 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 		}
 	}, [handleDeselect, handleSelect, selected])
 
+	/**
+	 * Handle context
+	 */
+	const contextMenu = useTransactionContextMenu()
+	const handleContextMenu = useCallback((e: React.MouseEvent<HTMLElement>) => {
+		e.preventDefault()
+		contextMenu.setPosition({ top: e.clientY, left: e.clientX })
+		contextMenu.setTransaction(props.transaction)
+	}, [contextMenu, props.transaction])
+	const contextMenuSelected = useMemo(() => {
+		if (contextMenu.transaction) {
+			return contextMenu.transaction.id === props.transaction.id
+		}
+		return false
+	}, [contextMenu, props.transaction])
+
 	return <TransactionTableRowView
 		transaction={props.transaction}
 
 		onSelectCategory={handleCategorySelect}
 
 		onClick={handleClick}
+		onContextMenu={handleContextMenu}
 
-		selected={selected}
+		selected={selected || contextMenuSelected}
 		selectionActive={selectionActive}
 		onSelect={handleSelect}
 		onDeselect={handleDeselect}

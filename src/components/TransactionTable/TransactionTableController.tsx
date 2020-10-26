@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { TransactionContextMenuProvider } from "../../contexts/TransactionContextMenu.context"
 import { useStoreState } from "../../store"
 import { TransactionTableView } from "./TransactionTableView"
 
@@ -16,7 +17,9 @@ export function TransactionTable(props: TransactionTableProps) {
 		return selection.sort((a, b) => a.date.getTime() - b.date.getTime())
 	}, [props, items, filteredItems])
 
-	return <TransactionTableView
-		items={selectedItems}
-	/>
+	return <TransactionContextMenuProvider>
+		<TransactionTableView
+			items={selectedItems}
+		/>
+	</TransactionContextMenuProvider>
 }

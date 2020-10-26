@@ -18,6 +18,7 @@ export type TransactionTableRowViewProps = {
 	onSelectCategory(): void;
 
 	onClick(e: React.MouseEvent): void;
+	onContextMenu(e: React.MouseEvent<HTMLElement>): void;
 
 	selected: boolean;
 	onSelect(): void;
@@ -41,6 +42,7 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 	return <div
 		className="TransactionTableRow"
 		onClick={props.onClick}
+		onContextMenu={props.onContextMenu}
 	>
 		<div className="action">
 			{

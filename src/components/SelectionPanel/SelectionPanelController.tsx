@@ -4,6 +4,7 @@ import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/TransactionEditorDrawerController"
 import { SelectionPanelView } from "./SelectionPanelView"
 
+
 export type SelectionPanelProps = {
 
 }
