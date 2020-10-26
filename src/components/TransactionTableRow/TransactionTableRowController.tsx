@@ -66,10 +66,10 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 	}, [handleDeselect, handleSelect, selected])
 
 	/**
-	 * Handle context
+	 * Handle context menu
 	 */
 	const contextMenu = useTransactionContextMenu()
-	const handleContextMenu = useCallback((e: React.MouseEvent<HTMLElement>) => {
+	const handleContextMenu = useCallback((e: React.MouseEvent) => {
 		e.preventDefault()
 		contextMenu.setPosition({ top: e.clientY, left: e.clientX })
 		contextMenu.setTransaction(props.transaction)

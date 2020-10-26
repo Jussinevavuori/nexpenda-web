@@ -81,6 +81,10 @@ export default function useLongPress(
 
       // Set latest start position
       if ("clientX" in e && "clientY" in e) {
+        // Only on primary click
+        if (e.button !== 0) {
+          return;
+        }
         origin.current = {
           x: e.clientX,
           y: e.clientY,
@@ -230,7 +234,6 @@ export default function useLongPress(
       onTouchEnd: (e) => e.stopPropagation(),
       onTouchMove: (e) => e.stopPropagation(),
       onTouchCancel: (e) => e.stopPropagation(),
-
       onMouseDown: (e) => e.stopPropagation(),
       onMouseUp: (e) => e.stopPropagation(),
       onMouseLeave: (e) => e.stopPropagation(),

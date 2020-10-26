@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react"
 import { TransactionListItemView } from "./TransactionListItemView"
 import { Transaction } from "../../classes/Transaction"
 import { useStoreActions, useStoreState } from "../../store"
+import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 
 export type TransactionListItemProps = {
 	transaction: Transaction;
@@ -38,12 +39,31 @@ export function TransactionListItem(props: TransactionListItemProps) {
 	 */
 	const selectionActive = useStoreState(_ => _.selection.selectionActive)
 
+	/**
+	 * Handle context menu
+	 */
+	const contextMenu = useTransactionContextMenu()
+	const handleContextMenu = useCallback((e: React.MouseEvent) => {
+		e.preventDefault()
+		contextMenu.setPosition({ top: e.clientY, left: e.clientX })
+		contextMenu.setTransaction(props.transaction)
+	}, [contextMenu, props.transaction])
+	const contextMenuSelected = useMemo(() => {
+		if (contextMenu.transaction) {
+			return contextMenu.transaction.id === props.transaction.id
+		}
+		return false
+	}, [contextMenu, props.transaction])
+
+
 	return <TransactionListItemView
 		transaction={props.transaction}
 
-		selected={selected}
+		selected={selected || contextMenuSelected}
 		onSelect={handleSelect}
 		onDeselect={handleDeselect}
 		selectionActive={selectionActive}
+
+		onContextMenu={handleContextMenu}
 	/>
 }

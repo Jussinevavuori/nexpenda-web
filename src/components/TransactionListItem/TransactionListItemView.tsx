@@ -13,6 +13,8 @@ import { useVibration } from "../../hooks/useVibration";
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
 
+	onContextMenu(e: React.MouseEvent): void;
+
 	selected: boolean;
 	onSelect(): void;
 	onDeselect(): void;
@@ -56,6 +58,10 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	return <div
 		className={cx("TransactionListItem", { pressed: pressHandler.pressed })}
 		{...pressHandler.props}
+		onContextMenu={e => {
+			e.stopPropagation()
+			props.onContextMenu(e)
+		}}
 	>
 		<div className={cx("icon", signClass, { selected: props.selected, selectionActive: props.selectionActive })}>
 			<div
