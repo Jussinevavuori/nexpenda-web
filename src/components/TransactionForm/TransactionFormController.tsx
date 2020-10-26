@@ -1,16 +1,26 @@
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { TransactionFormView } from "./TransactionFormView"
 import { useStoreActions, useStoreState } from "../../store"
+import { Transaction } from "../../classes/Transaction"
 
 export type TransactionFormProps = {
 	onClose?(): void;
+
+	/**
+	 * If this prop is provided, the editor will default to editing
+	 * this transaction instead of creating a new transaction.
+	 */
+	editTransaction?: Transaction;
 }
 
 export function TransactionForm(props: TransactionFormProps) {
 
+	const editTransaction = props.editTransaction
+
 	const categories = useStoreState(_ => _.transactions.categories)
 
 	const postTransaction = useStoreActions(_ => _.transactions.postTransaction)
+	const putTransaction = useStoreActions(_ => _.transactions.putTransaction)
 
 	/**
 	 * Input state
@@ -20,6 +30,27 @@ export function TransactionForm(props: TransactionFormProps) {
 	const [category, setCategory] = useState<string>("")
 	const [time, setTime] = useState<Date>(new Date())
 	const [comment, setComment] = useState<string>("")
+
+	/**
+	 * Initialize input state from editTransaction. We use the
+	 * `latestEditTransactionId` for preventing double-initializations of
+	 * the same transaction.
+	 */
+	const latestEditTransactionId = useRef<string>('')
+	useEffect(() => {
+		if (!editTransaction) {
+			return
+		}
+		if (latestEditTransactionId.current === editTransaction.id) {
+			return
+		}
+		latestEditTransactionId.current = editTransaction.id
+		setSign(editTransaction.amount.sign === 1 ? "+" : "-")
+		setAmount(editTransaction.amount.decimalValue.toFixed(2))
+		setCategory(editTransaction.category)
+		setComment(editTransaction.comment)
+		setTime(editTransaction.date)
+	}, [editTransaction])
 
 	/**
 	 * Error state
@@ -106,20 +137,34 @@ export function TransactionForm(props: TransactionFormProps) {
 		if (!formValid) return
 
 		/**
-		 * Post transaction
+		 * Parsing
 		 */
-		const result = await postTransaction({
-			integerAmount: Math.round(
-				Math.abs(
-					100 * Number(
-						amount.trim().replace(/,/g, '.')
-					)
+		const integerAmount = Math.round(
+			Math.abs(
+				100 * Number(
+					amount.trim().replace(/,/g, ".")
 				)
-			) * (sign === "+" ? 1 : -1),
-			category: category.trim(),
-			time: time.getTime(),
-			comment: comment.trim(),
-		})
+			)
+		)
+
+		/**
+		 * Post or edit transaction
+		 */
+		const result = editTransaction
+			? await putTransaction({
+				id: editTransaction.id,
+				uid: editTransaction.uid,
+				integerAmount,
+				category: category.trim(),
+				time: time.getTime(),
+				comment: comment.trim(),
+			})
+			: await postTransaction({
+				integerAmount,
+				category: category.trim(),
+				time: time.getTime(),
+				comment: comment.trim(),
+			})
 
 		/**
 		 * Handle success by reseting form
@@ -130,6 +175,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			setTime(new Date())
 			setComment("")
 			setErrors({})
+			latestEditTransactionId.current = ""
 			if (props.onClose) {
 				props.onClose()
 			}
@@ -158,6 +204,8 @@ export function TransactionForm(props: TransactionFormProps) {
 					}
 				case "transaction/already-exists":
 					return { main: "Could not post transaction due to overlapping IDs" }
+				case "auth/unauthorized":
+					return { main: "Cannot edit another user's transaction" }
 				case "server/unavailable":
 					return { main: "Could not react server. Try again later." }
 				default:
@@ -180,5 +228,6 @@ export function TransactionForm(props: TransactionFormProps) {
 		onCommentChange={value => setComment(value)}
 		errors={errors}
 		categories={categories}
+		edit={!!editTransaction}
 	/>
 }

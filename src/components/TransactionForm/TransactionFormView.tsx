@@ -41,6 +41,8 @@ export type TransactionFormViewProps = {
 
 	categories: string[];
 
+	edit: boolean;
+
 }
 
 export function TransactionFormView(props: TransactionFormViewProps) {
@@ -182,7 +184,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			variant="contained"
 			size="small"
 		>
-			{"Create"}
+			{props.edit ? "Save" : "Create"}
 		</Button>
 
 	</form>

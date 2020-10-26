@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
+import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/TransactionEditorDrawerController"
 import { SelectionPanelView } from "./SelectionPanelView"
 
 export type SelectionPanelProps = {
@@ -50,11 +51,24 @@ export function SelectionPanel(props: SelectionPanelProps) {
 		deselectAll()
 	}, [deleteTransactions, selection, deselectAll])
 
+	/**
+	 * Editor drawer
+	 */
+	const [, setEditor] = useTransactionEditorDrawerVariableOpenState()
+	const handleEdit = useCallback(() => {
+		if (selection.length === 1) {
+			setEditor(selection[0].id)
+		}
+	}, [selection, setEditor])
+
 	return <SelectionPanelView
 		selection={selection}
+
 		onSelectAll={handleSelectAll}
 		onDeselectAll={handleDeselectAll}
-		allSelected={allSelected}
+		onEdit={handleEdit}
 		onDelete={handleDelete}
+
+		allSelected={allSelected}
 	/>
 }

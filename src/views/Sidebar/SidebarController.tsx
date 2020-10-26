@@ -4,7 +4,7 @@ import { useRouteMatch } from "react-router-dom"
 import { routes } from "../../Routes"
 import { useRedirect } from "../../hooks/useRedirect"
 import { useStoreState, useStoreActions } from "../../store"
-import { useHashOpenState } from "../../hooks/useHashOpenState"
+import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/TransactionCreatorDrawerController"
 
 export type SidebarProps = {
 
@@ -23,7 +23,7 @@ export function Sidebar(props: SidebarProps) {
 
 	const redirect = useRedirect()
 
-	const [transactionFormOpen, setTransactionFormOpen] = useHashOpenState("new")
+	const [, setTransactionCreatorOpen] = useTransactionCreatorDrawerOpenState()
 
 	if (!user) return null
 
@@ -44,9 +44,7 @@ export function Sidebar(props: SidebarProps) {
 		user={user}
 		logout={() => logout()}
 
-		transactionFormOpen={transactionFormOpen}
-		onTransactionFormOpen={() => setTransactionFormOpen(true)}
-		onTransactionFormClose={() => setTransactionFormOpen(false)}
+		onTransactionCreatorOpen={() => setTransactionCreatorOpen(true)}
 
 	/>
 }

@@ -8,6 +8,7 @@ import {
 	CheckBox as SelectedAllIcon,
 	Clear as DeselectAllIcon,
 	Delete as DeleteIcon,
+	Edit as EditIcon,
 } from "@material-ui/icons";
 import { Type } from "../Type/Type";
 
@@ -18,6 +19,7 @@ export type SelectionPanelViewProps = {
 	onSelectAll(): void;
 	onDeselectAll(): void;
 	onDelete(): void;
+	onEdit(): void;
 
 }
 
@@ -56,6 +58,14 @@ export function SelectionPanelView(props: SelectionPanelViewProps) {
 						}
 
 						<Button
+							className="editButton"
+							disabled={props.selection.length !== 1}
+							onClick={props.onEdit}
+							startIcon={<EditIcon />}
+							children={"Edit"}
+						/>
+
+						<Button
 							className="deleteButton"
 							onClick={props.onDelete}
 							startIcon={<DeleteIcon />}
@@ -74,6 +84,12 @@ export function SelectionPanelView(props: SelectionPanelViewProps) {
 									children={<SelectAllIcon />}
 								/>
 						}
+						<IconButton
+							className="editButton"
+							disabled={props.selection.length !== 1}
+							onClick={props.onEdit}
+							children={<EditIcon />}
+						/>
 						<IconButton
 							className="deleteButton"
 							onClick={props.onDelete}

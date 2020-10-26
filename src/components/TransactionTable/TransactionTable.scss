@@ -8,6 +8,8 @@
 
   & .listContainer {
     flex: 1;
+    border-top: 1px solid $color-divider;
+    border-bottom: 1px solid $color-divider;
   }
 
   & .virtualizedList {

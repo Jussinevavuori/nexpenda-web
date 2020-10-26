@@ -22,6 +22,10 @@
     }
   }
 
+  & .editButton {
+    color: $color-primary-main;
+  }
+
   & .deleteButton {
     color: $color-error-main;
   }

@@ -31,11 +31,10 @@
     margin-top: 0;
     @include md {
       margin-top: 1rem;
+      margin-bottom: 1rem;
       padding-left: $spacing-sm;
       padding-right: $spacing-sm;
     }
-
-    overflow-y: auto;
   }
 
   & .panel {

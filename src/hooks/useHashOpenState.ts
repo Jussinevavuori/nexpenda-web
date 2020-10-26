@@ -7,6 +7,10 @@ export function useHashOpenState(
   const history = useHistory();
   const location = useLocation();
 
+  if (targetHash.includes("@")) {
+    throw new Error("Hash cannot include '@' character");
+  }
+
   const open = useMemo(() => {
     return location.hash.substring(1) === targetHash;
   }, [location, targetHash]);

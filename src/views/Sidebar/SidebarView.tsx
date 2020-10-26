@@ -1,7 +1,8 @@
 import "./Sidebar.scss";
 import React from "react"
+import cx from "classnames"
 import { Auth } from "../../classes/Auth";
-import { IconButton, Button, Drawer } from "@material-ui/core";
+import { IconButton, Button } from "@material-ui/core";
 import {
 	Home as DashboardIcon,
 	BarChart2 as AnalyticsIcon,
@@ -11,8 +12,6 @@ import {
 	LogOut as LogoutIcon,
 	Plus as PlusIcon
 } from "react-feather"
-import cx from "classnames"
-import { TransactionForm } from "../../components/TransactionForm/TransactionFormController";
 import { useSmMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
 
@@ -32,9 +31,8 @@ export type SidebarViewProps = {
 	user: Auth;
 	logout(): void;
 
-	transactionFormOpen: boolean;
-	onTransactionFormOpen(): void;
-	onTransactionFormClose(): void;
+	onTransactionCreatorOpen(): void;
+
 }
 
 export function SidebarView(props: SidebarViewProps) {
@@ -42,16 +40,6 @@ export function SidebarView(props: SidebarViewProps) {
 	const sidebarView = useSmMedia()
 
 	return <>
-
-		<Drawer
-			open={props.transactionFormOpen}
-			onClose={props.onTransactionFormClose}
-			anchor={sidebarView ? "left" : "bottom"}
-		>
-			<TransactionForm
-				onClose={props.onTransactionFormClose}
-			/>
-		</Drawer>
 
 		<div className="Sidebar">
 
@@ -146,7 +134,7 @@ export function SidebarView(props: SidebarViewProps) {
 								<Button
 									variant="text"
 									className={cx("tab")}
-									onClick={props.onTransactionFormOpen}
+									onClick={props.onTransactionCreatorOpen}
 									startIcon={<PlusIcon />}
 								>
 									{"New transaction"}
@@ -186,7 +174,7 @@ export function SidebarView(props: SidebarViewProps) {
 
 							<IconButton
 								className={cx("tab")}
-								onClick={props.onTransactionFormOpen}
+								onClick={props.onTransactionCreatorOpen}
 							>
 								<PlusIcon />
 							</IconButton>

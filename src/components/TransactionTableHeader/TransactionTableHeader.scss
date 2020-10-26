@@ -5,7 +5,6 @@
   grid-template-columns: 12rem 1fr 32px 3fr 8rem 1rem 8px;
   grid-template-areas: "category amount p1 comment date p2 p3";
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid $color-divider;
 
   & .amount {
     grid-area: amount;
