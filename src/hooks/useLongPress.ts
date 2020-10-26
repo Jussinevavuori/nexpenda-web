@@ -13,7 +13,6 @@ export default function useLongPress(
   options?: {
     pressTimeInMs?: number;
     disableVibrate?: boolean;
-    shouldPreventDefault?: boolean;
   }
 ): {
   pressed: boolean;
@@ -46,16 +45,6 @@ export default function useLongPress(
   }, [options]);
 
   /**
-   * Default to prevent default
-   */
-  const shouldPreventDefault = useMemo(() => {
-    if (options?.shouldPreventDefault === false) {
-      return false;
-    }
-    return true;
-  }, [options]);
-
-  /**
    * Is the press currently occuring
    */
   const [pressed, setPressed] = useState(false);
@@ -75,10 +64,6 @@ export default function useLongPress(
    */
   const startLongPress = useCallback(
     (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
-      if (shouldPreventDefault) {
-        e.preventDefault();
-      }
-
       // Set latest start position
       if ("clientX" in e && "clientY" in e) {
         // Only on primary click
@@ -90,15 +75,19 @@ export default function useLongPress(
           y: e.clientY,
         };
       } else {
+        // Prevent double touching from activating long presses
         if (e.touches.length > 1) {
           return;
-        } else {
-          const touch = e.touches[0];
-          origin.current = {
-            x: touch.clientX,
-            y: touch.clientY,
-          };
         }
+
+        // Prevent context menu on long press
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        origin.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+        };
       }
 
       // Clear any previous timeouts
@@ -117,15 +106,7 @@ export default function useLongPress(
         }
       }, pressTimeInMs);
     },
-    [
-      shouldPreventDefault,
-      callback,
-      setPressed,
-      timeout,
-      pressTimeInMs,
-      disableVibrate,
-      vibrate,
-    ]
+    [callback, setPressed, timeout, pressTimeInMs, disableVibrate, vibrate]
   );
 
   /**
@@ -133,10 +114,6 @@ export default function useLongPress(
    */
   const endLongPress = useCallback(
     (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
-      if (shouldPreventDefault) {
-        e.preventDefault();
-      }
-
       origin.current = null;
 
       setPressed(false);
@@ -146,7 +123,7 @@ export default function useLongPress(
         timeout.current = null;
       }
     },
-    [shouldPreventDefault, setPressed, timeout]
+    [setPressed, timeout]
   );
 
   /**
@@ -155,16 +132,12 @@ export default function useLongPress(
    */
   const cancelLongPress = useCallback(
     (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
-      if (shouldPreventDefault) {
-        e.preventDefault();
-      }
-
       if (timeout.current) {
         clearTimeout(timeout.current);
         timeout.current = null;
       }
     },
-    [shouldPreventDefault, timeout]
+    [timeout]
   );
 
   /**

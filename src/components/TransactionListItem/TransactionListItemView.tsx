@@ -30,7 +30,8 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
 	/**
-	 * Long presses acts as toggle
+	 * Long presses acts as toggle: this function is the callback when a long
+	 * press activates
 	 */
 	const handleLongPress = useCallback(() => {
 		if (selectionActive) {
@@ -44,12 +45,15 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	}, [onSelect, onDeselect, selected, selectionActive, vibrate])
 
 	/**
-	 * No timeout when selected, else default timeout
+	 * No timeout when selected, else default timeout for long presses
 	 */
 	const longPressTimeout = useMemo(() => {
 		return selectionActive ? 0 : undefined
 	}, [selectionActive])
 
+	/**
+	 * Long press handler
+	 */
 	const pressHandler = useLongPress(handleLongPress, {
 		pressTimeInMs: longPressTimeout,
 		disableVibrate: selectionActive,
