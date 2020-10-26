@@ -86,8 +86,11 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			<TextField
 				value={props.amount}
 				onChange={e => props.onAmountChange(e.target.value)}
-				onKeyPress={e => {
+				onKeyDown={e => {
 					switch (e.key) {
+						case ",":
+							e.key = "."
+							break;
 						case "-":
 							props.onSignChange("-")
 							break;
