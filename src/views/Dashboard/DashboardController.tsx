@@ -15,6 +15,8 @@ export function Dashboard() {
 	const selectAll = useStoreActions(_ => _.selection.selectAll)
 	const deselectAll = useStoreActions(_ => _.selection.deselectAll)
 
+	const filtersActive = useStoreState(_ => _.filters.filtersActive)
+
 	const handleSelectAll = useCallback(() => {
 		selectAll(filteredTransactions.map(_ => _.id))
 	}, [filteredTransactions, selectAll])
@@ -22,6 +24,8 @@ export function Dashboard() {
 	if (!user) return null
 	return <DashboardView
 		intervalString={smartDisplayString}
+
+		filtersActive={filtersActive}
 
 		user={user}
 

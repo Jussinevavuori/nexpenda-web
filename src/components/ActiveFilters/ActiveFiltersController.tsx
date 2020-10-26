@@ -16,6 +16,7 @@ export function ActiveFilters(props: ActiveFiltersProps) {
 	const resetSearchTermFilter = useStoreActions(_ => _.filters.resetSearchTerm)
 	const resetCategoryFilter = useStoreActions(_ => _.filters.resetCategories)
 	const resetAmountFilter = useStoreActions(_ => _.filters.resetAmount)
+	const resetAllFilters = useStoreActions(_ => _.filters.resetAll)
 
 	const minPossibleAmount = useStoreState(_ => _.transactions.minimumAmount)
 	const maxPossibleAmount = useStoreState(_ => _.transactions.maximumAmount)
@@ -40,6 +41,7 @@ export function ActiveFilters(props: ActiveFiltersProps) {
 		onResetSearchTermFilter={() => resetSearchTermFilter()}
 		onResetCategoryFilter={() => resetCategoryFilter()}
 		onResetAmountFilter={() => resetAmountFilter()}
+		onResetAllFilters={() => resetAllFilters()}
 
 	/>
 }

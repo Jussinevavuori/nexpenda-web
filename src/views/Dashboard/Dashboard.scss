@@ -10,6 +10,7 @@
   grid-template:
     "pageHeader" auto
     "panel" auto
+    "activeFilters" auto
     "transactionsList" 1fr / 100%;
 
   & .PageHeader {
@@ -19,25 +20,19 @@
   & .pageHeaderContent {
     height: 100%;
     width: 100%;
-    display: grid;
-    grid-template:
-      "empty" 1fr
-      "activeFilters" auto / 1fr;
-
-    & .activeFilters {
-      padding: 0.5rem;
-      grid-area: activeFilters;
-    }
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing-sm;
   }
 
   & .transactionsList {
     grid-area: transactionsList;
-		padding:0;
+    padding: 0;
     margin-top: 0;
     @include md {
-			margin-top: 1rem;
-			padding-left: $spacing-sm;
-			padding-right: $spacing-sm;
+      margin-top: 1rem;
+      padding-left: $spacing-sm;
+      padding-right: $spacing-sm;
     }
 
     overflow-y: auto;
@@ -45,5 +40,10 @@
 
   & .panel {
     grid-area: panel;
+  }
+
+  & .activeFilters {
+    grid-area: activeFilters;
+    padding: 0.5rem $spacing-sm 0;
   }
 }

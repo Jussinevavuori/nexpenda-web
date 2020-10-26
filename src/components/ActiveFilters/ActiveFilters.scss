@@ -4,20 +4,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  overflow-x: auto;
+  // flex-wrap: wrap;
 
   & .activeFilterChip {
-    border-color: white;
-    margin-right: 1rem;
-    margin-bottom: 0.5rem;
     max-width: 90vw;
     @include sm {
       max-width: calc(0.8 * calc(100vw - #{$app-tab-width}));
     }
 
-    & * {
-      color: white;
-    }
+    // border-color: white;
+    // & * {
+    //   color: white;
+    // }
   }
 }

@@ -1,0 +1,19 @@
+@import "main";
+
+.QuickAnalytics {
+  & .subTotals {
+    display: grid;
+    place-items: center;
+    grid-auto-flow: column;
+    width: fit-content;
+    grid-gap: 1rem;
+    & .subTotal {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      & svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}

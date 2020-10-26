@@ -1,4 +1,4 @@
-import { Action, action } from "easy-peasy";
+import { Action, action, computed, Computed } from "easy-peasy";
 
 export type FiltersModel = {
   /**
@@ -35,6 +35,11 @@ export type FiltersModel = {
    * Reset all filters action
    */
   resetAll: Action<FiltersModel, void>;
+
+  /**
+   * Are any filters active
+   */
+  filtersActive: Computed<FiltersModel, boolean>;
 
   /**
    * Set search term action
@@ -99,6 +104,16 @@ export const filtersModel: FiltersModel = {
   maxAmount: Number.POSITIVE_INFINITY,
   categories: [],
   hiddenIds: [],
+
+  filtersActive: computed((state) => {
+    const searchTermActive = state.searchTerm !== "";
+    const minAmountActive = state.minAmount !== Number.NEGATIVE_INFINITY;
+    const maxAmountActive = state.maxAmount !== Number.POSITIVE_INFINITY;
+    const categoriesActive = state.categories.length > 0;
+    return (
+      searchTermActive || minAmountActive || maxAmountActive || categoriesActive
+    );
+  }),
 
   resetAll: action((state) => {
     state.searchTerm = "";

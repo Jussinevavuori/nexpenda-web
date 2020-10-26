@@ -1,4 +1,7 @@
 @import "main";
 
 .FileUploader {
+  & .cancelButton {
+    max-width: 48px;
+  }
 }

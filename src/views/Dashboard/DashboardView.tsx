@@ -9,10 +9,13 @@ import { TransactionTable } from "../../components/TransactionTable/TransactionT
 import { ActiveFilters } from "../../components/ActiveFilters/ActiveFiltersController";
 import { Transaction } from "../../classes/Transaction";
 import { SelectionPanel } from "../../components/SelectionPanel/SelectionPanelController";
+import { QuickAnalytics } from "../../components/QuickAnalytics/QuickAnalyticsController";
 
 export type DashboardViewProps = {
 	user: Auth;
 	intervalString: string;
+
+	filtersActive: boolean;
 
 	selectionActive: boolean;
 	selection: Transaction[];
@@ -29,11 +32,7 @@ export function DashboardView(props: DashboardViewProps) {
 		<PageHeader>
 
 			<div className="pageHeaderContent">
-
-				<div className="activeFilters">
-					<ActiveFilters />
-				</div>
-
+				<QuickAnalytics />
 			</div>
 
 		</PageHeader>
@@ -47,6 +46,14 @@ export function DashboardView(props: DashboardViewProps) {
 			}
 
 		</section>
+
+		{
+			props.filtersActive
+				? <section className="activeFilters">
+					<ActiveFilters />
+				</section>
+				: null
+		}
 
 		<section className="transactionsList">
 

@@ -36,6 +36,12 @@ export function FileUploader(props: FileUploaderProps) {
 		setParsing(false)
 	}
 
+	function handleCancel() {
+		setResult(undefined)
+		setParsing(false)
+		setUploading(false)
+	}
+
 	async function handleUpload() {
 
 		/**
@@ -113,6 +119,7 @@ export function FileUploader(props: FileUploaderProps) {
 	return <FileUploaderView
 		handleFileUpload={handleFileUpload}
 		handleUpload={handleUpload}
+		handleCancel={handleCancel}
 		parsing={parsing}
 		uploading={uploading}
 		result={result}

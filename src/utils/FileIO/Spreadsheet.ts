@@ -104,7 +104,7 @@ export abstract class Spreadsheet<T extends object> {
       const workbook = XLSX.read(arrayBuffer.value, { type: "buffer" });
       this._workbook = workbook;
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json(sheet, { raw: false });
+      const json = XLSX.utils.sheet_to_json(sheet, { raw: true });
 
       /**
        * Parse rows
