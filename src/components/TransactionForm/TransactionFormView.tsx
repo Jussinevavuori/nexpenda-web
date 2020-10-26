@@ -88,9 +88,6 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				onChange={e => props.onAmountChange(e.target.value)}
 				onKeyDown={e => {
 					switch (e.key) {
-						case ",":
-							e.key = "."
-							break;
 						case "-":
 							props.onSignChange("-")
 							break;
@@ -109,7 +106,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				fullWidth
 				required
 				size="small"
-				autoFocus
+				autoFocus={!props.edit}
 				autoComplete="off"
 				InputProps={{
 					endAdornment: <InputAdornment position="end">
