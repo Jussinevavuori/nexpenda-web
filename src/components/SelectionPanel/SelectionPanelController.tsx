@@ -59,8 +59,9 @@ export function SelectionPanel(props: SelectionPanelProps) {
 	const handleEdit = useCallback(() => {
 		if (selection.length === 1) {
 			setEditor(selection[0].id)
+			deselectAll()
 		}
-	}, [selection, setEditor])
+	}, [selection, setEditor, deselectAll])
 
 	return <SelectionPanelView
 		selection={selection}
