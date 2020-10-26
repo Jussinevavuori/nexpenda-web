@@ -17,3 +17,12 @@ export class SpreadsheetReadFileFailure<T> extends Failure<
     super("spreadsheet-read-file-failure");
   }
 }
+
+export class SpreadsheetNoFileCreatedFailure<T> extends Failure<
+  T,
+  "spreadsheet-no-file-created"
+> {
+  constructor() {
+    super("spreadsheet-no-file-created");
+  }
+}

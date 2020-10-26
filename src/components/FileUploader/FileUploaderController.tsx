@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import { useStoreActions } from "../../store"
+import { PromiseType } from "../../types"
+import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet"
 import { IOJsonTransaction, TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
 import { FileUploaderView } from "./FileUploaderView"
@@ -36,6 +38,10 @@ export function FileUploader(props: FileUploaderProps) {
 
 	async function handleUpload() {
 
+		/**
+		 * Get all rows that are to be uploaded and ensure at the least
+		 * some exist
+		 */
 		const rowsToUpload = result?.rows
 
 		if (!rowsToUpload) {
@@ -45,30 +51,62 @@ export function FileUploader(props: FileUploaderProps) {
 			})
 		}
 
+		/**
+		 * Set uploading status
+		 */
 		setUploading(true)
 
-		const postResult = await postTransactions(rowsToUpload)
+		/**
+		 * Chunkify to chunks of a hundred rows each and post one chunk
+		 * by one
+		 */
+		const chunks = DataUtils.chunkify(rowsToUpload, 100)
+		const postResults: PromiseType<ReturnType<typeof postTransactions>>[] = []
+		for (const chunk of chunks) {
+			const result = await postTransactions(chunk)
+			postResults.push(result)
+		}
 
-		if (postResult.isSuccess()) {
+		/**
+		 * Check whether all chunks were succesfully posted
+		 */
+		if (postResults.every(_ => _.isSuccess())) {
+
+			// Count total number of rows uploaded
+			const total = postResults.reduce((sum, chunk) => {
+				if (chunk.isSuccess()) {
+					return sum + chunk.value.length
+				} else {
+					return sum
+				}
+			}, 0)
+
+			// Notify success
 			notify({
-				message: `${postResult.value.length} transactions uploaded.`
+				message: `${total} transactions succesfully uploaded.`,
+				severity: "success"
 			})
-		} else {
+		}
+
+		/**
+		 * Check if any failures occured
+		 */
+		const failure = postResults.find(_ => _.isFailure())
+		if (!failure) {
+			return
+		} else if (failure.isFailure()) {
 			notify({
-				message: (() => {
-					if (postResult.reason === "invalidServerResponse") {
-						return "Invalid response from server"
-					} else {
-						switch (postResult.code) {
-							default:
-								return "Failure to upload transactions"
-						}
-					}
-				})(),
+				message:
+					failure.reason === "invalidServerResponse"
+						? "Invalid response from server"
+						: "Failure to upload transactions",
 				severity: "error",
 			})
 		}
 
+		/**
+		 * Update loading status
+		 */
 		setUploading(false)
 	}
 

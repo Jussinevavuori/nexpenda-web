@@ -6,6 +6,7 @@ import { ExitToApp as LogoutIcon } from "@material-ui/icons";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { Type } from "../../components/Type/Type";
 import { FileUploader } from "../../components/FileUploader/FileUploaderController";
+import { FileDownloader } from "../../components/FileDownloader/FileDownloaderController";
 
 export type SettingsViewProps = {
 	user: Auth;
@@ -59,6 +60,10 @@ export function SettingsView(props: SettingsViewProps) {
 
 			<div className="uploader">
 				<FileUploader />
+			</div>
+
+			<div className="downloader">
+				<FileDownloader />
 			</div>
 
 			<div className="logOutContainer">

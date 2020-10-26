@@ -10,6 +10,9 @@ export type IOJsonTransaction = Pick<
 >;
 
 export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
+  /**
+   * The spreadsheet schema
+   */
   public schema = yup
     .object<IOJsonTransaction>({
       comment: yup.string(),
@@ -19,6 +22,9 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
     })
     .defined();
 
+  /**
+   * The spreadsheet options
+   */
   public options = {
     category: {
       names: ["Kategoria", "Category", "Class", "Luokka"],
@@ -55,4 +61,40 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
       ],
     },
   };
+
+  /**
+   * Spreadsheet creator
+   */
+  createRow(row: IOJsonTransaction): object {
+    return {
+      amount: row.integerAmount / 100,
+      comment: row.comment || "",
+      category: row.category,
+      time: new Date(row.time),
+    };
+  }
+
+  /**
+   * Spreadsheet file name
+   */
+  getFileName() {
+    const datestring = new Date().toLocaleDateString();
+    return `Expence | ${datestring}`;
+  }
+
+  /**
+   * Spreadsheet sheet name
+   */
+  getFileSheetName() {
+    return `Transactions`;
+  }
+
+  /**
+   * Spreadsheet row order
+   */
+  sortRows(rows: IOJsonTransaction[]): IOJsonTransaction[] {
+    return rows.sort((a, b) => {
+      return a.time - b.time;
+    });
+  }
 }

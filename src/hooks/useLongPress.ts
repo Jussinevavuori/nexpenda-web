@@ -120,6 +120,7 @@ export default function useLongPress(
       timeout,
       pressTimeInMs,
       disableVibrate,
+      vibrate,
     ]
   );
 

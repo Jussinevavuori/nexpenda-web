@@ -39,7 +39,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 		} else {
 			onSelect()
 		}
-	}, [onSelect, onDeselect, selected])
+	}, [onSelect, onDeselect, selected, selectionActive, vibrate])
 
 	/**
 	 * No timeout when selected, else default timeout
