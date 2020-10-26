@@ -80,9 +80,6 @@ export default function useLongPress(
           return;
         }
 
-        // Prevent context menu on long press
-        e.preventDefault();
-
         const touch = e.touches[0];
         origin.current = {
           x: touch.clientX,
