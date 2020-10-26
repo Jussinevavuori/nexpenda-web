@@ -57,7 +57,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 	return <form className="TransactionForm" onSubmit={handleSubmit}>
 
 		<Type variant="button">
-			{"New transaction"}
+			{props.edit ? "Edit transaction" : "New transaction"}
 		</Type>
 
 		<div className="transactionAmountContainer">

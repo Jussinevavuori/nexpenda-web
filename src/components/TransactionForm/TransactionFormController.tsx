@@ -146,7 +146,7 @@ export function TransactionForm(props: TransactionFormProps) {
 				100 * Number(
 					amount.trim().replace(/,/g, ".")
 				)
-			)
+			) * (sign === "+" ? 1 : -1)
 		)
 
 		/**
