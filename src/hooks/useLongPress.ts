@@ -17,6 +17,7 @@ export default function useLongPress(
 ): {
   pressed: boolean;
   props: Partial<HTMLProps<HTMLDivElement>>;
+  childlockProps: Partial<HTMLProps<HTMLDivElement>>;
 } {
   /**
    * Default press time in MS to 500 unless overridden in options
@@ -70,7 +71,7 @@ export default function useLongPress(
     (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => {
       if (shouldPreventDefault) {
         e.preventDefault();
-			}
+      }
 
       // Set latest start position
       if ("clientX" in e && "clientY" in e) {
@@ -215,7 +216,18 @@ export default function useLongPress(
       onMouseDown: startLongPress,
       onMouseUp: endLongPress,
       onMouseLeave: endLongPress,
-			onMouseOut: endLongPress,
+      onMouseOut: endLongPress,
+    },
+    childlockProps: {
+      onTouchStart: (e) => e.stopPropagation(),
+      onTouchEnd: (e) => e.stopPropagation(),
+      onTouchMove: (e) => e.stopPropagation(),
+      onTouchCancel: (e) => e.stopPropagation(),
+
+      onMouseDown: (e) => e.stopPropagation(),
+      onMouseUp: (e) => e.stopPropagation(),
+      onMouseLeave: (e) => e.stopPropagation(),
+      onMouseOut: (e) => e.stopPropagation(),
     },
   };
 }

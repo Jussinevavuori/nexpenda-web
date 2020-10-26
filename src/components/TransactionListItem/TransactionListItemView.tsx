@@ -43,7 +43,8 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	}, [selectionActive])
 
 	const pressHandler = useLongPress(handleLongPress, {
-		pressTimeInMs: longPressTimeout
+		pressTimeInMs: longPressTimeout,
+		disableVibrate: longPressTimeout === 0,
 	})
 
 	return <div
@@ -54,9 +55,13 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 			<div
 				className="iconContainer"
 				onClick={e => {
-					e.stopPropagation()
-					props.selected ? props.onDeselect() : props.onSelect()
+					if (props.selected) {
+						props.onDeselect()
+					} else {
+						props.onSelect()
+					}
 				}}
+				{...pressHandler.childlockProps}
 			>
 				{
 					props.selectionActive
