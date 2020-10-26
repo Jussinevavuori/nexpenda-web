@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react"
-import Device from "react-device-detect"
+import { isMobile } from "react-device-detect"
 import { TransactionListItemView } from "./TransactionListItemView"
 import { Transaction } from "../../classes/Transaction"
 import { useStoreActions, useStoreState } from "../../store"
@@ -46,7 +46,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 	const contextMenu = useTransactionContextMenu()
 	const handleContextMenu = useCallback((e: React.MouseEvent) => {
 		e.preventDefault()
-		if (Device.isMobile) {
+		if (isMobile) {
 			return
 		}
 		contextMenu.setPosition({ top: e.clientY, left: e.clientX })
