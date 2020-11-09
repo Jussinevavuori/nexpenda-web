@@ -28,7 +28,7 @@ export type SidebarViewProps = {
 	isSettings: boolean;
 	onSettings(): void;
 
-	user: Auth;
+	user: Auth | null;
 	logout(): void;
 
 	onTransactionCreatorOpen(): void;
@@ -68,7 +68,7 @@ export function SidebarView(props: SidebarViewProps) {
 								<UserIcon />
 
 								<Type>
-									{props.user.displayName}
+									{props.user?.displayName ?? "Loading profile..."}
 								</Type>
 
 							</div>

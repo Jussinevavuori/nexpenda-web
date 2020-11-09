@@ -21,7 +21,6 @@ export function Dashboard() {
 		selectAll(filteredTransactions.map(_ => _.id))
 	}, [filteredTransactions, selectAll])
 
-	if (!user) return null
 	return <DashboardView
 		intervalString={smartDisplayString}
 

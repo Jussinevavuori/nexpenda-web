@@ -6,11 +6,12 @@ import { ProtectedRouteViewView } from "./ProtectedRouteView";
 
 export type ProtectedRouteProps = {
 	fallbackRoute?: string;
+	showLoadingScreenOnUnitialized?: boolean;
 } & RouteProps
 
 export default function ProtectedRoute(props: ProtectedRouteProps) {
 
-	const { fallbackRoute, ...routeProps } = props
+	const { fallbackRoute, showLoadingScreenOnUnitialized, ...routeProps } = props
 
 	/**
 	 * Default fallback to login on redirect
@@ -26,7 +27,16 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
 	/**
 	 * If the user is being loaded, show nothing
 	 */
-	if (!initialized) return <ProtectedRouteViewView />
+	if (!initialized) {
+
+		if (showLoadingScreenOnUnitialized) {
+
+			return <ProtectedRouteViewView />
+		}
+
+		else return <Route {...routeProps} />
+
+	}
 
 	/**
 	 * Else if user is not logged in redirect to fallback route or default fallback route

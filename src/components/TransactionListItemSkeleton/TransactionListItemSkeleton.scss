@@ -1,0 +1,51 @@
+@import "main";
+
+.TransactionListItemSkeleton {
+  & .TransactionListItemSkeletonHeader {
+    padding: 12px $spacing-sm;
+    width: 100%;
+    height: 48px;
+  }
+  & .TransactionListItemSkeletonBody {
+    padding: 6px calc(#{$spacing-sm} + 1rem) 6px $spacing-sm;
+    height: 68px;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "icon category amount"
+      "icon comment amount";
+    grid-gap: 0 24px;
+
+    & .icon {
+      grid-area: icon;
+      place-self: center;
+      height: 48px;
+      width: 48px;
+      place-self: center;
+
+      & .iconSkeleton {
+        border-radius: 100%;
+      }
+    }
+
+    & .category {
+      grid-area: category;
+      height: 28px;
+      padding: 4px 0;
+    }
+
+    & .comment {
+      height: 28px;
+      grid-area: comment;
+      padding: 4px 0;
+    }
+
+    & .amount {
+      grid-area: amount;
+      place-self: center;
+      height: 24px;
+    }
+  }
+}

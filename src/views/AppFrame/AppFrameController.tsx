@@ -1,4 +1,5 @@
 import React from "react"
+import { useStoreState } from "../../store"
 import { AppFrameView } from "./AppFrameView"
 
 export type AppFrameProps = {
@@ -6,5 +7,11 @@ export type AppFrameProps = {
 }
 
 export function AppFrame(props: AppFrameProps) {
-	return <AppFrameView children={props.children} />
+
+	const initialized = useStoreState(_ => _.auth.initialized)
+
+	return <AppFrameView
+		children={props.children}
+		initialized={initialized}
+	/>
 }

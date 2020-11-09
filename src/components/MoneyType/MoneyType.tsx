@@ -55,7 +55,6 @@ export function MoneyType(props: MoneyTypeProps) {
 		const controls = animate(start, end, {
 			duration: animationDuration ?? 0.8,
 			stiffness: animationStiffness ?? 1,
-			ease: "easeOut",
 			onUpdate(value) {
 
 				// Format new value and show new value
@@ -63,22 +62,19 @@ export function MoneyType(props: MoneyTypeProps) {
 				const formattedValue = MoneyAmount.format(integerValue)
 				node.textContent = formattedValue
 
-				// Show blurring, fading and scaling animation while transitioning:
-				//
-				// For transitioning we calculate the distance ratio, which is a value
-				// that linearly starts from 0, peaks at 1 during the midpoint of the
-				// transition and ends at 0. Similarly we use its opposite, which
-				// is equal, but opposite such that it starts and ends at 1 and goes
-				// through zero.
+				// Show blurring, fading and scaling animation while transitioning
 				if (!disableAnimationBlur) {
-					const distanceStart = Math.abs(value - start)
-					const distanceEnd = Math.abs(end - value)
-					const maxDistance = Math.abs(end - start)
-					const minDistance = Math.min(distanceStart, distanceEnd)
-					const distanceRatio = 2 * (minDistance / maxDistance)
-					const oppositeDistanceRatio = 1 - distanceRatio
-					node.style.opacity = `${Math.max(oppositeDistanceRatio, 0.75)}`
-					node.style.filter = `blur(${3 * distanceRatio}px)`
+
+					// Get progress from start to finish as percentage
+					const progress = Math.abs(end - value) / Math.abs(end - start)
+
+					// Get phase from 0 to Pi and its sin-value
+					const phase = progress * Math.PI
+					const sin = Math.sin(phase)
+					const sin2 = sin * sin
+
+					node.style.opacity = `${Math.max(1 - sin2, 0.75)}`
+					node.style.filter = `blur(${3 * sin2}px)`
 				}
 
 				// Update the latest value 

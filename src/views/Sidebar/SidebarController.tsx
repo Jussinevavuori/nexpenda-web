@@ -25,8 +25,6 @@ export function Sidebar(props: SidebarProps) {
 
 	const [, setTransactionCreatorOpen] = useTransactionCreatorDrawerOpenState()
 
-	if (!user) return null
-
 	return <SidebarView
 
 		isDashboard={!!dashboardMatch}

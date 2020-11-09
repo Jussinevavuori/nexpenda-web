@@ -12,7 +12,7 @@ import { SelectionPanel } from "../../components/SelectionPanel/SelectionPanelCo
 import { QuickAnalytics } from "../../components/QuickAnalytics/QuickAnalyticsController";
 
 export type DashboardViewProps = {
-	user: Auth;
+	user: Auth | null;
 	intervalString: string;
 
 	filtersActive: boolean;
@@ -59,8 +59,8 @@ export function DashboardView(props: DashboardViewProps) {
 
 			{
 				desktopLayout
-					? <TransactionTable />
-					: <TransactionList />
+					? <TransactionTable showSkeletons />
+					: <TransactionList showSkeletons />
 			}
 
 		</section>

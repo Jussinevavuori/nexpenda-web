@@ -27,6 +27,11 @@ export interface TransactionsModel {
   items: Transaction[];
 
   /**
+   * Has the user loaded the transactions
+   */
+  initialized: boolean;
+
+  /**
    * Current transactions grouped and sorted by dates
    */
   itemsByDates: Computed<
@@ -173,6 +178,8 @@ export interface TransactionsModel {
 export const transactionsModel: TransactionsModel = {
   items: [],
 
+  initialized: false,
+
   itemsByDates: computed((state) => {
     return DateUtils.groupByDate(state.items, (_) => _.date, { sort: true });
   }),
@@ -207,6 +214,7 @@ export const transactionsModel: TransactionsModel = {
 
   _getTransactions: action((state, jsons) => {
     state.items = jsons.map((json) => new Transaction(json));
+    state.initialized = true;
   }),
 
   postTransaction: thunk(async (actions, json) => {

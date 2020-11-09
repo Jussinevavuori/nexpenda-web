@@ -22,8 +22,6 @@ export function Settings(props: SettingsProps) {
 		}
 	}, [logout, redirect])
 
-	if (!user) return null
-
 	return <SettingsView
 		user={user}
 		handleLogout={handleLogout}

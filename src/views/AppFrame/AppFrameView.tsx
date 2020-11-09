@@ -6,12 +6,18 @@ import { TransactionCreatorDrawer } from "../../components/TransactionCreatorDra
 
 export type AppFrameViewProps = {
 	children: React.ReactNode;
+	initialized: boolean;
 }
 
 export function AppFrameView(props: AppFrameViewProps) {
+
 	return <div className="AppFrame">
-		<TransactionCreatorDrawer />
-		<TransactionEditorDrawer />
+		{
+			props.initialized && <>
+				<TransactionCreatorDrawer />
+				<TransactionEditorDrawer />
+			</>
+		}
 		<div className="sidebar">
 			<Sidebar />
 		</div>

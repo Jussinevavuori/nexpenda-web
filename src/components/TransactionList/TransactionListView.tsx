@@ -5,12 +5,14 @@ import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
+import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
 
 export type TransactionListViewProps = {
 	itemsByDates: {
 		date: Date;
 		items: Transaction[];
-	}[]
+	}[],
+	showSkeletons?: boolean;
 }
 
 export function TransactionListView(props: TransactionListViewProps) {
@@ -27,6 +29,21 @@ export function TransactionListView(props: TransactionListViewProps) {
 	useEffect(() => {
 		virtualizedListRef.current?.recomputeRowHeights()
 	}, [props, virtualizedListRef])
+
+	/**
+	 * Skeletons
+	 */
+	if (props.showSkeletons) {
+		return <div className="TransactionList">
+			{
+				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+
+					return <TransactionListItemSkeleton i={i} />
+
+				})
+			}
+		</div >
+	}
 
 	return <div className="TransactionList">
 

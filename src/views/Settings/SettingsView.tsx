@@ -1,7 +1,7 @@
 import "./Settings.scss";
 import React from "react"
 import { Auth } from "../../classes/Auth";
-import { Avatar, Button } from "@material-ui/core";
+import { Avatar, Button, CircularProgress } from "@material-ui/core";
 import { ExitToApp as LogoutIcon } from "@material-ui/icons";
 import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { Type } from "../../components/Type/Type";
@@ -9,11 +9,26 @@ import { FileUploader } from "../../components/FileUploader/FileUploaderControll
 import { FileDownloader } from "../../components/FileDownloader/FileDownloaderController";
 
 export type SettingsViewProps = {
-	user: Auth;
+	user: Auth | null;
 	handleLogout(): void;
 }
 
 export function SettingsView(props: SettingsViewProps) {
+
+	if (!props.user) {
+		return <div className="Settings">
+			<div className="settingsSkeleton">
+
+				<CircularProgress />
+
+				<Type>
+					{"Loading profile"}
+				</Type>
+
+			</div>
+
+		</div>
+	}
 
 	return <div className="Settings">
 
