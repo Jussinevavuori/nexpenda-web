@@ -103,6 +103,16 @@ export class MoneyAmount {
     });
   }
 
+  /**
+   * Static method for formatting a value
+   */
+  static format(value: number) {
+    return (value / 100).toLocaleString("fi-FI", {
+      style: "currency",
+      currency: "EUR",
+    });
+  }
+
   add(that: MoneyAmount) {
     return new MoneyAmount(this._value + that._value);
   }

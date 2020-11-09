@@ -1,5 +1,5 @@
 import "./Type.scss";
-import React, { ElementType } from "react"
+import React, { ElementType, forwardRef } from "react"
 import cx from "classnames"
 import { Typography, TypographyProps } from "@material-ui/core";
 
@@ -9,11 +9,13 @@ export type TypeProps = Omit<TypographyProps, "color"> & {
 	condensed?: boolean;
 }
 
-export function Type(props: TypeProps) {
+export const Type = forwardRef<HTMLElement, TypeProps>((props, ref) => {
 
 	const { condensed, className, color, ...typographyProps } = props
 
 	return <Typography
+
+		ref={ref}
 
 		{...typographyProps}
 
@@ -35,5 +37,4 @@ export function Type(props: TypeProps) {
 			`color-${String(color)}`
 		)}
 	/>
-}
-
+})

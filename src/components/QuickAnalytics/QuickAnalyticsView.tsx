@@ -11,6 +11,7 @@ export type QuickAnalyticsViewProps = {
 }
 
 export function QuickAnalyticsView(props: QuickAnalyticsViewProps) {
+
 	return <div className="QuickAnalytics">
 
 		<div className="totalAll">
@@ -19,6 +20,7 @@ export function QuickAnalyticsView(props: QuickAnalyticsViewProps) {
 				component="p"
 				bold
 				amount={props.totalAll}
+				animate
 			/>
 		</div>
 
@@ -26,12 +28,14 @@ export function QuickAnalyticsView(props: QuickAnalyticsViewProps) {
 			<div className="subTotal">
 				<IncomeIcon />
 				<MoneyType
+					animate
 					amount={props.totalIncomesOnly}
 				/>
 			</div>
 			<div className="subTotal">
 				<ExpenseIcon />
 				<MoneyType
+					animate
 					amount={props.totalExpensesOnly}
 				/>
 			</div>
