@@ -1,5 +1,5 @@
 import "./TransactionForm.scss";
-import React from "react"
+import React, { useRef } from "react"
 import { TextField, InputAdornment, Button, ButtonGroup } from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
@@ -47,6 +47,8 @@ export type TransactionFormViewProps = {
 
 export function TransactionFormView(props: TransactionFormViewProps) {
 
+	const amountInputRef = useRef<HTMLDivElement | null>(null)
+
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
 		props.onSubmit()
@@ -69,7 +71,10 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 					size="small"
 					color="primary"
 					variant={props.sign === "+" ? "contained" : "outlined"}
-					onClick={() => props.onSignChange("+")}
+					onClick={() => {
+						props.onSignChange("+")
+						amountInputRef.current?.focus()
+					}}
 				>
 					{"+"}
 				</Button>
@@ -77,7 +82,10 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 					size="small"
 					color="primary"
 					variant={props.sign === "-" ? "contained" : "outlined"}
-					onClick={() => props.onSignChange("-")}
+					onClick={() => {
+						props.onSignChange("-")
+						amountInputRef.current?.focus()
+					}}
 				>
 					{"-"}
 				</Button>
@@ -108,6 +116,9 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				size="small"
 				autoFocus={!props.edit}
 				autoComplete="off"
+				inputProps={{
+					ref: amountInputRef,
+				}}
 				InputProps={{
 					endAdornment: <InputAdornment position="end">
 						<Type>
@@ -187,5 +198,5 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			{props.edit ? "Save" : "Create"}
 		</Button>
 
-	</form>
+	</form >
 }

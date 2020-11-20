@@ -38,7 +38,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 			{
 				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
 
-					return <TransactionListItemSkeleton i={i} />
+					return <TransactionListItemSkeleton i={i} key={i} />
 
 				})
 			}

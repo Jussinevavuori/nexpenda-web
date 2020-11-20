@@ -21,8 +21,7 @@ function App() {
 	 * Initialize by fetching the user's profile if any
 	 */
 	const getProfile = useStoreActions(_ => _.auth.getProfile)
-	// useEffect(() => { getProfile() }, [getProfile])
-	useEffect(() => { setTimeout(getProfile, 5000) }, [getProfile])
+	useEffect(() => { getProfile() }, [getProfile])
 
 	return <>
 		<Notification />

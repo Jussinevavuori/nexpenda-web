@@ -22,7 +22,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 				{
 					[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
 
-						return <TransactionTableRowSkeleton />
+						return <TransactionTableRowSkeleton key={i} />
 
 					})
 				}
