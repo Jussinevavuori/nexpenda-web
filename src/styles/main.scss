@@ -1,81 +1,213 @@
-/** 100 vh fix for mobile */
-$fullvh: var(--full-vh, 100vh);
-$vh: var(--vh, 1vh);
+/** Colors: Blue */
 
-/** Typography */
+$blue-900: #060040;
+$blue-810: #050060;
+$blue-800: #030380;
+$blue-700: #08109c;
+$blue-610: #0f22b5;
+$blue-600: #1836ce;
+$blue-500: #224de4;
+$blue-410: #4270ea;
+$blue-400: #6291ef;
+$blue-300: #83aff4;
+$blue-210: #a5caf8;
+$blue-200: #c7e1fb;
+$blue-100: #eaf5fe;
 
-$roboto: Roboto, Helvetica, Arial, sans-serif;
+/** Colors: Red */
+
+$red-900: #610a3b;
+$red-800: #881348;
+$red-700: #b01e51;
+$red-600: #d22d58;
+$red-500: #ef3e5e;
+$red-400: #f36a73;
+$red-300: #f79b96;
+$red-200: #fbccc3;
+$red-100: #fef4ef;
+
+/** Colors: Green */
+
+$green-900: #00151b;
+$green-800: #034549;
+$green-700: #09736a;
+$green-600: #129a7c;
+$green-500: #1dc588;
+$green-400: #4dd39c;
+$green-300: #7fe5b6;
+$green-200: #b4f2d3;
+$green-100: #edfdf4;
+
+/** Colors: Gray */
+
+$gray-900: #141414;
+$gray-840: #1b1a1a;
+$gray-830: #1f1f22;
+$gray-820: #29292c;
+$gray-810: #2f2f33;
+$gray-800: #3c3c42;
+$gray-700: #63626b;
+$gray-600: #8a8894;
+$gray-500: #b2aebc;
+$gray-400: #c3c0cd;
+$gray-300: #d4d2dd;
+$gray-200: #f0f0f5;
+$gray-100: #f9f9fb;
+
+/** Colors: Misc */
+
+$white: #ffffff;
+$black: #000000;
+
+/** Typography: Fonts */
+
+$ubuntu: "Ubuntu", sans-serif;
+$roboto: "Roboto", Helvetica, Arial, sans-serif;
 $roboto-condensed: "Roboto Condensed", Helvetica, Arial, sans-serif;
 
-$font-weight-light: 300;
-$font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-bold: 700;
+/** Spacing */
 
-/** Theme */
+$spacing-1: 0.25rem;
+$spacing-2: 0.5rem;
+$spacing-3: 0.75rem;
+$spacing-4: 1rem;
+$spacing-5: 1.25rem;
+$spacing-6: 1.5rem;
+$spacing-8: 2rem;
+$spacing-10: 2.5rem;
+$spacing-12: 3rem;
+$spacing-14: 3.5rem;
+$spacing-16: 4rem;
+$spacing-20: 5rem;
+$spacing-24: 6rem;
+$spacing-28: 7rem;
+$spacing-32: 8rem;
+$spacing-36: 9rem;
+$spacing-40: 10rem;
 
-$spacing-sm: var(--spacing-sm);
-$spacing-md: var(--spacing-md);
-$spacing-lg: var(--spacing-lg);
+/** Typography: Font sizes */
 
-$color-primary-main: var(--color-primary-main);
-$color-primary-light: var(--color-primary-light);
-$color-primary-dark: var(--color-primary-dark);
+$text-xxxl: 3rem;
+$text-xxl: 2.25rem;
+$text-xl: 1.5rem;
+$text-lg: 1.25rem;
+$text-md: 1rem;
+$text-sm: 0.75rem;
 
-$color-primary-50: var(--color-primary-50);
-$color-primary-100: var(--color-primary-100);
-$color-primary-200: var(--color-primary-200);
-$color-primary-300: var(--color-primary-300);
-$color-primary-400: var(--color-primary-400);
-$color-primary-500: var(--color-primary-500);
-$color-primary-600: var(--color-primary-600);
-$color-primary-700: var(--color-primary-700);
-$color-primary-800: var(--color-primary-800);
-$color-primary-900: var(--color-primary-900);
+/** Typography: Font variants */
 
-$color-positive-main: var(--color-positive-main);
-$color-negative-main: var(--color-negative-main);
-$color-error-main: var(--color-error-main);
-$color-error-light: var(--color-error-light);
-$color-error-dark: var(--color-error-dark);
+@mixin text-regular {
+  font-weight: 700;
+  font-family: $ubuntu;
+}
 
-$color-divider: var(--color-divider);
+@mixin text-bold {
+  font-weight: 700;
+  font-family: $ubuntu;
+}
 
-$color-action-focus: var(--color-action-focus);
-$color-action-hover: var(--color-action-hover);
-$color-action-active: var(--color-action-active);
+@mixin text-boldcaps {
+  font-weight: 700;
+  font-family: $ubuntu;
+  text-transform: uppercase;
+}
 
-$color-action-primary-focus: var(--color-action-primary-focus);
-$color-action-primary-hover: var(--color-action-primary-hover);
-$color-action-primary-active: var(--color-action-primary-active);
+/** Typography: Full font types */
 
-$color-text-default: var(--color-text-default);
+@mixin text-regular-xxxl {
+  font-size: $text-xxxl;
+  @include text-regular;
+}
 
-/** Border radius */
+@mixin text-regular-xxl {
+  font-size: $text-xxl;
+  @include text-regular;
+}
 
-$border-radius: 0.4rem;
+@mixin text-regular-xl {
+  font-size: $text-xl;
+  @include text-regular;
+}
 
-/** Shadows */
+@mixin text-regular-lg {
+  font-size: $text-lg;
+  @include text-regular;
+}
 
-$shadow-blur-small: 6px;
-$shadow-blur-medium: 20px;
+@mixin text-regular-md {
+  font-size: $text-md;
+  @include text-regular;
+}
 
-$shadow-color-medium: rgba(0, 0, 0, 0.15);
-$shadow-color-strong: rgba(0, 0, 0, 0.2);
+@mixin text-regular-sm {
+  font-size: $text-sm;
+  @include text-regular;
+}
 
-/** Layout */
+@mixin text-bold-xxxl {
+  font-size: $text-xxxl;
+  @include text-bold;
+}
 
-$app-tab-height: 60px;
-$app-tab-width: 14rem;
-$app-header-height: 160px;
-$app-tab-z: 900;
-$container-max-width: 960px;
+@mixin text-bold-xxl {
+  font-size: $text-xxl;
+  @include text-bold;
+}
 
-/** Icons */
+@mixin text-bold-xl {
+  font-size: $text-xl;
+  @include text-bold;
+}
 
-$icon-size-xs: 1rem;
-$icon-size-sm: 1.25rem;
-$icon-size-md: 1.5rem;
+@mixin text-bold-lg {
+  font-size: $text-lg;
+  @include text-bold;
+}
+
+@mixin text-bold-md {
+  font-size: $text-md;
+  @include text-bold;
+}
+
+@mixin text-bold-sm {
+  font-size: $text-sm;
+  @include text-bold;
+}
+
+@mixin text-boldcaps-xxxl {
+  font-size: $text-xxxl;
+  @include text-boldcaps;
+}
+
+@mixin text-boldcaps-xxl {
+  font-size: $text-xxl;
+  @include text-boldcaps;
+}
+
+@mixin text-boldcaps-xl {
+  font-size: $text-xl;
+  @include text-boldcaps;
+}
+
+@mixin text-boldcaps-lg {
+  font-size: $text-lg;
+  @include text-boldcaps;
+}
+
+@mixin text-boldcaps-md {
+  font-size: $text-md;
+  @include text-boldcaps;
+}
+
+@mixin text-boldcaps-sm {
+  font-size: $text-sm;
+  @include text-boldcaps;
+}
+
+/** 100 vh fix for mobile */
+
+$fullvh: var(--full-vh, 100vh);
+$vh: var(--vh, 1vh);
 
 /** Breakpoints and breakpoint mixins */
 
@@ -107,8 +239,56 @@ $bp-lg: 1200px;
   }
 }
 
-/** Resets */
+/**
+OLD
+*/
 
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$spacing-sm: var(--spacing-sm);
+$spacing-md: var(--spacing-md);
+$spacing-lg: var(--spacing-lg);
+$color-primary-main: var(--color-primary-main);
+$color-primary-light: var(--color-primary-light);
+$color-primary-dark: var(--color-primary-dark);
+$color-primary-50: var(--color-primary-50);
+$color-primary-100: var(--color-primary-100);
+$color-primary-200: var(--color-primary-200);
+$color-primary-300: var(--color-primary-300);
+$color-primary-400: var(--color-primary-400);
+$color-primary-500: var(--color-primary-500);
+$color-primary-600: var(--color-primary-600);
+$color-primary-700: var(--color-primary-700);
+$color-primary-800: var(--color-primary-800);
+$color-primary-900: var(--color-primary-900);
+$color-positive-main: var(--color-positive-main);
+$color-negative-main: var(--color-negative-main);
+$color-error-main: var(--color-error-main);
+$color-error-light: var(--color-error-light);
+$color-error-dark: var(--color-error-dark);
+$color-divider: var(--color-divider);
+$color-action-focus: var(--color-action-focus);
+$color-action-hover: var(--color-action-hover);
+$color-action-active: var(--color-action-active);
+$color-action-primary-focus: var(--color-action-primary-focus);
+$color-action-primary-hover: var(--color-action-primary-hover);
+$color-action-primary-active: var(--color-action-primary-active);
+$color-text-default: var(--color-text-default);
+$border-radius: 0.4rem;
+$shadow-blur-small: 6px;
+$shadow-blur-medium: 20px;
+$shadow-color-medium: rgba(0, 0, 0, 0.15);
+$shadow-color-strong: rgba(0, 0, 0, 0.2);
+$app-tab-height: 60px;
+$app-tab-width: 14rem;
+$app-header-height: 160px;
+$app-tab-z: 900;
+$container-max-width: 960px;
+$icon-size-xs: 1rem;
+$icon-size-sm: 1.25rem;
+$icon-size-md: 1.5rem;
 @mixin button-reset {
   border: 0;
   padding: 0;
