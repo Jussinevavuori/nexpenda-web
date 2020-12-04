@@ -1,10 +1,16 @@
+/** Layout constants */
+
+$header-height: 5rem;
+$mobile-header-height: 160px;
+$sidebar-width: 290px;
+
 /** Colors: Blue */
 
 $blue-900: #060040;
 $blue-800: #030380;
 $blue-700: #08109c;
 $blue-600: #1836ce;
-$blue-500: #224de4;
+$blue-500: #2a52e2;
 $blue-400: #6291ef;
 $blue-300: #83aff4;
 $blue-200: #c7e1fb;
@@ -67,6 +73,11 @@ $primary-300: $blue-300;
 $primary-200: $blue-200;
 $primary-100: $blue-100;
 
+/** Borders */
+
+$border-color: $gray-300;
+$border: $border-color 1px solid;
+
 /** Typography: Fonts */
 
 $roboto: "Roboto", Helvetica, Arial, sans-serif;
@@ -93,6 +104,18 @@ $spacing-32: 8rem;
 $spacing-36: 9rem;
 $spacing-40: 10rem;
 
+/** Known paddings */
+
+$spacing-icon-button: 12px;
+$spacing-button-vertical: 6px;
+$spacing-button-horizontal: 8px;
+
+/** Spacing adjusting for known paddings */
+
+@function adjust-spacing($spacing, $adjustment) {
+  @return calc(#{$spacing} - #{$adjustment});
+}
+
 /** Radii */
 
 $radius-sm: 4px;
@@ -105,7 +128,7 @@ $text-xxxl: 3rem;
 $text-xxl: 2.25rem;
 $text-xl: 1.5rem;
 $text-lg: 1.25rem;
-$text-md: 1rem;
+$text-md: 0.95rem;
 $text-sm: 0.75rem;
 
 /** Typography: Font weights */
@@ -114,22 +137,31 @@ $text-light: 300;
 $text-bold: 700;
 $text-regular: 400;
 
+/** Typography: Text Spacing */
+
+$text-regular-spacing: 0px;
+$text-bold-spacing: 0.5px;
+$text-boldcaps-spacing: 0.69px;
+
 /** Typography: Font variants */
 
 @mixin text-regular {
   font-weight: $text-regular;
-  font-family: $ubuntu;
+  font-family: $poppins;
+  letter-spacing: $text-regular-spacing;
 }
 
 @mixin text-bold {
   font-weight: $text-bold;
-  font-family: $ubuntu;
+  font-family: $poppins;
+  letter-spacing: $text-bold-spacing;
 }
 
 @mixin text-boldcaps {
   font-weight: $text-bold;
-  font-family: $ubuntu;
+  font-family: $poppins;
   text-transform: uppercase;
+  letter-spacing: $text-boldcaps-spacing;
 }
 
 /** Typography: Full font types */
@@ -267,35 +299,35 @@ $font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
-$spacing-sm: var(--spacing-sm);
-$spacing-md: var(--spacing-md);
-$spacing-lg: var(--spacing-lg);
-$color-primary-main: var(--color-primary-main);
-$color-primary-light: var(--color-primary-light);
-$color-primary-dark: var(--color-primary-dark);
-$color-primary-50: var(--color-primary-50);
-$color-primary-100: var(--color-primary-100);
-$color-primary-200: var(--color-primary-200);
-$color-primary-300: var(--color-primary-300);
-$color-primary-400: var(--color-primary-400);
-$color-primary-500: var(--color-primary-500);
-$color-primary-600: var(--color-primary-600);
-$color-primary-700: var(--color-primary-700);
-$color-primary-800: var(--color-primary-800);
-$color-primary-900: var(--color-primary-900);
-$color-positive-main: var(--color-positive-main);
-$color-negative-main: var(--color-negative-main);
-$color-error-main: var(--color-error-main);
-$color-error-light: var(--color-error-light);
-$color-error-dark: var(--color-error-dark);
-$color-divider: var(--color-divider);
-$color-action-focus: var(--color-action-focus);
-$color-action-hover: var(--color-action-hover);
-$color-action-active: var(--color-action-active);
-$color-action-primary-focus: var(--color-action-primary-focus);
-$color-action-primary-hover: var(--color-action-primary-hover);
-$color-action-primary-active: var(--color-action-primary-active);
-$color-text-default: var(--color-text-default);
+$spacing-sm: $spacing-2;
+$spacing-md: $spacing-4;
+$spacing-lg: $spacing-8;
+$color-primary-main: $blue-500;
+$color-primary-light: $blue-200;
+$color-primary-dark: $blue-800;
+$color-primary-50: $blue-100;
+$color-primary-100: $blue-100;
+$color-primary-200: $blue-200;
+$color-primary-300: $blue-300;
+$color-primary-400: $blue-400;
+$color-primary-500: $blue-500;
+$color-primary-600: $blue-600;
+$color-primary-700: $blue-700;
+$color-primary-800: $blue-800;
+$color-primary-900: $blue-900;
+$color-positive-main: $green-500;
+$color-negative-main: $red-500;
+$color-error-main: $red-500;
+$color-error-light: $red-200;
+$color-error-dark: $red-800;
+$color-divider: $gray-200;
+$color-action-focus: $gray-300;
+$color-action-hover: $gray-400;
+$color-action-active: $gray-500;
+$color-action-primary-focus: $blue-300;
+$color-action-primary-hover: $blue-400;
+$color-action-primary-active: $blue-500;
+$color-text-default: $gray-900;
 $border-radius: 0.4rem;
 $shadow-blur-small: 6px;
 $shadow-blur-medium: 20px;

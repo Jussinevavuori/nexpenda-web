@@ -16,7 +16,7 @@ export function AuthFrame(props: AuthFrameProps) {
 
 			<header>
 
-				<Type variant="h5" component="h1" color="white">
+				<Type component="h1" color="white">
 					{props.header}
 				</Type>
 

@@ -73,24 +73,24 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 			}
 		</div>
 		<div className="category">
-			<Type variant="subtitle2">
+			<Type >
 				{props.transaction.category}
 			</Type>
 		</div>
 		<div className="amount">
 			<MoneyType
 				amount={props.transaction.amount}
-				applyColor
-				bold
+				colorIfPositive="green-600"
+				colorIfNegative="red-600"
 			/>
 		</div>
 		<div className="comment">
-			<Type variant="body2">
+			<Type >
 				{props.transaction.comment}
 			</Type>
 		</div>
 		<div className="date">
-			<Type variant="subtitle2">
+			<Type >
 				{toDatestring(props.transaction.date)}
 			</Type>
 		</div>

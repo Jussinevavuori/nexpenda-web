@@ -1,37 +1,58 @@
 @import "main";
 
 .IntervalPickerForm {
+  @include sm {
+    max-width: 80vw;
+    min-width: 400px;
+  }
+
   & section.title {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    border-bottom: $border;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-4;
+
+    & * {
+      color: $gray-800;
+    }
+
     & .currentInterval {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       & svg {
-        margin-right: 0.5rem;
+        margin-right: $spacing-3;
       }
     }
+
     & .nextOrPreviousInterval {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      & button:disabled * {
+        color: $gray-400;
+      }
     }
   }
-  & hr {
-    margin: 1rem 0;
-  }
+
   & section.intervalLength {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
+
   & section.dateSection {
-    padding: $spacing-sm 0;
+    padding: $spacing-4 0;
+
+    & > *:first-child {
+      margin-bottom: $spacing-4;
+    }
   }
 }

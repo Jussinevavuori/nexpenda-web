@@ -15,8 +15,18 @@
     "main" 1fr
     "sidebar" auto / 1fr;
 
-  @include sm {
-    grid-template: "sidebar main" 1fr / auto 1fr;
+  @include md {
+    grid-template:
+      "sidebar header" auto
+      "sidebar main" 1fr / auto 1fr;
+  }
+
+  & .header {
+    grid-area: header;
+    display: none;
+    @include md {
+      display: unset;
+    }
   }
 
   & .main {

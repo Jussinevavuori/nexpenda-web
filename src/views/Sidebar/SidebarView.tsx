@@ -2,18 +2,17 @@ import "./Sidebar.scss";
 import React from "react"
 import cx from "classnames"
 import { Auth } from "../../classes/Auth";
-import { IconButton, Button } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import {
 	Home as DashboardIcon,
 	BarChart2 as AnalyticsIcon,
-	User as UserIcon,
 	Settings as SettingsIcon,
 	Briefcase as BudgetIcon,
-	LogOut as LogoutIcon,
 	Plus as PlusIcon
 } from "react-feather"
-import { useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
+import { Logo } from "../../components/Logo/Logo";
 
 export type SidebarViewProps = {
 	isDashboard: boolean;
@@ -37,7 +36,7 @@ export type SidebarViewProps = {
 
 export function SidebarView(props: SidebarViewProps) {
 
-	const sidebarView = useSmMedia()
+	const sidebarView = useMdMedia()
 
 	return <>
 
@@ -46,107 +45,78 @@ export function SidebarView(props: SidebarViewProps) {
 			{
 
 				sidebarView
-
 					? <div className="sidebar">
+
+
+						{
+							/** 
+							 * Desktop sidebar layout
+							 */
+						}
 
 						<div className="header">
 
-							<div className="top-row">
-
-								<Type variant="h4" component="h6">
-									{"Expence"}
-								</Type>
-
-								<IconButton onClick={props.logout}>
-									<LogoutIcon />
-								</IconButton>
-
-							</div>
-
-							<div className="bottom-row">
-
-								<UserIcon />
-
-								<Type>
-									{props.user?.displayName ?? "Loading profile..."}
-								</Type>
-
-							</div>
+							<Logo />
 
 						</div>
 
 						<div className="body">
 
-							<div className="tabContainer">
+							<div className="selections">
 
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isDashboard })}
+								<Type
+									className="selections-title"
+									variant="boldcaps"
+									color="gray-800"
+									size="sm"
+								>
+									{"Tools"}
+								</Type>
+
+								<button
 									onClick={props.onDashboard}
-									startIcon={<DashboardIcon />}
+									className={cx("selection", { active: props.isDashboard })}
 								>
-									{"Dashboard"}
-								</Button>
+									<DashboardIcon />
+									<Type variant="bold">{"Dashboard"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isAnalytics })}
+								<button
 									onClick={props.onAnalytics}
-									startIcon={<AnalyticsIcon />}
+									className={cx("selection", { active: props.isAnalytics })}
 								>
-									{"Analytics"}
-								</Button>
+									<AnalyticsIcon />
+									<Type variant="bold">{"Analytics"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isBudget })}
+								<button
 									onClick={props.onBudget}
-									startIcon={<BudgetIcon />}
+									className={cx("selection", { active: props.isBudget })}
 								>
-									{"Budget"}
-								</Button>
+									<BudgetIcon />
+									<Type variant="bold">{"Budget"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isSettings })}
+								<button
 									onClick={props.onSettings}
-									startIcon={<SettingsIcon />}
+									className={cx("selection", { active: props.isSettings })}
 								>
-									{"Settings"}
-								</Button>
-
-							</div>
-
-							<div className="tabContainer addButton">
-
-								<Button
-									variant="text"
-									className={cx("tab")}
-									onClick={props.onTransactionCreatorOpen}
-									startIcon={<PlusIcon />}
-								>
-									{"New transaction"}
-								</Button>
+									<SettingsIcon />
+									<Type variant="bold">{"Settings"}</Type>
+								</button>
 
 							</div>
 
 						</div>
 
 					</div>
-
 					: <div className="tabs">
+
+						{
+							/**
+							 * Mobile bottom navigation
+							 */
+						}
 
 						<div className="tabContainer">
 
@@ -204,9 +174,7 @@ export function SidebarView(props: SidebarViewProps) {
 						</div>
 
 					</div>
-
 			}
-
 		</div>
 
 	</>

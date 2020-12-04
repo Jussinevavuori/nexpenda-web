@@ -21,9 +21,11 @@ export function TransactionEditorDrawerView(props: TransactionEditorDrawerViewPr
 		onClose={props.onClose}
 		anchor={largerScreen ? "left" : "bottom"}
 	>
-		<TransactionForm
-			onClose={props.onClose}
-			editTransaction={props.selectedItem}
-		/>
+		<div className="TransactionEditorDrawer__Content">
+			<TransactionForm
+				onClose={props.onClose}
+				editTransaction={props.selectedItem}
+			/>
+		</div>
 	</Drawer>
 }

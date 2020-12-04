@@ -3,17 +3,171 @@
 .Type {
   & * {
     color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
   }
 
-  &.condensed {
-    font-family: $roboto-condensed;
+  /** Variants */
+  &.Type-variant-regular {
+    @include text-regular;
+  }
+  &.Type-variant-bold {
+    @include text-bold;
+  }
+  &.Type-variant-boldcaps {
+    @include text-boldcaps;
   }
 
-  &.color-white {
+  /** Sizes */
+
+  &.Type-size-sm {
+    font-size: $text-sm;
+  }
+  &.Type-size-md {
+    font-size: $text-md;
+  }
+  &.Type-size-lg {
+    font-size: $text-lg;
+  }
+  &.Type-size-xl {
+    font-size: $text-xl;
+  }
+  &.Type-size-xxl {
+    font-size: $text-xxl;
+  }
+  &.Type-size-xxxl {
+    font-size: $text-xxxl;
+  }
+
+  /** White */
+
+  &.Type-color-white {
     color: white;
   }
 
-  &.color-black {
+  /** Black */
+
+  &.Type-color-black {
     color: black;
+  }
+
+  /** Blues */
+
+  &.Type-color-blue-100 {
+    color: $blue-100;
+  }
+  &.Type-color-blue-200 {
+    color: $blue-200;
+  }
+  &.Type-color-blue-300 {
+    color: $blue-300;
+  }
+  &.Type-color-blue-400 {
+    color: $blue-400;
+  }
+  &.Type-color-blue-500 {
+    color: $blue-500;
+  }
+  &.Type-color-blue-600 {
+    color: $blue-600;
+  }
+  &.Type-color-blue-700 {
+    color: $blue-700;
+  }
+  &.Type-color-blue-800 {
+    color: $blue-800;
+  }
+  &.Type-color-blue-900 {
+    color: $blue-900;
+  }
+
+  /** Reds */
+
+  &.Type-color-red-100 {
+    color: $red-100;
+  }
+  &.Type-color-red-200 {
+    color: $red-200;
+  }
+  &.Type-color-red-300 {
+    color: $red-300;
+  }
+  &.Type-color-red-400 {
+    color: $red-400;
+  }
+  &.Type-color-red-500 {
+    color: $red-500;
+  }
+  &.Type-color-red-600 {
+    color: $red-600;
+  }
+  &.Type-color-red-700 {
+    color: $red-700;
+  }
+  &.Type-color-red-800 {
+    color: $red-800;
+  }
+  &.Type-color-red-900 {
+    color: $red-900;
+  }
+
+  /** Greens */
+
+  &.Type-color-green-100 {
+    color: $green-100;
+  }
+  &.Type-color-green-200 {
+    color: $green-200;
+  }
+  &.Type-color-green-300 {
+    color: $green-300;
+  }
+  &.Type-color-green-400 {
+    color: $green-400;
+  }
+  &.Type-color-green-500 {
+    color: $green-500;
+  }
+  &.Type-color-green-600 {
+    color: $green-600;
+  }
+  &.Type-color-green-700 {
+    color: $green-700;
+  }
+  &.Type-color-green-800 {
+    color: $green-800;
+  }
+  &.Type-color-green-900 {
+    color: $green-900;
+  }
+
+  /** Grays */
+
+  &.Type-color-gray-100 {
+    color: $gray-100;
+  }
+  &.Type-color-gray-200 {
+    color: $gray-200;
+  }
+  &.Type-color-gray-300 {
+    color: $gray-300;
+  }
+  &.Type-color-gray-400 {
+    color: $gray-400;
+  }
+  &.Type-color-gray-500 {
+    color: $gray-500;
+  }
+  &.Type-color-gray-600 {
+    color: $gray-600;
+  }
+  &.Type-color-gray-700 {
+    color: $gray-700;
+  }
+  &.Type-color-gray-800 {
+    color: $gray-800;
+  }
+  &.Type-color-gray-900 {
+    color: $gray-900;
   }
 }

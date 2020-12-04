@@ -20,8 +20,10 @@ export function TransactionCreatorDrawerView(props: TransactionCreatorDrawerView
 		onClose={props.onClose}
 		anchor={largerScreen ? "left" : "bottom"}
 	>
-		<TransactionForm
-			onClose={props.onClose}
-		/>
+		<div className="TransactionCreatorDrawer__Content">
+			<TransactionForm
+				onClose={props.onClose}
+			/>
+		</div>
 	</Drawer>
 }

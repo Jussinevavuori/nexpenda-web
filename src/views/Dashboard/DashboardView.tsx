@@ -2,14 +2,11 @@ import "./Dashboard.scss"
 import React from "react";
 import { TransactionList } from "../../components/TransactionList/TransactionListController";
 import { Auth } from "../../classes/Auth";
-import { PageHeader } from "../../components/PageHeader/PageHeader";
-import { FiltersPanel } from "../../components/FiltersPanel/FiltersPanelController";
+import { ActionsPanel } from "./ActionsPanel/ActionsPanelController";
 import { useLgMedia } from "../../hooks/useMedia";
 import { TransactionTable } from "../../components/TransactionTable/TransactionTableController";
-import { ActiveFilters } from "../../components/ActiveFilters/ActiveFiltersController";
 import { Transaction } from "../../classes/Transaction";
-import { SelectionPanel } from "../../components/SelectionPanel/SelectionPanelController";
-import { QuickAnalytics } from "../../components/QuickAnalytics/QuickAnalyticsController";
+import { DashboardHeader } from "./DashboardHeader/DashboardHeaderController";
 
 export type DashboardViewProps = {
 	user: Auth | null;
@@ -27,33 +24,13 @@ export function DashboardView(props: DashboardViewProps) {
 
 	const desktopLayout = useLgMedia()
 
-	return <div className="Dashboard">
+	return <div className="Dashboard mobile">
 
-		<PageHeader>
-
-			<div className="pageHeaderContent">
-				<QuickAnalytics />
-			</div>
-
-		</PageHeader>
+		<DashboardHeader />
 
 		<section className="panel">
-
-			{
-				props.selectionActive
-					? <SelectionPanel />
-					: <FiltersPanel />
-			}
-
+			<ActionsPanel />
 		</section>
-
-		{
-			props.filtersActive
-				? <section className="activeFilters">
-					<ActiveFilters />
-				</section>
-				: null
-		}
 
 		<section className="transactionsList">
 

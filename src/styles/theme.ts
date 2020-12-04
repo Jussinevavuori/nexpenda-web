@@ -2,47 +2,36 @@ import { unstable_createMuiStrictModeTheme as createMuiTheme } from "@material-u
 
 import { theme as _ } from "./main";
 
+const regular = {
+  fontWeight: Number(_.text_regular),
+  textTransform: "none",
+  letterSpacing: _.text_regular_spacing,
+} as const;
+
+const bold = {
+  fontWeight: Number(_.text_bold),
+  textTransform: "none",
+  letterSpacing: _.text_bold_spacing,
+} as const;
+
+const boldcaps = {
+  fontWeight: Number(_.text_bold),
+  textTransform: "uppercase",
+  letterSpacing: _.text_boldcaps_spacing,
+} as const;
+
 export const theme = createMuiTheme({
   typography: {
     fontFamily: _.poppins,
-    h1: {
-      fontSize: _.text_xxxl,
-      fontWeight: Number(_.text_bold),
-    },
-    h2: {
-      fontSize: _.text_xxl,
-      fontWeight: Number(_.text_bold),
-    },
-    h3: {
-      fontSize: _.text_xl,
-      fontWeight: Number(_.text_bold),
-    },
-    h4: {
-      fontSize: _.text_lg,
-      fontWeight: Number(_.text_bold),
-    },
-    h5: {
-      fontSize: _.text_md,
-      fontWeight: Number(_.text_bold),
-    },
-    h6: {
-      fontSize: _.text_sm,
-      fontWeight: Number(_.text_bold),
-    },
-    body1: {
-      fontSize: _.text_md,
-      fontWeight: Number(_.text_regular),
-    },
-    body2: {
-      fontSize: _.text_md,
-      fontWeight: Number(_.text_bold),
-      textTransform: "uppercase",
-    },
-    button: {
-      fontSize: _.text_md,
-      fontWeight: Number(_.text_bold),
-      textTransform: "uppercase",
-    },
+    h1: { fontSize: _.text_xxxl, ...bold },
+    h2: { fontSize: _.text_xxl, ...bold },
+    h3: { fontSize: _.text_xl, ...bold },
+    h4: { fontSize: _.text_lg, ...bold },
+    h5: { fontSize: _.text_md, ...bold },
+    h6: { fontSize: _.text_sm, ...bold },
+    body1: { fontSize: _.text_md, ...regular },
+    body2: { fontSize: _.text_sm, ...boldcaps },
+    button: { fontSize: _.text_md, ...bold },
     fontWeightBold: Number(_.text_bold),
     fontWeightLight: Number(_.text_light),
     fontWeightMedium: Number(_.text_regular),
@@ -181,7 +170,7 @@ export const theme = createMuiTheme({
       A400: _.gray_400,
       A700: _.gray_700,
     },
-    divider: _.gray_200,
+    divider: _.gray_300,
     common: {
       black: _.black,
       white: _.white,

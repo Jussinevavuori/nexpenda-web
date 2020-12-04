@@ -90,7 +90,7 @@ export const LoginView: React.FC<LoginViewProps> = (props) => {
 
 					{
 						props.error
-							? <Type color="error">
+							? <Type color="red-600">
 								{props.error}
 							</Type>
 							: null

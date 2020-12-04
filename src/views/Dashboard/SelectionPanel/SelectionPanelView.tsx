@@ -1,7 +1,7 @@
 import "./SelectionPanel.scss";
 import React from "react"
-import { Transaction } from "../../classes/Transaction";
-import { useMdMedia } from "../../hooks/useMedia";
+import { Transaction } from "../../../classes/Transaction";
+import { useMdMedia } from "../../../hooks/useMedia";
 import { Button, IconButton } from "@material-ui/core";
 import {
 	SelectAll as SelectAllIcon,
@@ -10,7 +10,7 @@ import {
 	Delete as DeleteIcon,
 	Edit as EditIcon,
 } from "@material-ui/icons";
-import { Type } from "../Type/Type";
+import { Type } from "../../../components/Type/Type";
 
 export type SelectionPanelViewProps = {
 

@@ -3,7 +3,6 @@ import React from "react"
 import { Auth } from "../../classes/Auth";
 import { Avatar, Button, CircularProgress } from "@material-ui/core";
 import { ExitToApp as LogoutIcon } from "@material-ui/icons";
-import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { Type } from "../../components/Type/Type";
 import { FileUploader } from "../../components/FileUploader/FileUploaderController";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloaderController";
@@ -32,23 +31,19 @@ export function SettingsView(props: SettingsViewProps) {
 
 	return <div className="Settings">
 
-		<PageHeader>
+		<div className="pageHeaderContent">
 
-			<div className="pageHeaderContent">
-
-				<div className="pageHeaderAvatarContainer">
-					<Avatar>
-						{
-							props.user.photoUrl
-								? <img alt="profileimage" src={props.user.photoUrl} />
-								: props.user.initials
-						}
-					</Avatar>
-				</div>
-
+			<div className="pageHeaderAvatarContainer">
+				<Avatar>
+					{
+						props.user.photoUrl
+							? <img alt="profileimage" src={props.user.photoUrl} />
+							: props.user.initials
+					}
+				</Avatar>
 			</div>
 
-		</PageHeader>
+		</div>
 
 		<div className="content">
 

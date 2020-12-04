@@ -1,0 +1,43 @@
+@import "main";
+
+.Logo {
+  /** General styles */
+
+  & span {
+    color: $black;
+    font-weight: $text-bold;
+    font-size: $text-xl;
+  }
+
+  /** Letter specific styles */
+
+  & span.letter-2 {
+    color: $blue-500;
+  }
+
+  /** Sizes */
+
+  &.size-sm * {
+    font-size: $text-sm;
+  }
+
+  &.size-md * {
+    font-size: $text-md;
+  }
+
+  &.size-lg * {
+    font-size: $text-lg;
+  }
+
+  &.size-xl * {
+    font-size: $text-xl;
+  }
+
+  &.size-xxl * {
+    font-size: $text-xxl;
+  }
+
+  &.size-xxxl * {
+    font-size: $text-xxxl;
+  }
+}

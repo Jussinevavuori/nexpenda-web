@@ -1,4 +1,7 @@
 @import "main";
 
 .TransactionCreatorDrawer {
+  &__Content {
+    padding: $spacing-6;
+  }
 }
