@@ -1,12 +1,15 @@
 @import "main";
-@import "theme";
 @import "reset";
-
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;900&display=swap");
 
 body * {
-  font-family: $roboto;
+  font-family: $poppins;
   font-size: 1rem;
+}
+
+:root {
+  --full-vh: 100vh;
+  --vh: 1vh;
 }
 
 ::-webkit-scrollbar {

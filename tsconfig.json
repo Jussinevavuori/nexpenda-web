@@ -20,6 +20,7 @@
 		"isolatedModules": true
 	},
 	"include": [
-		"src"
+		"src",
+		"scripts"
 	]
 }

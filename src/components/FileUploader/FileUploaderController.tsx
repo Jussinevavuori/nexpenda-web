@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useStoreActions } from "../../store"
-import { PromiseType } from "../../types"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet"
 import { IOJsonTransaction, TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
