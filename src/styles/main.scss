@@ -1,16 +1,18 @@
+/** Layout constants */
+
+$header-height: 5rem;
+$mobile-header-height: 160px;
+$sidebar-width: 290px;
+
 /** Colors: Blue */
 
 $blue-900: #060040;
-$blue-810: #050060;
 $blue-800: #030380;
 $blue-700: #08109c;
-$blue-610: #0f22b5;
 $blue-600: #1836ce;
-$blue-500: #224de4;
-$blue-410: #4270ea;
+$blue-500: #2a52e2;
 $blue-400: #6291ef;
 $blue-300: #83aff4;
-$blue-210: #a5caf8;
 $blue-200: #c7e1fb;
 $blue-100: #eaf5fe;
 
@@ -59,11 +61,28 @@ $gray-100: #f9f9fb;
 $white: #ffffff;
 $black: #000000;
 
+/** Primary color as blue */
+
+$primary-900: $blue-900;
+$primary-800: $blue-800;
+$primary-700: $blue-700;
+$primary-600: $blue-600;
+$primary-500: $blue-500;
+$primary-400: $blue-400;
+$primary-300: $blue-300;
+$primary-200: $blue-200;
+$primary-100: $blue-100;
+
+/** Borders */
+
+$border-color: $gray-300;
+$border: $border-color 1px solid;
+
 /** Typography: Fonts */
 
-$ubuntu: "Ubuntu", sans-serif;
 $roboto: "Roboto", Helvetica, Arial, sans-serif;
 $roboto-condensed: "Roboto Condensed", Helvetica, Arial, sans-serif;
+$poppins: "Poppins", "Roboto", Helvetica, Arial, sans-serif;
 
 /** Spacing */
 
@@ -85,31 +104,92 @@ $spacing-32: 8rem;
 $spacing-36: 9rem;
 $spacing-40: 10rem;
 
+/** Fixed spacings in px units for specific usecases */
+
+$fixed-spacing-1: 4px;
+$fixed-spacing-2: 8px;
+$fixed-spacing-3: 12px;
+$fixed-spacing-4: 16px;
+$fixed-spacing-5: 20px;
+$fixed-spacing-6: 24px;
+$fixed-spacing-8: 32px;
+$fixed-spacing-10: 40px;
+$fixed-spacing-12: 48px;
+$fixed-spacing-14: 56px;
+$fixed-spacing-16: 64px;
+$fixed-spacing-20: 80px;
+$fixed-spacing-24: 96px;
+$fixed-spacing-28: 112px;
+$fixed-spacing-32: 128px;
+$fixed-spacing-36: 144px;
+$fixed-spacing-40: 160px;
+
+/** Known paddings */
+
+$spacing-icon-button: 12px;
+$spacing-button-vertical: 6px;
+$spacing-button-horizontal: 8px;
+
+/** Spacing adjusting for known paddings */
+
+@function adjust-spacing($spacing, $adjustment) {
+  @return calc(#{$spacing} - #{$adjustment});
+}
+
+/** Animations */
+
+$timing-1: 100ms;
+$timing-2: 200ms;
+$timing-3: 300ms;
+
+$animate-snap-back: cubic-bezier(0.21, 1.47, 0, 1);
+
+/** Radii */
+
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+
 /** Typography: Font sizes */
 
 $text-xxxl: 3rem;
 $text-xxl: 2.25rem;
 $text-xl: 1.5rem;
 $text-lg: 1.25rem;
-$text-md: 1rem;
+$text-md: 0.95rem;
 $text-sm: 0.75rem;
+
+/** Typography: Font weights */
+
+$text-light: 300;
+$text-bold: 700;
+$text-regular: 400;
+
+/** Typography: Text Spacing */
+
+$text-regular-spacing: 0px;
+$text-bold-spacing: 0.5px;
+$text-boldcaps-spacing: 0.69px;
 
 /** Typography: Font variants */
 
 @mixin text-regular {
-  font-weight: 700;
-  font-family: $ubuntu;
+  font-weight: $text-regular;
+  font-family: $poppins;
+  letter-spacing: $text-regular-spacing;
 }
 
 @mixin text-bold {
-  font-weight: 700;
-  font-family: $ubuntu;
+  font-weight: $text-bold;
+  font-family: $poppins;
+  letter-spacing: $text-bold-spacing;
 }
 
 @mixin text-boldcaps {
-  font-weight: 700;
-  font-family: $ubuntu;
+  font-weight: $text-bold;
+  font-family: $poppins;
   text-transform: uppercase;
+  letter-spacing: $text-boldcaps-spacing;
 }
 
 /** Typography: Full font types */
@@ -247,35 +327,35 @@ $font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
-$spacing-sm: var(--spacing-sm);
-$spacing-md: var(--spacing-md);
-$spacing-lg: var(--spacing-lg);
-$color-primary-main: var(--color-primary-main);
-$color-primary-light: var(--color-primary-light);
-$color-primary-dark: var(--color-primary-dark);
-$color-primary-50: var(--color-primary-50);
-$color-primary-100: var(--color-primary-100);
-$color-primary-200: var(--color-primary-200);
-$color-primary-300: var(--color-primary-300);
-$color-primary-400: var(--color-primary-400);
-$color-primary-500: var(--color-primary-500);
-$color-primary-600: var(--color-primary-600);
-$color-primary-700: var(--color-primary-700);
-$color-primary-800: var(--color-primary-800);
-$color-primary-900: var(--color-primary-900);
-$color-positive-main: var(--color-positive-main);
-$color-negative-main: var(--color-negative-main);
-$color-error-main: var(--color-error-main);
-$color-error-light: var(--color-error-light);
-$color-error-dark: var(--color-error-dark);
-$color-divider: var(--color-divider);
-$color-action-focus: var(--color-action-focus);
-$color-action-hover: var(--color-action-hover);
-$color-action-active: var(--color-action-active);
-$color-action-primary-focus: var(--color-action-primary-focus);
-$color-action-primary-hover: var(--color-action-primary-hover);
-$color-action-primary-active: var(--color-action-primary-active);
-$color-text-default: var(--color-text-default);
+$spacing-sm: $spacing-2;
+$spacing-md: $spacing-4;
+$spacing-lg: $spacing-8;
+$color-primary-main: $blue-500;
+$color-primary-light: $blue-200;
+$color-primary-dark: $blue-800;
+$color-primary-50: $blue-100;
+$color-primary-100: $blue-100;
+$color-primary-200: $blue-200;
+$color-primary-300: $blue-300;
+$color-primary-400: $blue-400;
+$color-primary-500: $blue-500;
+$color-primary-600: $blue-600;
+$color-primary-700: $blue-700;
+$color-primary-800: $blue-800;
+$color-primary-900: $blue-900;
+$color-positive-main: $green-500;
+$color-negative-main: $red-500;
+$color-error-main: $red-500;
+$color-error-light: $red-200;
+$color-error-dark: $red-800;
+$color-divider: $gray-200;
+$color-action-focus: $gray-300;
+$color-action-hover: $gray-400;
+$color-action-active: $gray-500;
+$color-action-primary-focus: $blue-300;
+$color-action-primary-hover: $blue-400;
+$color-action-primary-active: $blue-500;
+$color-text-default: $gray-900;
 $border-radius: 0.4rem;
 $shadow-blur-small: 6px;
 $shadow-blur-medium: 20px;

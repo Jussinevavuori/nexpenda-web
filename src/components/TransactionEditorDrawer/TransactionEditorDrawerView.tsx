@@ -1,7 +1,7 @@
 import "./TransactionEditorDrawer.scss";
 import React from "react"
 import { Drawer } from "@material-ui/core";
-import { useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { TransactionForm } from "../TransactionForm/TransactionFormController";
 
@@ -13,7 +13,7 @@ export type TransactionEditorDrawerViewProps = {
 
 export function TransactionEditorDrawerView(props: TransactionEditorDrawerViewProps) {
 
-	const largerScreen = useSmMedia()
+	const largerScreen = useMdMedia()
 
 	return <Drawer
 		className="TransactionEditorDrawer"
@@ -21,9 +21,11 @@ export function TransactionEditorDrawerView(props: TransactionEditorDrawerViewPr
 		onClose={props.onClose}
 		anchor={largerScreen ? "left" : "bottom"}
 	>
-		<TransactionForm
-			onClose={props.onClose}
-			editTransaction={props.selectedItem}
-		/>
+		<div className="TransactionEditorDrawer__Content">
+			<TransactionForm
+				onClose={props.onClose}
+				editTransaction={props.selectedItem}
+			/>
+		</div>
 	</Drawer>
 }

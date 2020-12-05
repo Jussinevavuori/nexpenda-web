@@ -2,31 +2,40 @@
 
 .TransactionTableRowSkeleton {
   display: grid;
-  grid-template-columns: 12rem 1fr 32px 3fr 8rem 1rem;
-  grid-template-areas: "action-category amount p1 comment date p2";
-  height: 36px;
-  align-items: center;
+  grid-template-columns: 56.01px 3fr 2fr 4fr 1.5fr;
+  grid-template-areas: "action category amount comment date";
+  height: 40px;
+  align-items: stretch;
 
   & > div {
-    height: 100%;
-    padding: 8px 0;
+    display: flex;
+    align-items: center;
   }
 
-  & .action-category {
-    grid-area: action-category;
+  & .action {
+    justify-content: center;
+    grid-area: action;
+  }
+
+  & .category {
+    grid-area: category;
+    padding: $spacing-2 $spacing-4;
   }
 
   & .amount {
     grid-area: amount;
     justify-self: end;
+    padding: $spacing-2 $spacing-4;
   }
 
   & .comment {
     grid-area: comment;
+    padding: $spacing-2 $spacing-4;
   }
 
   & .date {
     grid-area: date;
     justify-self: end;
+    padding: $spacing-2 $spacing-4;
   }
 }

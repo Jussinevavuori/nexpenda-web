@@ -9,9 +9,15 @@ export type TransactionTableRowSkeletonProps = {
 export function TransactionTableRowSkeleton(props: TransactionTableRowSkeletonProps) {
 	return <div className="TransactionTableRowSkeleton">
 
-		<div className="action-category">
+		<div className="action" >
 			<Skeleton
-				width={{ min: 20, max: 60, unit: "%" }}
+				width="24px"
+				height="24px"
+			/>
+		</div>
+		<div className="category">
+			<Skeleton
+				width={{ min: 20, max: 90, unit: "%" }}
 				height="100%"
 			/>
 		</div>

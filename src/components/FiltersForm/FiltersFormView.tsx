@@ -36,7 +36,7 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 		<header>
 
 			<div className="title">
-				<Type variant="button">
+				<Type variant="boldcaps" color="gray-800">
 					{"Filters"}
 				</Type>
 				<FiltersIcon />

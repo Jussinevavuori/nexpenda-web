@@ -1,0 +1,17 @@
+@import "main";
+
+.IntervalManager {
+  & * {
+    color: $gray-800;
+  }
+  & .arrow-buttons {
+    margin-right: $spacing-4;
+    display: inline;
+  }
+  &__Menu {
+    padding: $spacing-4 $spacing-8;
+  }
+  &__Drawer {
+    padding: $spacing-6;
+  }
+}

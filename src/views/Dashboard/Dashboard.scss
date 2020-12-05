@@ -8,41 +8,31 @@
   position: relative;
 
   grid-template:
-    "pageHeader" auto
+    "header" auto
     "panel" auto
-    "activeFilters" auto
     "transactionsList" 1fr / 100%;
 
-  & .PageHeader {
-    grid-area: pageHeader;
-  }
-
-  & .pageHeaderContent {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    padding: $spacing-sm;
+  & .header {
+    grid-area: header;
+    padding: 0;
+    @include md {
+      padding: $spacing-8 $spacing-16 0;
+    }
   }
 
   & .transactionsList {
     grid-area: transactionsList;
     padding: 0;
     margin-top: 0;
-    @include lg {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      padding-left: $spacing-sm;
-      padding-right: $spacing-sm;
+    @include md {
+      padding: 0 $spacing-16 $spacing-8;
     }
   }
 
   & .panel {
     grid-area: panel;
-  }
-
-  & .activeFilters {
-    grid-area: activeFilters;
-    padding: 0.5rem $spacing-sm 0;
+    @include md {
+      padding: $spacing-6 $spacing-16;
+    }
   }
 }

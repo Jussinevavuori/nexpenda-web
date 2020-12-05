@@ -29,7 +29,7 @@ export function ConfirmEmailView(props: ConfirmEmailViewProps) {
 
 						return <>
 
-							<Type color="error">
+							<Type color="red-600">
 								{"Invalid password change link"}
 							</Type>
 

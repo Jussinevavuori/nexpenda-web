@@ -37,9 +37,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 		return <div className="TransactionList">
 			{
 				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
-
 					return <TransactionListItemSkeleton i={i} key={i} />
-
 				})
 			}
 		</div >
@@ -56,7 +54,13 @@ export function TransactionListView(props: TransactionListViewProps) {
 					width={autoSizer.width}
 					rowCount={props.itemsByDates.length}
 					rowHeight={({ index }) => {
-						return props.itemsByDates[index].items.length * 68 + 48
+
+						/**
+						 * Title total height    40 px
+						 * Item total height     80 px
+						 */
+
+						return props.itemsByDates[index].items.length * 80 + 40
 					}}
 					noRowsRenderer={() => {
 						return <Type className="emptyTransactions">
@@ -66,7 +70,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 					rowRenderer={(rowProps) => {
 						const entry = props.itemsByDates[rowProps.index]
 						return <div className="dateGroup" key={rowProps.key} style={rowProps.style}>
-							<Type>
+							<Type variant="bold" color="gray-800" size="md">
 								{toDatestring(entry.date)}
 							</Type>
 							<ul>

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react"
-import { useStoreActions, useStoreState } from "../../store"
-import { DataUtils } from "../../utils/DataUtils/DataUtils"
-import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/TransactionEditorDrawerController"
+import { useStoreActions, useStoreState } from "../../../store"
+import { DataUtils } from "../../../utils/DataUtils/DataUtils"
+import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/TransactionEditorDrawerController"
 import { SelectionPanelView } from "./SelectionPanelView"
 
 

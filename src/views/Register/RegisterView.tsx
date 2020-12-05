@@ -40,7 +40,7 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
 			body={
 				props.registered
 					? <>
-						<Type variant="h6">
+						<Type size="lg" variant="bold">
 							{"Succesfully registered."}
 						</Type>
 						<Type>
@@ -97,7 +97,7 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
 
 						{
 							props.error
-								? <Type color="error">
+								? <Type color="red-600">
 									{props.error}
 								</Type>
 								: null

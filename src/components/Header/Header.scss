@@ -1,0 +1,13 @@
+@import "main";
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: $header-height;
+
+  padding: 0 $spacing-16 0 adjust-spacing($spacing-16, $spacing-icon-button);
+
+  border-bottom: $border;
+}

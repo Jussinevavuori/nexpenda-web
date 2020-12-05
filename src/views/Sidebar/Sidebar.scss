@@ -3,74 +3,105 @@
 .Sidebar {
   position: relative;
   z-index: 1;
-
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.24);
   width: 100%;
   height: auto;
 
-  @include sm {
-    width: 18rem;
+  @include md {
     height: 100%;
+    width: $sidebar-width;
+
+    background: $gray-100;
+    border-right: $border;
   }
 
+  /** Desktop layout */
   & .sidebar {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     height: 100%;
+
     & .header {
-      background: $color-primary-main;
-      height: $app-header-height;
+      height: $header-height;
+
+      padding: 0 $spacing-8;
+
+      border-bottom: $border;
+
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: $spacing-sm;
-
-      & * {
-        color: white;
-      }
-
-      & .top-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      & .bottom-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        & p {
-          margin-left: 1rem;
-        }
-      }
+      justify-content: flex-start;
+      align-items: center;
     }
 
     & .body {
-      flex: 1;
       display: flex;
       flex-direction: column;
-      & .tabContainer {
-        & .tab {
-          padding: calc(#{$spacing-sm} * 1.1) calc(#{$spacing-sm} * 1.3);
-          width: 100%;
-          & .MuiButton-label {
-            justify-content: flex-start;
-          }
+
+      & .selections {
+        padding: $spacing-6 $spacing-4;
+
+        border-bottom: $border;
+
+        & .selections-title {
+          margin-bottom: $spacing-4;
+          margin-left: $spacing-4;
         }
 
-        &.addButton {
-          margin-top: auto;
-          & * {
-            color: $color-primary-main;
+        & .selection {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          padding: $spacing-3 $spacing-4;
+          margin-bottom: $spacing-2;
+
+          border: none;
+          background: none;
+          border-radius: $radius-lg;
+
+          cursor: pointer;
+
+          &:focus,
+          &:hover {
+            outline: none;
+            background: $gray-200;
+            &.active {
+              background: $blue-600;
+            }
+          }
+
+          &:active {
+            background: $gray-300;
+            &.active {
+              background: $blue-700;
+            }
+          }
+
+          & svg {
+            margin-right: $spacing-4;
+            transform: scale(0.9);
+            transform-origin: left;
+            color: $gray-700;
+            stroke-width: 2.5px;
+          }
+
+          & .Type {
+            color: $gray-700;
+          }
+
+          &.active {
+            background: $blue-500;
+            color: white;
+            & .Type,
+            & svg {
+              color: white;
+              stroke-width: 1.5px;
+            }
           }
         }
       }
     }
   }
 
+  /** Mobile bottom navigation layout */
   & .tabs {
     display: grid;
     grid-auto-flow: column;
@@ -80,12 +111,38 @@
       place-items: center;
 
       & .tab {
+        position: relative;
         padding: 1rem;
         border-radius: 0;
         width: 100%;
 
+        &.add {
+          & svg {
+            transform: scale(1.2);
+            color: $blue-500;
+          }
+        }
+
         &.active svg {
-          color: $color-primary-main;
+          color: $blue-500;
+        }
+
+        &::after {
+          $size: 6px;
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: $size;
+          border-radius: $size $size 0 0;
+          background: $blue-500;
+          transform: translateY(100%) scale(0);
+          transition: transform $timing-3 $animate-snap-back;
+        }
+
+        &.active::after {
+          transform: translateY(0) scale(1);
         }
       }
     }

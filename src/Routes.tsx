@@ -7,7 +7,7 @@ import { Dashboard } from './views/Dashboard/DashboardController';
 import { Settings } from "./views/Settings/SettingsController";
 import { Analytics } from "./views/Analytics/AnalyticsController";
 import { ForgotPassword } from "./views/ForgotPassword/ForgotPasswordController";
-import { AppFrame } from "./views/AppFrame/AppFrameController";
+import { AppFrame } from "./components/AppFrame/AppFrameController";
 import { ChangePassword } from "./views/ChangePassword/ChangePasswordController";
 import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmailController";
 import { Budget } from "./views/Budget/BudgetController";
