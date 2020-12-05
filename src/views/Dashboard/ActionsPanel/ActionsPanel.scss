@@ -60,7 +60,7 @@
       &.deleteButton {
         margin-left: $spacing-4;
         & * {
-          color: $red-800;
+          color: $red-600;
         }
         &:disabled * {
           color: $gray-500;

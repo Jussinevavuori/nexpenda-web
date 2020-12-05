@@ -37,22 +37,49 @@
   & .amount {
     grid-area: amount;
     justify-self: end;
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .category {
     grid-area: category;
     display: flex;
     align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .comment {
     grid-area: comment;
     color: rgba(0, 0, 0, 0.6);
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .date {
     grid-area: date;
     justify-self: end;
     color: rgba(0, 0, 0, 0.9);
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 }
