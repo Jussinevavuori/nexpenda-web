@@ -2,19 +2,22 @@ import "./IntervalManager.scss";
 import React, { useState } from "react"
 import { isMobile } from "react-device-detect"
 import { Button, Drawer, IconButton, Menu } from "@material-ui/core";
-import { ArrowBack, ArrowForward, DateRange } from "@material-ui/icons"
+import { ArrowBack, ArrowForward, DateRange, RadioButtonUnchecked as TodayIcon } from "@material-ui/icons"
 import { useSmMedia } from "../../hooks/useMedia";
 import { useHashOpenState } from "../../hooks/useHashOpenState";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerFormController";
 
 export type IntervalManagerViewProps = {
 
-	hideArrowButtons?: boolean;
+	hideControls?: boolean;
 
 	intervalString: string;
 
 	onPrevious(): void;
 	onNext(): void;
+
+	includesToday: boolean;
+	onToday(): void;
 
 }
 
@@ -25,12 +28,17 @@ export function IntervalManagerView(props: IntervalManagerViewProps) {
 	const [intervalPickerOpen, setIntervalPickerOpen] = useHashOpenState("interval")
 	const [intervalPickerMenuAnchor, setIntervalPickerMenuAnchor] = useState<HTMLElement>()
 
+	const shouldShowControls = props.hideControls !== true
+
 	return <>
 		<div className="IntervalManager">
 			{
-				props.hideArrowButtons !== true && <div className="arrow-buttons">
+				shouldShowControls && <div className="arrow-buttons">
 					<IconButton onClick={props.onPrevious}>
 						<ArrowBack />
+					</IconButton>
+					<IconButton onClick={props.onToday}>
+						<TodayIcon />
 					</IconButton>
 					<IconButton onClick={props.onNext}>
 						<ArrowForward />

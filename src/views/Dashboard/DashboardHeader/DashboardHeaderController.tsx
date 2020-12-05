@@ -14,6 +14,10 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
 	const transactions = useStoreState(_ => _.transactions.filtered.items)
 
+	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
+
+	const selectionLength = useStoreState(_ => _.selection.selectionLength)
+
 	const transactionsCount = useMemo(() => {
 		return transactions.length
 	}, [transactions])
@@ -36,5 +40,8 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 		transactionsTotal={transactionsTotal}
 		transactionsTotalIncome={transactionsTotalIncome}
 		transactionsTotalExpense={transactionsTotalExpense}
+
+		isSelectionActive={isSelectionActive}
+		selectionLength={selectionLength}
 	/>
 }

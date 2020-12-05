@@ -2,7 +2,7 @@ import "./TransactionCreatorDrawer.scss";
 import React from "react"
 import { TransactionForm } from "../TransactionForm/TransactionFormController";
 import { Drawer } from "@material-ui/core";
-import { useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/useMedia";
 
 export type TransactionCreatorDrawerViewProps = {
 	open: boolean;
@@ -12,7 +12,7 @@ export type TransactionCreatorDrawerViewProps = {
 
 export function TransactionCreatorDrawerView(props: TransactionCreatorDrawerViewProps) {
 
-	const largerScreen = useSmMedia()
+	const largerScreen = useMdMedia()
 
 	return <Drawer
 		className="TransactionCreatorDrawer"

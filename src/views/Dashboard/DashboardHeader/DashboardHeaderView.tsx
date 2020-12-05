@@ -14,6 +14,8 @@ export type DashboardHeaderViewProps = {
 	transactionsTotal: MoneyAmount;
 	transactionsTotalIncome: MoneyAmount;
 	transactionsTotalExpense: MoneyAmount;
+	isSelectionActive: boolean;
+	selectionLength: number;
 }
 
 export function DashboardHeaderView(props: DashboardHeaderViewProps) {
@@ -34,8 +36,12 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 					</Type>
 				</div>
 				<div className="transactions-count">
-					<Type size="md" color="gray-600" variant="bold">
-						{`${props.transactionsCount} transactions`}
+					<Type size="md" color="gray-600" variant="boldcaps">
+						{
+							props.isSelectionActive
+								? `Selected ${props.selectionLength} / ${props.transactionsCount} transactions`
+								: `${props.transactionsCount} transactions`
+						}
 					</Type>
 				</div>
 			</div>

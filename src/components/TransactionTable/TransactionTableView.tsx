@@ -41,7 +41,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 							height={autoSizer.height}
 							width={autoSizer.width}
 							rowCount={props.items.length}
-							rowHeight={36}
+							rowHeight={40}
 							noRowsRenderer={() => <div className="noTransactions">
 								<Type>
 									{"No transactions"}

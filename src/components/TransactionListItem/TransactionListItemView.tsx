@@ -104,7 +104,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 				amount={props.transaction.amount}
 				colorIfPositive="green-600"
 				colorIfNegative="red-600"
-				size="md"
+				size="lg"
 				variant="bold"
 			/>
 		</div>

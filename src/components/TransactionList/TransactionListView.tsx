@@ -56,18 +56,11 @@ export function TransactionListView(props: TransactionListViewProps) {
 					rowHeight={({ index }) => {
 
 						/**
-						 * ########		 8 px  Title padding top
-						 * 1.1.2020   24 px  Title height
-						 * ########    8 px  Title padding bottom 
-						 * ########   16 px  Item padding top
-						 * Item       
-						 * ########   16 px  Item padding bottom
-						 * 
 						 * Title total height    40 px
-						 * Item total height    100 px
+						 * Item total height     80 px
 						 */
 
-						return props.itemsByDates[index].items.length * 68 + 48
+						return props.itemsByDates[index].items.length * 80 + 40
 					}}
 					noRowsRenderer={() => {
 						return <Type className="emptyTransactions">

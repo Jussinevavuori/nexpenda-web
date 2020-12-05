@@ -32,6 +32,16 @@
   }
 
   &.desktop {
+    // Adjust scale visually by small amount
+    & > div {
+      transform: scale(0.9);
+      &:first-child {
+        transform-origin: left;
+      }
+      &:last-child {
+        transform-origin: right;
+      }
+    }
     & .button {
       padding: $spacing-2 $spacing-4;
       & svg {

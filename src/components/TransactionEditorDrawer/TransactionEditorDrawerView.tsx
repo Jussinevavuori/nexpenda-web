@@ -1,7 +1,7 @@
 import "./TransactionEditorDrawer.scss";
 import React from "react"
 import { Drawer } from "@material-ui/core";
-import { useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { TransactionForm } from "../TransactionForm/TransactionFormController";
 
@@ -13,7 +13,7 @@ export type TransactionEditorDrawerViewProps = {
 
 export function TransactionEditorDrawerView(props: TransactionEditorDrawerViewProps) {
 
-	const largerScreen = useSmMedia()
+	const largerScreen = useMdMedia()
 
 	return <Drawer
 		className="TransactionEditorDrawer"

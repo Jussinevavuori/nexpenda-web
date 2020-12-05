@@ -11,7 +11,7 @@
   grid-template-rows: #{0.5 * $size} #{0.5 * $size};
   grid-template-areas:
     "icon category amount"
-    "icon comment comment";
+    "icon comment amount";
   grid-gap: 0 $spacing-4;
   place-items: center left;
 

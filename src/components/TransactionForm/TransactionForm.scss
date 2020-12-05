@@ -4,26 +4,26 @@
   display: grid;
   grid-auto-flow: row;
   grid-gap: 1rem;
-	padding: $spacing-sm;
-	
-	& .transactionAmountContainer {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		flex-direction: row;
+  padding: $spacing-sm;
 
-		& .MuiButtonGroup-root {
-			margin-right: 0.5rem;
-			& .MuiButton-contained {
-				box-shadow: none;
-			}
-		}
-	}
+  & .transactionAmountContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
 
-  @include sm {
+    & .MuiButtonGroup-root {
+      margin-right: 0.5rem;
+      & .MuiButton-contained {
+        box-shadow: none;
+      }
+    }
+  }
+
+  @include md {
     padding: $spacing-md;
     grid-gap: 1.5rem;
-		width: 22rem;
+    width: 22rem;
   }
 }

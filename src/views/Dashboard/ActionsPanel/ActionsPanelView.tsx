@@ -96,7 +96,7 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 			return <div className="ActionsPanel mobile default">
 
 				<div className="intervalManager">
-					<IntervalManager hideArrowButtons />
+					<IntervalManager hideControls />
 				</div>
 
 				<div className="filterManager">
