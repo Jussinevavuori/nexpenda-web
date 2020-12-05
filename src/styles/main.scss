@@ -104,6 +104,26 @@ $spacing-32: 8rem;
 $spacing-36: 9rem;
 $spacing-40: 10rem;
 
+/** Fixed spacings in px units for specific usecases */
+
+$fixed-spacing-1: 4px;
+$fixed-spacing-2: 8px;
+$fixed-spacing-3: 12px;
+$fixed-spacing-4: 16px;
+$fixed-spacing-5: 20px;
+$fixed-spacing-6: 24px;
+$fixed-spacing-8: 32px;
+$fixed-spacing-10: 40px;
+$fixed-spacing-12: 48px;
+$fixed-spacing-14: 56px;
+$fixed-spacing-16: 64px;
+$fixed-spacing-20: 80px;
+$fixed-spacing-24: 96px;
+$fixed-spacing-28: 112px;
+$fixed-spacing-32: 128px;
+$fixed-spacing-36: 144px;
+$fixed-spacing-40: 160px;
+
 /** Known paddings */
 
 $spacing-icon-button: 12px;
@@ -115,6 +135,14 @@ $spacing-button-horizontal: 8px;
 @function adjust-spacing($spacing, $adjustment) {
   @return calc(#{$spacing} - #{$adjustment});
 }
+
+/** Animations */
+
+$timing-1: 100ms;
+$timing-2: 200ms;
+$timing-3: 300ms;
+
+$animate-snap-back: cubic-bezier(0.21, 1.47, 0, 1);
 
 /** Radii */
 

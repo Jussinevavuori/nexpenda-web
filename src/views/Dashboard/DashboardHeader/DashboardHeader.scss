@@ -1,10 +1,7 @@
 @import "main";
 
 .DashboardHeader {
-  /** Generic styles */
-
   /** Mobile styles */
-
   &.mobile {
     position: relative;
     height: $mobile-header-height;
@@ -68,6 +65,36 @@
 
   /** Desktop styles */
 
-  @include md {
+  &.desktop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > .left {
+    }
+
+    & > .right {
+      & > .total {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      & > .subtotals {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        & > div {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          &:first-child {
+            margin-right: $spacing-6;
+          }
+          & > svg {
+            margin-right: $spacing-2;
+          }
+        }
+      }
+    }
   }
 }

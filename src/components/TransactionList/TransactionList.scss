@@ -6,25 +6,17 @@
 
   & .ReactVirtualized__Grid.ReactVirtualized__List.virtualizedList {
     outline: none;
-	}
-	
-	& .emptyTransactions {
-		margin: 0 $spacing-sm;
-	}
+  }
+
+  & .emptyTransactions {
+    margin: 0 $spacing-6;
+  }
 
   & .dateGroup {
     & > p {
       color: $color-text-default;
-			font-size: 1rem;
-			margin-left: $spacing-sm;
-    }
-    & > ul {
-      padding: 8px 0 16px 0;
-      & > li {
-        &:not(:first-child) {
-          border-top: 1px solid $color-divider;
-        }
-      }
+      font-size: 1rem;
+      padding: $fixed-spacing-2 0 $fixed-spacing-2 $fixed-spacing-6;
     }
   }
 }

@@ -1,19 +1,22 @@
 @import "main";
 
 .TransactionListItem {
-  padding: 6px calc(#{$spacing-sm} + 1rem) 6px $spacing-sm;
-  height: 68px;
+  $size: 48px;
+
   position: relative;
+  padding: $fixed-spacing-4 $spacing-6;
+
   display: grid;
   grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: #{0.5 * $size} #{0.5 * $size};
   grid-template-areas:
     "icon category amount"
-    "icon comment amount";
-  grid-gap: 0 24px;
+    "icon comment comment";
+  grid-gap: 0 $spacing-4;
+  place-items: center left;
 
   &.pressed {
-    background: rgba(0, 0, 0, 0.1);
+    background: $blue-100;
   }
 
   & .icon {
@@ -21,35 +24,28 @@
     place-self: center;
 
     & .iconContainer {
-      width: 36px;
-      height: 36px;
+      width: $size;
+      height: $size;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 4px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1);
-      color: white;
-    }
+      background: $gray-200;
+      overflow: hidden;
 
-    &.positive:not(.selectionActive) .iconContainer {
-      background-color: $color-positive-main;
-    }
-
-    &.negative:not(.selectionActive) .iconContainer {
-      background-color: $color-negative-main;
+      & .emoji {
+        transform: scale(1.6);
+      }
     }
 
     &.selectionActive.selected .iconContainer {
-      background-color: $color-primary-main;
+      background-color: $blue-500;
+      color: white;
     }
   }
 
   & .category {
-    height: 28px;
-    display: flex;
-    align-items: center;
-    font-weight: $font-weight-bold;
     grid-area: category;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -57,11 +53,7 @@
   }
 
   & .comment {
-    height: 28px;
-    display: flex;
-    align-items: center;
     grid-area: comment;
-    opacity: 0.6;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -71,19 +63,5 @@
     grid-area: amount;
     display: flex;
     align-items: center;
-
-    & span {
-      font-family: $roboto-condensed;
-      font-weight: $font-weight-bold;
-      font-size: 1.4rem;
-    }
-
-    &.positive {
-      color: $color-positive-main;
-    }
-
-    &.negative {
-      color: $color-negative-main;
-    }
   }
 }

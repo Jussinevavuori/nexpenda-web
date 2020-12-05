@@ -21,7 +21,7 @@
       "sidebar main" 1fr / auto 1fr;
   }
 
-  & .header {
+  & > .header {
     grid-area: header;
     display: none;
     @include md {
@@ -29,12 +29,12 @@
     }
   }
 
-  & .main {
+  & > .main {
     grid-area: main;
     overflow: hidden;
   }
 
-  & .sidebar {
+  & > .sidebar {
     grid-area: sidebar;
   }
 }

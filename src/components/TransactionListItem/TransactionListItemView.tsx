@@ -3,12 +3,12 @@ import React, { useCallback, useMemo } from "react"
 import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import {
-	Plus as PlusIcon,
-	Minus as MinusIcon,
 	Check as SelectedIcon,
 } from "react-feather"
 import useLongPress from "../../hooks/useLongPress";
 import { useVibration } from "../../hooks/useVibration";
+import { MoneyType } from "../MoneyType/MoneyType";
+import { Type } from "../Type/Type";
 
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
@@ -26,8 +26,6 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	const { selected, onSelect, onDeselect, selectionActive } = props
 
 	const vibrate = useVibration()
-
-	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
 	/**
 	 * Long presses acts as toggle: this function is the callback when a long
@@ -67,7 +65,7 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 			props.onContextMenu(e)
 		}}
 	>
-		<div className={cx("icon", signClass, { selected: props.selected, selectionActive: props.selectionActive })}>
+		<div className={cx("icon", { pressed: pressHandler.pressed, selected: props.selected, selectionActive: props.selectionActive })}>
 			<div
 				className="iconContainer"
 				onClick={e => {
@@ -86,25 +84,29 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 							? <SelectedIcon />
 							: null
 						: props.transaction.amount.isPositive
-							? <PlusIcon />
-							: <MinusIcon />
+							? <span className="emoji">{"💰"}</span>
+							: <span className="emoji">{"💸"}</span>
 				}
 			</div>
 		</div>
 		<div className="category">
-			<span>
+			<Type color="gray-800" size="md" variant="bold">
 				{props.transaction.category}
-			</span>
+			</Type>
 		</div>
 		<div className="comment">
-			<span>
+			<Type color="gray-600" size="md" variant="regular">
 				{props.transaction.comment}
-			</span>
+			</Type>
 		</div>
-		<div className={cx("amount", signClass)}>
-			<span>
-				{props.transaction.amount.format()}
-			</span>
+		<div className={cx("amount")}>
+			<MoneyType
+				amount={props.transaction.amount}
+				colorIfPositive="green-600"
+				colorIfNegative="red-600"
+				size="md"
+				variant="bold"
+			/>
 		</div>
 	</div >
 }

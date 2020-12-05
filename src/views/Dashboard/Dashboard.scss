@@ -10,8 +10,15 @@
   grid-template:
     "header" auto
     "panel" auto
-    "activeFilters" auto
     "transactionsList" 1fr / 100%;
+
+  & .header {
+    grid-area: header;
+    padding: 0;
+    @include md {
+      padding: $spacing-12 $spacing-16 $spacing-4;
+    }
+  }
 
   & .transactionsList {
     grid-area: transactionsList;
@@ -27,10 +34,5 @@
     @include md {
       padding: $spacing-6 $spacing-16;
     }
-  }
-
-  & .activeFilters {
-    grid-area: activeFilters;
-    padding: 0.5rem $spacing-sm 0;
   }
 }

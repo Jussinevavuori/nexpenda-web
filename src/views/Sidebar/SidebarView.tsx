@@ -8,7 +8,7 @@ import {
 	BarChart2 as AnalyticsIcon,
 	Settings as SettingsIcon,
 	Briefcase as BudgetIcon,
-	Plus as PlusIcon
+	PlusCircle as PlusIcon
 } from "react-feather"
 import { useMdMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
@@ -143,7 +143,7 @@ export function SidebarView(props: SidebarViewProps) {
 						<div className="tabContainer">
 
 							<IconButton
-								className={cx("tab")}
+								className={cx("tab", "add")}
 								onClick={props.onTransactionCreatorOpen}
 							>
 								<PlusIcon />
