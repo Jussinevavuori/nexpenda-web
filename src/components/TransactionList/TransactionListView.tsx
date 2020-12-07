@@ -1,11 +1,12 @@
 import "./TransactionList.scss";
-import React, { createRef, useEffect } from "react"
+import React, { createRef, useEffect, useRef } from "react"
 import { TransactionListItem } from "../TransactionListItem/TransactionListItemController";
 import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
+import { motion, Variants } from "framer-motion";
 
 export type TransactionListViewProps = {
 	itemsByDates: {
@@ -31,6 +32,16 @@ export function TransactionListView(props: TransactionListViewProps) {
 	}, [props, virtualizedListRef])
 
 	/**
+	 * Delay offset in seconds for staggering the animations
+	 */
+	const delayOffset = useRef<number>(0)
+
+	/**
+	 * Reset the offset delay counter every render
+	 */
+	useEffect(() => { delayOffset.current = 0 }, [props])
+
+	/**
 	 * Skeletons
 	 */
 	if (props.showSkeletons) {
@@ -44,7 +55,6 @@ export function TransactionListView(props: TransactionListViewProps) {
 	}
 
 	return <div className="TransactionList">
-
 		<AutoSizer className="autoSizer">
 			{
 				(autoSizer) => <List
@@ -69,7 +79,19 @@ export function TransactionListView(props: TransactionListViewProps) {
 					}}
 					rowRenderer={(rowProps) => {
 						const entry = props.itemsByDates[rowProps.index]
-						return <div className="dateGroup" key={rowProps.key} style={rowProps.style}>
+
+						const delay = delayOffset.current
+						delayOffset.current += 0.2
+
+						return <motion.div
+							variants={listItemVariants}
+							className="dateGroup"
+							key={rowProps.key}
+							style={rowProps.style}
+							transition={{ delay, duration: 1 }}
+							initial="hidden"
+							animate="show"
+						>
 							<Type variant="bold" color="gray-800" size="md">
 								{toDatestring(entry.date)}
 							</Type>
@@ -82,13 +104,13 @@ export function TransactionListView(props: TransactionListViewProps) {
 									})
 								}
 							</ul>
-						</div>
+						</motion.div>
 					}}
 				/>
 			}
 		</AutoSizer>
 
-	</div >
+	</div>
 }
 
 function toDatestring(date: Date) {
@@ -98,3 +120,14 @@ function toDatestring(date: Date) {
 }
 
 const currentYear = new Date().getFullYear()
+
+const listItemVariants: Variants = {
+	hidden: {
+		x: -20,
+		opacity: 0,
+	},
+	show: {
+		x: 0,
+		opacity: 1,
+	}
+}
