@@ -9,6 +9,7 @@ import useLongPress from "../../hooks/useLongPress";
 import { useVibration } from "../../hooks/useVibration";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
+import { motion, Variants } from "framer-motion";
 
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
@@ -66,28 +67,33 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 		}}
 	>
 		<div className={cx("icon", { pressed: pressHandler.pressed, selected: props.selected, selectionActive: props.selectionActive })}>
-			<div
-				className="iconContainer"
-				onClick={e => {
-					if (props.selected) {
-						props.onDeselect()
-					} else {
-						props.onSelect()
-					}
-					vibrate("weak")
-				}}
-				{...pressHandler.childlockProps}
+			<motion.div
+				variants={iconVariants}
+				animate={props.selectionActive ? props.selected ? "selected" : "unselected" : "regular"}
 			>
-				{
-					props.selectionActive
-						? props.selected
-							? <SelectedIcon />
-							: null
-						: props.transaction.amount.isPositive
-							? <span className="emoji">{"💰"}</span>
-							: <span className="emoji">{"💸"}</span>
-				}
-			</div>
+				<div
+					className="iconContainer"
+					onClick={() => {
+						if (props.selected) {
+							props.onDeselect()
+						} else {
+							props.onSelect()
+						}
+						vibrate("weak")
+					}}
+					{...pressHandler.childlockProps}
+				>
+					{
+						props.selectionActive
+							? props.selected
+								? <SelectedIcon />
+								: null
+							: props.transaction.amount.isPositive
+								? <span className="emoji">{"💰"}</span>
+								: <span className="emoji">{"💸"}</span>
+					}
+				</div>
+			</motion.div>
 		</div>
 		<div className="category">
 			<Type color="gray-800" size="md" variant="bold">
@@ -109,4 +115,24 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 			/>
 		</div>
 	</div >
+}
+
+const iconVariants: Variants = {
+
+	selected: {
+		scale: 1.4,
+		transition: {
+			repeat: 1,
+			repeatType: "mirror",
+			type: "spring",
+			duration: 0.2,
+			bounce: 1,
+		}
+	},
+	unselected: {
+		scale: 1,
+	},
+	regular: {
+		scale: 1,
+	},
 }

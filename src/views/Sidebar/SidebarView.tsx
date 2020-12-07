@@ -13,6 +13,7 @@ import {
 import { useMdMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
 import { Logo } from "../../components/Logo/Logo";
+import { motion, Variants } from "framer-motion";
 
 export type SidebarViewProps = {
 	isDashboard: boolean;
@@ -118,8 +119,11 @@ export function SidebarView(props: SidebarViewProps) {
 							 */
 						}
 
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isDashboard ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isDashboard })}
 								onClick={props.onDashboard}
@@ -127,10 +131,13 @@ export function SidebarView(props: SidebarViewProps) {
 								<DashboardIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isAnalytics ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isAnalytics })}
 								onClick={props.onAnalytics}
@@ -138,10 +145,9 @@ export function SidebarView(props: SidebarViewProps) {
 								<AnalyticsIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
 						<div className="tabContainer">
-
 							<IconButton
 								className={cx("tab", "add")}
 								onClick={props.onTransactionCreatorOpen}
@@ -150,9 +156,11 @@ export function SidebarView(props: SidebarViewProps) {
 							</IconButton>
 						</div>
 
-
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isBudget ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isBudget })}
 								onClick={props.onBudget}
@@ -160,10 +168,13 @@ export function SidebarView(props: SidebarViewProps) {
 								<BudgetIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isSettings ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isSettings })}
 								onClick={props.onSettings}
@@ -171,11 +182,24 @@ export function SidebarView(props: SidebarViewProps) {
 								<SettingsIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
 					</div>
 			}
 		</div>
 
 	</>
+}
+
+const tabVariants: Variants = {
+	"inactive": {
+		scale: 1,
+	},
+	"active": {
+		scale: 1.5,
+		transition: {
+			repeatType: "mirror",
+			repeat: 1,
+		}
+	}
 }

@@ -19,6 +19,10 @@ import {
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
+import {
+  transactionSortModel,
+  TransactionSortModel,
+} from "./transactions.sort.model";
 
 export interface TransactionsModel {
   /**
@@ -49,6 +53,11 @@ export interface TransactionsModel {
    * filtered items)
    */
   filtered: FilteredTransactionsModel;
+
+  /**
+   * Current sorting strategy model
+   */
+  sort: TransactionSortModel;
 
   /**
    * All different categories
@@ -187,6 +196,8 @@ export const transactionsModel: TransactionsModel = {
   count: computed((state) => state.items.length),
 
   filtered: filteredTransactionsModel,
+
+  sort: transactionSortModel,
 
   categories: computed((state) =>
     state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)

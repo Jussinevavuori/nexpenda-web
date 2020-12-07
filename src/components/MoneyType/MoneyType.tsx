@@ -58,7 +58,7 @@ export function MoneyType(props: MoneyTypeProps) {
 		const end = amount.value
 
 		const controls = animate(start, end, {
-			duration: animationDuration ?? 0.8,
+			duration: animationDuration ?? 0.5,
 			stiffness: animationStiffness ?? 1,
 			onUpdate(value) {
 

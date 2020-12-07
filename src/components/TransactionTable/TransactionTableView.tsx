@@ -21,9 +21,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 			<div className="listContainer">
 				{
 					[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
-
 						return <TransactionTableRowSkeleton key={i} />
-
 					})
 				}
 			</div>
@@ -43,7 +41,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 							rowCount={props.items.length}
 							rowHeight={40}
 							noRowsRenderer={() => <div className="noTransactions">
-								<Type>
+								<Type color="gray-700" variant="boldcaps" size="md">
 									{"No transactions"}
 								</Type>
 							</div>}

@@ -8,7 +8,9 @@
 
   @include md {
     height: 100%;
-    width: $sidebar-width;
+    min-width: fit-content;
+    width: 20vw;
+    max-width: $sidebar-width;
 
     background: $gray-100;
     border-right: $border;

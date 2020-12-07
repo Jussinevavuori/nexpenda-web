@@ -12,6 +12,10 @@ export function TransactionTableHeader(props: TransactionTableHeaderProps) {
 	const selection = useStoreState(_ => _.selection.selection)
 	const transactions = useStoreState(_ => _.transactions.filtered.items)
 
+	const toggleSort = useStoreActions(_ => _.transactions.sort.toggle)
+
+	const sortingStrategy = useStoreState(_ => _.transactions.sort.strategy)
+
 	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
 	const isAllSelected = useMemo(() => {
 		return DataUtils.compareArrays(transactions.map(_ => _.id), selection.map(_ => _.id))
@@ -26,5 +30,8 @@ export function TransactionTableHeader(props: TransactionTableHeaderProps) {
 
 		onSelectAll={() => handleSelectAll(transactions.map(_ => _.id))}
 		onDeselectAll={() => handleDeselectAll()}
+
+		sortingStrategy={sortingStrategy}
+		onToggleSort={(property) => toggleSort(property)}
 	/>
 }
