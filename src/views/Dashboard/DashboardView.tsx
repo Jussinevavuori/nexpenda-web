@@ -7,7 +7,6 @@ import { useMdMedia } from "../../hooks/useMedia";
 import { TransactionTable } from "../../components/TransactionTable/TransactionTableController";
 import { Transaction } from "../../classes/Transaction";
 import { DashboardHeader } from "./DashboardHeader/DashboardHeaderController";
-import { motion, Variants } from "framer-motion";
 
 export type DashboardViewProps = {
 	user: Auth | null;
@@ -25,11 +24,7 @@ export function DashboardView(props: DashboardViewProps) {
 
 	const desktopLayout = useMdMedia()
 
-	return <motion.div className="Dashboard"
-		variants={variants}
-		initial="hidden"
-		animate="show"
-	>
+	return <div className="Dashboard">
 
 		<section className="header">
 			<DashboardHeader />
@@ -49,21 +44,6 @@ export function DashboardView(props: DashboardViewProps) {
 
 		</section>
 
-	</motion.div>
+	</div>
 
-}
-
-const variants: Variants = {
-	hidden: {
-		y: 40,
-		opacity: 0,
-	},
-	show: {
-		y: 0,
-		opacity: 1,
-		transition: {
-			type: "bounce",
-			duration: 1,
-		}
-	}
 }

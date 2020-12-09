@@ -6,7 +6,6 @@ import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
-import { motion, Variants } from "framer-motion";
 
 export type TransactionListViewProps = {
 	itemsByDates: {
@@ -30,16 +29,6 @@ export function TransactionListView(props: TransactionListViewProps) {
 	useEffect(() => {
 		virtualizedListRef.current?.recomputeRowHeights()
 	}, [props, virtualizedListRef])
-
-	/**
-	 * Delay offset in seconds for staggering the animations
-	 */
-	const delayOffset = useRef<number>(0)
-
-	/**
-	 * Reset the offset delay counter every render
-	 */
-	useEffect(() => { delayOffset.current = 0 }, [props])
 
 	/**
 	 * Skeletons
@@ -80,17 +69,10 @@ export function TransactionListView(props: TransactionListViewProps) {
 					rowRenderer={(rowProps) => {
 						const entry = props.itemsByDates[rowProps.index]
 
-						const delay = delayOffset.current
-						delayOffset.current += 0.2
-
-						return <motion.div
-							variants={listItemVariants}
+						return <div
 							className="dateGroup"
 							key={rowProps.key}
 							style={rowProps.style}
-							transition={{ delay, duration: 1 }}
-							initial="hidden"
-							animate="show"
 						>
 							<Type variant="bold" color="gray-800" size="md">
 								{toDatestring(entry.date)}
@@ -104,7 +86,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 									})
 								}
 							</ul>
-						</motion.div>
+						</div>
 					}}
 				/>
 			}
@@ -120,14 +102,3 @@ function toDatestring(date: Date) {
 }
 
 const currentYear = new Date().getFullYear()
-
-const listItemVariants: Variants = {
-	hidden: {
-		x: -20,
-		opacity: 0,
-	},
-	show: {
-		x: 0,
-		opacity: 1,
-	}
-}
