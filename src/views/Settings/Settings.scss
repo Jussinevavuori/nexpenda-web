@@ -8,7 +8,10 @@
 
   & > .fileHandlers {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    @include md {
+      grid-template-columns: 1fr 1fr;
+    }
     gap: $spacing-4;
     margin: $spacing-8 0 $spacing-4 0;
   }
