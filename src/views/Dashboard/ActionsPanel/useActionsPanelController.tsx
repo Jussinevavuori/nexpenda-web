@@ -1,20 +1,22 @@
-import React, { useCallback, useMemo } from "react"
-import { useStoreActions, useStoreState } from "../../../store"
+import { useCallback, useMemo } from "react"
+import { ActionsPanelProps } from "./ActionsPanel"
+import { useStoreState, useStoreActions } from "../../../store"
 import { DataUtils } from "../../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/TransactionEditorDrawerController"
-import { SelectionPanelView } from "./SelectionPanelView"
+import { useFiltersDrawerOpenState } from "../../../components/FiltersDrawer/FiltersDrawerController"
+import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/TransactionCreatorDrawerController"
 
-
-export type SelectionPanelProps = {
-
-}
-
-export function SelectionPanel(props: SelectionPanelProps) {
+export function useActionsPanelController(props: ActionsPanelProps) {
 
 	/**
 	 * Selection
 	 */
 	const selection = useStoreState(_ => _.selection.selection)
+
+	/**
+	 * Is the selection active
+	 */
+	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
 
 	/**
 	 * Deselect all
@@ -63,14 +65,31 @@ export function SelectionPanel(props: SelectionPanelProps) {
 		}
 	}, [selection, setEditor, deselectAll])
 
-	return <SelectionPanelView
-		selection={selection}
+	/**
+	 * Filters drawer
+	 */
+	const [, setFiltersDrawerOpen] = useFiltersDrawerOpenState()
+	const handleFilter = useCallback(() => {
+		setFiltersDrawerOpen(true)
+	}, [setFiltersDrawerOpen])
 
-		onSelectAll={handleSelectAll}
-		onDeselectAll={handleDeselectAll}
-		onEdit={handleEdit}
-		onDelete={handleDelete}
+	/**
+	 * Create transaction drawer
+	 */
+	const [, setCreateDrawerOpen] = useTransactionCreatorDrawerOpenState()
+	const handleCreate = useCallback(() => {
+		setCreateDrawerOpen(true)
+	}, [setCreateDrawerOpen])
 
-		allSelected={allSelected}
-	/>
+	return {
+		selection,
+		allSelected,
+		isSelectionActive,
+		handleSelectAll,
+		handleDeselectAll,
+		handleEdit,
+		handleDelete,
+		handleFilter,
+		handleCreate,
+	}
 }

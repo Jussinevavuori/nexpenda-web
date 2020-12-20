@@ -1,6 +1,7 @@
 import * as uuid from "uuid";
 import { MoneyAmount } from "./MoneyAmount";
 import { object, string, number, ObjectSchema } from "yup";
+import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export type JsonTransaction = {
   id: string;
@@ -10,6 +11,10 @@ export type JsonTransaction = {
   integerAmount: number;
   comment?: string | undefined;
 };
+
+// Get today's date for comparison in order to avoid creating
+// too many Date objects
+const today = new Date();
 
 export class Transaction {
   public date: Date;
@@ -26,6 +31,13 @@ export class Transaction {
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
     this.id = json.id || uuid.v4();
     this.uid = json.uid;
+  }
+
+  /**
+   * Is the transaction upcoming, i.e. is its date in the future
+   */
+  get isUpcoming() {
+    return DateUtils.compareDate(this.date, ">", today);
   }
 
   /**

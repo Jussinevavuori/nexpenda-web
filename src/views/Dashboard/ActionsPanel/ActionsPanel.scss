@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: space-between;
   &.mobile {
+    border-bottom: 1px solid $gray-200;
     &.default {
       padding: adjust-spacing($spacing-6, $spacing-icon-button)
         adjust-spacing($spacing-6, $spacing-icon-button)

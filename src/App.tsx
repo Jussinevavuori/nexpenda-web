@@ -4,6 +4,7 @@ import { Routes } from './Routes';
 import { useStoreActions } from './store';
 import { Notification } from "./components/Notification/NotificationController"
 import { useHistoryNotifications } from './hooks/useHistoryNotifications';
+import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
 
 function App() {
 
@@ -24,8 +25,10 @@ function App() {
 	useEffect(() => { getProfile() }, [getProfile])
 
 	return <>
-		<Notification />
-		<Routes />
+		<TransactionContextMenuProvider>
+			<Notification />
+			<Routes />
+		</TransactionContextMenuProvider>
 	</>
 }
 

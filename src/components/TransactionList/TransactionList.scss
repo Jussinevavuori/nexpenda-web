@@ -13,10 +13,12 @@
   }
 
   & .dateGroup {
-    & > p {
-      color: $color-text-default;
-      font-size: 1rem;
-      padding: $fixed-spacing-2 0 $fixed-spacing-2 $fixed-spacing-6;
+    & > .dateGroupHeader {
+      padding: $fixed-spacing-2 $fixed-spacing-6 $fixed-spacing-2
+        $fixed-spacing-6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

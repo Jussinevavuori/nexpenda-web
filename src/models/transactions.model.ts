@@ -190,7 +190,9 @@ export const transactionsModel: TransactionsModel = {
   initialized: false,
 
   itemsByDates: computed((state) => {
-    return DateUtils.groupByDate(state.items, (_) => _.date, { sort: true });
+    return DateUtils.groupByDate(state.items, (_) => _.date, {
+      sort: true,
+    });
   }),
 
   count: computed((state) => state.items.length),

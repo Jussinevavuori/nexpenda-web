@@ -1,26 +1,20 @@
 import "./DashboardHeader.scss";
 import React from "react"
 import textureImg from "../../../images/shapelined-_JBKdviweXI-unsplash.jpg";
-import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { useMdMedia } from "../../../hooks/useMedia";
 import { Type } from "../../../components/Type/Type";
-import { IconButton } from "@material-ui/core";
-import { InsertChart, ExpandLess as IncomesIcon, ExpandMore as ExpensesIcon } from "@material-ui/icons";
+import { ExpandLess as IncomesIcon, ExpandMore as ExpensesIcon } from "@material-ui/icons";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
+import { useDashboardHeaderController } from "./useDashboardHeaderController";
 
-export type DashboardHeaderViewProps = {
-	intervalString: string;
-	transactionsCount: number;
-	transactionsTotal: MoneyAmount;
-	transactionsTotalIncome: MoneyAmount;
-	transactionsTotalExpense: MoneyAmount;
-	isSelectionActive: boolean;
-	selectionLength: number;
+export type DashboardHeaderProps = {
 }
 
-export function DashboardHeaderView(props: DashboardHeaderViewProps) {
+export function DashboardHeader(props: DashboardHeaderProps) {
 
 	const desktopView = useMdMedia()
+
+	const controller = useDashboardHeaderController(props)
 
 
 	/**
@@ -38,9 +32,9 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 				<div className="transactions-count">
 					<Type size="md" color="gray-600" variant="boldcaps">
 						{
-							props.isSelectionActive
-								? `Selected ${props.selectionLength} / ${props.transactionsCount} transactions`
-								: `${props.transactionsCount} transactions`
+							controller.isSelectionActive
+								? `Selected ${controller.selectionLength} / ${controller.transactionsCount} transactions`
+								: `${controller.transactionsCount} transactions`
 						}
 					</Type>
 				</div>
@@ -52,7 +46,7 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 						animate
 						colorIfPositive="green-600"
 						colorIfNegative="red-600"
-						amount={props.transactionsTotal}
+						amount={controller.transactionsTotal}
 						size="xl"
 						variant="bold"
 					/>
@@ -63,7 +57,7 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 						<MoneyType
 							animate
 							color="gray-700"
-							amount={props.transactionsTotalIncome}
+							amount={controller.transactionsTotalIncome}
 							size="md"
 							variant="regular"
 						/>
@@ -73,7 +67,7 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 						<MoneyType
 							animate
 							color="gray-700"
-							amount={props.transactionsTotalExpense}
+							amount={controller.transactionsTotalExpense}
 							size="md"
 							variant="regular"
 						/>
@@ -99,10 +93,10 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 				<section className="title">
 
 					<Type variant="boldcaps" size="sm" color="white">
-						{`${props.transactionsCount} transactions`}
+						{`${controller.transactionsCount} transactions`}
 					</Type>
 					<Type variant="boldcaps" size="sm" color="blue-300">
-						{props.intervalString}
+						{controller.intervalString}
 					</Type>
 
 				</section>
@@ -112,13 +106,9 @@ export function DashboardHeaderView(props: DashboardHeaderViewProps) {
 					<MoneyType
 						size="xxl"
 						color="white"
-						amount={props.transactionsTotal}
+						amount={controller.transactionsTotal}
 						animate
 					/>
-
-					<IconButton>
-						<InsertChart />
-					</IconButton>
 
 				</section>
 

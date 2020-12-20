@@ -1,14 +1,9 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { MoneyAmount } from "../../../classes/MoneyAmount"
 import { useStoreState } from "../../../store"
-import { DashboardHeaderView } from "./DashboardHeaderView"
+import { DashboardHeaderProps } from "./DashboardHeader"
 
-export type DashboardHeaderProps = {
-
-
-}
-
-export function DashboardHeader(props: DashboardHeaderProps) {
+export function useDashboardHeaderController(props: DashboardHeaderProps) {
 
 	const intervalString = useStoreState(_ => _.interval.smartDisplayString)
 
@@ -34,14 +29,13 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 		return MoneyAmount.sum(transactions.filter(_ => _.amount.isNegative).map(_ => _.amount))
 	}, [transactions])
 
-	return <DashboardHeaderView
-		intervalString={intervalString}
-		transactionsCount={transactionsCount}
-		transactionsTotal={transactionsTotal}
-		transactionsTotalIncome={transactionsTotalIncome}
-		transactionsTotalExpense={transactionsTotalExpense}
-
-		isSelectionActive={isSelectionActive}
-		selectionLength={selectionLength}
-	/>
+	return {
+		intervalString,
+		transactionsCount,
+		transactionsTotal,
+		transactionsTotalIncome,
+		transactionsTotalExpense,
+		isSelectionActive,
+		selectionLength,
+	}
 }

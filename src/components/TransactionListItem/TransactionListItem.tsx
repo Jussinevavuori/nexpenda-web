@@ -10,21 +10,16 @@ import { useVibration } from "../../hooks/useVibration";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
 import { motion, Variants } from "framer-motion";
+import { useTransactionListItemController } from "./useTransactionListItemController";
 
-export type TransactionListItemViewProps = {
+export type TransactionListItemProps = {
 	transaction: Transaction;
-
-	onContextMenu(e: React.MouseEvent): void;
-
-	selected: boolean;
-	onSelect(): void;
-	onDeselect(): void;
-	selectionActive: boolean;
 }
 
-export function TransactionListItemView(props: TransactionListItemViewProps) {
+export function TransactionListItem(props: TransactionListItemProps) {
 
-	const { selected, onSelect, onDeselect, selectionActive } = props
+	const controller = useTransactionListItemController(props)
+	const { handleSelect, handleDeselect, selected, selectionActive } = controller
 
 	const vibrate = useVibration()
 
@@ -37,11 +32,11 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 			vibrate("weak")
 		}
 		if (selected) {
-			onDeselect()
+			handleDeselect()
 		} else {
-			onSelect()
+			handleSelect()
 		}
-	}, [onSelect, onDeselect, selected, selectionActive, vibrate])
+	}, [handleSelect, handleDeselect, selected, selectionActive, vibrate])
 
 	/**
 	 * No timeout when selected, else default timeout for long presses
@@ -59,33 +54,46 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	})
 
 	return <div
-		className={cx("TransactionListItem", { pressed: pressHandler.pressed })}
+		className={cx("TransactionListItem", {
+			pressed: pressHandler.pressed,
+			upcoming: props.transaction.isUpcoming,
+		})}
 		{...pressHandler.props}
 		onContextMenu={e => {
 			e.stopPropagation()
-			props.onContextMenu(e)
+			controller.handleContextMenu(e)
 		}}
 	>
-		<div className={cx("icon", { pressed: pressHandler.pressed, selected: props.selected, selectionActive: props.selectionActive })}>
+		<div className={cx("icon", {
+			pressed: pressHandler.pressed,
+			selected: controller.selected,
+			selectionActive: controller.selectionActive
+		})}>
 			<motion.div
 				variants={iconVariants}
-				animate={props.selectionActive ? props.selected ? "selected" : "unselected" : "regular"}
+				animate={
+					controller.selectionActive
+						? controller.selected
+							? "selected"
+							: "unselected"
+						: "regular"
+				}
 			>
 				<div
 					className="iconContainer"
 					onClick={() => {
-						if (props.selected) {
-							props.onDeselect()
+						if (controller.selected) {
+							controller.handleDeselect()
 						} else {
-							props.onSelect()
+							controller.handleSelect()
 						}
 						vibrate("weak")
 					}}
 					{...pressHandler.childlockProps}
 				>
 					{
-						props.selectionActive
-							? props.selected
+						controller.selectionActive
+							? controller.selected
 								? <SelectedIcon />
 								: null
 							: props.transaction.amount.isPositive

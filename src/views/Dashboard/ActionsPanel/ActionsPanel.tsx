@@ -12,24 +12,15 @@ import {
 import { Button, IconButton, } from "@material-ui/core";
 import { useMdMedia } from "../../../hooks/useMedia";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManagerController";
-import { Transaction } from "../../../classes/Transaction";
 import { Type } from "../../../components/Type/Type";
+import { useActionsPanelController } from "./useActionsPanelController";
 
-export type ActionsPanelViewProps = {
-	onCreate(): void;
-
-	onFilter(): void;
-
-	isSelectionActive: boolean;
-	selection: Transaction[];
-	allSelected: boolean;
-	onSelectAll(): void;
-	onDeselectAll(): void;
-	onDelete(): void;
-	onEdit(): void;
+export type ActionsPanelProps = {
 }
 
-export function ActionsPanelView(props: ActionsPanelViewProps) {
+export function ActionsPanel(props: ActionsPanelProps) {
+
+	const controller = useActionsPanelController(props)
 
 	const desktopLayout = useMdMedia()
 
@@ -43,17 +34,17 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 		 * Mobile selection layout
 		 */
 
-		if (props.isSelectionActive) {
+		if (controller.isSelectionActive) {
 			return <div className="ActionsPanel mobile selection">
 
 				<div className="selection-info">
 
 					<IconButton
-						onClick={props.onDeselectAll}
+						onClick={controller.handleDeselectAll}
 						children={<DeselectAllIcon />}
 					/>
 					<Type variant="boldcaps" color="gray-800">
-						{`${props.selection.length} selected`}
+						{`${controller.selection.length} selected`}
 					</Type>
 
 				</div>
@@ -61,26 +52,26 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 				<div className="selection-actions">
 
 					{
-						props.allSelected
+						controller.allSelected
 							? <IconButton
-								onClick={props.onDeselectAll}
+								onClick={controller.handleDeselectAll}
 								children={<SelectedAllIcon />}
 							/>
 							: <IconButton
-								onClick={props.onSelectAll}
+								onClick={controller.handleSelectAll}
 								children={<SelectAllIcon />}
 							/>
 					}
 					<IconButton
 						className="editButton"
-						disabled={props.selection.length !== 1}
-						onClick={props.onEdit}
+						disabled={controller.selection.length !== 1}
+						onClick={controller.handleEdit}
 						children={<EditIcon />}
 					/>
 					<IconButton
 						className="deleteButton"
-						disabled={props.selection.length === 0}
-						onClick={props.onDelete}
+						disabled={controller.selection.length === 0}
+						onClick={controller.handleDelete}
 						children={<DeleteIcon />}
 					/>
 
@@ -102,7 +93,7 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 				<div className="filterManager">
 					<IconButton
 						className="filterButton"
-						onClick={props.onFilter}
+						onClick={controller.handleFilter}
 						children={<FilterIcon />}
 					/>
 				</div>
@@ -127,7 +118,7 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 						color="primary"
 						className="button createButton"
 						startIcon={<CreateIcon />}
-						onClick={props.onCreate}
+						onClick={controller.handleCreate}
 					>
 						<Type variant="boldcaps" color="white">
 							{"New transaction"}
@@ -135,13 +126,13 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 					</Button>
 
 					{
-						props.isSelectionActive && <>
+						controller.isSelectionActive && <>
 							<Button
 								variant="outlined"
 								className="button editButton"
 								startIcon={<EditIcon />}
-								onClick={props.onEdit}
-								disabled={props.selection.length !== 1}
+								onClick={controller.handleEdit}
+								disabled={controller.selection.length !== 1}
 							>
 								<Type variant="boldcaps" >
 									{"Edit"}
@@ -151,8 +142,8 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 								variant="outlined"
 								className="button deleteButton"
 								startIcon={<DeleteIcon />}
-								onClick={props.onDelete}
-								disabled={props.selection.length === 0}
+								onClick={controller.handleDelete}
+								disabled={controller.selection.length === 0}
 							>
 								<Type variant="boldcaps" >
 									{"Delete"}
@@ -168,7 +159,7 @@ export function ActionsPanelView(props: ActionsPanelViewProps) {
 						variant="outlined"
 						className="button filterButton"
 						startIcon={<FilterIcon />}
-						onClick={props.onFilter}
+						onClick={controller.handleFilter}
 					>
 						<Type variant="boldcaps" >
 							{"Filter"}

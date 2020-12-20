@@ -1,15 +1,10 @@
 import React, { useCallback, useMemo } from "react"
 import { isMobile } from "react-device-detect"
-import { TransactionListItemView } from "./TransactionListItemView"
-import { Transaction } from "../../classes/Transaction"
 import { useStoreActions, useStoreState } from "../../store"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
+import { TransactionListItemProps } from "./TransactionListItem"
 
-export type TransactionListItemProps = {
-	transaction: Transaction;
-}
-
-export function TransactionListItem(props: TransactionListItemProps) {
+export function useTransactionListItemController(props: TransactionListItemProps) {
 
 	/**
 	 * Selected
@@ -59,15 +54,11 @@ export function TransactionListItem(props: TransactionListItemProps) {
 		return false
 	}, [contextMenu, props.transaction])
 
-
-	return <TransactionListItemView
-		transaction={props.transaction}
-
-		selected={selected || contextMenuSelected}
-		onSelect={handleSelect}
-		onDeselect={handleDeselect}
-		selectionActive={selectionActive}
-
-		onContextMenu={handleContextMenu}
-	/>
+	return {
+		selected: selected || contextMenuSelected,
+		handleSelect,
+		handleDeselect,
+		selectionActive,
+		handleContextMenu,
+	}
 }

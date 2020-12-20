@@ -1,39 +1,29 @@
 import "./TransactionList.scss";
-import React, { createRef, useEffect, useRef } from "react"
-import { TransactionListItem } from "../TransactionListItem/TransactionListItemController";
-import { Transaction } from "../../classes/Transaction";
+import React, { createRef, useEffect } from "react"
+import { TransactionListItem } from "../TransactionListItem/TransactionListItem";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
+import { useTransactionListController } from "./useTransactionListController";
 
-export type TransactionListViewProps = {
-	itemsByDates: {
-		date: Date;
-		items: Transaction[];
-	}[],
+export type TransactionListProps = {
 	showSkeletons?: boolean;
 }
 
-export function TransactionListView(props: TransactionListViewProps) {
+export function TransactionList(props: TransactionListProps) {
 
-	/**
-	 * Reference to virtualized list component for public methods
-	 */
+	const controller = useTransactionListController(props)
+
+	// Recalculate virtualized list row heights each time the 
+	// props change
 	const virtualizedListRef = createRef<List>()
-
-	/**
-	 * Force virtualized list to recompute row heights each time
-	 * the props change
-	 */
 	useEffect(() => {
 		virtualizedListRef.current?.recomputeRowHeights()
 	}, [props, virtualizedListRef])
 
-	/**
-	 * Skeletons
-	 */
-	if (props.showSkeletons) {
+	// Render skeletons
+	if (controller.showSkeletons) {
 		return <div className="TransactionList">
 			{
 				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
@@ -43,6 +33,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 		</div >
 	}
 
+	// Render list
 	return <div className="TransactionList">
 		<AutoSizer className="autoSizer">
 			{
@@ -51,15 +42,11 @@ export function TransactionListView(props: TransactionListViewProps) {
 					className="virtualizedList"
 					height={autoSizer.height}
 					width={autoSizer.width}
-					rowCount={props.itemsByDates.length}
+					rowCount={controller.itemsByDates.length}
 					rowHeight={({ index }) => {
-
-						/**
-						 * Title total height    40 px
-						 * Item total height     80 px
-						 */
-
-						return props.itemsByDates[index].items.length * 80 + 40
+						// Title total height    40 px
+						// Item total height     80 px
+						return controller.itemsByDates[index].items.length * 80 + 40
 					}}
 					noRowsRenderer={() => {
 						return <Type className="emptyTransactions">
@@ -67,16 +54,18 @@ export function TransactionListView(props: TransactionListViewProps) {
 						</Type>
 					}}
 					rowRenderer={(rowProps) => {
-						const entry = props.itemsByDates[rowProps.index]
+						const entry = controller.itemsByDates[rowProps.index]
 
 						return <div
 							className="dateGroup"
 							key={rowProps.key}
 							style={rowProps.style}
 						>
-							<Type variant="bold" color="gray-800" size="md">
-								{toDatestring(entry.date)}
-							</Type>
+							<div className="dateGroupHeader">
+								<Type variant="bold" color="gray-700" size="md">
+									{toDatestring(entry.date)}
+								</Type>
+							</div>
 							<ul>
 								{
 									entry.items.map(item => {

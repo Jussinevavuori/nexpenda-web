@@ -15,6 +15,9 @@
   grid-gap: 0 $spacing-4;
   place-items: center left;
 
+  &.upcoming {
+  }
+
   &.pressed {
     background: $blue-100;
   }
@@ -54,9 +57,13 @@
 
   & .comment {
     grid-area: comment;
-    text-overflow: ellipsis;
+    max-width: 100%;
     overflow: hidden;
-    white-space: nowrap;
+    & p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .amount {
