@@ -2,13 +2,60 @@
 
 .TransactionTableHeader {
   display: grid;
-  grid-template-columns: 12rem 1fr 32px 3fr 8rem 1rem 8px;
-  grid-template-areas: "category amount p1 comment date p2 p3";
-  padding-bottom: 0.5rem;
+  grid-template-columns: auto 3fr 2fr 4fr 1.5fr;
+  grid-template-areas: "action category amount comment date";
+  align-items: stretch;
+  border-bottom: 1px $gray-300 solid;
+  // border-radius: $radius-md $radius-md 0 0;
+
+  & .action {
+    grid-area: action;
+    padding: $spacing-3 $spacing-4;
+    display: flex;
+    align-items: center;
+
+    & .checkbox {
+      cursor: pointer;
+      color: $gray-600;
+      &.allselected {
+        color: $blue-500;
+      }
+      &.someselected {
+        color: $blue-500;
+      }
+    }
+
+    &:hover {
+      background: $gray-200;
+    }
+  }
+
+  & .sortbutton {
+    color: $blue-500;
+  }
+
+  & .amount,
+  & .category,
+  & .comment,
+  & .date {
+    padding: $spacing-3 $spacing-4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:hover {
+      background: $gray-200;
+    }
+
+    // Visual balance adjustment due to top borders
+    & > * {
+      transform: translateY(1px);
+    }
+  }
 
   & .amount {
     grid-area: amount;
-    justify-self: end;
   }
 
   & .category {
@@ -21,16 +68,5 @@
 
   & .date {
     grid-area: date;
-    justify-self: end;
-  }
-
-  & .actions {
-    grid-area: actions;
-  }
-
-  & p {
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    font-weight: bold;
   }
 }

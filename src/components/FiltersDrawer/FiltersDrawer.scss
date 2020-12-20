@@ -1,0 +1,16 @@
+@import "main";
+
+.FiltersDrawer {
+  &__Content {
+    padding: $spacing-6;
+    min-height: 50vh;
+    max-height: 80vh;
+    @include md {
+      width: 600px;
+      max-width: 80vw;
+    }
+    @include lg {
+      max-width: 50vw;
+    }
+  }
+}

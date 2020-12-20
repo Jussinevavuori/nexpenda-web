@@ -1,5 +1,5 @@
 import "./TransactionList.scss";
-import React, { createRef, useEffect } from "react"
+import React, { createRef, useEffect, useRef } from "react"
 import { TransactionListItem } from "../TransactionListItem/TransactionListItemController";
 import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns"
@@ -37,16 +37,13 @@ export function TransactionListView(props: TransactionListViewProps) {
 		return <div className="TransactionList">
 			{
 				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
-
 					return <TransactionListItemSkeleton i={i} key={i} />
-
 				})
 			}
 		</div >
 	}
 
 	return <div className="TransactionList">
-
 		<AutoSizer className="autoSizer">
 			{
 				(autoSizer) => <List
@@ -56,7 +53,13 @@ export function TransactionListView(props: TransactionListViewProps) {
 					width={autoSizer.width}
 					rowCount={props.itemsByDates.length}
 					rowHeight={({ index }) => {
-						return props.itemsByDates[index].items.length * 68 + 48
+
+						/**
+						 * Title total height    40 px
+						 * Item total height     80 px
+						 */
+
+						return props.itemsByDates[index].items.length * 80 + 40
 					}}
 					noRowsRenderer={() => {
 						return <Type className="emptyTransactions">
@@ -65,8 +68,13 @@ export function TransactionListView(props: TransactionListViewProps) {
 					}}
 					rowRenderer={(rowProps) => {
 						const entry = props.itemsByDates[rowProps.index]
-						return <div className="dateGroup" key={rowProps.key} style={rowProps.style}>
-							<Type>
+
+						return <div
+							className="dateGroup"
+							key={rowProps.key}
+							style={rowProps.style}
+						>
+							<Type variant="bold" color="gray-800" size="md">
 								{toDatestring(entry.date)}
 							</Type>
 							<ul>
@@ -84,7 +92,7 @@ export function TransactionListView(props: TransactionListViewProps) {
 			}
 		</AutoSizer>
 
-	</div >
+	</div>
 }
 
 function toDatestring(date: Date) {

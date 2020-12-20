@@ -3,12 +3,13 @@ import React, { useCallback, useMemo } from "react"
 import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import {
-	Plus as PlusIcon,
-	Minus as MinusIcon,
 	Check as SelectedIcon,
 } from "react-feather"
 import useLongPress from "../../hooks/useLongPress";
 import { useVibration } from "../../hooks/useVibration";
+import { MoneyType } from "../MoneyType/MoneyType";
+import { Type } from "../Type/Type";
+import { motion, Variants } from "framer-motion";
 
 export type TransactionListItemViewProps = {
 	transaction: Transaction;
@@ -26,8 +27,6 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 	const { selected, onSelect, onDeselect, selectionActive } = props
 
 	const vibrate = useVibration()
-
-	const signClass = props.transaction.amount.isPositive ? "positive" : "negative"
 
 	/**
 	 * Long presses acts as toggle: this function is the callback when a long
@@ -67,44 +66,73 @@ export function TransactionListItemView(props: TransactionListItemViewProps) {
 			props.onContextMenu(e)
 		}}
 	>
-		<div className={cx("icon", signClass, { selected: props.selected, selectionActive: props.selectionActive })}>
-			<div
-				className="iconContainer"
-				onClick={e => {
-					if (props.selected) {
-						props.onDeselect()
-					} else {
-						props.onSelect()
-					}
-					vibrate("weak")
-				}}
-				{...pressHandler.childlockProps}
+		<div className={cx("icon", { pressed: pressHandler.pressed, selected: props.selected, selectionActive: props.selectionActive })}>
+			<motion.div
+				variants={iconVariants}
+				animate={props.selectionActive ? props.selected ? "selected" : "unselected" : "regular"}
 			>
-				{
-					props.selectionActive
-						? props.selected
-							? <SelectedIcon />
-							: null
-						: props.transaction.amount.isPositive
-							? <PlusIcon />
-							: <MinusIcon />
-				}
-			</div>
+				<div
+					className="iconContainer"
+					onClick={() => {
+						if (props.selected) {
+							props.onDeselect()
+						} else {
+							props.onSelect()
+						}
+						vibrate("weak")
+					}}
+					{...pressHandler.childlockProps}
+				>
+					{
+						props.selectionActive
+							? props.selected
+								? <SelectedIcon />
+								: null
+							: props.transaction.amount.isPositive
+								? <span className="emoji">{"💰"}</span>
+								: <span className="emoji">{"💸"}</span>
+					}
+				</div>
+			</motion.div>
 		</div>
 		<div className="category">
-			<span>
+			<Type color="gray-800" size="md" variant="bold">
 				{props.transaction.category}
-			</span>
+			</Type>
 		</div>
 		<div className="comment">
-			<span>
+			<Type color="gray-600" size="md" variant="regular">
 				{props.transaction.comment}
-			</span>
+			</Type>
 		</div>
-		<div className={cx("amount", signClass)}>
-			<span>
-				{props.transaction.amount.format()}
-			</span>
+		<div className={cx("amount")}>
+			<MoneyType
+				amount={props.transaction.amount}
+				colorIfPositive="green-600"
+				colorIfNegative="red-600"
+				size="lg"
+				variant="bold"
+			/>
 		</div>
 	</div >
+}
+
+const iconVariants: Variants = {
+
+	selected: {
+		scale: 1.4,
+		transition: {
+			repeat: 1,
+			repeatType: "mirror",
+			type: "spring",
+			duration: 0.2,
+			bounce: 1,
+		}
+	},
+	unselected: {
+		scale: 1,
+	},
+	regular: {
+		scale: 1,
+	},
 }

@@ -7,8 +7,10 @@ import { animate } from "framer-motion"
 
 export type MoneyTypeProps = {
 	amount: MoneyAmount;
-	applyColor?: boolean;
-	bold?: boolean;
+
+	colorIfNegative?: TypeProps["color"];
+	colorIfPositive?: TypeProps["color"];
+
 	animate?: boolean;
 	disableAnimationBlur?: boolean;
 	animationDuration?: number;
@@ -19,8 +21,11 @@ export function MoneyType(props: MoneyTypeProps) {
 
 	const {
 		amount,
-		applyColor,
-		bold,
+
+		color,
+		colorIfNegative,
+		colorIfPositive,
+
 		animate: enableAnimation,
 		animationDuration,
 		animationStiffness,
@@ -53,7 +58,7 @@ export function MoneyType(props: MoneyTypeProps) {
 		const end = amount.value
 
 		const controls = animate(start, end, {
-			duration: animationDuration ?? 0.8,
+			duration: animationDuration ?? 0.5,
 			stiffness: animationStiffness ?? 1,
 			onUpdate(value) {
 
@@ -86,16 +91,18 @@ export function MoneyType(props: MoneyTypeProps) {
 	}, [enableAnimation, amount, animationDuration, animationStiffness, disableAnimationBlur])
 
 	return <span className={cx("MoneyType", {
-		bold,
-		applyColor,
 		positive: props.amount.isNonNegative,
 		negative: props.amount.isNegative,
 	})}>
 		<Type
-			condensed
-			{...typeProps}
-			component="span"
 			ref={nodeRef}
+			variant="bold"
+			color={
+				props.amount.isNegative
+					? colorIfNegative ?? color
+					: colorIfPositive ?? color
+			}
+			{...typeProps}
 		>
 			{amount.format()}
 		</Type>

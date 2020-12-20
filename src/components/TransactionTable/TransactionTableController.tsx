@@ -1,22 +1,21 @@
 import React, { useMemo } from "react"
+import { Transaction } from "../../classes/Transaction"
 import { TransactionContextMenuProvider } from "../../contexts/TransactionContextMenu.context"
 import { useStoreState } from "../../store"
 import { TransactionTableView } from "./TransactionTableView"
 
 export type TransactionTableProps = {
-	bypassFilters?: boolean;
 	showSkeletons?: boolean;
 }
 
 export function TransactionTable(props: TransactionTableProps) {
 
-	const items = useStoreState(_ => _.transactions.items)
-	const filteredItems = useStoreState(_ => _.transactions.filtered.items)
+	const items = useStoreState(_ => _.transactions.filtered.items)
+	const sortingStrategy = useStoreState(_ => _.transactions.sort.strategy)
 
-	const selectedItems = useMemo(() => {
-		const selection = props.bypassFilters ? items : filteredItems
-		return selection.sort((a, b) => a.date.getTime() - b.date.getTime())
-	}, [props, items, filteredItems])
+	const sortedItems = useMemo(() => {
+		return items.sort((a, b) => Transaction.compare(a, b, sortingStrategy))
+	}, [items, sortingStrategy])
 
 	const initializedUser = useStoreState(_ => _.auth.initialized)
 	const initializedItems = useStoreState(_ => _.transactions.initialized)
@@ -25,7 +24,7 @@ export function TransactionTable(props: TransactionTableProps) {
 
 	return <TransactionContextMenuProvider>
 		<TransactionTableView
-			items={selectedItems}
+			items={sortedItems}
 			showSkeletons={showSkeletons}
 		/>
 	</TransactionContextMenuProvider>

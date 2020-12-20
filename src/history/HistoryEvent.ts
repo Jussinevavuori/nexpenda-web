@@ -1,5 +1,4 @@
 import { HistoryEventAlreadyRestoredFailure } from "../result/HistoryFailures";
-import { MaybePromise } from "../types";
 import { v4 as uuid } from "uuid";
 
 /**

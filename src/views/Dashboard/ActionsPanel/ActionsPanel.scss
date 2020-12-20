@@ -1,0 +1,71 @@
+@import "main";
+
+.ActionsPanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &.mobile {
+    &.default {
+      padding: adjust-spacing($spacing-6, $spacing-icon-button)
+        adjust-spacing($spacing-6, $spacing-icon-button)
+        adjust-spacing($spacing-6, $spacing-icon-button)
+        adjust-spacing($spacing-6, $spacing-button-horizontal);
+    }
+    &.selection {
+      padding: adjust-spacing($spacing-6, $spacing-icon-button);
+      & .selection-info {
+        display: flex;
+        align-items: center;
+      }
+      & .selection-actions {
+        & .MuiIconButton-root {
+          color: $gray-800;
+          &.deleteButton {
+            color: $red-600;
+          }
+          &:disabled {
+            color: $gray-500;
+          }
+        }
+      }
+    }
+  }
+
+  &.desktop {
+    // Adjust scale visually by small amount
+    & > div {
+      transform: scale(0.9);
+      &:first-child {
+        transform-origin: left;
+      }
+      &:last-child {
+        transform-origin: right;
+      }
+    }
+    & .button {
+      padding: $spacing-2 $spacing-4;
+      & svg {
+        transform: scale(1.1);
+        margin-right: $spacing-2;
+      }
+      &.editButton {
+        margin-left: $spacing-4;
+        & * {
+          color: $gray-800;
+        }
+        &:disabled * {
+          color: $gray-500;
+        }
+      }
+      &.deleteButton {
+        margin-left: $spacing-4;
+        & * {
+          color: $red-600;
+        }
+        &:disabled * {
+          color: $gray-500;
+        }
+      }
+    }
+  }
+}

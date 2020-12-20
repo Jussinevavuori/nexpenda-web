@@ -72,4 +72,34 @@ export class Transaction {
       uid: this.uid,
     };
   }
+
+  /**
+   * Comparison function for sorting transactions
+   */
+  static compare(
+    a: Transaction,
+    b: Transaction,
+    strategy: TransactionSortStrategy
+  ) {
+    switch (strategy) {
+      case "amount-ascending":
+        return a.amount.value - b.amount.value;
+      case "amount-descending":
+        return b.amount.value - a.amount.value;
+      case "category-ascending":
+        return a.category.localeCompare(b.category);
+      case "category-descending":
+        return b.category.localeCompare(a.category);
+      case "comment-ascending":
+        return a.comment.localeCompare(b.comment);
+      case "comment-descending":
+        return b.comment.localeCompare(a.comment);
+      case "date-ascending":
+        return a.date.getTime() - b.date.getTime();
+      case "date-descending":
+        return b.date.getTime() - a.date.getTime();
+      default:
+        return 0;
+    }
+  }
 }

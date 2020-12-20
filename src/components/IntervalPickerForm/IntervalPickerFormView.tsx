@@ -1,7 +1,12 @@
 import "./IntervalPickerForm.scss";
 import React from "react"
-import { IconButton, Button, Divider } from "@material-ui/core";
-import { ChevronLeft, ChevronRight, Today as CalendarIcon } from "@material-ui/icons";
+import { IconButton, Button } from "@material-ui/core";
+import {
+	ArrowBack as PreviousIcon,
+	ArrowForward as NextIcon,
+	RadioButtonUnchecked as NowIcon,
+	Today as CalendarIcon
+} from "@material-ui/icons";
 import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
 import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
@@ -47,7 +52,7 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 
 				<CalendarIcon />
 
-				<Type>
+				<Type variant="bold">
 					{props.intervalString}
 				</Type>
 
@@ -59,29 +64,25 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 					disabled={props.isAll}
 					onClick={props.onPrevious}
 				>
-					<ChevronLeft />
+					<PreviousIcon />
 				</IconButton>
 
-				<Button
-					variant="text"
-					color={props.includesToday ? "primary" : "default"}
+				<IconButton
 					onClick={props.onNow}
 				>
-					{"Now"}
-				</Button>
+					<NowIcon />
+				</IconButton>
 
 				<IconButton
 					disabled={props.isAll}
 					onClick={props.onNext}
 				>
-					<ChevronRight />
+					<NextIcon />
 				</IconButton>
 
 			</div>
 
 		</section>
-
-		<Divider />
 
 		<section className="intervalLength">
 
@@ -140,10 +141,6 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 				fullWidth
 			/>
 
-		</section>
-
-		<section className="dateSection">
-
 			<DatePicker
 				value={DateUtils.compareDate(props.endDate, "==", MAXIMUM_DATE) ? null : props.endDate}
 				onChange={d => props.setEndDate(d as Date)}
@@ -164,7 +161,7 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 				fullWidth
 				onClick={props.onConfirm}
 			>
-				{"Ok"}
+				{"OK"}
 			</Button>
 		}
 

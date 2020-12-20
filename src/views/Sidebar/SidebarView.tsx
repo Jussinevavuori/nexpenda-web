@@ -2,18 +2,18 @@ import "./Sidebar.scss";
 import React from "react"
 import cx from "classnames"
 import { Auth } from "../../classes/Auth";
-import { IconButton, Button } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import {
 	Home as DashboardIcon,
 	BarChart2 as AnalyticsIcon,
-	User as UserIcon,
 	Settings as SettingsIcon,
 	Briefcase as BudgetIcon,
-	LogOut as LogoutIcon,
-	Plus as PlusIcon
+	PlusCircle as PlusIcon
 } from "react-feather"
-import { useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
+import { Logo } from "../../components/Logo/Logo";
+import { motion, Variants } from "framer-motion";
 
 export type SidebarViewProps = {
 	isDashboard: boolean;
@@ -37,7 +37,7 @@ export type SidebarViewProps = {
 
 export function SidebarView(props: SidebarViewProps) {
 
-	const sidebarView = useSmMedia()
+	const sidebarView = useMdMedia()
 
 	return <>
 
@@ -46,110 +46,84 @@ export function SidebarView(props: SidebarViewProps) {
 			{
 
 				sidebarView
-
 					? <div className="sidebar">
+
+
+						{
+							/** 
+							 * Desktop sidebar layout
+							 */
+						}
 
 						<div className="header">
 
-							<div className="top-row">
-
-								<Type variant="h4" component="h6">
-									{"Expence"}
-								</Type>
-
-								<IconButton onClick={props.logout}>
-									<LogoutIcon />
-								</IconButton>
-
-							</div>
-
-							<div className="bottom-row">
-
-								<UserIcon />
-
-								<Type>
-									{props.user?.displayName ?? "Loading profile..."}
-								</Type>
-
-							</div>
+							<Logo />
 
 						</div>
 
 						<div className="body">
 
-							<div className="tabContainer">
+							<div className="selections">
 
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isDashboard })}
+								<Type
+									className="selections-title"
+									variant="boldcaps"
+									color="gray-800"
+									size="sm"
+								>
+									{"Tools"}
+								</Type>
+
+								<button
 									onClick={props.onDashboard}
-									startIcon={<DashboardIcon />}
+									className={cx("selection", { active: props.isDashboard })}
 								>
-									{"Dashboard"}
-								</Button>
+									<DashboardIcon />
+									<Type variant="bold">{"Dashboard"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isAnalytics })}
+								<button
 									onClick={props.onAnalytics}
-									startIcon={<AnalyticsIcon />}
+									className={cx("selection", { active: props.isAnalytics })}
 								>
-									{"Analytics"}
-								</Button>
+									<AnalyticsIcon />
+									<Type variant="bold">{"Analytics"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isBudget })}
+								<button
 									onClick={props.onBudget}
-									startIcon={<BudgetIcon />}
+									className={cx("selection", { active: props.isBudget })}
 								>
-									{"Budget"}
-								</Button>
+									<BudgetIcon />
+									<Type variant="bold">{"Budget"}</Type>
+								</button>
 
-							</div>
-
-							<div className="tabContainer">
-
-								<Button
-									variant="text"
-									className={cx("tab", { active: props.isSettings })}
+								<button
 									onClick={props.onSettings}
-									startIcon={<SettingsIcon />}
+									className={cx("selection", { active: props.isSettings })}
 								>
-									{"Settings"}
-								</Button>
-
-							</div>
-
-							<div className="tabContainer addButton">
-
-								<Button
-									variant="text"
-									className={cx("tab")}
-									onClick={props.onTransactionCreatorOpen}
-									startIcon={<PlusIcon />}
-								>
-									{"New transaction"}
-								</Button>
+									<SettingsIcon />
+									<Type variant="bold">{"Settings"}</Type>
+								</button>
 
 							</div>
 
 						</div>
 
 					</div>
-
 					: <div className="tabs">
 
-						<div className="tabContainer">
+						{
+							/**
+							 * Mobile bottom navigation
+							 */
+						}
 
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isDashboard ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isDashboard })}
 								onClick={props.onDashboard}
@@ -157,10 +131,13 @@ export function SidebarView(props: SidebarViewProps) {
 								<DashboardIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isAnalytics ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isAnalytics })}
 								onClick={props.onAnalytics}
@@ -168,21 +145,22 @@ export function SidebarView(props: SidebarViewProps) {
 								<AnalyticsIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
 						<div className="tabContainer">
-
 							<IconButton
-								className={cx("tab")}
+								className={cx("tab", "add")}
 								onClick={props.onTransactionCreatorOpen}
 							>
 								<PlusIcon />
 							</IconButton>
 						</div>
 
-
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isBudget ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isBudget })}
 								onClick={props.onBudget}
@@ -190,10 +168,13 @@ export function SidebarView(props: SidebarViewProps) {
 								<BudgetIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
-						<div className="tabContainer">
-
+						<motion.div
+							className="tabContainer"
+							variants={tabVariants}
+							animate={props.isSettings ? "active" : "inactive"}
+						>
 							<IconButton
 								className={cx("tab", { active: props.isSettings })}
 								onClick={props.onSettings}
@@ -201,13 +182,24 @@ export function SidebarView(props: SidebarViewProps) {
 								<SettingsIcon />
 							</IconButton>
 
-						</div>
+						</motion.div>
 
 					</div>
-
 			}
-
 		</div>
 
 	</>
+}
+
+const tabVariants: Variants = {
+	"inactive": {
+		scale: 1,
+	},
+	"active": {
+		scale: 1.5,
+		transition: {
+			repeatType: "mirror",
+			repeat: 1,
+		}
+	}
 }

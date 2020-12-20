@@ -1,0 +1,9 @@
+@import "main";
+
+.ProfileManager {
+  & .MuiAvatar-root {
+    background-color: $blue-400;
+    transform: scale(0.9);
+    transform-origin: right;
+  }
+}

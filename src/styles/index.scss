@@ -1,17 +1,25 @@
 @import "main";
-@import "theme";
 @import "reset";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;900&display=swap");
 
 body * {
-  font-family: $roboto;
-  font-size: 1rem;
+  font-family: $poppins;
+}
+
+:root {
+  --full-vh: 100vh;
+  --vh: 1vh;
+}
+
+.MuiButton-root.MuiButton-contained {
+  box-shadow: none;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-@media (min-width: 600px) {
+@media (min-width: $bp-md) {
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -23,9 +31,10 @@ body * {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: $color-primary-main;
+    background: $blue-500;
+    border-radius: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: $white;
   }
 }

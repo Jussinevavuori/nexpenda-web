@@ -1,16 +1,14 @@
 import "./TransactionTableRow.scss";
 import React from "react"
+import cx from "classnames"
 import { Transaction } from "../../classes/Transaction";
 import { format } from "date-fns";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
-import { IconButton } from "@material-ui/core";
 import {
-	Label as LabelIcon,
 	CheckBox as SelectedIcon,
 	CheckBoxOutlineBlank as UnselectedIcon,
 } from "@material-ui/icons"
-import { HslColor } from "../../utils/ColorUtils/Color";
 
 export type TransactionTableRowViewProps = {
 	transaction: Transaction;
@@ -28,69 +26,51 @@ export type TransactionTableRowViewProps = {
 
 export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 
-	/**
-	 * Generate a random color to use as the label color for the category.
-	 */
-	const color = HslColor.getRandomColorFromString(
-		props.transaction.category,
-		{
-			lightness: 48,
-			saturation: 58,
-		}
-	)
-
 	return <div
-		className="TransactionTableRow"
+		className={cx("TransactionTableRow", { selected: props.selected })}
 		onClick={props.onClick}
 		onContextMenu={props.onContextMenu}
 	>
 		<div className="action">
 			{
-				props.selectionActive
-					? props.selected
-						? <IconButton
-							onClick={e => {
-								e.stopPropagation()
-								props.onDeselect()
-							}}
-							children={<SelectedIcon />}
-						/>
-						: <IconButton
-							onClick={(e) => {
-								e.stopPropagation()
-								props.onSelect()
-							}}
-							children={<UnselectedIcon />}
-						/>
-					: <IconButton
+				props.selected
+					? <SelectedIcon
+						className="selected"
+						onClick={e => {
+							e.stopPropagation()
+							props.onDeselect()
+						}}
+					/>
+					: <UnselectedIcon
+						className="unselected"
 						onClick={(e) => {
 							e.stopPropagation()
-							props.onSelectCategory()
+							props.onSelect()
 						}}
-					>
-						<LabelIcon style={{ color: color.toHexString() }} />
-					</IconButton>
+					/>
 			}
 		</div>
 		<div className="category">
-			<Type variant="subtitle2">
+			<Type variant="bold" color="gray-800" size="md">
 				{props.transaction.category}
 			</Type>
 		</div>
 		<div className="amount">
 			<MoneyType
 				amount={props.transaction.amount}
-				applyColor
-				bold
+				variant="bold"
+				size="md"
+				colorIfPositive="green-600"
+				colorIfNegative="red-600"
 			/>
 		</div>
 		<div className="comment">
-			<Type variant="body2">
+			<Type color="gray-700" variant="regular" size="md">
 				{props.transaction.comment}
 			</Type>
 		</div>
 		<div className="date">
-			<Type variant="subtitle2">
+			<Type color="gray-700" variant="regular" size="md">
 				{toDatestring(props.transaction.date)}
 			</Type>
 		</div>

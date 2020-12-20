@@ -2,21 +2,34 @@
 
 .TransactionTableRow {
   display: grid;
-  grid-template-columns: 36px calc(12rem - 36px) 1fr 32px 3fr 8rem 1rem;
-  grid-template-areas: "action category amount p1 comment date p2";
-  height: 36px;
-  align-items: center;
+  grid-template-columns: auto 3fr 2fr 4fr 1.5fr;
+  grid-template-areas: "action category amount comment date";
+  height: 40px;
+  align-items: stretch;
+
+  &.selected {
+    background: $blue-100;
+  }
+
+  &:hover {
+    background: $gray-200;
+    cursor: pointer;
+  }
+
+  & > * {
+    display: flex;
+    align-items: center;
+    padding: 0 $spacing-4;
+  }
 
   & .action {
     grid-area: action;
-    & .MuiIconButton-root {
-      border-radius: 0;
-      height: 36px;
-      width: 36px;
-      display: flex;
-      justify-content: flex-end;
-      & svg {
-        font-size: 1.3rem;
+
+    & svg {
+      cursor: pointer;
+      color: $gray-600;
+      &.selected {
+        color: $blue-500;
       }
     }
   }
@@ -24,27 +37,49 @@
   & .amount {
     grid-area: amount;
     justify-self: end;
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .category {
     grid-area: category;
     display: flex;
     align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .comment {
     grid-area: comment;
     color: rgba(0, 0, 0, 0.6);
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   & .date {
     grid-area: date;
     justify-self: end;
     color: rgba(0, 0, 0, 0.9);
-  }
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+    &,
+    & > p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 }

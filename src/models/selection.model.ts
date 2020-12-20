@@ -19,6 +19,11 @@ export type SelectionModel = {
   selectionActive: Computed<SelectionModel, boolean>;
 
   /**
+   * How many items are selected
+   */
+  selectionLength: Computed<SelectionModel, number>;
+
+  /**
    * Select by ID
    */
   select: Action<SelectionModel, string>;
@@ -60,6 +65,8 @@ export const selectionModel: SelectionModel = {
   ),
 
   selectionActive: computed((state) => state.selection.length > 0),
+
+  selectionLength: computed((state) => state.selection.length),
 
   select: action((state, id) => {
     state.selectionIds.push(id);
