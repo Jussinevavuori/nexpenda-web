@@ -3,19 +3,21 @@ import React from "react"
 import { Sidebar } from "../../views/Sidebar/SidebarController";
 import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawerController";
 import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawerController";
-import { Header } from "../Header/HeaderController";
+import { Header } from "../Header/Header";
 import { FiltersDrawer } from "../FiltersDrawer/FiltersDrawerController";
+import { useAppFrameController } from "./useAppFrameController";
 
-export type AppFrameViewProps = {
+export type AppFrameProps = {
 	children: React.ReactNode;
-	initialized: boolean;
 }
 
-export function AppFrameView(props: AppFrameViewProps) {
+export function AppFrame(props: AppFrameProps) {
+
+	const controller = useAppFrameController(props)
 
 	return <div className="AppFrame">
 		{
-			props.initialized && <>
+			controller.initialized && <>
 				<TransactionCreatorDrawer />
 				<TransactionEditorDrawer />
 				<FiltersDrawer />

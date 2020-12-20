@@ -1,14 +1,9 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Transaction } from "../../classes/Transaction"
-import { TransactionContextMenuProvider } from "../../contexts/TransactionContextMenu.context"
 import { useStoreState } from "../../store"
-import { TransactionTableView } from "./TransactionTableView"
+import { TransactionTableProps } from "./TransactionTable"
 
-export type TransactionTableProps = {
-	showSkeletons?: boolean;
-}
-
-export function TransactionTable(props: TransactionTableProps) {
+export function useTransactionTableController(props: TransactionTableProps) {
 
 	const items = useStoreState(_ => _.transactions.filtered.items)
 	const sortingStrategy = useStoreState(_ => _.transactions.sort.strategy)
@@ -22,10 +17,5 @@ export function TransactionTable(props: TransactionTableProps) {
 	const shouldShowSkeletons = !initializedItems || !initializedUser
 	const showSkeletons = props.showSkeletons && shouldShowSkeletons
 
-	return <TransactionContextMenuProvider>
-		<TransactionTableView
-			items={sortedItems}
-			showSkeletons={showSkeletons}
-		/>
-	</TransactionContextMenuProvider>
+	return { items: sortedItems, showSkeletons }
 }

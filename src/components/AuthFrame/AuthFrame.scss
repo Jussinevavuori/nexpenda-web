@@ -1,65 +1,55 @@
 @import "main";
 
 .AuthFrame {
-  width: 100%;
-  height: $fullvh;
-  background: white;
-  @include sm {
-    background: url("../../images/awar-meman-Ujt8Ti-5OQ0-unsplash.jpg");
-    background-size: cover;
-    display: grid;
-    place-items: center;
+  & > nav {
+    height: $header-height;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 $spacing-8;
+    border-bottom: $border;
+    background: $gray-100;
   }
+  & > .content {
+    width: 500px;
+    max-width: calc(100% - #{$spacing-16});
+    margin: $spacing-8 auto;
 
-  .container {
-    @include sm {
-      border-radius: $border-radius;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-      width: 420px;
-      max-width: 95vw;
-    }
-
-    & header {
+    & form {
       width: 100%;
-      background: $color-primary-main;
-      padding: $spacing-sm;
       display: grid;
       grid-auto-flow: row;
-      grid-gap: 1rem;
+      grid-gap: $spacing-4;
       place-items: center;
 
-      @include sm {
-        border-radius: $border-radius $border-radius 0 0;
+      & p {
+        width: 100%;
       }
     }
 
-    & .content {
-      width: 100%;
-      background: white;
-      padding: $spacing-md;
-      display: grid;
-      grid-auto-flow: row;
-      grid-gap: 1rem;
-      place-items: center;
-
-      @include sm {
-        border-radius: 0 0 $border-radius $border-radius;
-      }
+    & button {
+      margin-top: $spacing-2;
     }
 
-    & hr {
-      width: 100%;
+    & h1 {
+      text-align: center;
+      margin-bottom: $spacing-8;
+    }
+
+    & h2 {
+      margin-bottom: $spacing-8;
     }
 
     & footer {
       width: 100%;
-      display: grid;
-      grid-auto-flow: row;
-      grid-gap: 1rem;
-
-      @include sm {
-        grid-auto-flow: column;
-      }
+      border-top: $border;
+      padding-top: $spacing-8;
+      margin-top: $spacing-12;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

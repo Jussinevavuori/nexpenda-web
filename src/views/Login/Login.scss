@@ -1,26 +1,9 @@
+@import "main";
+
 .Login {
-  & form {
-    width: 100%;
-    padding: 1rem 0;
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 1rem;
-    place-items: center;
-
-    & > button {
-      margin-top: 0.6rem;
-    }
-  }
-
   & .logo {
     height: 1rem;
     width: 1rem;
-  }
-
-  & .footerContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    margin-right: $spacing-2;
   }
 }

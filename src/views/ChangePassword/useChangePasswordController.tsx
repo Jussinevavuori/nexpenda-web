@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
-import { ChangePasswordView } from "./ChangePasswordView"
+import { useCallback, useEffect, useState } from "react"
+import { yupResolver } from "@hookform/resolvers";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom"
 import { useRedirect } from "../../hooks/useRedirect"
 import * as yup from "yup"
@@ -11,11 +12,14 @@ export const changePasswordValidationSchema = yup.object({
 
 export type ChangePasswordFormType = yup.InferType<typeof changePasswordValidationSchema>
 
-export type ChangePasswordProps = {
 
-}
-
-export function ChangePassword(props: ChangePasswordProps) {
+export function useChangePasswordController() {
+	/**
+	 * React hook form
+	 */
+	const form = useForm<ChangePasswordFormType>({
+		resolver: yupResolver(changePasswordValidationSchema),
+	})
 
 	const { token } = useParams<{ token?: string }>()
 
@@ -48,6 +52,17 @@ export function ChangePassword(props: ChangePasswordProps) {
 					setValidTokenEmail(result.value)
 				} else {
 					setValidTokenEmail(null)
+					switch (result.reason) {
+						case "invalidServerResponse":
+							setError("Could not contact server. Try again later.")
+							break;
+						case "network":
+							switch (result.code) {
+								case "request/too-many-requests":
+									setError("You are trying too fast. Try again later.	")
+									break;
+							}
+					}
 				}
 			})
 		}
@@ -58,13 +73,12 @@ export function ChangePassword(props: ChangePasswordProps) {
 	 */
 	if (!token) {
 		redirect(_ => _.login)
-		return null
 	}
 
 	/**
 	 * Handle submitting
 	 */
-	function handleSubmit(values: ChangePasswordFormType) {
+	function submitHandler(values: ChangePasswordFormType) {
 		if (token) {
 			changePassword({ ...values, token }).then(result => {
 				if (result.isSuccess()) {
@@ -76,19 +90,33 @@ export function ChangePassword(props: ChangePasswordProps) {
 		}
 	}
 
-	return <ChangePasswordView
+	const handleSubmit = form.handleSubmit(submitHandler)
 
-		validTokenEmail={validTokenEmail}
+	/**
+	 * Password visible state
+	 */
+	const [passwordVisible, setPasswordVisible] = useState(false)
 
-		loading={validTokenEmail === undefined}
+	const togglePasswordVisibility = useCallback(() => {
+		setPasswordVisible(value => !value)
+	}, [setPasswordVisible])
 
-		passwordChangeSuccessful={passwordChangeSuccessful}
+	/**
+	 * Email and password error shorthands for react hook form
+	 */
+	const passwordError = form.formState.touched.password && form.errors.password?.message
 
-		onSubmit={handleSubmit}
-
-		onLogin={() => redirect(_ => _.login)}
-
-		error={error}
-
-	/>
+	return {
+		validTokenEmail,
+		loading: validTokenEmail === undefined,
+		passwordChangeSuccessful,
+		handleSubmit,
+		handleLogin: () => redirect(_ => _.login),
+		error,
+		passwordVisible,
+		setPasswordVisible,
+		togglePasswordVisibility,
+		passwordError,
+		form
+	}
 }

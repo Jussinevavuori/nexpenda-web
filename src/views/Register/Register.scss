@@ -1,16 +1,4 @@
 @import "main";
 
 .Register {
-  & form {
-    width: 100%;
-    padding: 1rem 0;
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 1rem;
-    place-items: center;
-
-    & > button {
-      margin-top: 0.6rem;
-    }
-  }
 }

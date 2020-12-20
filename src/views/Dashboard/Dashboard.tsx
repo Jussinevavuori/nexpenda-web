@@ -3,7 +3,7 @@ import React from "react";
 import { TransactionList } from "../../components/TransactionList/TransactionList";
 import { ActionsPanel } from "./ActionsPanel/ActionsPanel";
 import { useMdMedia } from "../../hooks/useMedia";
-import { TransactionTable } from "../../components/TransactionTable/TransactionTableController";
+import { TransactionTable } from "../../components/TransactionTable/TransactionTable";
 import { DashboardHeader } from "./DashboardHeader/DashboardHeader";
 
 export type DashboardProps = {

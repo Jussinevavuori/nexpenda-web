@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { LoginView } from './LoginView';
 import * as yup from "yup"
+import { useState, useEffect, useCallback } from 'react';
 import { useStoreActions, useStoreState } from '../../store';
 import { useRedirect } from '../../hooks/useRedirect';
-import { FormProvider, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers';
 
 export const loginValidationSchema = yup.object({
@@ -13,21 +12,24 @@ export const loginValidationSchema = yup.object({
 
 export type LoginFormType = yup.InferType<typeof loginValidationSchema>
 
-export function Login() {
-
-	const [error, setError] = useState<string>()
-
+export function useLoginController() {
 	const redirect = useRedirect()
-
-	const form = useForm<LoginFormType>({
-		resolver: yupResolver(loginValidationSchema),
-	})
-
 	const user = useStoreState(_ => _.auth.user)
-
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
 	const requestConfirmationEmail = useStoreActions(_ => _.auth.requestConfirmationEmail)
+
+	/**
+	 * Submit error
+	 */
+	const [error, setError] = useState<string>()
+
+	/**
+	 * Login form state
+	 */
+	const form = useForm<LoginFormType>({
+		resolver: yupResolver(loginValidationSchema),
+	})
 
 	/**
 	 * Check initial login
@@ -41,7 +43,7 @@ export function Login() {
 	/**
 	 * Handle submitting of form
 	 */
-	async function handleSubmit(values: LoginFormType) {
+	async function submitHandler(values: LoginFormType) {
 		setError(undefined)
 
 		/**
@@ -80,6 +82,8 @@ export function Login() {
 					return "Invalid response received from server."
 				case "network":
 					switch (result.code) {
+						case "request/too-many-requests":
+							return "You are trying too fast! Try again later."
 						case "request/invalid-request-data":
 							return "Invalid email or password."
 						case "auth/invalid-credentials":
@@ -97,6 +101,8 @@ export function Login() {
 		})
 	}
 
+	const handleSubmit = form.handleSubmit(submitHandler)
+
 	async function handleGoogleSubmit() {
 		loginWithGoogle()
 	}
@@ -109,14 +115,31 @@ export function Login() {
 		redirect(routes => routes.register)
 	}
 
-	return <FormProvider {...form}>
-		<LoginView
-			handleGoogleSubmit={handleGoogleSubmit}
-			handleSubmit={handleSubmit}
-			handleForgotPassword={handleForgotPassword}
-			handleCreateAccount={handleCreateAccount}
-			error={error}
-			form={form}
-		/>
-	</FormProvider>
+	/**
+	 * Password visible state
+	 */
+	const [passwordVisible, setPasswordVisible] = useState(false)
+
+	const togglePasswordVisibility = useCallback(() => {
+		setPasswordVisible(value => !value)
+	}, [setPasswordVisible])
+
+	/**
+	 * Email and password error shorthands for react hook form
+	 */
+	const emailError = form.formState.touched.email && form.errors.email?.message
+	const passwordError = form.formState.touched.password && form.errors.password?.message
+
+	return {
+		form,
+		error,
+		handleGoogleSubmit,
+		handleSubmit,
+		handleForgotPassword,
+		handleCreateAccount,
+		passwordVisible,
+		togglePasswordVisibility,
+		emailError,
+		passwordError,
+	}
 }

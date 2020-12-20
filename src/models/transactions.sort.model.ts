@@ -18,7 +18,7 @@ export type TransactionSortModel = {
 };
 
 export const transactionSortModel: TransactionSortModel = {
-  strategy: "date-ascending",
+  strategy: "date-descending",
 
   toggle: action((state, property) => {
     // Define all carousels: each toggle on a property will toggle the sort to

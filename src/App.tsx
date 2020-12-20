@@ -5,6 +5,7 @@ import { useStoreActions } from './store';
 import { Notification } from "./components/Notification/NotificationController"
 import { useHistoryNotifications } from './hooks/useHistoryNotifications';
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
+import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcuts';
 
 function App() {
 
@@ -17,6 +18,11 @@ function App() {
 	 * Notify on certain history events
 	 */
 	useHistoryNotifications()
+
+	/**
+	 * Apply shortcuts
+	 */
+	useApplicationShortcuts()
 
 	/**
 	 * Initialize by fetching the user's profile if any

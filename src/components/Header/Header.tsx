@@ -3,11 +3,11 @@ import React from "react"
 import { IntervalManager } from "../IntervalManager/IntervalManagerController";
 import { ProfileManager } from "../ProfileManager/ProfileManagerController";
 
-export type HeaderViewProps = {
+export type HeaderProps = {
 
 }
 
-export function HeaderView(props: HeaderViewProps) {
+export function Header(props: HeaderProps) {
 	return <div className="Header">
 
 		<div className="intervalManager">

@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react"
-import { ConfirmEmailView } from "./ConfirmEmailView"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useRedirect } from "../../hooks/useRedirect"
 import { useStoreActions } from "../../store"
 
-export type ConfirmEmailProps = {
-
-}
-
-export function ConfirmEmail(props: ConfirmEmailProps) {
+export function useConfirmEmailController() {
 
 	const { token } = useParams<{ token?: string }>()
 
@@ -22,6 +17,8 @@ export function ConfirmEmail(props: ConfirmEmailProps) {
 	 */
 	const [success, setSuccess] = useState<boolean>()
 
+	const [error, setError] = useState<string | null>(null)
+
 	/**
 	 * Initially loading the token validity state from the server
 	 */
@@ -29,6 +26,18 @@ export function ConfirmEmail(props: ConfirmEmailProps) {
 		if (token) {
 			confirmEmail({ token }).then(result => {
 				setSuccess(result.isSuccess())
+				if (result.isFailure()) {
+					switch (result.reason) {
+						case "invalidServerResponse":
+							setError("Could not contact server. Try again later.")
+							break;
+						case "network":
+							switch (result.code) {
+								case "request/too-many-requests":
+									setError("You are trying too fast. Try again later.")
+							}
+					}
+				}
 			})
 		}
 	}, []) // eslint-disable-line
@@ -38,14 +47,13 @@ export function ConfirmEmail(props: ConfirmEmailProps) {
 	 */
 	if (!token) {
 		redirect(_ => _.login)
-		return null
 	}
 
-	return <ConfirmEmailView
+	const handleLogin = () => redirect(_ => _.login)
 
-		success={success}
-
-		onLogin={() => redirect(_ => _.login)}
-
-	/>
+	return {
+		success,
+		handleLogin,
+		error,
+	}
 }

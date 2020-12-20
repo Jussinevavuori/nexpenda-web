@@ -1,52 +1,40 @@
 import "./AuthFrame.scss";
 import React from "react"
-import { Type } from "../Type/Type";
-import { Divider } from "@material-ui/core";
+import { Logo } from "../Logo/Logo";
+import { Button } from "@material-ui/core";
+import { useAuthFrameController } from "./useAuthFrameController";
 
 export type AuthFrameProps = {
-	header: string;
-	body: React.ReactNode;
-	footer?: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 export function AuthFrame(props: AuthFrameProps) {
+
+	const controller = useAuthFrameController()
+
 	return <div className="AuthFrame">
 
-		<div className="container">
+		<nav>
+			<Logo />
+			{
+				controller.handlePwaInstall
+					? <Button
+						color="primary"
+						variant="contained"
+						onClick={controller.handlePwaInstall}
+					>
+						{"Install"}
+					</Button>
+					: <Button
+						color="primary"
+						variant="text"
+					>
+						{"Unavailable"}
+					</Button>
+			}
+		</nav>
 
-			<header>
-
-				<Type component="h1" color="white">
-					{props.header}
-				</Type>
-
-			</header>
-
-			<div className="content">
-
-				{props.body}
-
-				{
-
-					props.footer
-						? <>
-
-							<Divider />
-
-							<footer>
-
-								{props.footer}
-
-							</footer>
-
-						</>
-						: null
-
-				}
-
-			</div>
-
-		</div>
+		<div className="content">{props.children}</div>
 
 	</div>
 }

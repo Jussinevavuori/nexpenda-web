@@ -1,20 +1,21 @@
 import "./TransactionTable.scss";
 import React from "react"
-import { Transaction } from "../../classes/Transaction";
 import { TransactionTableHeader } from "../TransactionTableHeader/TransactionTableHeaderController";
 import { TransactionTableRow } from "../TransactionTableRow/TransactionTableRowController";
 import { AutoSizer, List } from "react-virtualized";
 import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";
+import { useTransactionTableController } from "./useTransactionTableController";
 
-export type TransactionTableViewProps = {
-	items: Transaction[]
+export type TransactionTableProps = {
 	showSkeletons?: boolean;
 }
 
-export function TransactionTableView(props: TransactionTableViewProps) {
+export function TransactionTable(props: TransactionTableProps) {
 
-	if (props.showSkeletons) {
+	const controller = useTransactionTableController(props)
+
+	if (controller.showSkeletons) {
 
 		return <div className="TransactionTable">
 			<TransactionTableHeader />
@@ -38,7 +39,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 							className="virtualizedList"
 							height={autoSizer.height}
 							width={autoSizer.width}
-							rowCount={props.items.length}
+							rowCount={controller.items.length}
 							rowHeight={40}
 							noRowsRenderer={() => <div className="noTransactions">
 								<Type color="gray-700" variant="boldcaps" size="md">
@@ -46,7 +47,7 @@ export function TransactionTableView(props: TransactionTableViewProps) {
 								</Type>
 							</div>}
 							rowRenderer={(rowProps) => {
-								const entry = props.items[rowProps.index]
+								const entry = controller.items[rowProps.index]
 								return <li key={rowProps.key} style={rowProps.style}>
 									<TransactionTableRow transaction={entry} />
 								</li>

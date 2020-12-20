@@ -5,6 +5,7 @@ export type ServerFailureCode =
   | "server/unavailable"
   | "server/failure-formulating-request"
   | "request/invalid-request-data"
+  | "request/too-many-requests"
   | "transaction/already-exists"
   | "transaction/not-found"
   | "auth/missing-token"

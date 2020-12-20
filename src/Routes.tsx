@@ -1,16 +1,17 @@
 import React from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Login } from './views/Login/LoginController';
-import { Register } from './views/Register/RegisterController';
+import { Login } from './views/Login/Login';
+import { Register } from './views/Register/Register';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRouteController';
 import { Dashboard } from './views/Dashboard/Dashboard';
 import { Settings } from "./views/Settings/SettingsController";
 import { Analytics } from "./views/Analytics/AnalyticsController";
-import { ForgotPassword } from "./views/ForgotPassword/ForgotPasswordController";
-import { AppFrame } from "./components/AppFrame/AppFrameController";
-import { ChangePassword } from "./views/ChangePassword/ChangePasswordController";
-import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmailController";
+import { ForgotPassword } from "./views/ForgotPassword/ForgotPassword";
+import { AppFrame } from "./components/AppFrame/AppFrame";
+import { ChangePassword } from "./views/ChangePassword/ChangePassword";
+import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmail";
 import { Budget } from "./views/Budget/BudgetController";
+import { AuthFrame } from "./components/AuthFrame/AuthFrame";
 
 export const routes = {
 	approot: "/app",
@@ -34,23 +35,33 @@ export function Routes() {
 	return <Switch>
 
 		<Route exact path={routes.login}>
-			<Login />
+			<AuthFrame>
+				<Login />
+			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.register}>
-			<Register />
+			<AuthFrame>
+				<Register />
+			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.forgotPassword}>
-			<ForgotPassword />
+			<AuthFrame>
+				<ForgotPassword />
+			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.changePassword(":token")}>
-			<ChangePassword />
+			<AuthFrame>
+				<ChangePassword />
+			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.confirmEmail(":token")}>
-			<ConfirmEmail />
+			<AuthFrame>
+				<ConfirmEmail />
+			</AuthFrame>
 		</Route>
 
 		<ProtectedRoute exact path={routes.dashboard}>
