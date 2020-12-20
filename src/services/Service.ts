@@ -5,6 +5,15 @@ import jwt from "jsonwebtoken";
 import { Success } from "../result/Success";
 import { NetworkFailure } from "../result/NetworkFailures";
 
+export type ServiceRequestConfig = {
+  enableLogoutOnUnauthorized: boolean;
+};
+
+export type RequestConfig = {
+  axios?: AxiosRequestConfig;
+  service?: ServiceRequestConfig;
+};
+
 export class Service {
   /**
    * Base URL for sending requests to the API
@@ -16,8 +25,7 @@ export class Service {
    */
   protected static axios = Axios.create({
     baseURL: Service.baseURL,
-		withCredentials: true,
-		
+    withCredentials: true,
   });
 
   /**
@@ -67,9 +75,44 @@ export class Service {
   /**
    * Before request hook
    */
-  protected static async onBeforeRequest() {
+  protected static async onBeforeRequest(
+    config?: ServiceRequestConfig | undefined
+  ) {
     await Service.attemptRefreshAccessToken();
   }
+
+  /**
+   * On success hook
+   */
+  protected static async onSuccessfulRequest(
+    success: Success<AxiosResponse<any>, string>,
+    config?: ServiceRequestConfig | undefined
+  ) {}
+
+  /**
+   * On failure hook
+   */
+  protected static async onFailedRequest(
+    failure: NetworkFailure<any, { errors?: any }>,
+    config?: ServiceRequestConfig | undefined
+  ) {
+    if (
+      failure.code === "auth/unauthenticated" &&
+      config?.enableLogoutOnUnauthorized
+    ) {
+      window.location.pathname = "/";
+    }
+  }
+
+  /**
+   * After request hook
+   */
+  protected static async onAfterRequest(
+    result:
+      | Success<AxiosResponse<any>, string>
+      | NetworkFailure<any, { errors?: any }>,
+    config?: ServiceRequestConfig | undefined
+  ) {}
 
   /**
    * Gets basic axios config
@@ -99,27 +142,38 @@ export class Service {
    */
   protected static async handleRequest<T>(
     path: string,
-    config: AxiosRequestConfig | undefined,
+    config: RequestConfig | undefined,
     requestFunction: (
       url: string,
       options: AxiosRequestConfig
     ) => Promise<AxiosResponse<T>>
   ) {
-    /**
-     * Run hooks
-     */
-    await Service.onBeforeRequest();
+    // Run before request hooks
+    await Service.onBeforeRequest(config?.service);
 
-    /**
-     * Run request function to promise
-     */
+    // Request configuration
     const url = Service.endpoint(path);
-    const options = Service.getConfig(config);
-    const promise = requestFunction(url, options);
+    const options = Service.getConfig(config?.axios);
 
-    return promise
-      .then((value) => new Success<AxiosResponse<T>>(value))
-      .catch((e) => NetworkFailure.FromAxiosError<T>(e as AxiosError));
+    // Run request
+    const result = await requestFunction(url, options)
+      .then(async (value) => {
+        // Get success as success, run success hooks
+        const success = new Success<AxiosResponse<T>>(value);
+        await Service.onSuccessfulRequest(success, config?.service);
+        return success;
+      })
+      .catch(async (e) => {
+        // Get failure as failure, run failure hooks
+        const failure = NetworkFailure.FromAxiosError<T>(e as AxiosError);
+        await Service.onFailedRequest(failure, config?.service);
+        return failure;
+      });
+
+    // Run after request hooks
+    await Service.onAfterRequest(result, config?.service);
+
+    return result;
   }
 
   /**
@@ -127,7 +181,7 @@ export class Service {
    */
   protected static async get<ResponseData = any>(
     path: string,
-    config?: AxiosRequestConfig | undefined
+    config?: RequestConfig | undefined
   ) {
     return Service.handleRequest(path, config, (url, options) => {
       return Service.axios.get<ResponseData>(url, options);
@@ -140,7 +194,7 @@ export class Service {
   protected static async post<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
-    config?: AxiosRequestConfig
+    config?: RequestConfig
   ) {
     return Service.handleRequest(path, config, (url, options) => {
       return Service.axios.post<ResponseData>(url, data, options);
@@ -152,7 +206,7 @@ export class Service {
    */
   protected static async delete<ResponseData = any>(
     path: string,
-    config?: AxiosRequestConfig | undefined
+    config?: RequestConfig | undefined
   ) {
     return Service.handleRequest(path, config, (url, options) => {
       return Service.axios.delete<ResponseData>(url, options);
@@ -165,7 +219,7 @@ export class Service {
   protected static async put<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
-    config?: AxiosRequestConfig
+    config?: RequestConfig
   ) {
     return Service.handleRequest(path, config, (url, options) => {
       return Service.axios.put<ResponseData>(url, data, options);
@@ -178,7 +232,7 @@ export class Service {
   protected static async patch<RequestData = any, ResponseData = any>(
     path: string,
     data?: RequestData,
-    config?: AxiosRequestConfig
+    config?: RequestConfig
   ) {
     return Service.handleRequest(path, config, (url, options) => {
       return Service.axios.patch<ResponseData>(url, data, options);

@@ -8,7 +8,9 @@ export class TransactionService extends Service {
    * Get all transactions for user as Result
    */
   static async getTransactions() {
-    const result = await Service.get("/transactions");
+    const result = await Service.get("/transactions", {
+      service: { enableLogoutOnUnauthorized: true },
+    });
 
     if (result.isFailure()) {
       return result;
@@ -27,7 +29,9 @@ export class TransactionService extends Service {
    * created json transaction response as Result.
    */
   static async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
-    const result = await Service.post("/transactions", json);
+    const result = await Service.post("/transactions", json, {
+      service: { enableLogoutOnUnauthorized: true },
+    });
 
     if (result.isFailure()) {
       return result;
@@ -47,9 +51,15 @@ export class TransactionService extends Service {
   static async postTransactions(
     jsons: Array<Omit<JsonTransaction, "id" | "uid">>
   ) {
-    const result = await Service.post(`/transactions/mass/post`, {
-      transactions: jsons,
-    });
+    const result = await Service.post(
+      `/transactions/mass/post`,
+      {
+        transactions: jsons,
+      },
+      {
+        service: { enableLogoutOnUnauthorized: true },
+      }
+    );
 
     if (result.isFailure()) {
       return result;
@@ -70,7 +80,9 @@ export class TransactionService extends Service {
    * Delete a transaction by ID and return empty Result.
    */
   static async deleteTransaction(id: string) {
-    const result = await Service.delete(`/transactions/${id}`);
+    const result = await Service.delete(`/transactions/${id}`, {
+      service: { enableLogoutOnUnauthorized: true },
+    });
 
     if (result.isFailure()) {
       return result;
@@ -88,7 +100,13 @@ export class TransactionService extends Service {
    * Delete many transactions by IDs and return empty Result.
    */
   static async deleteTransactions(ids: string[]) {
-    const result = await Service.post(`/transactions/mass/delete`, { ids });
+    const result = await Service.post(
+      `/transactions/mass/delete`,
+      { ids },
+      {
+        service: { enableLogoutOnUnauthorized: true },
+      }
+    );
 
     if (result.isFailure()) {
       return result;
@@ -107,7 +125,9 @@ export class TransactionService extends Service {
    * return upserted json transaction as Result.
    */
   static async putTransaction(json: JsonTransaction) {
-    const result = await Service.put(`/transactions/${json.id}`, json);
+    const result = await Service.put(`/transactions/${json.id}`, json, {
+      service: { enableLogoutOnUnauthorized: true },
+    });
 
     if (result.isFailure()) {
       return result;
@@ -126,7 +146,9 @@ export class TransactionService extends Service {
    * and return updated json transaction as Result.
    */
   static async patchTransaction(json: JsonTransaction) {
-    const result = await Service.patch(`/transactions/${json.id}`, json);
+    const result = await Service.patch(`/transactions/${json.id}`, json, {
+      service: { enableLogoutOnUnauthorized: true },
+    });
 
     if (result.isFailure()) {
       return result;

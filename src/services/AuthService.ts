@@ -8,7 +8,7 @@ export class AuthService extends Service {
    * Fetches the user's profile if the user is signed in.
    */
   static async getProfile() {
-    const result = await Service.get<JsonAuth>("/auth/profile");
+    const result = await Service.get<JsonAuth>("/auth/profile", {});
 
     if (result.isFailure()) {
       return result;
@@ -194,5 +194,25 @@ export class AuthService extends Service {
    */
   static loginWithGoogle() {
     window.location.href = Service.endpoint("/auth/google");
+  }
+
+  /**
+   * Get a protected ping
+   */
+  static async checkAuth() {
+    const result = await Service.get<JsonAuth>("/auth/profile", {
+      service: { enableLogoutOnUnauthorized: true },
+    });
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Auth.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonAuth>(
+        result.value,
+        "/auth/profile"
+      );
+    }
   }
 }

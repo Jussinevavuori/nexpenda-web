@@ -16,7 +16,7 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
 	/**
 	 * Default fallback to login on redirect
 	 */
-	const defaultFallbackRoute = routes.login
+	const defaultFallbackRoute = routes.login.path
 
 	/**
 	 * Get current user details
