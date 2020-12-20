@@ -38,6 +38,7 @@ export function NotificationView(props: NotificationViewProps) {
 
 	return <>
 		<Snackbar
+			className="Notification"
 			id={props.notification.id}
 			open={open}
 			onClose={() => setOpen(false)}

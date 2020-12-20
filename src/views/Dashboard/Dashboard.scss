@@ -14,7 +14,7 @@
 
   & .header {
     grid-area: header;
-    padding: 0;
+    padding: $spacing-6;
     @include md {
       padding: $spacing-8 $spacing-16 0;
     }

@@ -1,13 +1,9 @@
-import React, { useCallback } from "react"
-import { SettingsView } from "./SettingsView"
+import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/useRedirect"
 
-export type SettingsProps = {
 
-}
-
-export function Settings(props: SettingsProps) {
+export function useSettingsController() {
 	const redirect = useRedirect()
 
 	/**
@@ -22,8 +18,8 @@ export function Settings(props: SettingsProps) {
 		}
 	}, [logout, redirect])
 
-	return <SettingsView
-		user={user}
-		handleLogout={handleLogout}
-	/>
+	return {
+		user,
+		handleLogout,
+	}
 }

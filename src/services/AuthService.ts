@@ -1,5 +1,5 @@
 import { Service } from "./Service";
-import { Auth, JsonAuth } from "../classes/Auth";
+import { Auth, JsonAuth, UpdatableJsonAuthFields } from "../classes/Auth";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 import { Success } from "../result/Success";
 
@@ -9,6 +9,28 @@ export class AuthService extends Service {
    */
   static async getProfile() {
     const result = await Service.get<JsonAuth>("/auth/profile", {});
+
+    if (result.isFailure()) {
+      return result;
+    } else if (Auth.isJson(result.value.data)) {
+      return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<JsonAuth>(
+        result.value,
+        "/auth/profile"
+      );
+    }
+  }
+
+  /**
+   * Updates the user's profile
+   */
+  static async updateProfile(update: UpdatableJsonAuthFields) {
+    const result = await Service.patch<UpdatableJsonAuthFields, JsonAuth>(
+      "/auth/profile",
+      update,
+      { service: { enableLogoutOnUnauthorized: true } }
+    );
 
     if (result.isFailure()) {
       return result;

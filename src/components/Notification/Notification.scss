@@ -1,4 +1,7 @@
 @import "main";
 
 .Notification {
+  & * {
+    @include text-bold-md;
+  }
 }

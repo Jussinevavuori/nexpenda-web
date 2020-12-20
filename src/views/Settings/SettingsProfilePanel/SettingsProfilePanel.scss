@@ -1,0 +1,58 @@
+@import "main";
+
+.SettingsProfilePanel {
+  display: grid;
+  grid-template:
+    "avatar name" auto
+    "avatar email" auto / auto 1fr;
+  gap: $spacing-2 $spacing-6;
+  place-items: center left;
+
+  & > .avatarContainer {
+    grid-area: avatar;
+    & > .MuiAvatar-root {
+      $size: 64px;
+      width: $size;
+      height: $size;
+    }
+  }
+  & > .nameContainer {
+    grid-area: name;
+    width: 100%;
+    & > .editNameContainer {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      & > .MuiFormControl-root {
+        flex: 1;
+      }
+      & svg.check {
+        color: $green-600;
+      }
+    }
+
+    & > .editableContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &:hover {
+        & > .MuiIconButton-root {
+          opacity: 1;
+        }
+      }
+      & > .MuiIconButton-root {
+        opacity: 0;
+        transition: opacity 100ms;
+      }
+    }
+  }
+  & > .emailContainer {
+    grid-area: email;
+    width: 100%;
+  }
+
+  & > .nameContainer,
+  & > .emailContainer {
+    height: 48px;
+  }
+}

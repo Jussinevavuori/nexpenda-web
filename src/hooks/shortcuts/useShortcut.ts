@@ -15,6 +15,14 @@ export function useShortcut(
 ) {
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      // If focused on an input, cancel action
+      if (
+        ["INPUT", "TEXTFIELD"].includes(document.activeElement?.tagName ?? "")
+      ) {
+        return;
+      }
+
+      // Ensure exact correct key combination
       if (
         e.key === shortcut.key &&
         !!e.ctrlKey === !!shortcut.ctrl &&

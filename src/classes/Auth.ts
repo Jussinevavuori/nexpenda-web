@@ -8,6 +8,11 @@ export type JsonAuth = {
   googleId: string | undefined;
 };
 
+export type UpdatableJsonAuthFields = {
+  displayName?: string | undefined;
+  photoUrl?: string | undefined;
+};
+
 export class Auth {
   id: string;
   displayName?: string;

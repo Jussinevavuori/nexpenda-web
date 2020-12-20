@@ -38,6 +38,11 @@ export interface AuthModel {
   _login: Action<AuthModel, JsonAuth>;
 
   /**
+   * Action to update the user to the state after succesful update action
+   */
+  _update: Action<AuthModel, JsonAuth>;
+
+  /**
    * Action to set the current user to null
    */
   _logout: Action<AuthModel, void>;
@@ -53,6 +58,17 @@ export interface AuthModel {
     any,
     StoreModel,
     ReturnType<typeof AuthService["getProfile"]>
+  >;
+
+  /**
+   * Function to partially update the profile
+   */
+  updateProfile: Thunk<
+    AuthModel,
+    Parameters<typeof AuthService["updateProfile"]>[0],
+    any,
+    StoreModel,
+    ReturnType<typeof AuthService["updateProfile"]>
   >;
 
   /**
@@ -180,6 +196,12 @@ export const authModel: AuthModel = {
     }
   }),
 
+  _update: action((state, json) => {
+    if (Auth.isJson(json)) {
+      state.user = new Auth(json);
+    }
+  }),
+
   _logout: action((state) => {
     state.user = null;
     state.accessToken = null;
@@ -191,6 +213,14 @@ export const authModel: AuthModel = {
       actions._login(profile.value);
     }
     actions._setInitialized(true);
+    return profile;
+  }),
+
+  updateProfile: thunk(async (actions, payload) => {
+    const profile = await AuthService.updateProfile(payload);
+    if (profile.isSuccess()) {
+      actions._update(profile.value);
+    }
     return profile;
   }),
 
