@@ -25,12 +25,7 @@ export function AuthFrame(props: AuthFrameProps) {
 					>
 						{"Install"}
 					</Button>
-					: <Button
-						color="primary"
-						variant="text"
-					>
-						{"Unavailable"}
-					</Button>
+					: null
 			}
 		</nav>
 

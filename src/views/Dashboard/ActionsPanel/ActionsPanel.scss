@@ -7,13 +7,13 @@
   &.mobile {
     border-bottom: 1px solid $gray-200;
     &.default {
-      padding: adjust-spacing($spacing-6, $spacing-icon-button)
+      padding: adjust-spacing($spacing-4, $spacing-icon-button)
         adjust-spacing($spacing-6, $spacing-icon-button)
-        adjust-spacing($spacing-6, $spacing-icon-button)
+        adjust-spacing($spacing-4, $spacing-icon-button)
         adjust-spacing($spacing-6, $spacing-button-horizontal);
     }
     &.selection {
-      padding: adjust-spacing($spacing-6, $spacing-icon-button);
+      padding: adjust-spacing($spacing-4, $spacing-icon-button);
       & .selection-info {
         display: flex;
         align-items: center;
@@ -21,6 +21,7 @@
       & .selection-actions {
         & .MuiIconButton-root {
           color: $gray-800;
+
           &.deleteButton {
             color: $red-600;
           }
