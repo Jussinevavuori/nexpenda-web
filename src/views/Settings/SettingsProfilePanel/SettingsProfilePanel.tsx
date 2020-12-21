@@ -1,9 +1,10 @@
 import "./SettingsProfilePanel.scss";
 import React from "react"
 import { useSettingsProfilePanelController } from "./useSettingsProfilePanelController"
-import { Avatar, CircularProgress, IconButton, TextField } from "@material-ui/core";
+import { CircularProgress, IconButton, TextField } from "@material-ui/core";
 import { Type } from "../../../components/Type/Type";
 import { Clear as ClearIcon, Check as CheckIcon, Edit as EditIcon } from "@material-ui/icons";
+import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
 
 export type SettingsProfilePanelProps = {
 
@@ -18,13 +19,7 @@ export function SettingsProfilePanel(props: SettingsProfilePanelProps) {
 	return <div className="SettingsProfilePanel">
 
 		<div className="avatarContainer">
-			<Avatar>
-				{
-					controller.user.photoUrl
-						? <img alt="profileimage" src={controller.user.photoUrl} />
-						: controller.user.initials
-				}
-			</Avatar>
+			<UserAvatar />
 		</div>
 
 		<div className="nameContainer" onClick={controller.name.handleStartEdit}>

@@ -11,7 +11,7 @@ import {
 } from "@material-ui/icons"
 import { Button, IconButton, } from "@material-ui/core";
 import { useMdMedia } from "../../../hooks/useMedia";
-import { IntervalManager } from "../../../components/IntervalManager/IntervalManagerController";
+import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
 import { Type } from "../../../components/Type/Type";
 import { useActionsPanelController } from "./useActionsPanelController";
 

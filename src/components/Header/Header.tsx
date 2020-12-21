@@ -1,7 +1,7 @@
 import "./Header.scss";
 import React from "react"
-import { IntervalManager } from "../IntervalManager/IntervalManagerController";
-import { ProfileManager } from "../ProfileManager/ProfileManagerController";
+import { IntervalManager } from "../IntervalManager/IntervalManager";
+import { UserManager } from "../UserManager/UserManager";
 
 export type HeaderProps = {
 
@@ -15,7 +15,7 @@ export function Header(props: HeaderProps) {
 		</div>
 
 		<div className="profileManager">
-			<ProfileManager />
+			<UserManager />
 		</div>
 
 	</div>

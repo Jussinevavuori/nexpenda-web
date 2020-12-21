@@ -1,46 +1,34 @@
 import "./IntervalManager.scss";
-import React, { useState } from "react"
+import React from "react"
 import { isMobile } from "react-device-detect"
 import { Button, Drawer, IconButton, Menu } from "@material-ui/core";
 import { ArrowBack, ArrowForward, DateRange, RadioButtonUnchecked as TodayIcon } from "@material-ui/icons"
 import { useSmMedia } from "../../hooks/useMedia";
-import { useHashOpenState } from "../../hooks/useHashOpenState";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerFormController";
+import { useIntervalManagerController } from "./useIntervalManagerController";
 
-export type IntervalManagerViewProps = {
-
+export type IntervalManagerProps = {
 	hideControls?: boolean;
-
-	intervalString: string;
-
-	onPrevious(): void;
-	onNext(): void;
-
-	includesToday: boolean;
-	onToday(): void;
-
 }
 
-export function IntervalManagerView(props: IntervalManagerViewProps) {
+export function IntervalManager(props: IntervalManagerProps) {
 
-	const wideScreen = useSmMedia()
-	const menuLayout = wideScreen && !isMobile
-	const [intervalPickerOpen, setIntervalPickerOpen] = useHashOpenState("interval")
-	const [intervalPickerMenuAnchor, setIntervalPickerMenuAnchor] = useState<HTMLElement>()
+	const controller = useIntervalManagerController(props)
 
-	const shouldShowControls = props.hideControls !== true
+	const isDesktopLayout = useSmMedia()
+	const menuLayout = isDesktopLayout && !isMobile
 
 	return <>
 		<div className="IntervalManager">
 			{
-				shouldShowControls && <div className="arrow-buttons">
-					<IconButton onClick={props.onPrevious}>
+				controller.shouldShowControls && <div className="arrow-buttons">
+					<IconButton onClick={controller.handlePrevious}>
 						<ArrowBack />
 					</IconButton>
-					<IconButton onClick={props.onToday}>
+					<IconButton onClick={controller.handleToday}>
 						<TodayIcon />
 					</IconButton>
-					<IconButton onClick={props.onNext}>
+					<IconButton onClick={controller.handleNext}>
 						<ArrowForward />
 					</IconButton>
 				</div>
@@ -50,11 +38,11 @@ export function IntervalManagerView(props: IntervalManagerViewProps) {
 				className="date-button"
 				startIcon={<DateRange />}
 				onClick={e => {
-					setIntervalPickerOpen(true)
-					setIntervalPickerMenuAnchor(e.currentTarget)
+					controller.setIntervalPickerOpen(true)
+					controller.setIntervalPickerMenuAnchor(e.currentTarget)
 				}}
 			>
-				{props.intervalString}
+				{controller.intervalLabel}
 			</Button>
 		</div>
 
@@ -65,12 +53,12 @@ export function IntervalManagerView(props: IntervalManagerViewProps) {
 			 */
 			menuLayout
 				? <Menu
-					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
+					open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
 					onClose={() => {
-						setIntervalPickerMenuAnchor(undefined)
-						setIntervalPickerOpen(false)
+						controller.setIntervalPickerMenuAnchor(undefined)
+						controller.setIntervalPickerOpen(false)
 					}}
-					anchorEl={intervalPickerMenuAnchor}
+					anchorEl={controller.intervalPickerMenuAnchor}
 					anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
 					transformOrigin={{ horizontal: "left", vertical: "top" }}
 					getContentAnchorEl={null}
@@ -78,25 +66,25 @@ export function IntervalManagerView(props: IntervalManagerViewProps) {
 					<div className="IntervalManager__Menu">
 						<IntervalPickerForm
 							onConfirm={() => {
-								setIntervalPickerMenuAnchor(undefined)
-								setIntervalPickerOpen(false)
+								controller.setIntervalPickerMenuAnchor(undefined)
+								controller.setIntervalPickerOpen(false)
 							}}
 						/>
 					</div>
 				</Menu>
 				: <Drawer
-					open={!!intervalPickerMenuAnchor && intervalPickerOpen}
+					open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
 					onClose={() => {
-						setIntervalPickerMenuAnchor(undefined)
-						setIntervalPickerOpen(false)
+						controller.setIntervalPickerMenuAnchor(undefined)
+						controller.setIntervalPickerOpen(false)
 					}}
 					anchor={"bottom"}
 				>
 					<div className="IntervalManager__Drawer">
 						<IntervalPickerForm
 							onConfirm={() => {
-								setIntervalPickerMenuAnchor(undefined)
-								setIntervalPickerOpen(false)
+								controller.setIntervalPickerMenuAnchor(undefined)
+								controller.setIntervalPickerOpen(false)
 							}}
 						/>
 					</div>

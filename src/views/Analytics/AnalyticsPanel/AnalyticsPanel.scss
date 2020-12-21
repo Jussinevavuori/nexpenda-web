@@ -1,0 +1,14 @@
+@import "main";
+
+.AnalyticsPanel {
+  background: white;
+  border-bottom: 1px solid $gray-200;
+  padding: adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, $spacing-button-horizontal)
+    adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, $spacing-icon-button);
+
+  & > .IntervalManager {
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,17 @@
+@import "main";
+
+.AnalyticsBlock {
+  padding: $spacing-4;
+  border-radius: $radius-md;
+  border: $border;
+  & > .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-6;
+    & > svg {
+      margin-right: $spacing-2;
+      transform: scale(0.8);
+      color: $gray-800;
+    }
+  }
+}

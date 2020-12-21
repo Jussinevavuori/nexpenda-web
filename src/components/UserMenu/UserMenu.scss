@@ -1,0 +1,23 @@
+@import "main";
+
+.UserMenu {
+  &__content {
+    outline: none;
+    & > section.profile {
+      padding: $spacing-4;
+      & > h2,
+      & > p {
+        text-align: center;
+      }
+    }
+    & > section.actions {
+      border-top: $border;
+      & .MuiMenuItem-root {
+        & svg {
+          color: $blue-500;
+          margin-right: $spacing-3;
+        }
+      }
+    }
+  }
+}

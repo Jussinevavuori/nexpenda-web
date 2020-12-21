@@ -1,0 +1,61 @@
+@import "main";
+
+.AnalyticsCategories {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: $spacing-8;
+
+  & > div {
+    & > ul {
+      & > .empty {
+        padding: $spacing-2 0 0;
+      }
+      & > li {
+        display: grid;
+        grid-template:
+          "category count amount percentage" auto
+          "bars bars bars bars" auto / auto 1fr auto 64px;
+        gap: $spacing-1 $spacing-2;
+        padding: $spacing-2 0;
+
+        & > .category {
+          grid-area: category;
+        }
+        & > .count {
+          grid-area: count;
+        }
+        & > .amount {
+          grid-area: amount;
+        }
+        & > .percentage {
+          grid-area: percentage;
+          margin-left: auto;
+        }
+
+        & > .bars {
+          grid-area: bars;
+          position: relative;
+          height: 4px;
+          & > .activeBar,
+          & > .backgroundBar {
+            position: absolute;
+            height: 4px;
+            border-radius: 4px;
+          }
+          & > .activeBar {
+            &.expense {
+              background: $red-500;
+            }
+            &.income {
+              background: $green-500;
+            }
+          }
+          & > .backgroundBar {
+            background: $gray-300;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

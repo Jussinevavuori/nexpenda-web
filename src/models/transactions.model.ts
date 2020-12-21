@@ -23,6 +23,10 @@ import {
   transactionSortModel,
   TransactionSortModel,
 } from "./transactions.sort.model";
+import {
+  SelectedTransactionsModel,
+  selectedTransactionsModel,
+} from "./transactions.selected.model";
 
 export interface TransactionsModel {
   /**
@@ -47,6 +51,12 @@ export interface TransactionsModel {
    * Current amount of transactions
    */
   count: Computed<TransactionsModel, number>;
+
+  /**
+   * Selected properties (copies of the above properties using only
+   * selected items i.e. items in the current interval)
+   */
+  selected: SelectedTransactionsModel;
 
   /**
    * Filtered properties (copies of the above properties using only
@@ -196,6 +206,8 @@ export const transactionsModel: TransactionsModel = {
   }),
 
   count: computed((state) => state.items.length),
+
+  selected: selectedTransactionsModel,
 
   filtered: filteredTransactionsModel,
 

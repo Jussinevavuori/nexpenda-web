@@ -1,7 +1,35 @@
 @import "main";
 
 .Analytics {
-  padding: 40px;
+  width: 100%;
   height: 100%;
   overflow: auto;
+
+  & > .headerContainer {
+    position: sticky;
+    top: -94px;
+    z-index: 2;
+    @include md {
+      top: unset;
+      position: unset;
+      & > .AnalyticsHeader {
+        margin-bottom: $spacing-8;
+      }
+    }
+  }
+
+  & > .panelContainer {
+    position: sticky;
+    top: -120px;
+  }
+
+  & & .analyticsBlocksContainer {
+    padding: $spacing-8 $spacing-6;
+    & > .AnalyticsBlock {
+      margin-bottom: $spacing-4;
+    }
+    @include md {
+      padding: $spacing-8 $spacing-16 $spacing-16;
+    }
+  }
 }

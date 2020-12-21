@@ -5,7 +5,7 @@ import { Register } from './views/Register/Register';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRouteController';
 import { Dashboard } from './views/Dashboard/Dashboard';
 import { Settings } from "./views/Settings/Settings";
-import { Analytics } from "./views/Analytics/AnalyticsController";
+import { Analytics } from "./views/Analytics/Analytics";
 import { ForgotPassword } from "./views/ForgotPassword/ForgotPassword";
 import { AppFrame } from "./components/AppFrame/AppFrame";
 import { ChangePassword } from "./views/ChangePassword/ChangePassword";

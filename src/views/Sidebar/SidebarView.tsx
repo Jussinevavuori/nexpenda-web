@@ -41,7 +41,7 @@ export function SidebarView(props: SidebarViewProps) {
 
 	return <>
 
-		<div className="Sidebar">
+		<aside className="Sidebar">
 
 			{
 
@@ -186,7 +186,7 @@ export function SidebarView(props: SidebarViewProps) {
 
 					</div>
 			}
-		</div>
+		</aside>
 
 	</>
 }

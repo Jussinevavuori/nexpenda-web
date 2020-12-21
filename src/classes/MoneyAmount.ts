@@ -107,20 +107,82 @@ export class MoneyAmount {
    * Static method for formatting a value
    */
   static format(value: number) {
-    return (value / 100).toLocaleString("fi-FI", {
+    return Math.floor(value / 100).toLocaleString("fi-FI", {
       style: "currency",
       currency: "EUR",
     });
   }
 
+  /**
+   * Static metnod for formatting large values (12 345,67 € -> 12 k)
+   */
+  static largeFormat(value: number) {
+    let sign = value < 0 ? "-" : "";
+    let scale = 1000;
+    let unit = "k";
+    if (value > 100 * 1000 * 1000) {
+      scale = 1000 * 1000;
+      unit = "M";
+    } else if (value > 100 * 1000 * 1000 * 1000) {
+      scale = 1000 * 1000 * 1000;
+      unit = "B";
+    }
+    let scaledAmount = Math.floor(value / (100 * scale));
+    console.log(value, sign, scale, unit, scaledAmount);
+    return `${sign}${scaledAmount} ${unit}`;
+  }
+
+  /**
+   * Method to add two MoneyAmounts together to produce their sum
+   * as a new MoneyAmount
+   */
   add(that: MoneyAmount) {
     return new MoneyAmount(this._value + that._value);
   }
 
+  /**
+   * Method to subtract a MoneyAmount from another to produce their
+   * difference as a new MoneyAmount
+   */
   subtract(that: MoneyAmount) {
     return new MoneyAmount(this._value - that._value);
   }
 
+  /**
+   * Method to directly change the value of this instance
+   */
+  changeInternalValue() {
+    return {
+      add: (amount: number) => {
+        if (Math.trunc(amount) !== amount) {
+          throw new Error("Cannot change money amount by non-integer value");
+        }
+        this._value += amount;
+      },
+      subtract: (amount: number) => {
+        if (Math.trunc(amount) !== amount) {
+          throw new Error("Cannot change money amount by non-integer value");
+        }
+        this._value -= amount;
+      },
+      multiply: (amount: number) => {
+        if (Math.trunc(amount) !== amount) {
+          throw new Error("Cannot change money amount by non-integer value");
+        }
+        this._value *= amount;
+      },
+      set: (amount: number) => {
+        if (Math.trunc(amount) !== amount) {
+          throw new Error("Cannot change money amount by non-integer value");
+        }
+        this._value = amount;
+      },
+    };
+  }
+
+  /**
+   * Static method to sum together multiple money amounts
+   */
   static sum(values: MoneyAmount[]) {
     return values.reduce((sum, value) => sum.add(value), new MoneyAmount(0));
   }

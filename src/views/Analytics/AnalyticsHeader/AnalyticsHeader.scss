@@ -1,0 +1,52 @@
+@import "main";
+
+.AnalyticsHeader {
+  &.mobile {
+    position: relative;
+    height: $mobile-header-height;
+    background: $blue-500;
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
+
+    & > .title {
+      z-index: 1;
+    }
+
+    & .texture-image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: $mobile-header-height;
+      width: 100%;
+      height: 100%;
+      background: $blue-500;
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+        mix-blend-mode: multiply;
+      }
+    }
+  }
+
+  &.desktop {
+    padding: $spacing-8 $spacing-16 0;
+  }
+
+  & > .title {
+    display: flex;
+    flex-direction: column;
+
+    @include sm {
+      align-items: center;
+      flex-direction: row;
+    }
+
+    & > h1 {
+      margin-right: $spacing-4;
+    }
+  }
+}

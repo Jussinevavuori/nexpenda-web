@@ -1,0 +1,10 @@
+@import "main";
+
+.AnalyticsAllTimeLine {
+  & > .total {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 5px;
+    margin: 0 0 $spacing-6;
+  }
+}

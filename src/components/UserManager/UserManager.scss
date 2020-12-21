@@ -1,9 +1,11 @@
 @import "main";
 
-.ProfileManager {
+.UserManager {
   & .MuiAvatar-root {
     background-color: $blue-400;
     transform: scale(0.9);
     transform-origin: right;
+    cursor: pointer;
+    outline: none;
   }
 }
