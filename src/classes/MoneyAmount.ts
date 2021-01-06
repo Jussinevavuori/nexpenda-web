@@ -107,7 +107,7 @@ export class MoneyAmount {
    * Static method for formatting a value
    */
   static format(value: number) {
-    return Math.floor(value / 100).toLocaleString("fi-FI", {
+    return Math.floor(value/100).toLocaleString("fi-FI", {
       style: "currency",
       currency: "EUR",
     });

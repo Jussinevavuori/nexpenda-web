@@ -9,7 +9,7 @@ export class Config {
     }
 
     if (!env || env === "development") {
-      return "http://localhost:4000";
+      return "http://localhost:8080";
     } else if (env === "test") {
       return "http://localhost:4001";
     } else {

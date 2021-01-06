@@ -65,6 +65,9 @@ export function MoneyType(props: MoneyTypeProps) {
 				// Format new value and show new value
 				const integerValue = Math.round(value)
 				const formattedValue = MoneyAmount.format(integerValue)
+
+				console.log(start, integerValue, formattedValue, end)
+
 				node.textContent = formattedValue
 
 				// Show blurring, fading and scaling animation while transitioning
