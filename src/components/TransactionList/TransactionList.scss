@@ -17,6 +17,9 @@
   }
 
   & .dateGroup {
+    &:first-child {
+      margin-top: $spacing-4;
+    }
     & > .dateGroupHeader {
       padding: $fixed-spacing-2 $fixed-spacing-6 $fixed-spacing-2
         $fixed-spacing-6;

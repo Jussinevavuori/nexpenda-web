@@ -7,6 +7,7 @@ import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
 import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
+import { theme } from "../../styles/main";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -48,6 +49,7 @@ export function TransactionList(props: TransactionListProps) {
 						// Title total height    40 px
 						// Item total height     80 px
 						return controller.itemsByDates[index].items.length * 80 + 40
+							+ (index === 0 ? Number(theme.fixed_spacing_4.replace(/\D/g, "")) : 0)
 					}}
 					noRowsRenderer={() => {
 						return <div className="emptyTransactions">
