@@ -2,6 +2,7 @@ import "./Logo.scss";
 import React from "react"
 import cx from "classnames"
 import { TypeProps } from "../Type/Type";
+import { useLogoController } from "./useLogoController";
 
 export type LogoProps = {
 	size?: TypeProps["size"];
@@ -11,8 +12,11 @@ export function Logo(props: LogoProps) {
 
 	const { className, size, ...spanProps } = props
 
+	const controller = useLogoController()
+
 	return <span
 		className={cx("Logo", className, `size-${size}`)}
+		onClick={controller.handleClick}
 		{...spanProps}
 	>
 		<span className="letter-1">E</span>

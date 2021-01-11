@@ -3,6 +3,8 @@
 .Logo {
   /** General styles */
 
+  cursor: pointer;
+
   & span {
     color: $black;
     font-weight: $text-bold;
