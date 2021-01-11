@@ -6,6 +6,7 @@ import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
 import { useTransactionListController } from "./useTransactionListController";
+import { Button } from "@material-ui/core";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -49,9 +50,18 @@ export function TransactionList(props: TransactionListProps) {
 						return controller.itemsByDates[index].items.length * 80 + 40
 					}}
 					noRowsRenderer={() => {
-						return <Type className="emptyTransactions">
-							{"No transactions"}
-						</Type>
+						return <div className="emptyTransactions">
+							<Type >
+								{"No transactions. Start by creating your first transaction."}
+							</Type>
+							<Button
+								color="primary"
+								variant="contained"
+								onClick={controller.handleCreate}
+							>
+								{"Create"}
+							</Button>
+						</div>
 					}}
 					rowRenderer={(rowProps) => {
 						const entry = controller.itemsByDates[rowProps.index]

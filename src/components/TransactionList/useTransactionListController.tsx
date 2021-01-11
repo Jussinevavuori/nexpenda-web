@@ -1,4 +1,6 @@
+import { useCallback } from "react"
 import { useStoreState } from "../../store"
+import { useTransactionCreatorDrawerOpenState } from "../TransactionCreatorDrawer/TransactionCreatorDrawerController"
 import { TransactionListProps } from "./TransactionList"
 
 export function useTransactionListController(props: TransactionListProps) {
@@ -10,10 +12,17 @@ export function useTransactionListController(props: TransactionListProps) {
 	const shouldShowSkeletons = !initializedItems || !initializedUser
 	const showSkeletons = props.showSkeletons && shouldShowSkeletons
 
+	const [createMenuOpen, setCreateMenuOpen] = useTransactionCreatorDrawerOpenState()
+
+	const handleCreate = useCallback(() => {
+		setCreateMenuOpen(true)
+	}, [setCreateMenuOpen])
+
 
 	return {
 		itemsByDates,
 		showSkeletons,
+		handleCreate
 	}
 
 }
