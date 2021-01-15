@@ -1,0 +1,13 @@
+@import "main";
+
+.SettingsSection {
+  margin: 0 auto $spacing-12;
+  max-width: 600px;
+  & > .sectionTitle {
+    display: block;
+    margin-bottom: $spacing-4;
+  }
+  & > .content {
+    display: block;
+  }
+}

@@ -7,6 +7,7 @@ import { FileUploader } from "../../components/FileUploader/FileUploaderControll
 import { FileDownloader } from "../../components/FileDownloader/FileDownloaderController";
 import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
+import { SettingsSection } from "./SettingsSection/SettingsSection";
 
 export type SettingsProps = {
 }
@@ -27,24 +28,24 @@ export function Settings(props: SettingsProps) {
 
 	return <div className="Settings">
 
-		<div className="profilePanel">
+		<SettingsSection className="profilePanel" sectionTitle="Profile">
 			<SettingsProfilePanel />
-		</div>
+			<Button
+				color="primary"
+				variant="contained"
+				onClick={controller.handleLogout}
+				startIcon={<LogoutIcon />}
+				fullWidth
+			>
+				{"Log out"}
+			</Button>
+		</SettingsSection>
 
-		<div className="fileHandlers">
+		<SettingsSection className="fileHandlers" sectionTitle="Export and import data">
 			<FileUploader />
 			<FileDownloader />
-		</div>
+		</SettingsSection>
 
-		<Button
-			color="primary"
-			variant="contained"
-			onClick={controller.handleLogout}
-			startIcon={<LogoutIcon />}
-			fullWidth
-		>
-			{"Log out"}
-		</Button>
 
-	</div>
+	</div >
 }

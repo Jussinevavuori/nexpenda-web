@@ -12,7 +12,7 @@ export function useTransactionListController(props: TransactionListProps) {
 	const shouldShowSkeletons = !initializedItems || !initializedUser
 	const showSkeletons = props.showSkeletons && shouldShowSkeletons
 
-	const [createMenuOpen, setCreateMenuOpen] = useTransactionCreatorDrawerOpenState()
+	const [, setCreateMenuOpen] = useTransactionCreatorDrawerOpenState()
 
 	const handleCreate = useCallback(() => {
 		setCreateMenuOpen(true)
