@@ -17,7 +17,7 @@ export class DeleteTransactionEvent extends HistoryEvent<
 
   constructor(transaction: Transaction) {
     super("transaction/delete", () => {
-      const json = transaction.toJson();
+      const json = transaction.toJsonInitializer();
       const put = store.getActions().transactions.putTransaction;
       return put(json);
     });

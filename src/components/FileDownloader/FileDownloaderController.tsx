@@ -22,7 +22,7 @@ export function FileDownloader(props: FileDownloaderProps) {
 		const spreadsheet = new TransactionSpreadsheet()
 
 		spreadsheet.createFile(transactions.map(t => ({
-			category: t.category,
+			category: t.category.value,
 			integerAmount: t.amount.value,
 			time: t.date.getTime(),
 			comment: t.comment,

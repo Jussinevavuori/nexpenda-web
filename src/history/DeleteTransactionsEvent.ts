@@ -19,7 +19,7 @@ export class DeleteTransactionsEvent extends HistoryEvent<
 
   constructor(transactions: Transaction[]) {
     super("transaction/delete", async () => {
-      const jsons = transactions.map((_) => _.toJson());
+      const jsons = transactions.map((_) => _.toJsonInitializer());
       const put = store.getActions().transactions.putTransaction;
       const results = await Promise.all(jsons.map((json) => put(json)));
       return results;

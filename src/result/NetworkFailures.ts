@@ -19,6 +19,7 @@ export type ServerFailureCode =
   | "auth/email-not-confirmed"
   | "auth/email-already-confirmed"
   | "mail/error"
+  | "database/access-failure"
   | "failure/unimplemented"
   | "failure/error"
   | "failure/unknown";

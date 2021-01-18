@@ -105,7 +105,7 @@ export function TransactionListItem(props: TransactionListItemProps) {
 		</div>
 		<div className="category">
 			<Type color="gray-800" size="md" variant="bold">
-				{props.transaction.category}
+				{props.transaction.category.value}
 			</Type>
 		</div>
 		<div className="comment">

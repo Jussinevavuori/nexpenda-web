@@ -5,6 +5,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
 import { useSmMedia } from "../../hooks/useMedia";
+import { Category } from "../../classes/Category";
 
 export type TransactionFormViewProps = {
 
@@ -39,7 +40,7 @@ export type TransactionFormViewProps = {
 		comment?: string;
 	};
 
-	categories: string[];
+	categories: Category[];
 
 	edit: boolean;
 
@@ -144,7 +145,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			fullWidth
 			size="small"
 			autoComplete
-			options={props.categories}
+			options={props.categories.map(_ => _.value)}
 			renderInput={(params) => (
 				<TextField
 					variant="outlined"

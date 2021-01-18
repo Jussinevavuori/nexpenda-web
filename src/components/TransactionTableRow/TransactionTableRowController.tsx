@@ -18,10 +18,10 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 	const deselectCategoryFilter = useStoreActions(_ => _.filters.deselectCategory)
 	const handleCategorySelect = useCallback(() => {
 		const category = props.transaction.category
-		if (categoryFilter.includes(category)) {
-			deselectCategoryFilter(category)
+		if (categoryFilter.includes(category.id)) {
+			deselectCategoryFilter(category.id)
 		} else {
-			selectCategoryFilter(category)
+			selectCategoryFilter(category.id)
 		}
 	}, [categoryFilter, deselectCategoryFilter, selectCategoryFilter, props.transaction])
 

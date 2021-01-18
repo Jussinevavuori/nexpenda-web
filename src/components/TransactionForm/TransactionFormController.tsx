@@ -49,7 +49,7 @@ export function TransactionForm(props: TransactionFormProps) {
 		latestEditTransactionId.current = editTransaction.id
 		setSign(editTransaction.amount.sign === 1 ? "+" : "-")
 		setAmount(editTransaction.amount.decimalValue.toFixed(2))
-		setCategory(editTransaction.category)
+		setCategory(editTransaction.category.value)
 		setComment(editTransaction.comment)
 		setTime(editTransaction.date)
 	}, [editTransaction])

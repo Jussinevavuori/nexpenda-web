@@ -52,9 +52,9 @@ export function useAnalyticsCategoriesController(props: AnalyticsCategoriesProps
 				: expensesRecord
 
 			// If new category, create entry to target
-			if (!target[transaction.category]) {
-				target[transaction.category] = {
-					category: transaction.category,
+			if (!target[transaction.category.value]) {
+				target[transaction.category.value] = {
+					category: transaction.category.value,
 					count: 0,
 					amount: new MoneyAmount(0),
 					percentageOfTotal: 0,
@@ -63,7 +63,7 @@ export function useAnalyticsCategoriesController(props: AnalyticsCategoriesProps
 			}
 
 			// Get and modify entry by counting the value
-			const entry = target[transaction.category]
+			const entry = target[transaction.category.value]
 			entry.count += 1
 			entry.amount.changeInternalValue().add(transaction.amount.value)
 		})

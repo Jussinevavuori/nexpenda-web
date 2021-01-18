@@ -1,5 +1,9 @@
 import { Service } from "./Service";
-import { JsonTransaction, Transaction } from "../classes/Transaction";
+import {
+  JsonTransaction,
+  JsonTransactionInitializer,
+  Transaction,
+} from "../classes/Transaction";
 import { Success } from "../result/Success";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 
@@ -28,7 +32,9 @@ export class TransactionService extends Service {
    * Post a transaction (in json, without id or uid) and return
    * created json transaction response as Result.
    */
-  static async postTransaction(json: Omit<JsonTransaction, "id" | "uid">) {
+  static async postTransaction(
+    json: Omit<JsonTransactionInitializer, "id" | "uid">
+  ) {
     const result = await Service.post("/transactions", json, {
       service: { enableLogoutOnUnauthorized: true },
     });
@@ -49,7 +55,7 @@ export class TransactionService extends Service {
    * Post many transactions by IDs and return created json transactions as result.
    */
   static async postTransactions(
-    jsons: Array<Omit<JsonTransaction, "id" | "uid">>
+    jsons: Array<Omit<JsonTransactionInitializer, "id" | "uid">>
   ) {
     const result = await Service.post(
       `/transactions/mass/post`,
@@ -124,7 +130,7 @@ export class TransactionService extends Service {
    * Put a transaction on the server as json (upsert) and
    * return upserted json transaction as Result.
    */
-  static async putTransaction(json: JsonTransaction) {
+  static async putTransaction(json: JsonTransactionInitializer) {
     const result = await Service.put(`/transactions/${json.id}`, json, {
       service: { enableLogoutOnUnauthorized: true },
     });
@@ -145,7 +151,7 @@ export class TransactionService extends Service {
    * Patch a transaction on the server as json (partial update)
    * and return updated json transaction as Result.
    */
-  static async patchTransaction(json: JsonTransaction) {
+  static async patchTransaction(json: JsonTransactionInitializer) {
     const result = await Service.patch(`/transactions/${json.id}`, json, {
       service: { enableLogoutOnUnauthorized: true },
     });

@@ -52,7 +52,7 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 		</div>
 		<div className="category">
 			<Type variant="bold" color="gray-800" size="md">
-				{props.transaction.category}
+				{props.transaction.category.value}
 			</Type>
 		</div>
 		<div className="amount">

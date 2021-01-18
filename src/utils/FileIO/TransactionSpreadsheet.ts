@@ -1,11 +1,11 @@
 import * as yup from "yup";
-import { JsonTransaction } from "../../classes/Transaction";
+import { JsonTransactionInitializer } from "../../classes/Transaction";
 import { Spreadsheet } from "./Spreadsheet";
 
 /* eslint-disable no-useless-escape */
 
 export type IOJsonTransaction = Pick<
-  JsonTransaction,
+  JsonTransactionInitializer,
   "category" | "comment" | "integerAmount" | "time"
 >;
 

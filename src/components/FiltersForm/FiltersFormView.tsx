@@ -1,7 +1,7 @@
 import "./FiltersForm.scss";
 import React from "react"
 import { Sort as FiltersIcon, Clear as ClearIcon } from "@material-ui/icons";
-import { Button, TextField, InputAdornment, IconButton, Slider, Chip } from "@material-ui/core";
+import { Button, TextField, InputAdornment, IconButton, Slider } from "@material-ui/core";
 import { Type } from "../Type/Type";
 
 export type FiltersFormViewProps = {
@@ -12,19 +12,13 @@ export type FiltersFormViewProps = {
 
 	onResetSearchTermFilter(): void;
 	onResetAmountFilter(): void;
-	onResetCategoriesFilter(): void;
-
-	categories: string[];
 
 	searchTermFilter: string;
 	minAmountFilter: number;
 	maxAmountFilter: number;
-	categoriesFilter: string[];
 
 	setSearchTermFilter(value: string): void;
 	setAmountFilter(values: [number | undefined, number | undefined]): void;
-	selectCategoryFilter(value: string | string[]): void;
-	deselectCategoryFilter(value: string): void;
 
 	minPossibleAmount: number;
 	maxPossibleAmount: number;
@@ -126,42 +120,6 @@ export function FiltersFormView(props: FiltersFormViewProps) {
 					marks={[{ value: 0, label: "0" }]}
 					valueLabelDisplay="off"
 				/>
-
-			</div>
-
-		</section>
-
-		<section className="category">
-
-			<div className="sectionLabel">
-
-				<Type className="label">
-					{"Categories"}
-				</Type>
-
-				<Button
-					variant="text"
-					onClick={props.onResetCategoriesFilter}
-				>
-					{"Reset"}
-				</Button>
-
-			</div>
-
-			<div className="categoryChips">
-
-				{props.categories.map(category => {
-					const selected = props.categoriesFilter.includes(category)
-					return <Chip
-						key={category}
-						onClick={() => {
-							if (selected) { props.deselectCategoryFilter(category) }
-							else { props.selectCategoryFilter(category) }
-						}}
-						color={selected ? "primary" : "default"}
-						label={category}
-					/>
-				})}
 
 			</div>
 

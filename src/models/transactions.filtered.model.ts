@@ -75,7 +75,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
         }
 
         // Filter by category (if categories filter activated)
-        if (categories.length > 0 && !categories.includes(item.category)) {
+        if (categories.length > 0 && !categories.includes(item.category.id)) {
           return false;
         }
 
@@ -86,7 +86,7 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
             searchTerm,
             ...[
               item.amount.format(),
-              item.category,
+              item.category.value,
               item.comment,
               lightFormat(item.date, "d.M.yyyy"),
             ]

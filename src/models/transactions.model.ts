@@ -27,12 +27,19 @@ import {
   SelectedTransactionsModel,
   selectedTransactionsModel,
 } from "./transactions.selected.model";
+import { Category, JsonCategory } from "../classes/Category";
+import { CategoryService } from "../services/CategoryService";
 
 export interface TransactionsModel {
   /**
    * All user's current transactions
    */
   items: Transaction[];
+
+  /**
+   * All different categories
+   */
+  categories: Category[];
 
   /**
    * Has the user loaded the transactions
@@ -70,11 +77,6 @@ export interface TransactionsModel {
   sort: TransactionSortModel;
 
   /**
-   * All different categories
-   */
-  categories: Computed<TransactionsModel, string[]>;
-
-  /**
    * Minimum possible amount
    */
   minimumAmount: Computed<TransactionsModel, MoneyAmount>;
@@ -92,13 +94,23 @@ export interface TransactionsModel {
     void,
     any,
     StoreModel,
-    ReturnType<typeof TransactionService["getTransactions"]>
+    Promise<{
+      categories: PromiseType<
+        ReturnType<typeof CategoryService["getCategories"]>
+      >;
+      transactions: PromiseType<
+        ReturnType<typeof TransactionService["getTransactions"]>
+      >;
+    }>
   >;
 
   /**
    * Action called by get transaction thunk to update get result to state
    */
-  _getTransactions: Action<TransactionsModel, JsonTransaction[]>;
+  _getTransactions: Action<
+    TransactionsModel,
+    { transactions: JsonTransaction[]; categories: JsonCategory[] }
+  >;
 
   /**
    * Post transaction to state
@@ -191,11 +203,13 @@ export interface TransactionsModel {
    */
   onAuthChanged: ThunkOn<TransactionsModel, any, StoreModel>;
 
-  _clearTransactions: Action<TransactionsModel, void>;
+  _clearAll: Action<TransactionsModel, void>;
 }
 
 export const transactionsModel: TransactionsModel = {
   items: [],
+
+  categories: [],
 
   initialized: false,
 
@@ -213,10 +227,6 @@ export const transactionsModel: TransactionsModel = {
 
   sort: transactionSortModel,
 
-  categories: computed((state) =>
-    state.items.map((_) => _.category).filter((c, i, a) => a.indexOf(c) === i)
-  ),
-
   minimumAmount: computed((state) => {
     return state.items.reduce((min, next) => {
       return next.amount.value < min.value ? next.amount : min;
@@ -229,20 +239,34 @@ export const transactionsModel: TransactionsModel = {
     }, new MoneyAmount(0));
   }),
 
-  getTransactions: thunk(async (actions, payload) => {
-    const result = await TransactionService.getTransactions();
-    if (result.isSuccess()) {
-      actions._getTransactions(result.value);
+  getTransactions: thunk(async (actions) => {
+    const transactionsResult = await TransactionService.getTransactions();
+    const categoriesResult = await CategoryService.getCategories();
+    if (transactionsResult.isSuccess() && categoriesResult.isSuccess()) {
+      actions._getTransactions({
+        transactions: transactionsResult.value,
+        categories: categoriesResult.value,
+      });
     }
-    return result;
+    return {
+      transactions: transactionsResult,
+      categories: categoriesResult,
+    };
   }),
 
-  _getTransactions: action((state, jsons) => {
-    state.items = jsons.map((json) => new Transaction(json));
+  _getTransactions: action((state, payload) => {
+    state.categories = payload.categories.map((json) => new Category(json));
+    state.items = payload.transactions.map(
+      (json) =>
+        new Transaction(
+          json,
+          state.categories.find((_) => _.id === json.categoryId)
+        )
+    );
     state.initialized = true;
   }),
 
-  postTransaction: thunk(async (actions, json) => {
+  postTransaction: thunk(async (actions, json, store) => {
     const result = await TransactionService.postTransaction(json);
     if (result.isSuccess()) {
       actions._postTransaction(result.value);
@@ -363,7 +387,7 @@ export const transactionsModel: TransactionsModel = {
       const [loggedOut, loggedIn] = target.resolvedTargets;
       switch (target.type) {
         case loggedOut:
-          actions._clearTransactions();
+          actions._clearAll();
           break;
         case loggedIn:
           actions.getTransactions();
@@ -372,7 +396,8 @@ export const transactionsModel: TransactionsModel = {
     }
   ),
 
-  _clearTransactions: action((state) => {
+  _clearAll: action((state) => {
     state.items = [];
+    state.categories = [];
   }),
 };
