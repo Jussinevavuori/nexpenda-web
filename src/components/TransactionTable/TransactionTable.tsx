@@ -6,6 +6,7 @@ import { AutoSizer, List } from "react-virtualized";
 import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";
 import { useTransactionTableController } from "./useTransactionTableController";
+import { motion } from "framer-motion";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
@@ -31,7 +32,7 @@ export function TransactionTable(props: TransactionTableProps) {
 
 	return <div className="TransactionTable">
 		<TransactionTableHeader />
-		<div className="listContainer">
+		<motion.div layout="position" className="listContainer">
 			<AutoSizer className="autoSizer">
 				{
 					autoSizer => {
@@ -56,6 +57,6 @@ export function TransactionTable(props: TransactionTableProps) {
 					}
 				}
 			</AutoSizer>
-		</div>
+		</motion.div>
 	</div>
 }

@@ -76,15 +76,16 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	/**
 	 * Create transaction drawer
 	 */
-	const [, setCreateDrawerOpen] = useTransactionCreatorDrawerOpenState()
+	const [createDrawerOpen, setCreateDrawerOpen] = useTransactionCreatorDrawerOpenState()
 	const handleCreate = useCallback(() => {
-		setCreateDrawerOpen(true)
-	}, [setCreateDrawerOpen])
+		setCreateDrawerOpen(!createDrawerOpen)
+	}, [createDrawerOpen, setCreateDrawerOpen])
 
 	return {
 		selection,
 		allSelected,
 		isSelectionActive,
+		createDrawerOpen,
 		handleSelectAll,
 		handleDeselectAll,
 		handleEdit,

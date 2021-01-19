@@ -76,7 +76,7 @@ export abstract class Spreadsheet<T extends object> {
       const validation = await this.schema.validate(transformed);
       return new Success(validation);
     } catch (e) {
-      return new ErrorFailure<T>(e);
+      return new ErrorFailure<T>(e, { silent: true });
     }
   }
 
@@ -90,52 +90,40 @@ export abstract class Spreadsheet<T extends object> {
    */
   async readFile(input: HTMLInputElement) {
     try {
-      /**
-       * Parse to array buffer
-       */
+      // Parse as text
       const arrayBuffer = await FileIO.readFileAsArrayBuffer(input);
       if (arrayBuffer.isFailure()) {
         return new SpreadsheetReadFileFailure<SpreadsheetReadFileResult<T>>();
       }
 
-      /**
-       * Read to JSON
-       */
+      // Create workbook and read to JSON
       const workbook = XLSX.read(arrayBuffer.value, { type: "buffer" });
       this._workbook = workbook;
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(sheet, { raw: true });
 
-      /**
-       * Parse rows
-       */
+      // Parse rows
       const rowParsers = json.map((row) => this.parseRow(row));
       const parsedRows = await Promise.all(rowParsers);
       const succeededRows = Success.All(parsedRows);
       const failedRows = Failure.All(parsedRows);
 
-      /**
-       * Warn on failed rows
-       */
+      // Warn on failed rows
       if (failedRows.length > 0) {
-        console.warn(`Failed parsing ${failedRows.length} rows`);
+        console.warn(`Failed parsing ${failedRows.length} rows`, failedRows);
       }
 
-      /**
-       * Return succeeded rows and count of failed rows
-       */
+      // Return succeeded rows and count of failed rows
       return new Success<SpreadsheetReadFileResult<T>>({
         rows: succeededRows.map((_) => _.value),
         succeeded: succeededRows.length,
         failed: failedRows.length,
         total: succeededRows.length + failedRows.length,
       });
-
-      /**
-       * Catch errors and return errors as failures
-       */
     } catch (error) {
-      return new ErrorFailure<SpreadsheetReadFileResult<T>>(error);
+      return new ErrorFailure<SpreadsheetReadFileResult<T>>(error, {
+        silent: true,
+      });
     }
   }
 

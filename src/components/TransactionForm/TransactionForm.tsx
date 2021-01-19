@@ -16,6 +16,10 @@ export type TransactionFormProps = {
 	 * this transaction instead of creating a new transaction.
 	 */
 	editTransaction?: Transaction;
+
+	variant?: "vertical" | "horizontal";
+
+	hideTitle?: boolean;
 }
 
 export function TransactionForm(props: TransactionFormProps) {
@@ -31,11 +35,16 @@ export function TransactionForm(props: TransactionFormProps) {
 
 	const largerLayout = useSmMedia()
 
-	return <form className="TransactionForm" onSubmit={handleSubmit}>
+	return <form
+		className={`TransactionForm ${props.variant || "vertical"}`}
+		onSubmit={handleSubmit}
+	>
 
-		<Type >
-			{controller.edit ? "Edit transaction" : "New transaction"}
-		</Type>
+		{
+			props.hideTitle ? null : <Type className="title">
+				{controller.edit ? "Edit transaction" : "New transaction"}
+			</Type>
+		}
 
 		<div className="transactionAmountContainer">
 
@@ -111,14 +120,15 @@ export function TransactionForm(props: TransactionFormProps) {
 				controller.onCategoryChange(v)
 			}}
 			id="transaction-category"
+			className="transaction-category"
 			freeSolo
 			openOnFocus
 			autoHighlight
 			selectOnFocus
 			disableClearable
-			fullWidth
 			size="small"
 			autoComplete
+			fullWidth
 			options={controller.categories.map(_ => _.value)}
 			renderInput={(params) => (
 				<TextField
@@ -139,6 +149,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			value={controller.comment}
 			onChange={e => controller.onCommentChange(e.target.value)}
 			id="transaction-comment"
+			className="transaction-comment"
 			variant="outlined"
 			name="comment"
 			type="text"
@@ -154,6 +165,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			onChange={d => controller.onTimeChange(d as Date)}
 			format="dd/MM/yyyy"
 			id="transaction-time"
+			className="transaction-time"
 			variant={largerLayout ? "inline" : "dialog"}
 			inputVariant="outlined"
 			label="Date"
@@ -168,7 +180,9 @@ export function TransactionForm(props: TransactionFormProps) {
 			type="submit"
 			color="primary"
 			variant="contained"
+			className="submit"
 			size="small"
+			fullWidth
 		>
 			{controller.edit ? "Save" : "Create"}
 		</Button>

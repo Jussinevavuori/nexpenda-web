@@ -2,23 +2,46 @@
 @import "reset";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;900&display=swap");
 
+/** Make poppins the default font */
 body * {
   font-family: $poppins;
 }
 
+/** 1vh and 100vh fixes */
 :root {
   --full-vh: 100vh;
   --vh: 1vh;
 }
 
+/** Remove shadows on contained buttons */
 .MuiButton-root.MuiButton-contained {
   box-shadow: none;
 }
 
+/** Fix the <Icon /> compnent when other styles override it */
+.MuiIcon-root.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+/** Hide scrollbar on small screens */
 ::-webkit-scrollbar {
   display: none;
 }
 
+/** Show custom scrollbar on large screens */
 @media (min-width: $bp-md) {
   ::-webkit-scrollbar {
     width: 8px;

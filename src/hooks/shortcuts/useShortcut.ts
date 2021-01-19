@@ -5,6 +5,7 @@ type ShortcutKeyCombination = {
   ctrl?: boolean;
   alt?: boolean;
   shift?: boolean;
+  enableForInputs?: boolean;
 };
 
 type ShortcutHandler = () => MaybePromise<void>;
@@ -17,6 +18,7 @@ export function useShortcut(
     (e: KeyboardEvent) => {
       // If focused on an input, cancel action
       if (
+        !shortcut.enableForInputs &&
         ["INPUT", "TEXTFIELD"].includes(document.activeElement?.tagName ?? "")
       ) {
         return;

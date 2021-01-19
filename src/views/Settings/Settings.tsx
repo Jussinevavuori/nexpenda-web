@@ -3,8 +3,8 @@ import React from "react"
 import { Button, CircularProgress } from "@material-ui/core";
 import { ExitToApp as LogoutIcon } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
-import { FileUploader } from "../../components/FileUploader/FileUploaderController";
-import { FileDownloader } from "../../components/FileDownloader/FileDownloaderController";
+import { FileUploader } from "../../components/FileUploader/FileUploader";
+import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
 import { SettingsSection } from "./SettingsSection/SettingsSection";

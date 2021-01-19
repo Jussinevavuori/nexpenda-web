@@ -7,7 +7,8 @@ import {
 	Clear as DeselectAllIcon,
 	Delete as DeleteIcon,
 	Edit as EditIcon,
-	Add as CreateIcon
+	Add as CreateIcon,
+	Remove as RemoveIcon
 } from "@material-ui/icons"
 import { Button, IconButton, } from "@material-ui/core";
 import { useMdMedia } from "../../../hooks/useMedia";
@@ -117,7 +118,7 @@ export function ActionsPanel(props: ActionsPanelProps) {
 						variant="contained"
 						color="primary"
 						className="button createButton"
-						startIcon={<CreateIcon />}
+						startIcon={controller.createDrawerOpen ? <RemoveIcon /> : <CreateIcon />}
 						onClick={controller.handleCreate}
 					>
 						<Type variant="boldcaps" color="white">

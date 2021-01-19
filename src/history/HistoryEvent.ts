@@ -60,6 +60,7 @@ export class HistoryEvent<T = void> {
     if (this._restored) {
       return new HistoryEventAlreadyRestoredFailure();
     }
+    this._restored = true;
     return this.restorationStrategy();
   }
 }

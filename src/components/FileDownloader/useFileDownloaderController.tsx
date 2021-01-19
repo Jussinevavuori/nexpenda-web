@@ -1,13 +1,9 @@
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
-import { FileDownloaderView } from "./FileDownloaderView"
+import { FileDownloaderProps } from "./FileDownloader"
 
-export type FileDownloaderProps = {
-
-}
-
-export function FileDownloader(props: FileDownloaderProps) {
+export function useFileDownloaderController(props: FileDownloaderProps) {
 
 	const transactions = useStoreState(_ => _.transactions.items)
 
@@ -38,8 +34,8 @@ export function FileDownloader(props: FileDownloaderProps) {
 
 	}, [setLoading, notify, transactions])
 
-	return <FileDownloaderView
-		handleClick={handleDownload}
-		loading={loading}
-	/>
+	return {
+		loading,
+		handleClick: handleDownload,
+	}
 }

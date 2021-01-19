@@ -2,20 +2,22 @@ import "./FileDownloader.scss";
 import React from "react"
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 import { GetApp as DownloadIcon } from "@material-ui/icons"
+import { useFileDownloaderController } from "./useFileDownloaderController";
 
-export type FileDownloaderViewProps = {
-	handleClick(): void;
-	loading?: boolean;
+export type FileDownloaderProps = {
 }
 
-export function FileDownloaderView(props: FileDownloaderViewProps) {
+export function FileDownloader(props: FileDownloaderProps) {
+
+	const controller = useFileDownloaderController(props)
+
 	return <EnhancedButton
 		component="label"
 		color="primary"
-		onClick={props.handleClick}
+		onClick={controller.handleClick}
 		fullWidth
 		variant="outlined"
-		loading={props.loading}
+		loading={controller.loading}
 		endIcon={<DownloadIcon />}
 	>
 		{"Download file"}

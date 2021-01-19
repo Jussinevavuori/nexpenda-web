@@ -2,11 +2,31 @@
 
 .TransactionForm {
   display: grid;
-  grid-auto-flow: row;
-  grid-gap: 1rem;
-  padding: $spacing-sm;
+  grid-template:
+    "title" auto
+    "amount" auto
+    "category" auto
+    "comment" auto
+    "time" auto
+    "submit" auto / 100%;
+  gap: $spacing-4;
+
+  &.horizontal {
+    width: 100%;
+    grid-template: "amount amount category category" auto "comment comment time submit" auto/ 1fr 1fr 1fr 1fr auto;
+    gap: $spacing-4 $spacing-2;
+    @include lg {
+      grid-template: "amount category comment time submit" auto/ 1fr 1fr 1fr 1fr auto;
+      gap: 0 $spacing-2;
+    }
+  }
+
+  & .title {
+    grid-area: title;
+  }
 
   & .transactionAmountContainer {
+    grid-area: amount;
     width: 100%;
     display: flex;
     align-items: center;
@@ -21,9 +41,24 @@
     }
   }
 
+  & .transaction-category {
+    grid-area: category;
+  }
+
+  & .transaction-comment {
+    grid-area: comment;
+  }
+
+  & .transaction-time {
+    grid-area: time;
+  }
+
+  & .submit {
+    grid-area: submit;
+  }
+
   @include md {
-    padding: $spacing-md;
-    grid-gap: 1.5rem;
+    gap: 1.5rem;
     width: 22rem;
   }
 }

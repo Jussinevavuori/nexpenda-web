@@ -10,6 +10,7 @@
   grid-template:
     "header" auto
     "panel" auto
+    "transactionForm" auto
     "transactionsList" 1fr / 100%;
 
   & .header {
@@ -25,6 +26,16 @@
     padding: 0;
     margin-top: 0;
     @include md {
+      padding: 0 $spacing-16 $spacing-8;
+    }
+  }
+
+  & .transactionForm {
+    grid-area: transactionForm;
+    width: 100%;
+    padding: 0;
+    transition: padding 200ms;
+    &.open {
       padding: 0 $spacing-16 $spacing-8;
     }
   }

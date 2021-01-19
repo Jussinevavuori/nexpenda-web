@@ -3,13 +3,9 @@ import { useStoreActions } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet"
 import { IOJsonTransaction, TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
-import { FileUploaderView } from "./FileUploaderView"
+import { FileUploaderProps } from "./FileUploader"
 
-export type FileUploaderProps = {
-
-}
-
-export function FileUploader(props: FileUploaderProps) {
+export function useFileUploaderController(props: FileUploaderProps) {
 
 	const postTransactions = useStoreActions(_ => _.transactions.postTransactions)
 
@@ -19,10 +15,30 @@ export function FileUploader(props: FileUploaderProps) {
 
 	const notify = useStoreActions(_ => _.notification.notify)
 
+	/**
+	 * Canceling resets all status
+	 */
+	function handleCancel() {
+		setResult(undefined)
+		setParsing(false)
+		setUploading(false)
+	}
+
+	/**
+	 * 
+	 * @param e Change event from an input[type="file"] element after a file
+	 * has been uploaded.
+	 */
 	async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+
+		// Mark as parsing
 		setParsing(true)
+
+		// Read the result to a transaction spreadsheet
 		const transactionSpreadsheet = new TransactionSpreadsheet()
 		const readResult = await transactionSpreadsheet.readFile(e.target)
+
+		// If read succeeded, show result, else show error
 		if (readResult.isSuccess()) {
 			const s = readResult.value.succeeded
 			const t = readResult.value.total
@@ -32,39 +48,32 @@ export function FileUploader(props: FileUploaderProps) {
 			notify({ message: `Error reading file` })
 			setResult(null)
 		}
+
+		// Reset parsing
 		setParsing(false)
 	}
 
-	function handleCancel() {
-		setResult(undefined)
-		setParsing(false)
-		setUploading(false)
-	}
-
+	/**
+	 * After a file has been read, handle uploading the rows to the
+	 * server.
+	 */
 	async function handleUpload() {
 
-		/**
-		 * Get all rows that are to be uploaded and ensure at the least
-		 * some exist
-		 */
+		// Find all rows to upload, if none exist, notify error and stop
 		const rowsToUpload = result?.rows
-
 		if (!rowsToUpload) {
+			setParsing(false)
+			setUploading(false)
 			return notify({
-				message: "There are not rows to upload",
+				message: "No transactions found in file",
 				severity: "warning",
 			})
 		}
 
-		/**
-		 * Set uploading status
-		 */
+		// Start uploading indicator
 		setUploading(true)
 
-		/**
-		 * Chunkify to chunks of a hundred rows each and post one chunk
-		 * by one
-		 */
+		// Chunkify rows to chunks of hundreds and post those chunks one by one
 		const chunks = DataUtils.chunkify(rowsToUpload, 100)
 		const postResults: PromiseType<ReturnType<typeof postTransactions>>[] = []
 		for (const chunk of chunks) {
@@ -72,9 +81,7 @@ export function FileUploader(props: FileUploaderProps) {
 			postResults.push(result)
 		}
 
-		/**
-		 * Check whether all chunks were succesfully posted
-		 */
+		// Check whether all chunks were succesfully posted
 		if (postResults.every(_ => _.isSuccess())) {
 
 			// Count total number of rows uploaded
@@ -88,18 +95,14 @@ export function FileUploader(props: FileUploaderProps) {
 
 			// Notify success
 			notify({
-				message: `${total} transactions succesfully uploaded.`,
+				message: `${total} / ${rowsToUpload.length} transactions succesfully uploaded.`,
 				severity: "success"
 			})
 		}
 
-		/**
-		 * Check if any failures occured
-		 */
+		// Check if any failures occured
 		const failure = postResults.find(_ => _.isFailure())
-		if (!failure) {
-			return
-		} else if (failure.isFailure()) {
+		if (failure && failure.isFailure()) {
 			notify({
 				message:
 					failure.reason === "invalidServerResponse"
@@ -109,18 +112,18 @@ export function FileUploader(props: FileUploaderProps) {
 			})
 		}
 
-		/**
-		 * Update loading status
-		 */
+		// Rest status
 		setUploading(false)
+		setResult(undefined)
+		setParsing(false)
 	}
 
-	return <FileUploaderView
-		handleFileUpload={handleFileUpload}
-		handleUpload={handleUpload}
-		handleCancel={handleCancel}
-		parsing={parsing}
-		uploading={uploading}
-		result={result}
-	/>
+	return {
+		handleFileUpload,
+		handleUpload,
+		handleCancel,
+		parsing,
+		uploading,
+		result,
+	}
 }

@@ -24,14 +24,14 @@ export function NotificationView(props: NotificationViewProps) {
 		action.buttonType === "iconButton"
 			? <IconButton
 				color="inherit"
-				children={<Icon children={action.iconButtonIcon ?? "notification_important"} />}
+				children={<Icon>{action.iconButtonIcon ?? "notification_important"}</Icon>}
 				onClick={action.onClick}
 			/>
 			: <Button
 				color="inherit"
 				children={action.label}
-				startIcon={action.startIcon ? <Icon children={action.startIcon} /> : null}
-				endIcon={action.endIcon ? <Icon children={action.endIcon} /> : null}
+				startIcon={action.startIcon ? <Icon>{action.startIcon}</Icon> : null}
+				endIcon={action.endIcon ? <Icon>{action.endIcon}</Icon> : null}
 				onClick={action.onClick}
 			/>
 		: null
@@ -43,7 +43,7 @@ export function NotificationView(props: NotificationViewProps) {
 			open={open}
 			onClose={() => setOpen(false)}
 			onExited={props.onClose}
-			autoHideDuration={props.notification.timeout}
+			autoHideDuration={1000000 || props.notification.timeout}
 			anchorOrigin={{
 				vertical: props.notification.verticalPosition,
 				horizontal: props.notification.horizontalPosition,

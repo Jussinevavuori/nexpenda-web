@@ -6,6 +6,7 @@ import { Header } from "../Header/Header";
 import { FiltersDrawer } from "../FiltersDrawer/FiltersDrawer";
 import { useAppFrameController } from "./useAppFrameController";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
+import { useMdMedia } from "../../hooks/useMedia";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -15,10 +16,12 @@ export function AppFrame(props: AppFrameProps) {
 
 	const controller = useAppFrameController(props)
 
+	const isDesktopLayout = useMdMedia()
+
 	return <div className="AppFrame">
 		{
 			controller.initialized && <>
-				<TransactionCreatorDrawer />
+				{isDesktopLayout ? null : <TransactionCreatorDrawer />}
 				<TransactionEditorDrawer />
 				<FiltersDrawer />
 			</>
