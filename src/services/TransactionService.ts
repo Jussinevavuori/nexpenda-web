@@ -1,12 +1,12 @@
 import { Service } from "./Service";
 import {
+  CompressedTransactionsJson,
   JsonTransaction,
   JsonTransactionInitializer,
   Transaction,
 } from "../classes/Transaction";
 import { Success } from "../result/Success";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
-import { CompressedData, CompressedDataJson } from "../classes/CompressedData";
 
 export class TransactionService extends Service {
   /**
@@ -19,10 +19,10 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (CompressedData.isCompressedDataJson(result.value.data)) {
+    } else if (Transaction.isCompressedJson(result.value.data)) {
       return new Success(result.value.data);
     } else {
-      return new InvalidServerResponseFailure<CompressedDataJson>(
+      return new InvalidServerResponseFailure<CompressedTransactionsJson>(
         result.value,
         "transactions/get"
       );

@@ -8,7 +8,7 @@ import {
   ThunkOn,
   thunkOn,
 } from "easy-peasy";
-import { JsonTransaction, Transaction } from "../classes/Transaction";
+import { Transaction } from "../classes/Transaction";
 import { TransactionService } from "../services/TransactionService";
 import { StoreModel } from "../store";
 import { MoneyAmount } from "../classes/MoneyAmount";
@@ -27,8 +27,6 @@ import {
   SelectedTransactionsModel,
   selectedTransactionsModel,
 } from "./transactions.selected.model";
-import { CompressedData } from "../classes/CompressedData";
-import { Category } from "../classes/Category";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 
 export interface TransactionsModel {
@@ -74,7 +72,7 @@ export interface TransactionsModel {
   /**
    * All categories
    */
-  categories: Computed<TransactionsModel, Category[]>;
+  categories: Computed<TransactionsModel, Transaction["category"][]>;
 
   /**
    * Current transactions grouped and sorted by dates
@@ -254,7 +252,9 @@ export const transactionsModel: TransactionsModel = {
   getTransactions: thunk(async (actions) => {
     const result = await TransactionService.getTransactions();
     if (result.isSuccess()) {
-      actions.setTransactionsToState(CompressedData.parse(result.value));
+      actions.setTransactionsToState(
+        Transaction.parseCompressedData(result.value)
+      );
     } else {
       actions.setTransactionsToState([]);
     }
@@ -287,10 +287,7 @@ export const transactionsModel: TransactionsModel = {
   postTransaction: thunk(async (actions, json, store) => {
     const result = await TransactionService.postTransaction(json);
     if (result.isSuccess()) {
-      const transaction = createTransaction(
-        result.value,
-        store.getState().categories
-      );
+      const transaction = new Transaction(result.value);
       actions.upsertTransactionToState(transaction);
     }
     return result;
@@ -300,10 +297,7 @@ export const transactionsModel: TransactionsModel = {
     const result = await TransactionService.postTransactions(jsons);
     if (result.isSuccess()) {
       result.value.forEach((json) => {
-        const transaction = createTransaction(
-          json,
-          store.getState().categories
-        );
+        const transaction = new Transaction(json);
         actions.upsertTransactionToState(transaction);
       });
     }
@@ -369,10 +363,7 @@ export const transactionsModel: TransactionsModel = {
   putTransaction: thunk(async (actions, json, store) => {
     const result = await TransactionService.putTransaction(json);
     if (result.isSuccess()) {
-      const transaction = createTransaction(
-        result.value,
-        store.getState().categories
-      );
+      const transaction = new Transaction(result.value);
       actions.upsertTransactionToState(transaction);
     }
     return result;
@@ -381,10 +372,7 @@ export const transactionsModel: TransactionsModel = {
   patchTransaction: thunk(async (actions, json, store) => {
     const result = await TransactionService.patchTransaction(json);
     if (result.isSuccess()) {
-      const transaction = createTransaction(
-        result.value,
-        store.getState().categories
-      );
+      const transaction = new Transaction(result.value);
       actions.upsertTransactionToState(transaction);
     }
     return result;
@@ -405,26 +393,3 @@ export const transactionsModel: TransactionsModel = {
     }
   ),
 };
-
-/**
- * Creates a transaction from the json and utilizes an existing category
- * object if one is available - if not, creates a new category object
- * with the correct details.
- *
- * @param json JsonTransaction
- * @param categories All existing categories
- */
-function createTransaction(
-  json: JsonTransaction,
-  categories: Category[]
-): Transaction {
-  const category =
-    categories.find((_) => _.id === json.category.id) ??
-    new Category({
-      id: json.category.id,
-      value: json.category.value,
-      incomeIcon: json.category.incomeIcon,
-      expenseIcon: json.category.expenseIcon,
-    });
-  return new Transaction(json, category);
-}

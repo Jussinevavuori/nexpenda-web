@@ -1,67 +1,132 @@
 import * as uuid from "uuid";
 import { MoneyAmount } from "./MoneyAmount";
-import { object, string, number, ObjectSchema } from "yup";
+import { array, object, string, number, ObjectSchema } from "yup";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
-import { Category, DefaultCategory } from "./Category";
+import { Category } from "./Category";
 
+/**
+ * The (JSON) object format for a transaction.
+ */
 export type JsonTransaction = {
+  /** The transaction's ID */
   id: string;
+  /** The transaction's timestamp */
   time: number;
+  /** The transaction's size */
   integerAmount: number;
+  /** The transaction's comment */
   comment?: string | undefined;
+  /** The transaction's category and metadata */
   category: {
+    /** Category ID */
     id: string;
+    /** Category's name */
     value: string;
+    /** Category's income icon */
     incomeIcon: string;
+    /** Category's expense icon */
     expenseIcon: string;
   };
 };
 
+/**
+ * The (JSON) object format for an object to send to the server
+ * for creating or updating a transaction. Leaves the category data
+ * out, lets the server handle the categories.
+ */
 export type JsonTransactionInitializer = Omit<JsonTransaction, "category"> & {
+  /** Category's value / name */
   category: string;
 };
 
-export type CompressedJsonTransaction = {
-  id: string; // ID
-  t: number; // Time (epoch)
-  cid: string; // Category ID
-  a: number; // Amount
-  c?: string | undefined; // Comment
+/**
+ * The (JSON) object format of a compressed dataset sent to the user
+ * by the server.
+ */
+export type CompressedTransactionsJson = {
+  /** Transactions as compressed objects */
+  t: {
+    /** ID */
+    id: string;
+    /** Time */
+    t: number;
+    /** Category ID (refers to a category in `c`) */
+    cid: string;
+    /** Integer amount */
+    a: number;
+    /** Comment */
+    c?: string | undefined;
+  }[];
+  /** Categories as compressed objects */
+  c: {
+    /** ID */
+    id: string;
+    /** Value (name) */
+    v: string;
+    /** Income icon */
+    ii: string;
+    /** Expense icon */
+    ei: string;
+  }[];
 };
 
-// Get today's date for comparison in order to avoid creating
-// too many Date objects
-const today = new Date();
-
 export class Transaction {
-  public date: Date;
-  public category: Category;
-  public comment: string;
-  public amount: MoneyAmount;
-  public id: string;
+  /**
+   * Transaction ID
+   */
+  public readonly id: string;
 
-  constructor(
-    json: Omit<JsonTransaction, "category"> & {
-      category?: JsonTransaction["category"];
-    },
-    category: Category
-  ) {
+  /**
+   * Transaction date and time
+   */
+  public readonly date: Date;
+
+  /**
+   * Transaction comment
+   */
+  public readonly comment: string;
+
+  /**
+   * Transaction amount
+   */
+  public readonly amount: MoneyAmount;
+
+  /**
+   * Transaction category
+   */
+  public readonly category: Category;
+
+  /**
+   * Create transaction from a JSON transaction.
+   *
+   * @param json Crea
+   */
+  constructor(json: JsonTransaction) {
+    // Timestamp to date
     this.date = new Date(json.time);
-    this.category = category || DefaultCategory;
+
+    // Create category object as category
+    this.category = new Category(json.category);
+
+    // Ensure json comment string, default to empty string
     this.comment = json.comment || "";
+
+    // Create MoneyAmount object from integerAmount, ensure integer
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
+
+    // Use ID (if none exists, create new UUID)
     this.id = json.id || uuid.v4();
   }
 
   /**
-   * Is the transaction upcoming, i.e. is its date in the future
+   * Is the transaction upcoming, i.e. is its date in the future?
    */
   get isUpcoming() {
     return DateUtils.compareDate(this.date, ">", today);
   }
 
   /**
-   * JsonSchema defining shape of JsonTransactions for yup validation
+   * Schema for validating that objects match the JsonTransaction format.
    */
   static JsonSchema: ObjectSchema<JsonTransaction> = object({
     id: string().required(),
@@ -77,9 +142,10 @@ export class Transaction {
   }).required();
 
   /**
-   * JsonSchema defining shape of initializer JsonTransactions for yup validation
+   * Schema for validating that objects match the JsonTransactionInitializer
+   * format.
    */
-  static JsonInitializerSchema: ObjectSchema<JsonTransactionInitializer> = object(
+  static InitializerJsonSchema: ObjectSchema<JsonTransactionInitializer> = object(
     {
       id: string().required(),
       time: number().positive().integer().required(),
@@ -90,20 +156,37 @@ export class Transaction {
   ).required();
 
   /**
-   * JsonSchema defining shape of Compressed JsonTransactions for yup validation
+   * Schema for validating that objects match the
+   * CompressedTransactionsDataJson format.
    */
-  static CompressedJsonSchema: ObjectSchema<CompressedJsonTransaction> = object(
+  static CompressedJsonSchema: ObjectSchema<CompressedTransactionsJson> = object(
     {
-      id: string().required(),
-      t: number().positive().integer().required(),
-      cid: string().required(),
-      a: number().integer().required(),
-      c: string(),
+      t: array()
+        .of(
+          object({
+            id: string().required(),
+            t: number().positive().integer().required(),
+            cid: string().required(),
+            a: number().integer().required(),
+            c: string(),
+          }).required()
+        )
+        .required(),
+      c: array()
+        .of(
+          object({
+            id: string().required(),
+            v: string().required(),
+            ii: string().required(),
+            ei: string().required(),
+          }).required()
+        )
+        .required(),
     }
   ).required();
 
   /**
-   * Is the value a valid JsonTransaction
+   * Validates the value as a JsonTransaction
    */
   static isJson(arg: any): arg is JsonTransaction {
     try {
@@ -115,18 +198,21 @@ export class Transaction {
   }
 
   /**
-   * Is the value a valid JsonTransaction
+   * Validates the value as a JsonTransactionInitializer
    */
-  static isJsonInitializer(arg: any): arg is JsonTransactionInitializer {
+  static isInitializerJson(arg: any): arg is JsonTransactionInitializer {
     try {
-      Transaction.JsonInitializerSchema.validateSync(arg);
+      Transaction.InitializerJsonSchema.validateSync(arg);
       return true;
     } catch (error) {
       return false;
     }
   }
 
-  static isCompressedJson(arg: any): arg is CompressedJsonTransaction {
+  /**
+   * Validiates the value as a CompressedJsonTransaction
+   */
+  static isCompressedJson(arg: any): arg is CompressedTransactionsJson {
     try {
       Transaction.CompressedJsonSchema.validateSync(arg);
       return true;
@@ -136,24 +222,17 @@ export class Transaction {
   }
 
   /**
-   * Is the value an array of valid JsonTransactions
+   * Validiates the value as an array of JsonTransactions
    */
   static isJsonArray(arg: any): arg is JsonTransaction[] {
     return Array.isArray(arg) && arg.every(Transaction.isJson);
   }
 
   /**
-   * Is the value an array of valid JsonTransactions
+   * Validiates the value as an array of JsonTransactionInitializers
    */
-  static isJsonInitializerArray(arg: any): arg is JsonTransactionInitializer[] {
-    return Array.isArray(arg) && arg.every(Transaction.isJsonInitializer);
-  }
-
-  /**
-   * Is the value an array of valid JsonTransactions
-   */
-  static isCompressedJsonArray(arg: any): arg is CompressedJsonTransaction[] {
-    return Array.isArray(arg) && arg.every(Transaction.isCompressedJson);
+  static isInitializerJsonArray(arg: any): arg is JsonTransactionInitializer[] {
+    return Array.isArray(arg) && arg.every(Transaction.isInitializerJson);
   }
 
   /**
@@ -175,7 +254,7 @@ export class Transaction {
   }
 
   /**
-   * Convert Transaction to JsonTransaction
+   * Convert Transaction to JsonTransactionInitializer
    */
   toJsonInitializer(): JsonTransactionInitializer {
     return {
@@ -188,34 +267,33 @@ export class Transaction {
   }
 
   /**
-   * Convert Transaction to JsonTransaction
+   * Parse compressed data to a list of transactions. Transactions with
+   * invalid category ids will use an error category.
+   *
+   * @param data Compressed Transactions Data Json
    */
-  toCompressedJson(): CompressedJsonTransaction {
-    return {
-      id: this.id,
-      t: this.date.getTime(),
-      cid: this.category.id,
-      a: this.amount.value,
-      c: this.comment,
-    };
-  }
-
-  /**
-   * Create from Compressed
-   */
-  static fromCompressed(
-    c: CompressedJsonTransaction,
-    category: Category
-  ): Transaction {
-    return new Transaction(
-      {
-        id: c.id,
-        time: c.t,
-        integerAmount: c.a,
-        comment: c.c,
-      },
-      category
-    );
+  static parseCompressedData(data: CompressedTransactionsJson): Transaction[] {
+    return data.t.map((transaction) => {
+      // Find category or use default value for invalid categories
+      const category = data.c.find((c) => c.id === transaction.cid) ?? {
+        id: "category_not_found",
+        v: "Category not found",
+        ii: "❓",
+        ei: "❓",
+      };
+      return new Transaction({
+        id: transaction.id,
+        integerAmount: transaction.a,
+        comment: transaction.c,
+        time: transaction.t,
+        category: {
+          id: category.id,
+          value: category.v,
+          incomeIcon: category.ii,
+          expenseIcon: category.ei,
+        },
+      });
+    });
   }
 
   /**
@@ -248,3 +326,7 @@ export class Transaction {
     }
   }
 }
+
+// Get today's date for comparison in order to avoid creating
+// too many Date objects
+const today = new Date();
