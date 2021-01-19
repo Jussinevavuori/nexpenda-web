@@ -1,0 +1,15 @@
+@import "main";
+
+.AnalyticsMonthlyAverages {
+  & > ul {
+    & > li {
+      padding-bottom: $spacing-4;
+      & > *:first-child {
+        margin-bottom: $spacing-1;
+      }
+    }
+  }
+  & > .buttons {
+    padding-top: $spacing-4;
+  }
+}

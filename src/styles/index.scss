@@ -15,7 +15,7 @@ body * {
 
 /** Remove shadows on contained buttons */
 .MuiButton-root.MuiButton-contained {
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 /** Fix the <Icon /> compnent when other styles override it */

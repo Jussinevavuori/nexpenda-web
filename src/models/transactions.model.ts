@@ -97,6 +97,16 @@ export interface TransactionsModel {
    */
   maximumAmount: Computed<TransactionsModel, MoneyAmount>;
 
+  /**
+   * Earliest date
+   */
+  earliestDate: Computed<TransactionsModel, Date>;
+
+  /**
+   * Latest date
+   */
+  latestDate: Computed<TransactionsModel, Date>;
+
   //==============================================================//
   // ACTIONS
   //==============================================================//
@@ -247,6 +257,24 @@ export const transactionsModel: TransactionsModel = {
     return state.items.reduce((max, next) => {
       return next.amount.value > max.value ? next.amount : max;
     }, new MoneyAmount(0));
+  }),
+
+  earliestDate: computed((state) => {
+    return new Date(
+      state.items.reduce((minTs, next) => {
+        const ts = next.date.getTime();
+        return ts < minTs ? ts : minTs;
+      }, Number.MAX_SAFE_INTEGER)
+    );
+  }),
+
+  latestDate: computed((state) => {
+    return new Date(
+      state.items.reduce((maxTs, next) => {
+        const ts = next.date.getTime();
+        return ts > maxTs ? ts : maxTs;
+      }, 0)
+    );
   }),
 
   getTransactions: thunk(async (actions) => {

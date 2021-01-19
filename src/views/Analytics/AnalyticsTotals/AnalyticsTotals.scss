@@ -1,6 +1,12 @@
 @import "main";
 
 .AnalyticsTotals {
+  & .subtotal,
+  & .total {
+    & > *:first-child {
+      margin-bottom: $spacing-1;
+    }
+  }
   & .subtotal {
     margin-top: $spacing-4;
   }

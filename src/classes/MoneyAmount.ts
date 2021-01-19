@@ -10,10 +10,7 @@ export class MoneyAmount {
    * @throws Error if input value is not an integer.
    */
   constructor(cents: number) {
-    if (Math.trunc(cents) !== cents) {
-      throw new Error("Cannot construct money amount from non-integer value");
-    }
-    this._value = cents;
+    this._value = Math.trunc(cents);
   }
 
   /**

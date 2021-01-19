@@ -16,7 +16,7 @@
     grid-template: "amount amount category category" auto "comment comment time submit" auto/ 1fr 1fr 1fr 1fr auto;
     gap: $spacing-4 $spacing-2;
     @include lg {
-      grid-template: "amount category comment time submit" auto/ 1fr 1fr 1fr 1fr auto;
+      grid-template: "amount category comment time submit" auto/ 5fr 4.2fr 3.5fr 3.6fr auto;
       gap: 0 $spacing-2;
     }
   }

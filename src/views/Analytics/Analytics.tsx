@@ -8,6 +8,7 @@ import { AnalyticsPanel } from "./AnalyticsPanel/AnalyticsPanel";
 import { AnalyticsTotals } from "./AnalyticsTotals/AnalyticsTotals";
 import { AnalyticsCategories } from "./AnalyticsCategories/AnalyticsCategories";
 import { AnalyticsAllTimeLine } from "./AnalyticsAllTimeLine/AnalyticsAllTimeLine";
+import { AnalyticsMonthlyAverages } from "./AnalyticsMonthlyAverages/AnalyticsMonthlyAverages";
 // import { useAnalyticsController } from "./useAnalyticsController";
 
 export type AnalyticsProps = {
@@ -38,6 +39,7 @@ export function Analytics(props: AnalyticsProps) {
 				<Masonry gutter={theme.spacing_4}>
 					<AnalyticsTotals wrapInAnalyticsBlock />
 					<AnalyticsCategories wrapInAnalyticsBlock />
+					<AnalyticsMonthlyAverages wrapInAnalyticsBlock />
 				</Masonry>
 			</ResponsiveMasonry>
 		</section>
