@@ -1,10 +1,18 @@
 import { action, Action } from "easy-peasy";
 
 export type TransactionSortModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   /**
    * Current sorting strategy
    */
   strategy: TransactionSortStrategy;
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   /**
    * Toggle the current sorting strategy by a sorting property
@@ -18,7 +26,15 @@ export type TransactionSortModel = {
 };
 
 export const transactionSortModel: TransactionSortModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   strategy: "date-descending",
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   toggle: action((state, property) => {
     // Define all carousels: each toggle on a property will toggle the sort to

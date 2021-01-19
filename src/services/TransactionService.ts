@@ -6,6 +6,7 @@ import {
 } from "../classes/Transaction";
 import { Success } from "../result/Success";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { CompressedData, CompressedDataJson } from "../classes/CompressedData";
 
 export class TransactionService extends Service {
   /**
@@ -18,10 +19,10 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Transaction.isJsonArray(result.value.data)) {
+    } else if (CompressedData.isCompressedDataJson(result.value.data)) {
       return new Success(result.value.data);
     } else {
-      return new InvalidServerResponseFailure<JsonTransaction[]>(
+      return new InvalidServerResponseFailure<CompressedDataJson>(
         result.value,
         "transactions/get"
       );

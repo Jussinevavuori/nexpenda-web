@@ -107,7 +107,7 @@ export class MoneyAmount {
    * Static method for formatting a value
    */
   static format(value: number) {
-    return (value/100).toLocaleString("fi-FI", {
+    return (value / 100).toLocaleString("fi-FI", {
       style: "currency",
       currency: "EUR",
     });
@@ -128,7 +128,6 @@ export class MoneyAmount {
       unit = "B";
     }
     let scaledAmount = Math.floor(value / (100 * scale));
-    console.log(value, sign, scale, unit, scaledAmount);
     return `${sign}${scaledAmount} ${unit}`;
   }
 

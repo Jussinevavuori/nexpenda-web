@@ -4,6 +4,10 @@ import { StoreModel } from "../store";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export interface SelectedTransactionsModel {
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
   /**
    * All user's current transactions after filtering by date
    */
@@ -25,6 +29,10 @@ export interface SelectedTransactionsModel {
 }
 
 export const selectedTransactionsModel: SelectedTransactionsModel = {
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
   items: computed(
     [
       (_, storeState) => storeState.transactions.items,

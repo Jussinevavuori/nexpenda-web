@@ -4,6 +4,10 @@ import { MINIMUM_DATE, MAXIMUM_DATE } from "../constants";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 
 export type IntervalModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   /**
    * Date filter start limit.
    *
@@ -23,6 +27,72 @@ export type IntervalModel = {
    * Defaults to end date of current month.
    */
   endDate: Date;
+
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
+  /**
+   * Is the current date interval a signle day
+   */
+  isDay: Computed<IntervalModel, boolean>;
+
+  /**
+   * Is the current date interval a single full week
+   */
+  isWeek: Computed<IntervalModel, boolean>;
+
+  /**
+   * Is the current date interval a single full month
+   */
+  isMonth: Computed<IntervalModel, boolean>;
+
+  /**
+   * Is the current date interval a single full year
+   */
+  isYear: Computed<IntervalModel, boolean>;
+
+  /**
+   * Are all selected ("infinite interval")
+   */
+  isAll: Computed<IntervalModel, boolean>;
+
+  /**
+   * Interval length in days
+   */
+  length: Computed<IntervalModel, number>;
+
+  /**
+   * Does the current period include today
+   */
+  includesToday: Computed<IntervalModel, boolean>;
+
+  /**
+   * Smarter display string that displays in format...
+   *
+   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
+   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
+   *
+   * Else falls back to `displayString` property and the
+   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` format.
+   */
+  smartDisplayString: Computed<IntervalModel, string>;
+
+  /**
+   * Display string of format
+   *
+   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` if dates
+   * are in different years.
+   *
+   * For example
+   * - `1.12. - 7.12.2020`
+   * - `30.12.1999 - 5.1.2000`
+   */
+  displayString: Computed<IntervalModel, string>;
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   /**
    * Action to manually specify the start date filter
@@ -91,179 +161,23 @@ export type IntervalModel = {
    * / custom interval depending on which one it currently is
    */
   now: Action<IntervalModel, void>;
-
-  /**
-   * Is the current date interval a signle day
-   */
-  isDay: Computed<IntervalModel, boolean>;
-
-  /**
-   * Is the current date interval a single full week
-   */
-  isWeek: Computed<IntervalModel, boolean>;
-
-  /**
-   * Is the current date interval a single full month
-   */
-  isMonth: Computed<IntervalModel, boolean>;
-
-  /**
-   * Is the current date interval a single full year
-   */
-  isYear: Computed<IntervalModel, boolean>;
-
-  /**
-   * Are all selected ("infinite interval")
-   */
-  isAll: Computed<IntervalModel, boolean>;
-
-  /**
-   * Interval length in days
-   */
-  length: Computed<IntervalModel, number>;
-
-  /**
-   * Does the current period include today
-   */
-  includesToday: Computed<IntervalModel, boolean>;
-
-  /**
-   * Smarter display string that displays in format...
-   *
-   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
-   * - `MMMM, yyyy` (e.g. `July, 1999`) when `isMonth` is `true`
-   *
-   * Else falls back to `displayString` property and the
-   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` format.
-   */
-  smartDisplayString: Computed<IntervalModel, string>;
-
-  /**
-   * Display string of format
-   *
-   * `d.M. - d.M.yyyy` or `d.M.yyyy - d.M.yyyy` if dates
-   * are in different years.
-   *
-   * For example
-   * - `1.12. - 7.12.2020`
-   * - `30.12.1999 - 5.1.2000`
-   */
-  displayString: Computed<IntervalModel, string>;
 };
 
 export const intervalModel: IntervalModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   startDate: datefns.startOfMonth(new Date()),
 
   endDate: datefns.endOfMonth(new Date()),
 
-  setStartDate: action((state, date) => {
-    if (DateUtils.compareDate(date, ">", state.endDate)) {
-      throw new Error("Start date cannot be after end date");
-    } else {
-      state.startDate = date;
-    }
-  }),
-
-  setEndDate: action((state, date) => {
-    if (DateUtils.compareDate(date, "<", state.startDate)) {
-      throw new Error("End date cannot be before start date");
-    } else {
-      state.endDate = date;
-    }
-  }),
-
-  setInterval: action((state, dates) => {
-    if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
-      throw new Error("End date cannot be before start date");
-    } else {
-      state.startDate = dates.startDate;
-      state.endDate = dates.endDate;
-    }
-  }),
-
-  nextInterval: action((state) => {
-    if (state.isAll) return;
-    const newStartDate = datefns.addDays(state.endDate, 1);
-    if (state.isYear) {
-      state.endDate = datefns.endOfYear(newStartDate);
-    } else if (state.isMonth) {
-      state.endDate = datefns.endOfMonth(newStartDate);
-    } else if (state.isWeek) {
-      state.endDate = datefns.endOfWeek(newStartDate, { weekStartsOn: 1 });
-    } else {
-      state.endDate = datefns.addDays(newStartDate, state.length);
-    }
-    state.startDate = newStartDate;
-  }),
-
-  previousInterval: action((state) => {
-    if (state.isAll) return;
-    const newEndDate = datefns.subDays(state.startDate, 1);
-    if (state.isYear) {
-      state.startDate = datefns.startOfYear(newEndDate);
-    } else if (state.isMonth) {
-      state.startDate = datefns.startOfMonth(newEndDate);
-    } else if (state.isWeek) {
-      state.startDate = datefns.startOfWeek(newEndDate, { weekStartsOn: 1 });
-    } else {
-      state.startDate = datefns.subDays(newEndDate, state.length);
-    }
-    state.endDate = newEndDate;
-  }),
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   length: computed((state) => {
     return datefns.differenceInDays(state.startDate, state.endDate);
-  }),
-
-  dayInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfDay(date);
-    state.endDate = datefns.endOfDay(date);
-  }),
-
-  weekInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfWeek(date, { weekStartsOn: 1 });
-    state.endDate = datefns.endOfWeek(date, { weekStartsOn: 1 });
-  }),
-
-  monthInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfMonth(date);
-    state.endDate = datefns.endOfMonth(date);
-  }),
-
-  yearInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfYear(date);
-    state.endDate = datefns.endOfYear(date);
-  }),
-
-  allInterval: action((state) => {
-    state.startDate = MINIMUM_DATE;
-    state.endDate = MAXIMUM_DATE;
-  }),
-
-  now: action((state) => {
-    const today = new Date();
-    if (state.isAll) {
-      return;
-    } else if (state.isYear) {
-      state.startDate = datefns.startOfYear(today);
-      state.endDate = datefns.endOfYear(today);
-    } else if (state.isMonth) {
-      state.startDate = datefns.startOfMonth(today);
-      state.endDate = datefns.endOfMonth(today);
-    } else if (state.isWeek) {
-      state.startDate = datefns.startOfWeek(today, { weekStartsOn: 1 });
-      state.endDate = datefns.endOfWeek(today, { weekStartsOn: 1 });
-    } else if (state.isDay) {
-      state.startDate = datefns.startOfDay(today);
-      state.endDate = datefns.endOfDay(today);
-    } else {
-      state.endDate = datefns.endOfDay(datefns.addDays(today, state.length));
-      state.startDate = datefns.startOfDay(today);
-    }
   }),
 
   isAll: computed((state) => {
@@ -331,5 +245,115 @@ export const intervalModel: IntervalModel = {
       " - " +
       datefns.format(state.endDate, "d.M.yyyy")
     );
+  }),
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
+
+  setStartDate: action((state, date) => {
+    if (DateUtils.compareDate(date, ">", state.endDate)) {
+      throw new Error("Start date cannot be after end date");
+    } else {
+      state.startDate = date;
+    }
+  }),
+
+  setEndDate: action((state, date) => {
+    if (DateUtils.compareDate(date, "<", state.startDate)) {
+      throw new Error("End date cannot be before start date");
+    } else {
+      state.endDate = date;
+    }
+  }),
+
+  setInterval: action((state, dates) => {
+    if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
+      throw new Error("End date cannot be before start date");
+    } else {
+      state.startDate = dates.startDate;
+      state.endDate = dates.endDate;
+    }
+  }),
+
+  nextInterval: action((state) => {
+    if (state.isAll) return;
+    const newStartDate = datefns.addDays(state.endDate, 1);
+    if (state.isYear) {
+      state.endDate = datefns.endOfYear(newStartDate);
+    } else if (state.isMonth) {
+      state.endDate = datefns.endOfMonth(newStartDate);
+    } else if (state.isWeek) {
+      state.endDate = datefns.endOfWeek(newStartDate, { weekStartsOn: 1 });
+    } else {
+      state.endDate = datefns.addDays(newStartDate, state.length);
+    }
+    state.startDate = newStartDate;
+  }),
+
+  previousInterval: action((state) => {
+    if (state.isAll) return;
+    const newEndDate = datefns.subDays(state.startDate, 1);
+    if (state.isYear) {
+      state.startDate = datefns.startOfYear(newEndDate);
+    } else if (state.isMonth) {
+      state.startDate = datefns.startOfMonth(newEndDate);
+    } else if (state.isWeek) {
+      state.startDate = datefns.startOfWeek(newEndDate, { weekStartsOn: 1 });
+    } else {
+      state.startDate = datefns.subDays(newEndDate, state.length);
+    }
+    state.endDate = newEndDate;
+  }),
+
+  dayInterval: action((state) => {
+    const date = state.isAll ? new Date() : state.startDate;
+    state.startDate = datefns.startOfDay(date);
+    state.endDate = datefns.endOfDay(date);
+  }),
+
+  weekInterval: action((state) => {
+    const date = state.isAll ? new Date() : state.startDate;
+    state.startDate = datefns.startOfWeek(date, { weekStartsOn: 1 });
+    state.endDate = datefns.endOfWeek(date, { weekStartsOn: 1 });
+  }),
+
+  monthInterval: action((state) => {
+    const date = state.isAll ? new Date() : state.startDate;
+    state.startDate = datefns.startOfMonth(date);
+    state.endDate = datefns.endOfMonth(date);
+  }),
+
+  yearInterval: action((state) => {
+    const date = state.isAll ? new Date() : state.startDate;
+    state.startDate = datefns.startOfYear(date);
+    state.endDate = datefns.endOfYear(date);
+  }),
+
+  allInterval: action((state) => {
+    state.startDate = MINIMUM_DATE;
+    state.endDate = MAXIMUM_DATE;
+  }),
+
+  now: action((state) => {
+    const today = new Date();
+    if (state.isAll) {
+      return;
+    } else if (state.isYear) {
+      state.startDate = datefns.startOfYear(today);
+      state.endDate = datefns.endOfYear(today);
+    } else if (state.isMonth) {
+      state.startDate = datefns.startOfMonth(today);
+      state.endDate = datefns.endOfMonth(today);
+    } else if (state.isWeek) {
+      state.startDate = datefns.startOfWeek(today, { weekStartsOn: 1 });
+      state.endDate = datefns.endOfWeek(today, { weekStartsOn: 1 });
+    } else if (state.isDay) {
+      state.startDate = datefns.startOfDay(today);
+      state.endDate = datefns.endOfDay(today);
+    } else {
+      state.endDate = datefns.endOfDay(datefns.addDays(today, state.length));
+      state.startDate = datefns.startOfDay(today);
+    }
   }),
 };

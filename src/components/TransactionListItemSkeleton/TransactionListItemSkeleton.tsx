@@ -12,12 +12,14 @@ export function TransactionListItemSkeleton(props: TransactionListItemSkeletonPr
 
 	return <div className="TransactionListItemSkeleton">
 		{
-			shouldShowHeader && <div className="TransactionListItemSkeletonHeader" >
-				<Skeleton
-					width={{ min: 48, max: 64, unit: "px" }}
-					height="100%"
-				/>
-			</div>
+			shouldShowHeader && (
+				<div className="TransactionListItemSkeletonHeader" >
+					<Skeleton
+						width={{ min: 48, max: 64, unit: "px" }}
+						height="100%"
+					/>
+				</div>
+			)
 		}
 		<div className="TransactionListItemSkeletonBody">
 			<div className="icon">
@@ -46,5 +48,5 @@ export function TransactionListItemSkeleton(props: TransactionListItemSkeletonPr
 				/>
 			</div>
 		</div>
-	</div>
+	</div >
 }

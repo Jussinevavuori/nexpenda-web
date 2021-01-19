@@ -155,7 +155,6 @@ export function TransactionForm(props: TransactionFormProps) {
 		const result = editTransaction
 			? await putTransaction({
 				id: editTransaction.id,
-				uid: editTransaction.uid,
 				integerAmount,
 				category: category.trim(),
 				time: time.getTime(),

@@ -3,23 +3,46 @@ import { HistoryEvent } from "../history/HistoryEvent";
 import { EventNotFoundFailure } from "../result/HistoryFailures";
 
 export type HistoryModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   maxSize: number;
 
   history: HistoryEvent<any>[];
 
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
   latest: Computed<HistoryModel, HistoryEvent<any> | undefined>;
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   pushEvent: Action<HistoryModel, HistoryEvent<any>>;
 
   removeEvent: Action<HistoryModel, string>;
 
+  //==============================================================//
+  // THUNKS
+  //==============================================================//
+
   restoreEvent: Thunk<HistoryModel, string>;
 };
 
 export const historyModel: HistoryModel = {
-  maxSize: 100,
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
 
+  maxSize: 100,
   history: [],
+
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   latest: computed((state) => {
     if (state.history.length === 0) {
@@ -28,6 +51,10 @@ export const historyModel: HistoryModel = {
       return state.history[state.history.length - 1];
     }
   }),
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   pushEvent: action((state, event) => {
     if (state.history.length === state.maxSize) {
@@ -39,6 +66,10 @@ export const historyModel: HistoryModel = {
   removeEvent: action((state, eventId) => {
     state.history = state.history.filter((_) => _.id !== eventId);
   }),
+
+  //==============================================================//
+  // THUNKS
+  //==============================================================//
 
   restoreEvent: thunk((actions, eventId, { getState }) => {
     const history = getState().history;

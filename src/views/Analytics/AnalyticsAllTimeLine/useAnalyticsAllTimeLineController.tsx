@@ -28,8 +28,6 @@ export function useAnalyticsAllTimeLineController(props: AnalyticsAllTimeLinePro
 				monthTotals[month] += transaction.amount.decimalValue
 			})
 
-			console.log(monthTotals)
-
 			const firstMonth = Math.min(...Object.keys(monthTotals).map(Number))
 			const lastMonth = Math.max(...Object.keys(monthTotals).map(Number))
 

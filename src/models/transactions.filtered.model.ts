@@ -6,6 +6,10 @@ import { DataUtils } from "../utils/DataUtils/DataUtils";
 import { lightFormat } from "date-fns";
 
 export interface FilteredTransactionsModel {
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
   /**
    * All user's current transactions after filterign
    */
@@ -27,63 +31,33 @@ export interface FilteredTransactionsModel {
 }
 
 export const filteredTransactionsModel: FilteredTransactionsModel = {
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
+
   items: computed(
     [
       (_, storeState) => storeState.transactions.items,
-      (_, storeState) => storeState.interval.startDate,
-      (_, storeState) => storeState.interval.endDate,
-      (_, storeState) => storeState.filters.searchTerm,
-      (_, storeState) => storeState.filters.minAmount,
-      (_, storeState) => storeState.filters.maxAmount,
-      (_, storeState) => storeState.filters.categories,
-      (_, storeState) => storeState.filters.hiddenIds,
+      (_, storeState) => storeState.interval,
+      (_, storeState) => storeState.filters,
     ],
-    (
-      items,
-      startDate,
-      endDate,
-      searchTerm,
-      minAmount,
-      maxAmount,
-      categories,
-      hiddenIds
-    ) => {
+    (items, interval, filters) => {
       return items.filter((item) => {
-        // Filter by hidden
-        if (hiddenIds.includes(item.id)) {
-          return false;
-        }
-
         // Filter by start date
-        if (DateUtils.compareDate(item.date, "<", startDate)) {
+        if (DateUtils.compareDate(item.date, "<", interval.startDate)) {
           return false;
         }
 
         // Filter by end date
-        if (DateUtils.compareDate(item.date, ">", endDate)) {
-          return false;
-        }
-
-        // Filter by minimum amount
-        if (item.amount.value < minAmount) {
-          return false;
-        }
-
-        // Filter by maximum amount
-        if (item.amount.value > maxAmount) {
-          return false;
-        }
-
-        // Filter by category (if categories filter activated)
-        if (categories.length > 0 && !categories.includes(item.category.id)) {
+        if (DateUtils.compareDate(item.date, ">", interval.endDate)) {
           return false;
         }
 
         // Filter by search term
         if (
-          searchTerm &&
+          filters.searchTerm &&
           !DataUtils.textSearch(
-            searchTerm,
+            filters.searchTerm,
             ...[
               item.amount.format(),
               item.category.value,
@@ -91,6 +65,29 @@ export const filteredTransactionsModel: FilteredTransactionsModel = {
               lightFormat(item.date, "d.M.yyyy"),
             ]
           )
+        ) {
+          return false;
+        }
+
+        // Filter by minimum amount
+        if (item.amount.value < filters.minAmount) {
+          return false;
+        }
+
+        // Filter by maximum amount
+        if (item.amount.value > filters.maxAmount) {
+          return false;
+        }
+
+        // Filter by hidden IDs
+        if (filters.hiddenIds.includes(item.id)) {
+          return false;
+        }
+
+        // Filter by category (if categories filter activated)
+        if (
+          filters.categories.length > 0 &&
+          !filters.categories.includes(item.category.id)
         ) {
           return false;
         }

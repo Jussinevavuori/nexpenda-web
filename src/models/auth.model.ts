@@ -4,11 +4,9 @@ import { AuthService } from "../services/AuthService";
 import { StoreModel } from "../store";
 
 export interface AuthModel {
-  /**
-   * Initialized state: has the profile been fetched at the least once
-   */
-  initialized: boolean;
-  _setInitialized: Action<AuthModel, boolean>;
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
 
   /**
    * Currently logged in user or null if none logged in
@@ -16,9 +14,9 @@ export interface AuthModel {
   user: Auth | null;
 
   /**
-   * Computed property for whether the user is currently logged in
+   * Initialized state: has the profile been fetched at the least once
    */
-  isLoggedIn: Computed<AuthModel, boolean>;
+  initialized: boolean;
 
   /**
    * Current access token for authentication in memory for security purposes.
@@ -27,25 +25,42 @@ export interface AuthModel {
    */
   accessToken: string | null;
 
-  /**
-   * Function to set the access token
-   */
-  _setAccessToken: Action<AuthModel, string>;
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   /**
-   * Action to set the current user with partial user JSON object
+   * Computed property for whether the user is currently logged in
    */
-  _login: Action<AuthModel, JsonAuth>;
+  isLoggedIn: Computed<AuthModel, boolean>;
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   /**
-   * Action to update the user to the state after succesful update action
+   * Sets the initialized state
    */
-  _update: Action<AuthModel, JsonAuth>;
+  setInitialized: Action<AuthModel, boolean>;
+
+  /**
+   * Sets the access token
+   */
+  setAccessToken: Action<AuthModel, string>;
+
+  /**
+   * Sets the current user with partial user JSON object
+   */
+  setAuthToState: Action<AuthModel, JsonAuth>;
 
   /**
    * Action to set the current user to null
    */
-  _logout: Action<AuthModel, void>;
+  clearState: Action<AuthModel, void>;
+
+  //==============================================================//
+  // THUNKS
+  //==============================================================//
 
   /**
    * Function to get the currently logged in user's profile data and apply it
@@ -175,51 +190,60 @@ export interface AuthModel {
  * Implementation of the authentication model
  */
 export const authModel: AuthModel = {
-  initialized: false,
-  _setInitialized: action((state, boolean) => {
-    state.initialized = boolean;
-  }),
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
 
+  initialized: false,
   user: null,
+  accessToken: null,
+
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   isLoggedIn: computed((state) => Boolean(state.user)),
 
-  accessToken: null,
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
-  _setAccessToken: action((state, newAccessToken) => {
+  setInitialized: action((state, boolean) => {
+    state.initialized = boolean;
+  }),
+
+  setAccessToken: action((state, newAccessToken) => {
     state.accessToken = newAccessToken;
   }),
 
-  _login: action((state, json) => {
+  setAuthToState: action((state, json) => {
     if (Auth.isJson(json)) {
       state.user = new Auth(json);
     }
   }),
 
-  _update: action((state, json) => {
-    if (Auth.isJson(json)) {
-      state.user = new Auth(json);
-    }
-  }),
-
-  _logout: action((state) => {
+  clearState: action((state) => {
     state.user = null;
     state.accessToken = null;
   }),
 
+  //==============================================================//
+  // THUNKS
+  //==============================================================//
+
   getProfile: thunk(async (actions, payload) => {
     const profile = await AuthService.getProfile();
     if (profile.isSuccess()) {
-      actions._login(profile.value);
+      actions.setAuthToState(profile.value);
     }
-    actions._setInitialized(true);
+    actions.setInitialized(true);
     return profile;
   }),
 
   updateProfile: thunk(async (actions, payload) => {
     const profile = await AuthService.updateProfile(payload);
     if (profile.isSuccess()) {
-      actions._update(profile.value);
+      actions.setAuthToState(profile.value);
     }
     return profile;
   }),
@@ -233,7 +257,7 @@ export const authModel: AuthModel = {
     if (result.isSuccess()) {
       const profile = await AuthService.getProfile();
       if (profile.isSuccess()) {
-        actions._login(profile.value);
+        actions.setAuthToState(profile.value);
       }
     }
     return result;
@@ -244,7 +268,7 @@ export const authModel: AuthModel = {
     if (result.isSuccess()) {
       const profile = await AuthService.getProfile();
       if (profile.isSuccess()) {
-        actions._login(profile.value);
+        actions.setAuthToState(profile.value);
       }
     }
     return result;
@@ -278,7 +302,7 @@ export const authModel: AuthModel = {
   logout: thunk(async (actions, payload) => {
     const result = await AuthService.logout();
     if (result.isSuccess()) {
-      actions._logout();
+      actions.clearState();
     }
     return result;
   }),

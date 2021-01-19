@@ -6,15 +6,27 @@ import { Category, DefaultCategory } from "./Category";
 
 export type JsonTransaction = {
   id: string;
-  uid: string;
   time: number;
-  categoryId: string;
   integerAmount: number;
   comment?: string | undefined;
+  category: {
+    id: string;
+    value: string;
+    incomeIcon: string;
+    expenseIcon: string;
+  };
 };
 
-export type JsonTransactionInitializer = Omit<JsonTransaction, "categoryId"> & {
+export type JsonTransactionInitializer = Omit<JsonTransaction, "category"> & {
   category: string;
+};
+
+export type CompressedJsonTransaction = {
+  id: string; // ID
+  t: number; // Time (epoch)
+  cid: string; // Category ID
+  a: number; // Amount
+  c?: string | undefined; // Comment
 };
 
 // Get today's date for comparison in order to avoid creating
@@ -27,15 +39,18 @@ export class Transaction {
   public comment: string;
   public amount: MoneyAmount;
   public id: string;
-  public uid: string;
 
-  constructor(json: JsonTransaction, category?: Category) {
+  constructor(
+    json: Omit<JsonTransaction, "category"> & {
+      category?: JsonTransaction["category"];
+    },
+    category: Category
+  ) {
     this.date = new Date(json.time);
     this.category = category || DefaultCategory;
     this.comment = json.comment || "";
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
     this.id = json.id || uuid.v4();
-    this.uid = json.uid;
   }
 
   /**
@@ -50,24 +65,40 @@ export class Transaction {
    */
   static JsonSchema: ObjectSchema<JsonTransaction> = object({
     id: string().required(),
-    uid: string().required(),
     time: number().positive().integer().required(),
-    categoryId: string().required(),
     integerAmount: number().integer().required(),
     comment: string(),
+    category: object({
+      id: string().required(),
+      value: string().required(),
+      incomeIcon: string().required(),
+      expenseIcon: string().required(),
+    }).required(),
   }).required();
 
   /**
-   * JsonSchema defining shape of JsonTransactions for yup validation
+   * JsonSchema defining shape of initializer JsonTransactions for yup validation
    */
   static JsonInitializerSchema: ObjectSchema<JsonTransactionInitializer> = object(
     {
       id: string().required(),
-      uid: string().required(),
       time: number().positive().integer().required(),
       category: string().required(),
       integerAmount: number().integer().required(),
       comment: string(),
+    }
+  ).required();
+
+  /**
+   * JsonSchema defining shape of Compressed JsonTransactions for yup validation
+   */
+  static CompressedJsonSchema: ObjectSchema<CompressedJsonTransaction> = object(
+    {
+      id: string().required(),
+      t: number().positive().integer().required(),
+      cid: string().required(),
+      a: number().integer().required(),
+      c: string(),
     }
   ).required();
 
@@ -95,6 +126,15 @@ export class Transaction {
     }
   }
 
+  static isCompressedJson(arg: any): arg is CompressedJsonTransaction {
+    try {
+      Transaction.CompressedJsonSchema.validateSync(arg);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   /**
    * Is the value an array of valid JsonTransactions
    */
@@ -110,16 +150,27 @@ export class Transaction {
   }
 
   /**
+   * Is the value an array of valid JsonTransactions
+   */
+  static isCompressedJsonArray(arg: any): arg is CompressedJsonTransaction[] {
+    return Array.isArray(arg) && arg.every(Transaction.isCompressedJson);
+  }
+
+  /**
    * Convert Transaction to JsonTransaction
    */
   toJson(): JsonTransaction {
     return {
       time: this.date.getTime(),
-      categoryId: this.category.id,
       comment: this.comment,
       integerAmount: this.amount.value,
       id: this.id,
-      uid: this.uid,
+      category: {
+        id: this.category.id,
+        value: this.category.value,
+        incomeIcon: this.category.incomeIcon,
+        expenseIcon: this.category.expenseIcon,
+      },
     };
   }
 
@@ -133,8 +184,38 @@ export class Transaction {
       comment: this.comment,
       integerAmount: this.amount.value,
       id: this.id,
-      uid: this.uid,
     };
+  }
+
+  /**
+   * Convert Transaction to JsonTransaction
+   */
+  toCompressedJson(): CompressedJsonTransaction {
+    return {
+      id: this.id,
+      t: this.date.getTime(),
+      cid: this.category.id,
+      a: this.amount.value,
+      c: this.comment,
+    };
+  }
+
+  /**
+   * Create from Compressed
+   */
+  static fromCompressed(
+    c: CompressedJsonTransaction,
+    category: Category
+  ): Transaction {
+    return new Transaction(
+      {
+        id: c.id,
+        time: c.t,
+        integerAmount: c.a,
+        comment: c.c,
+      },
+      category
+    );
   }
 
   /**

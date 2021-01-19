@@ -63,7 +63,7 @@ export class Service {
       try {
         const result = await Service.axios.get<string>(url);
         const accessToken = result.data;
-        store.getActions().auth._setAccessToken(accessToken);
+        store.getActions().auth.setAccessToken(accessToken);
       } catch (e) {
         if (store.getState().auth.accessToken) {
           store.getActions().auth.logout();

@@ -1,6 +1,10 @@
 import { Action, action, computed, Computed } from "easy-peasy";
 
 export type FiltersModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   /**
    * Current search term for matching transactions. Defaults
    * to empty string when unused.
@@ -31,15 +35,23 @@ export type FiltersModel = {
    */
   hiddenIds: string[];
 
-  /**
-   * Reset all filters action
-   */
-  resetAll: Action<FiltersModel, void>;
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   /**
    * Are any filters active
    */
   filtersActive: Computed<FiltersModel, boolean>;
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
+
+  /**
+   * Reset all filters action
+   */
+  resetAll: Action<FiltersModel, void>;
 
   /**
    * Set search term action
@@ -99,11 +111,19 @@ export type FiltersModel = {
 };
 
 export const filtersModel: FiltersModel = {
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   searchTerm: "",
   minAmount: Number.NEGATIVE_INFINITY,
   maxAmount: Number.POSITIVE_INFINITY,
   categories: [],
   hiddenIds: [],
+
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   filtersActive: computed((state) => {
     const searchTermActive = state.searchTerm !== "";
@@ -114,6 +134,10 @@ export const filtersModel: FiltersModel = {
       searchTermActive || minAmountActive || maxAmountActive || categoriesActive
     );
   }),
+
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
 
   resetAll: action((state) => {
     state.searchTerm = "";

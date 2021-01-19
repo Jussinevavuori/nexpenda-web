@@ -6,10 +6,14 @@
   position: relative;
 
   & .TransactionListItemSkeletonHeader {
+    &:first-child {
+      margin-top: $spacing-4;
+    }
     height: 40px;
     padding: $fixed-spacing-2 0 $fixed-spacing-2 $fixed-spacing-6;
     width: 100%;
   }
+
   & .TransactionListItemSkeletonBody {
     height: 80px;
     padding: $fixed-spacing-4 $spacing-6;
