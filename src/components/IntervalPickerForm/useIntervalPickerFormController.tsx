@@ -1,12 +1,7 @@
-import React from "react"
-import { IntervalPickerFormView } from "./IntervalPickerFormView"
 import { useStoreState, useStoreActions } from "../../store"
+import { IntervalPickerFormProps } from "./IntervalPickerForm"
 
-export type IntervalPickerFormProps = {
-	onConfirm?(): void;
-}
-
-export function IntervalPickerForm(props: IntervalPickerFormProps) {
+export function useIntervalPickerFormController(props: IntervalPickerFormProps) {
 
 	const intervalString = useStoreState(_ => _.interval.smartDisplayString)
 
@@ -35,35 +30,35 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 	const setStartDate = useStoreActions(_ => _.interval.setStartDate)
 	const setEndDate = useStoreActions(_ => _.interval.setEndDate)
 
-	return <IntervalPickerFormView
+	return {
 
-		onConfirm={props.onConfirm}
+		onConfirm: props.onConfirm,
 
-		intervalString={intervalString}
+		intervalString: intervalString,
 
-		isDay={isDay}
-		isWeek={isWeek}
-		isMonth={isMonth}
-		isYear={isYear}
-		isAll={isAll}
+		isDay: isDay,
+		isWeek: isWeek,
+		isMonth: isMonth,
+		isYear: isYear,
+		isAll: isAll,
 
-		onDay={() => toDay()}
-		onWeek={() => toWeek()}
-		onMonth={() => toMonth()}
-		onYear={() => toYear()}
-		onAll={() => toAll()}
+		onDay: () => toDay(),
+		onWeek: () => toWeek(),
+		onMonth: () => toMonth(),
+		onYear: () => toYear(),
+		onAll: () => toAll(),
 
-		onPrevious={() => previous()}
-		onNext={() => next()}
+		onPrevious: () => previous(),
+		onNext: () => next(),
 
-		onNow={() => now()}
+		onNow: () => now(),
 
-		includesToday={includesToday}
+		includesToday: includesToday,
 
-		startDate={startDate}
-		endDate={endDate}
-		setStartDate={setStartDate}
-		setEndDate={setEndDate}
+		startDate: startDate,
+		endDate: endDate,
+		setStartDate: setStartDate,
+		setEndDate: setEndDate,
 
-	/>
+	}
 }

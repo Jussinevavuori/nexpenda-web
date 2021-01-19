@@ -1,11 +1,11 @@
 import "./AppFrame.scss";
 import React from "react"
-import { Sidebar } from "../../views/Sidebar/SidebarController";
-import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawerController";
-import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawerController";
+import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawer";
+import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawer";
 import { Header } from "../Header/Header";
-import { FiltersDrawer } from "../FiltersDrawer/FiltersDrawerController";
+import { FiltersDrawer } from "../FiltersDrawer/FiltersDrawer";
 import { useAppFrameController } from "./useAppFrameController";
+import { Sidebar } from "../../views/Sidebar/Sidebar";
 
 export type AppFrameProps = {
 	children: React.ReactNode;

@@ -2,9 +2,9 @@ import { useCallback, useMemo } from "react"
 import { ActionsPanelProps } from "./ActionsPanel"
 import { useStoreState, useStoreActions } from "../../../store"
 import { DataUtils } from "../../../utils/DataUtils/DataUtils"
-import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/TransactionEditorDrawerController"
-import { useFiltersDrawerOpenState } from "../../../components/FiltersDrawer/FiltersDrawerController"
-import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/TransactionCreatorDrawerController"
+import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController"
+import { useFiltersDrawerOpenState } from "../../../components/FiltersDrawer/useFiltersDrawerController"
+import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController"
 
 export function useActionsPanelController(props: ActionsPanelProps) {
 

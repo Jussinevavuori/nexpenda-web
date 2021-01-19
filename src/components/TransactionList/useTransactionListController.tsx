@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useStoreState } from "../../store"
-import { useTransactionCreatorDrawerOpenState } from "../TransactionCreatorDrawer/TransactionCreatorDrawerController"
+import { useTransactionCreatorDrawerOpenState } from "../TransactionCreatorDrawer/useTransactionCreatorDrawerController"
 import { TransactionListProps } from "./TransactionList"
 
 export function useTransactionListController(props: TransactionListProps) {

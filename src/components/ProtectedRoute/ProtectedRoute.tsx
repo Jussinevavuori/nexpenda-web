@@ -2,7 +2,7 @@ import React from "react";
 import { Route, RouteProps, Redirect } from "react-router-dom";
 import { useStoreState } from "../../store";
 import { routes } from "../../Routes";
-import { ProtectedRouteViewView } from "./ProtectedRouteView";
+import { ProtectedRouteView } from "./ProtectedRouteView";
 
 export type ProtectedRouteProps = {
 	fallbackRoute?: string;
@@ -31,7 +31,7 @@ export default function ProtectedRoute(props: ProtectedRouteProps) {
 
 		if (showLoadingScreenOnUnitialized) {
 
-			return <ProtectedRouteViewView />
+			return <ProtectedRouteView />
 		}
 
 		else return <Route {...routeProps} />

@@ -9,55 +9,48 @@ import {
 	CheckBox as SelectedIcon,
 	CheckBoxOutlineBlank as UnselectedIcon,
 } from "@material-ui/icons"
+import { useTransactionTableRowController } from "./useTransactionTableRowController";
 
-export type TransactionTableRowViewProps = {
+export type TransactionTableRowProps = {
 	transaction: Transaction;
-
-	onSelectCategory(): void;
-
-	onClick(e: React.MouseEvent): void;
-	onContextMenu(e: React.MouseEvent<HTMLElement>): void;
-
-	selected: boolean;
-	onSelect(): void;
-	onDeselect(): void;
-	selectionActive: boolean;
 }
 
-export function TransactionTableRowView(props: TransactionTableRowViewProps) {
+export function TransactionTableRow(props: TransactionTableRowProps) {
+
+	const controller = useTransactionTableRowController(props)
 
 	return <div
-		className={cx("TransactionTableRow", { selected: props.selected })}
-		onClick={props.onClick}
-		onContextMenu={props.onContextMenu}
+		className={cx("TransactionTableRow", { selected: controller.selected })}
+		onClick={controller.onClick}
+		onContextMenu={controller.onContextMenu}
 	>
 		<div className="action">
 			{
-				props.selected
+				controller.selected
 					? <SelectedIcon
 						className="selected"
 						onClick={e => {
 							e.stopPropagation()
-							props.onDeselect()
+							controller.onDeselect()
 						}}
 					/>
 					: <UnselectedIcon
 						className="unselected"
 						onClick={(e) => {
 							e.stopPropagation()
-							props.onSelect()
+							controller.onSelect()
 						}}
 					/>
 			}
 		</div>
 		<div className="category">
 			<Type variant="bold" color="gray-800" size="md">
-				{props.transaction.category.value}
+				{controller.transaction.category.value}
 			</Type>
 		</div>
 		<div className="amount">
 			<MoneyType
-				amount={props.transaction.amount}
+				amount={controller.transaction.amount}
 				variant="bold"
 				size="md"
 				colorIfPositive="green-600"
@@ -66,12 +59,12 @@ export function TransactionTableRowView(props: TransactionTableRowViewProps) {
 		</div>
 		<div className="comment">
 			<Type color="gray-700" variant="regular" size="md">
-				{props.transaction.comment}
+				{controller.transaction.comment}
 			</Type>
 		</div>
 		<div className="date">
 			<Type color="gray-700" variant="regular" size="md">
-				{toDatestring(props.transaction.date)}
+				{toDatestring(controller.transaction.date)}
 			</Type>
 		</div>
 	</div>

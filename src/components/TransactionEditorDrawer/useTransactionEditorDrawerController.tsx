@@ -1,11 +1,8 @@
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useVariableHashOpenState } from "../../hooks/useVariableHashOpenState"
 import { useStoreState } from "../../store"
-import { TransactionEditorDrawerView } from "./TransactionEditorDrawerView"
+import { TransactionEditorDrawerProps } from "./TransactionEditorDrawer"
 
-export type TransactionEditorDrawerProps = {
-
-}
 
 export const TransactionEditorDrawerOpenHash = `edit`
 
@@ -13,7 +10,7 @@ export function useTransactionEditorDrawerVariableOpenState() {
 	return useVariableHashOpenState(TransactionEditorDrawerOpenHash)
 }
 
-export function TransactionEditorDrawer(props: TransactionEditorDrawerProps) {
+export function useTransactionEditorDrawerController(props: TransactionEditorDrawerProps) {
 
 	const [value, setValue] = useTransactionEditorDrawerVariableOpenState()
 
@@ -36,9 +33,9 @@ export function TransactionEditorDrawer(props: TransactionEditorDrawerProps) {
 		}
 	}, [selectedItem, value, setValue])
 
-	return <TransactionEditorDrawerView
-		selectedItem={selectedItem}
-		onOpen={(id) => setValue(id)}
-		onClose={() => setValue(null)}
-	/>
+	return {
+		selectedItem,
+		onOpen: (id: string) => setValue(id),
+		onClose: () => setValue(null),
+	}
 }

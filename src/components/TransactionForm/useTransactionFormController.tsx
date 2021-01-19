@@ -1,19 +1,9 @@
-import React, { useEffect, useRef, useState } from "react"
-import { TransactionFormView } from "./TransactionFormView"
+import { useEffect, useRef, useState } from "react"
+import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
-import { Transaction } from "../../classes/Transaction"
 
-export type TransactionFormProps = {
-	onClose?(): void;
 
-	/**
-	 * If this prop is provided, the editor will default to editing
-	 * this transaction instead of creating a new transaction.
-	 */
-	editTransaction?: Transaction;
-}
-
-export function TransactionForm(props: TransactionFormProps) {
+export function useTransactionFormController(props: TransactionFormProps) {
 
 	const notify = useStoreActions(_ => _.notification.notify)
 
@@ -222,20 +212,20 @@ export function TransactionForm(props: TransactionFormProps) {
 		})
 	}
 
-	return <TransactionFormView
-		onSubmit={handleSubmit}
-		sign={sign}
-		amount={amount}
-		category={category}
-		time={time}
-		comment={comment}
-		onSignChange={value => setSign(value)}
-		onAmountChange={value => setAmount(value)}
-		onCategoryChange={value => setCategory(value)}
-		onTimeChange={value => setTime(value)}
-		onCommentChange={value => setComment(value)}
-		errors={errors}
-		categories={categories}
-		edit={!!editTransaction}
-	/>
+	return {
+		onSubmit: handleSubmit,
+		sign: sign,
+		amount: amount,
+		category: category,
+		time: time,
+		comment: comment,
+		onSignChange: setSign,
+		onAmountChange: setAmount,
+		onCategoryChange: setCategory,
+		onTimeChange: setTime,
+		onCommentChange: setComment,
+		errors: errors,
+		categories: categories,
+		edit: !!editTransaction,
+	}
 }

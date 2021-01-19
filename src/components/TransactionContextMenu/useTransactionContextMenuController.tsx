@@ -1,14 +1,12 @@
-import React, { useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
-import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/TransactionEditorDrawerController"
-import { TransactionContextMenuView } from "./TransactionContextMenuView"
+import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
+import { TransactionContextMenuProps } from "./TransactionContextMenu"
 
-export type TransactionContextMenuProps = {
-}
 
-export function TransactionContextMenu(props: TransactionContextMenuProps) {
+export function useTransactionContextMenuController(props: TransactionContextMenuProps) {
 
 	const selection = useStoreState(_ => _.selection.selection)
 	const filteredTransactions = useStoreState(_ => _.transactions.filtered.items)
@@ -92,19 +90,19 @@ export function TransactionContextMenu(props: TransactionContextMenuProps) {
 		handleClose()
 	}, [handleClose])
 
-	return <TransactionContextMenuView
-		position={menu.position}
-		transaction={menu.transaction}
+	return {
+		position: menu.position,
+		transaction: menu.transaction,
 
-		isAllSelected={isAllSelected}
-		isSelected={isSelected}
+		isAllSelected: isAllSelected,
+		isSelected: isSelected,
 
-		onSelectAllToggle={handleSelectAllToggle}
-		onSelectToggle={handleSelectToggle}
+		onSelectAllToggle: handleSelectAllToggle,
+		onSelectToggle: handleSelectToggle,
 
-		onDelete={handleDelete}
-		onEdit={handleEdit}
+		onDelete: handleDelete,
+		onEdit: handleEdit,
 
-		onClose={handleClose}
-	/>
+		onClose: handleClose,
+	}
 }

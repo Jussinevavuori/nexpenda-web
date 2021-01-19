@@ -1,7 +1,7 @@
 import "./TransactionTable.scss";
 import React from "react"
-import { TransactionTableHeader } from "../TransactionTableHeader/TransactionTableHeaderController";
-import { TransactionTableRow } from "../TransactionTableRow/TransactionTableRowController";
+import { TransactionTableHeader } from "../TransactionTableHeader/TransactionTableHeader";
+import { TransactionTableRow } from "../TransactionTableRow/TransactionTableRow";
 import { AutoSizer, List } from "react-virtualized";
 import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";

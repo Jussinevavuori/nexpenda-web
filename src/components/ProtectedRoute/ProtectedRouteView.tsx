@@ -5,11 +5,11 @@ import { Type } from "../Type/Type";
 import { CircularProgress } from "@material-ui/core";
 import { useInterval } from "../../hooks/useInterval";
 
-export type ProtectedRouteViewViewProps = {
+export type ProtectedRouteViewProps = {
 
 }
 
-export function ProtectedRouteViewView(props: ProtectedRouteViewViewProps) {
+export function ProtectedRouteView(props: ProtectedRouteViewProps) {
 
 	/**
 	 * Count down seconds since render

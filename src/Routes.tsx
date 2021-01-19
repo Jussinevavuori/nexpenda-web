@@ -2,7 +2,7 @@ import React from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Login } from './views/Login/Login';
 import { Register } from './views/Register/Register';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRouteController';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { Dashboard } from './views/Dashboard/Dashboard';
 import { Settings } from "./views/Settings/Settings";
 import { Analytics } from "./views/Analytics/Analytics";
@@ -10,7 +10,7 @@ import { ForgotPassword } from "./views/ForgotPassword/ForgotPassword";
 import { AppFrame } from "./components/AppFrame/AppFrame";
 import { ChangePassword } from "./views/ChangePassword/ChangePassword";
 import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmail";
-import { Budget } from "./views/Budget/BudgetController";
+import { Budget } from "./views/Budget/Budget";
 import { AuthFrame } from "./components/AuthFrame/AuthFrame";
 import { usePathTitle } from "./hooks/usePathTitle";
 

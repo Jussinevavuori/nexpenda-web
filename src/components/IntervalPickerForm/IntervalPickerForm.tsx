@@ -11,39 +11,16 @@ import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
 import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
 import { DateUtils } from "../../utils/DateUtils/DateUtils";
+import { useIntervalPickerFormController } from "./useIntervalPickerFormController";
 
-export type IntervalPickerFormViewProps = {
+export type IntervalPickerFormProps = {
 	onConfirm?(): void;
-
-	intervalString: string;
-
-	isDay: boolean;
-	isWeek: boolean;
-	isMonth: boolean;
-	isYear: boolean;
-	isAll: boolean;
-
-	onDay(): void;
-	onWeek(): void;
-	onMonth(): void;
-	onYear(): void;
-	onAll(): void;
-
-	onPrevious(): void;
-	onNext(): void;
-
-	includesToday: boolean;
-
-	onNow(): void;
-
-	startDate: Date;
-	endDate: Date;
-
-	setStartDate(value: Date): void;
-	setEndDate(value: Date): void;
 }
 
-export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
+export function IntervalPickerForm(props: IntervalPickerFormProps) {
+
+	const controller = useIntervalPickerFormController(props)
+
 	return <div className="IntervalPickerForm">
 
 		<section className="title">
@@ -53,7 +30,7 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 				<CalendarIcon />
 
 				<Type variant="bold">
-					{props.intervalString}
+					{controller.intervalString}
 				</Type>
 
 			</div>
@@ -61,21 +38,21 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 			<div className="nextOrPreviousInterval">
 
 				<IconButton
-					disabled={props.isAll}
-					onClick={props.onPrevious}
+					disabled={controller.isAll}
+					onClick={controller.onPrevious}
 				>
 					<PreviousIcon />
 				</IconButton>
 
 				<IconButton
-					onClick={props.onNow}
+					onClick={controller.onNow}
 				>
 					<NowIcon />
 				</IconButton>
 
 				<IconButton
-					disabled={props.isAll}
-					onClick={props.onNext}
+					disabled={controller.isAll}
+					onClick={controller.onNext}
 				>
 					<NextIcon />
 				</IconButton>
@@ -88,40 +65,40 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 
 			<Button
 				variant="text"
-				color={props.isDay ? "primary" : "default"}
-				onClick={props.onDay}
+				color={controller.isDay ? "primary" : "default"}
+				onClick={controller.onDay}
 			>
 				{"Day"}
 			</Button>
 
 			<Button
 				variant="text"
-				color={props.isWeek ? "primary" : "default"}
-				onClick={props.onWeek}
+				color={controller.isWeek ? "primary" : "default"}
+				onClick={controller.onWeek}
 			>
 				{"Week"}
 			</Button>
 
 			<Button
 				variant="text"
-				color={props.isMonth ? "primary" : "default"}
-				onClick={props.onMonth}
+				color={controller.isMonth ? "primary" : "default"}
+				onClick={controller.onMonth}
 			>
 				{"Month"}
 			</Button>
 
 			<Button
 				variant="text"
-				color={props.isYear ? "primary" : "default"}
-				onClick={props.onYear}
+				color={controller.isYear ? "primary" : "default"}
+				onClick={controller.onYear}
 			>
 				{"Year"}
 			</Button>
 
 			<Button
 				variant="text"
-				color={props.isAll ? "primary" : "default"}
-				onClick={props.onAll}
+				color={controller.isAll ? "primary" : "default"}
+				onClick={controller.onAll}
 			>
 				{"All"}
 			</Button>
@@ -131,8 +108,8 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 		<section className="dateSection">
 
 			<DatePicker
-				value={DateUtils.compareDate(props.startDate, "==", MINIMUM_DATE) ? null : props.startDate}
-				onChange={d => props.setStartDate(d as Date)}
+				value={DateUtils.compareDate(controller.startDate, "==", MINIMUM_DATE) ? null : controller.startDate}
+				onChange={d => controller.setStartDate(d as Date)}
 				format="dd/MM/yyyy"
 				inputVariant="outlined"
 				variant="inline"
@@ -142,8 +119,8 @@ export function IntervalPickerFormView(props: IntervalPickerFormViewProps) {
 			/>
 
 			<DatePicker
-				value={DateUtils.compareDate(props.endDate, "==", MAXIMUM_DATE) ? null : props.endDate}
-				onChange={d => props.setEndDate(d as Date)}
+				value={DateUtils.compareDate(controller.endDate, "==", MAXIMUM_DATE) ? null : controller.endDate}
+				onChange={d => controller.setEndDate(d as Date)}
 				format="dd/MM/yyyy"
 				inputVariant="outlined"
 				variant="inline"

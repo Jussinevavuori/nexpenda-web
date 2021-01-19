@@ -5,54 +5,28 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
 import { useSmMedia } from "../../hooks/useMedia";
-import { Category } from "../../classes/Category";
+import { Transaction } from "../../classes/Transaction";
+import { useTransactionFormController } from "./useTransactionFormController";
 
-export type TransactionFormViewProps = {
-
-	onSubmit(): Promise<void>;
-
-	/**
-	 * Form state
-	 */
-	amount: string;
-	sign: "+" | "-";
-	category: string;
-	time: Date;
-	comment: string;
+export type TransactionFormProps = {
+	onClose?(): void;
 
 	/**
-	 * Form change handlers
+	 * If this prop is provided, the editor will default to editing
+	 * this transaction instead of creating a new transaction.
 	 */
-	onSignChange(sign: "+" | "-"): void;
-	onAmountChange(value: string): void;
-	onCategoryChange(value: string): void;
-	onTimeChange(value: Date): void;
-	onCommentChange(value: string): void;
-
-	/**
-	 * Form errors
-	 */
-	errors: {
-		main?: string;
-		amount?: string;
-		category?: string;
-		time?: string;
-		comment?: string;
-	};
-
-	categories: Category[];
-
-	edit: boolean;
-
+	editTransaction?: Transaction;
 }
 
-export function TransactionFormView(props: TransactionFormViewProps) {
+export function TransactionForm(props: TransactionFormProps) {
 
 	const amountInputRef = useRef<HTMLDivElement | null>(null)
 
+	const controller = useTransactionFormController(props)
+
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
-		props.onSubmit()
+		controller.onSubmit()
 	}
 
 	const largerLayout = useSmMedia()
@@ -60,7 +34,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 	return <form className="TransactionForm" onSubmit={handleSubmit}>
 
 		<Type >
-			{props.edit ? "Edit transaction" : "New transaction"}
+			{controller.edit ? "Edit transaction" : "New transaction"}
 		</Type>
 
 		<div className="transactionAmountContainer">
@@ -71,9 +45,9 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				<Button
 					size="small"
 					color="primary"
-					variant={props.sign === "+" ? "contained" : "outlined"}
+					variant={controller.sign === "+" ? "contained" : "outlined"}
 					onClick={() => {
-						props.onSignChange("+")
+						controller.onSignChange("+")
 						amountInputRef.current?.focus()
 					}}
 				>
@@ -82,9 +56,9 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				<Button
 					size="small"
 					color="primary"
-					variant={props.sign === "-" ? "contained" : "outlined"}
+					variant={controller.sign === "-" ? "contained" : "outlined"}
 					onClick={() => {
-						props.onSignChange("-")
+						controller.onSignChange("-")
 						amountInputRef.current?.focus()
 					}}
 				>
@@ -93,15 +67,15 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			</ButtonGroup>
 
 			<TextField
-				value={props.amount}
-				onChange={e => props.onAmountChange(e.target.value)}
+				value={controller.amount}
+				onChange={e => controller.onAmountChange(e.target.value)}
 				onKeyDown={e => {
 					switch (e.key) {
 						case "-":
-							props.onSignChange("-")
+							controller.onSignChange("-")
 							break;
 						case "+":
-							props.onSignChange("+")
+							controller.onSignChange("+")
 							break;
 					}
 				}}
@@ -110,12 +84,12 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 				name="amount"
 				type="number"
 				label="Amount"
-				error={!!props.errors.amount}
-				helperText={props.errors.amount}
+				error={!!controller.errors.amount}
+				helperText={controller.errors.amount}
 				fullWidth
 				required
 				size="small"
-				autoFocus={!props.edit}
+				autoFocus={!controller.edit}
 				autoComplete="off"
 				inputProps={{
 					ref: amountInputRef,
@@ -132,9 +106,9 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 		</div>
 
 		<Autocomplete
-			inputValue={props.category}
+			inputValue={controller.category}
 			onInputChange={(e, v) => {
-				props.onCategoryChange(v)
+				controller.onCategoryChange(v)
 			}}
 			id="transaction-category"
 			freeSolo
@@ -145,7 +119,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			fullWidth
 			size="small"
 			autoComplete
-			options={props.categories.map(_ => _.value)}
+			options={controller.categories.map(_ => _.value)}
 			renderInput={(params) => (
 				<TextField
 					variant="outlined"
@@ -153,8 +127,8 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 					type="text"
 					label="Category"
 					autoComplete="off"
-					error={!!props.errors.category}
-					helperText={props.errors.category}
+					error={!!controller.errors.category}
+					helperText={controller.errors.category}
 					required
 					{...params}
 				/>
@@ -162,29 +136,29 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 		/>
 
 		<TextField
-			value={props.comment}
-			onChange={e => props.onCommentChange(e.target.value)}
+			value={controller.comment}
+			onChange={e => controller.onCommentChange(e.target.value)}
 			id="transaction-comment"
 			variant="outlined"
 			name="comment"
 			type="text"
 			label="Comment"
-			error={!!props.errors.comment}
-			helperText={props.errors.comment}
+			error={!!controller.errors.comment}
+			helperText={controller.errors.comment}
 			fullWidth
 			size="small"
 		/>
 
 		<KeyboardDatePicker
-			value={props.time}
-			onChange={d => props.onTimeChange(d as Date)}
+			value={controller.time}
+			onChange={d => controller.onTimeChange(d as Date)}
 			format="dd/MM/yyyy"
 			id="transaction-time"
 			variant={largerLayout ? "inline" : "dialog"}
 			inputVariant="outlined"
 			label="Date"
-			error={!!props.errors.time}
-			helperText={props.errors.time}
+			error={!!controller.errors.time}
+			helperText={controller.errors.time}
 			fullWidth
 			required
 			size="small"
@@ -196,7 +170,7 @@ export function TransactionFormView(props: TransactionFormViewProps) {
 			variant="contained"
 			size="small"
 		>
-			{props.edit ? "Save" : "Create"}
+			{controller.edit ? "Save" : "Create"}
 		</Button>
 
 	</form >

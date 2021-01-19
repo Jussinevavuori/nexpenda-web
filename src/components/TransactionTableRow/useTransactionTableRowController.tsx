@@ -1,14 +1,9 @@
 import React, { useCallback, useMemo } from "react"
-import { Transaction } from "../../classes/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useStoreActions, useStoreState } from "../../store"
-import { TransactionTableRowView } from "./TransactionTableRowView"
+import { TransactionTableRowProps } from "./TransactionTableRow"
 
-export type TransactionTableRowProps = {
-	transaction: Transaction;
-}
-
-export function TransactionTableRow(props: TransactionTableRowProps) {
+export function useTransactionTableRowController(props: TransactionTableRowProps) {
 
 	/**
 	 * Handle category select and deselect
@@ -81,17 +76,17 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 		return false
 	}, [contextMenu, props.transaction])
 
-	return <TransactionTableRowView
-		transaction={props.transaction}
+	return {
+		transaction: props.transaction,
 
-		onSelectCategory={handleCategorySelect}
+		onSelectCategory: handleCategorySelect,
 
-		onClick={handleClick}
-		onContextMenu={handleContextMenu}
+		onClick: handleClick,
+		onContextMenu: handleContextMenu,
 
-		selected={selected || contextMenuSelected}
-		selectionActive={selectionActive}
-		onSelect={handleSelect}
-		onDeselect={handleDeselect}
-	/>
+		selected: selected || contextMenuSelected,
+		selectionActive: selectionActive,
+		onSelect: handleSelect,
+		onDeselect: handleDeselect,
+	}
 }

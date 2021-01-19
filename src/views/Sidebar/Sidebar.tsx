@@ -1,12 +1,11 @@
 import "./Sidebar.scss";
 import React from "react"
 import cx from "classnames"
-import { Auth } from "../../classes/Auth";
 import { IconButton } from "@material-ui/core";
 import {
 	Home as DashboardIcon,
 	BarChart2 as AnalyticsIcon,
-	Settings as SettingsIcon,
+	User as UserIcon,
 	Briefcase as BudgetIcon,
 	PlusCircle as PlusIcon
 } from "react-feather"
@@ -14,30 +13,16 @@ import { useMdMedia } from "../../hooks/useMedia";
 import { Type } from "../../components/Type/Type";
 import { Logo } from "../../components/Logo/Logo";
 import { motion, Variants } from "framer-motion";
+import { useSidebarController } from "./useSidebarController";
 
-export type SidebarViewProps = {
-	isDashboard: boolean;
-	onDashboard(): void;
-
-	isAnalytics: boolean;
-	onAnalytics(): void;
-
-	isBudget: boolean;
-	onBudget(): void;
-
-	isSettings: boolean;
-	onSettings(): void;
-
-	user: Auth | null;
-	logout(): void;
-
-	onTransactionCreatorOpen(): void;
-
+export type SidebarProps = {
 }
 
-export function SidebarView(props: SidebarViewProps) {
+export function Sidebar(props: SidebarProps) {
 
-	const sidebarView = useMdMedia()
+	const isSidebarView = useMdMedia()
+
+	const controller = useSidebarController(props)
 
 	return <>
 
@@ -45,7 +30,7 @@ export function SidebarView(props: SidebarViewProps) {
 
 			{
 
-				sidebarView
+				isSidebarView
 					? <div className="sidebar">
 
 
@@ -75,34 +60,34 @@ export function SidebarView(props: SidebarViewProps) {
 								</Type>
 
 								<button
-									onClick={props.onDashboard}
-									className={cx("selection", { active: props.isDashboard })}
+									onClick={controller.onDashboard}
+									className={cx("selection", { active: controller.isDashboard })}
 								>
 									<DashboardIcon />
 									<Type variant="bold">{"Dashboard"}</Type>
 								</button>
 
 								<button
-									onClick={props.onAnalytics}
-									className={cx("selection", { active: props.isAnalytics })}
+									onClick={controller.onAnalytics}
+									className={cx("selection", { active: controller.isAnalytics })}
 								>
 									<AnalyticsIcon />
 									<Type variant="bold">{"Analytics"}</Type>
 								</button>
 
 								<button
-									onClick={props.onBudget}
-									className={cx("selection", { active: props.isBudget })}
+									onClick={controller.onBudget}
+									className={cx("selection", { active: controller.isBudget })}
 								>
 									<BudgetIcon />
 									<Type variant="bold">{"Budget"}</Type>
 								</button>
 
 								<button
-									onClick={props.onSettings}
-									className={cx("selection", { active: props.isSettings })}
+									onClick={controller.onSettings}
+									className={cx("selection", { active: controller.isSettings })}
 								>
-									<SettingsIcon />
+									<UserIcon />
 									<Type variant="bold">{"Settings"}</Type>
 								</button>
 
@@ -122,11 +107,11 @@ export function SidebarView(props: SidebarViewProps) {
 						<motion.div
 							className="tabContainer"
 							variants={tabVariants}
-							animate={props.isDashboard ? "active" : "inactive"}
+							animate={controller.isDashboard ? "active" : "inactive"}
 						>
 							<IconButton
-								className={cx("tab", { active: props.isDashboard })}
-								onClick={props.onDashboard}
+								className={cx("tab", { active: controller.isDashboard })}
+								onClick={controller.onDashboard}
 							>
 								<DashboardIcon />
 							</IconButton>
@@ -136,11 +121,11 @@ export function SidebarView(props: SidebarViewProps) {
 						<motion.div
 							className="tabContainer"
 							variants={tabVariants}
-							animate={props.isAnalytics ? "active" : "inactive"}
+							animate={controller.isAnalytics ? "active" : "inactive"}
 						>
 							<IconButton
-								className={cx("tab", { active: props.isAnalytics })}
-								onClick={props.onAnalytics}
+								className={cx("tab", { active: controller.isAnalytics })}
+								onClick={controller.onAnalytics}
 							>
 								<AnalyticsIcon />
 							</IconButton>
@@ -150,7 +135,7 @@ export function SidebarView(props: SidebarViewProps) {
 						<div className="tabContainer">
 							<IconButton
 								className={cx("tab", "add")}
-								onClick={props.onTransactionCreatorOpen}
+								onClick={controller.onTransactionCreatorOpen}
 							>
 								<PlusIcon />
 							</IconButton>
@@ -159,11 +144,11 @@ export function SidebarView(props: SidebarViewProps) {
 						<motion.div
 							className="tabContainer"
 							variants={tabVariants}
-							animate={props.isBudget ? "active" : "inactive"}
+							animate={controller.isBudget ? "active" : "inactive"}
 						>
 							<IconButton
-								className={cx("tab", { active: props.isBudget })}
-								onClick={props.onBudget}
+								className={cx("tab", { active: controller.isBudget })}
+								onClick={controller.onBudget}
 							>
 								<BudgetIcon />
 							</IconButton>
@@ -173,13 +158,13 @@ export function SidebarView(props: SidebarViewProps) {
 						<motion.div
 							className="tabContainer"
 							variants={tabVariants}
-							animate={props.isSettings ? "active" : "inactive"}
+							animate={controller.isSettings ? "active" : "inactive"}
 						>
 							<IconButton
-								className={cx("tab", { active: props.isSettings })}
-								onClick={props.onSettings}
+								className={cx("tab", { active: controller.isSettings })}
+								onClick={controller.onSettings}
 							>
-								<SettingsIcon />
+								<UserIcon />
 							</IconButton>
 
 						</motion.div>

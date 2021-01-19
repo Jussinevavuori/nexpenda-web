@@ -1,13 +1,10 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
-import { TransactionTableHeaderView } from "./TransactionTableHeaderView"
+import { TransactionTableHeaderProps } from "./TransactionTableHeader"
 
-export type TransactionTableHeaderProps = {
 
-}
-
-export function TransactionTableHeader(props: TransactionTableHeaderProps) {
+export function useTransactionTableHeaderController(props: TransactionTableHeaderProps) {
 
 	const selection = useStoreState(_ => _.selection.selection)
 	const transactions = useStoreState(_ => _.transactions.filtered.items)
@@ -24,14 +21,12 @@ export function TransactionTableHeader(props: TransactionTableHeaderProps) {
 	const handleSelectAll = useStoreActions(_ => _.selection.selectAll)
 	const handleDeselectAll = useStoreActions(_ => _.selection.deselectAll)
 
-	return <TransactionTableHeaderView
-		isSelectionActive={isSelectionActive}
-		isAllSelected={isAllSelected}
-
-		onSelectAll={() => handleSelectAll(transactions.map(_ => _.id))}
-		onDeselectAll={() => handleDeselectAll()}
-
-		sortingStrategy={sortingStrategy}
-		onToggleSort={(property) => toggleSort(property)}
-	/>
+	return {
+		isSelectionActive: isSelectionActive,
+		isAllSelected: isAllSelected,
+		onSelectAll: () => handleSelectAll(transactions.map(_ => _.id)),
+		onDeselectAll: () => handleDeselectAll(),
+		sortingStrategy: sortingStrategy,
+		onToggleSort: toggleSort,
+	}
 }

@@ -2,11 +2,11 @@ import "./Budget.scss";
 import React from "react"
 import { Type } from "../../components/Type/Type";
 
-export type BudgetViewProps = {
+export type BudgetProps = {
 
 }
 
-export function BudgetView(props: BudgetViewProps) {
+export function Budget(props: BudgetProps) {
 	return <div className="Budget">
 		<div style={{
 			width: "100%",

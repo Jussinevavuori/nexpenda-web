@@ -1,12 +1,8 @@
-import React, { useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { useStoreActions, useStoreState } from "../../store"
-import { NotificationView } from "./NotificationView"
 
-export type NotificationProps = {
+export function useNotificationController() {
 
-}
-
-export function Notification(props: NotificationProps) {
 
 	const notifications = useStoreState(_ => _.notification.notifications)
 	const deleteNotification = useStoreActions(_ => _.notification.deleteNotification)
@@ -21,14 +17,8 @@ export function Notification(props: NotificationProps) {
 		}
 	}, [activeNotification, deleteNotification])
 
-	if (activeNotification) {
-		return <NotificationView
-			key={activeNotification.id}
-			notification={activeNotification}
-			onClose={handleNotificationClose}
-		/>
+	return {
+		activeNotification,
+		handleNotificationClose,
 	}
-
-	return null
-
 }

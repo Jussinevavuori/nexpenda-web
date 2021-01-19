@@ -97,8 +97,12 @@ export function TransactionListItem(props: TransactionListItemProps) {
 								? <SelectedIcon />
 								: null
 							: props.transaction.amount.isPositive
-								? <span className="emoji">{"💰"}</span>
-								: <span className="emoji">{"💸"}</span>
+								? <span className="emoji">
+									{props.transaction.category.incomeIcon.substr(0, 2)}
+								</span>
+								: <span className="emoji">
+									{props.transaction.category.expenseIcon.substr(0, 2)}
+								</span>
 					}
 				</div>
 			</motion.div>

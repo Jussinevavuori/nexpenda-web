@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Transaction } from "../classes/Transaction";
-import { TransactionContextMenu } from "../components/TransactionContextMenu/TransactionContextMenuController";
+import { TransactionContextMenu } from "../components/TransactionContextMenu/TransactionContextMenu";
 
 type TransactionContextMenuContextType = {
 	transaction?: Transaction | undefined;
