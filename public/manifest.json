@@ -11,7 +11,7 @@
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "48x48",
       "type": "image/x-icon"
     },
     {
@@ -30,7 +30,7 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#2a52e2",
-  "background_color": "#edfdf4",
+  "background_color": "#ffffff",
   "orientation": "portrait",
   "shortcuts": [
     {
@@ -38,7 +38,24 @@
       "short_name": "Add",
       "description": "Add a new transaction",
       "url": "/app/dashboard#create",
-      "icon": "icons/shortcuts/mui_add_circle_outline-24px.svg"
+      "icons": [
+        {
+          "src": "icons/shortcuts/baseline_add_circle_outline_black_18.png",
+          "sizes": "72x72"
+        },
+        {
+          "src": "icons/shortcuts/baseline_add_circle_outline_black_24.png",
+          "sizes": "96x96"
+        },
+        {
+          "src": "icons/shortcuts/baseline_add_circle_outline_black_36.png",
+          "sizes": "144x144"
+        },
+        {
+          "src": "icons/shortcuts/baseline_add_circle_outline_black_48.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
