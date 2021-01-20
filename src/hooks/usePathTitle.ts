@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouteData } from "./useRouteData";
 
 function getDocumentTitle(subtitle?: string) {
-  const base = `Expence`;
+  const base = `Nexpenda`;
 
   if (!subtitle) {
     return base;

@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "short_name": "Expence",
-  "name": "Expence",
+  "short_name": "Nexpenda",
+  "name": "Nexpenda",
   "author": "Jussi Nevavuori <jussi@nevavuori.fi>",
   "developer": {
     "name": "Jussi Nevavuori",
     "url": "https://www.jussinevavuori.com/"
   },
-  "description": "Expence - application to help you keep track of your earnings, spendings, budgets and more",
+  "description": "Nexpenda - application to help you keep track of your earnings, spendings, budgets and more",
   "icons": [
     {
       "src": "favicon.ico",

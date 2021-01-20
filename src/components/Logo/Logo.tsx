@@ -19,13 +19,14 @@ export function Logo(props: LogoProps) {
 		onClick={controller.handleClick}
 		{...spanProps}
 	>
-		<span className="letter-1">E</span>
+		<span className="letter-0">N</span>
+		<span className="letter-1">e</span>
 		<span className="letter-2">x</span>
 		<span className="letter-3">p</span>
 		<span className="letter-4">e</span>
 		<span className="letter-5">n</span>
-		<span className="letter-6">c</span>
-		<span className="letter-7">e</span>
+		<span className="letter-6">d</span>
+		<span className="letter-7">a</span>
 		<span className="letter-8">.</span>
 	</span>
 }

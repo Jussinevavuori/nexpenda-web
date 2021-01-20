@@ -74,7 +74,7 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
    */
   getFileName() {
     const datestring = new Date().toLocaleDateString();
-    return `Expence ${datestring}`;
+    return `Nexpenda - ${datestring}`;
   }
 
   /**
