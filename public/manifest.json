@@ -40,19 +40,19 @@
       "url": "/app/dashboard#create",
       "icons": [
         {
-          "src": "assets/shortcuts/baseline_add_circle_outline_black_18.png",
+          "src": "assets/shortcuts/nexpenda_add_icon_18.png",
           "sizes": "72x72"
         },
         {
-          "src": "assets/shortcuts/baseline_add_circle_outline_black_24.png",
+          "src": "assets/shortcuts/nexpenda_add_icon_24.png",
           "sizes": "96x96"
         },
         {
-          "src": "assets/shortcuts/baseline_add_circle_outline_black_36.png",
+          "src": "assets/shortcuts/nexpenda_add_icon_36.png",
           "sizes": "144x144"
         },
         {
-          "src": "assets/shortcuts/baseline_add_circle_outline_black_48.png",
+          "src": "assets/shortcuts/nexpenda_add_icon_48.png",
           "sizes": "192x192"
         }
       ]
