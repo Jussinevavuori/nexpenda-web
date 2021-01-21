@@ -13,7 +13,7 @@ export class Config {
     } else if (env === "test") {
       return "http://localhost:4001";
     } else {
-      return "https://expence-cloud-run-kevmcal2xa-lz.a.run.app";
+      return "https://api.nexpenda.com";
     }
   }
 }

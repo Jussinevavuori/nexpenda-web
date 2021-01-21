@@ -185,18 +185,13 @@
       var faviconDarkTheme = document.getElementById("favicon-dark-theme");
       var faviconLightTheme = document.getElementById("favicon-light-theme");
 
-      console.log({ faviconDarkTheme, faviconLightTheme });
-
       function onColorSchemeMatcherUpdate() {
-        console.log({ dark: colorSchemeMatcher.matches });
         if (colorSchemeMatcher.matches) {
           faviconLightTheme.remove();
           document.head.append(faviconDarkTheme);
-          console.log(`Remove light append dark`);
         } else {
           faviconDarkTheme.remove();
           document.head.append(faviconLightTheme);
-          console.log(`Remove dark append light`);
         }
       }
 
