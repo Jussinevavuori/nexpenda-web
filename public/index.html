@@ -2,7 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link
+      rel="icon"
+      href="%PUBLIC_URL%/favicon-light-theme.ico"
+      id="favicon-light-theme"
+    />
+    <link
+      rel="icon"
+      href="%PUBLIC_URL%/favicon-dark-theme.ico"
+      id="favicon-dark-theme"
+    />
     <meta
       name="viewport"
       content="minimum-scale=1, width=device-width, initial-scale=1"
@@ -172,5 +181,30 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      var faviconDarkTheme = document.getElementById("favicon-dark-theme");
+      var faviconLightTheme = document.getElementById("favicon-light-theme");
+
+      console.log({ faviconDarkTheme, faviconLightTheme });
+
+      function onColorSchemeMatcherUpdate() {
+        console.log({ dark: colorSchemeMatcher.matches });
+        if (colorSchemeMatcher.matches) {
+          faviconLightTheme.remove();
+          document.head.append(faviconDarkTheme);
+          console.log(`Remove light append dark`);
+        } else {
+          faviconDarkTheme.remove();
+          document.head.append(faviconLightTheme);
+          console.log(`Remove dark append light`);
+        }
+      }
+
+      var colorSchemeMatcher = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      );
+      colorSchemeMatcher.addListener(onColorSchemeMatcherUpdate);
+      onColorSchemeMatcherUpdate();
+    </script>
   </body>
 </html>
