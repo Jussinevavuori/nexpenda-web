@@ -48,7 +48,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "update:scss:vars": "node .\\scripts\\update-scss-to-ts.js"
+    "update-scss-vars": "node .\\scripts\\update-scss-to-ts.js",
+    "generate-pwa-assets": "npx pwa-asset-generator ./public/logo.png ./public/assets --type png --background white --manifest ./public/manifest.json --opaque false"
   },
   "eslintConfig": {
     "extends": "react-app"
