@@ -9,6 +9,13 @@ import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcu
 
 function App() {
 
+	const notify = useStoreActions(_ => _.notification.notify)
+	useEffect(() => {
+		(window as any).notify = () => {
+			notify({ message: "Test" })
+		}
+	}, [notify])
+
 	/**
 	 * Fix viewheight for mobile from root
 	 */

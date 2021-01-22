@@ -1,6 +1,10 @@
 @import "main";
 
 .Notification {
+  margin-bottom: $spacing-8;
+  @include sm {
+    margin-bottom: 0;
+  }
   & * {
     @include text-bold-md;
   }

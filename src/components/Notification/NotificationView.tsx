@@ -43,7 +43,7 @@ export function NotificationView(props: NotificationViewProps) {
 			open={open}
 			onClose={() => setOpen(false)}
 			onExited={props.onClose}
-			autoHideDuration={1000000 || props.notification.timeout}
+			autoHideDuration={props.notification.timeout}
 			anchorOrigin={{
 				vertical: props.notification.verticalPosition,
 				horizontal: props.notification.horizontalPosition,

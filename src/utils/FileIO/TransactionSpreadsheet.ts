@@ -34,7 +34,7 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
       transformBeforeValidation: (value: any) => {
         const string = String(value).replace(/[^\d\-\.]/g, "");
         const number = Number(string);
-        return Math.floor(number * 100);
+        return Math.trunc(number * 100);
       },
     },
     time: {

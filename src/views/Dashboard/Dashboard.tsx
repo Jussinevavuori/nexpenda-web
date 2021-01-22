@@ -8,11 +8,14 @@ import { DashboardHeader } from "./DashboardHeader/DashboardHeader";
 import { TransactionForm } from "../../components/TransactionForm/TransactionForm";
 import { useDashboardController } from "./useDashboardController";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { useTrueAfterTimeout } from "../../hooks/useTrueAfterTimeout";
 
 export type DashboardProps = {
 }
 
 export function Dashboard(props: DashboardProps) {
+
+	const trueAfterTimeout = useTrueAfterTimeout(100)
 
 	const controller = useDashboardController()
 
@@ -49,7 +52,7 @@ export function Dashboard(props: DashboardProps) {
 				}
 			</AnimatePresence>
 
-			<motion.section layout className="transactionsList">
+			<motion.section layout={trueAfterTimeout} initial={false} className="transactionsList">
 				{
 					controller.isDesktopLayout
 						? <TransactionTable showSkeletons />
