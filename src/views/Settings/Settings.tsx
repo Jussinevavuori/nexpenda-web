@@ -46,6 +46,12 @@ export function Settings(props: SettingsProps) {
 			<FileDownloader />
 		</SettingsSection>
 
+		<SettingsSection sectionTitle="Version">
+			<Type>
+				{"1.0.0"}
+			</Type>
+		</SettingsSection>
+
 
 	</div >
 }
