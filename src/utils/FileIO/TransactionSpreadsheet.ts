@@ -32,9 +32,11 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
     integerAmount: {
       names: ["Summa", "Sum", "Määrä", "Amount"],
       transformBeforeValidation: (value: any) => {
-        const string = String(value).replace(/[^\d\-\.]/g, "");
+        const string = String(value)
+          .replace(/,/g, ".")
+          .replace(/[^\d\-\.]/g, "");
         const number = Number(string);
-        return Math.trunc(number * 100);
+        return Math.round(number * 100);
       },
     },
     time: {
