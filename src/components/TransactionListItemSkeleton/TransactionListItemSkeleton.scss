@@ -5,6 +5,10 @@
 
   position: relative;
 
+  & .MuiSkeleton-root:not(.MuiSkeleton-circle) {
+    border-radius: 4px;
+  }
+
   & .TransactionListItemSkeletonHeader {
     &:first-child {
       margin-top: $spacing-4;

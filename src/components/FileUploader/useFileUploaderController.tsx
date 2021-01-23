@@ -87,7 +87,7 @@ export function useFileUploaderController(props: FileUploaderProps) {
 			// Count total number of rows uploaded
 			const total = postResults.reduce((sum, chunk) => {
 				if (chunk.isSuccess()) {
-					return sum + chunk.value.length
+					return sum + chunk.value.t.length
 				} else {
 					return sum
 				}

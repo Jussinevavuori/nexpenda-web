@@ -8,6 +8,7 @@ import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/Tran
 import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
 import { theme } from "../../styles/main";
+import { DataUtils } from "../../utils/DataUtils/DataUtils";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -28,7 +29,7 @@ export function TransactionList(props: TransactionListProps) {
 	if (controller.showSkeletons) {
 		return <div className="TransactionList">
 			{
-				[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+				DataUtils.createIndexArray(16).map(i => {
 					return <TransactionListItemSkeleton i={i} key={i} />
 				})
 			}

@@ -1,44 +1,34 @@
 import "./TransactionTableRowSkeleton.scss";
 import React from "react"
-import { Skeleton } from "../Skeleton/Skeleton";
+import { Skeleton } from "@material-ui/lab";
+import { useRandomValue } from "../../hooks/useRandomValue";
 
 export type TransactionTableRowSkeletonProps = {
 
 }
 
 export function TransactionTableRowSkeleton(props: TransactionTableRowSkeletonProps) {
-	return <div className="TransactionTableRowSkeleton">
 
+	const categoryWidth = useRandomValue(20, 90)
+	const amountWidth = useRandomValue(48, 64)
+	const commentWidth = useRandomValue(20, 80)
+	const dateWidth = useRandomValue(48, 64)
+
+	return <div className="TransactionTableRowSkeleton">
 		<div className="action" >
-			<Skeleton
-				width="24px"
-				height="24px"
-			/>
+			<Skeleton variant="rect" width={20} height={20} animation="wave" />
 		</div>
 		<div className="category">
-			<Skeleton
-				width={{ min: 20, max: 90, unit: "%" }}
-				height="100%"
-			/>
+			<Skeleton variant="rect" width={categoryWidth + "%"} height={16} animation="wave" />
 		</div>
 		<div className="amount">
-			<Skeleton
-				width={{ min: 48, max: 64, unit: "px" }}
-				height="100%"
-			/>
+			<Skeleton variant="rect" width={amountWidth} height={16} animation="wave" />
 		</div>
 		<div className="comment">
-			<Skeleton
-				width={{ min: 20, max: 80, unit: "%" }}
-				height="100%"
-			/>
+			<Skeleton variant="rect" width={commentWidth + "%"} height={16} animation="wave" />
 		</div>
 		<div className="date">
-			<Skeleton
-				width={{ min: 48, max: 64, unit: "px" }}
-				height="100%"
-			/>
+			<Skeleton variant="rect" width={dateWidth} height={16} animation="wave" />
 		</div>
-
 	</div>
 }

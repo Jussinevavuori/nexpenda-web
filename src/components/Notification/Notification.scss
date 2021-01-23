@@ -1,7 +1,7 @@
 @import "main";
 
 .Notification {
-  margin-bottom: $spacing-8;
+  margin-bottom: $spacing-14;
   @include sm {
     margin-bottom: 0;
   }

@@ -7,6 +7,7 @@ import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";
 import { useTransactionTableController } from "./useTransactionTableController";
 import { motion } from "framer-motion";
+import { DataUtils } from "../../utils/DataUtils/DataUtils";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
@@ -22,7 +23,7 @@ export function TransactionTable(props: TransactionTableProps) {
 			<TransactionTableHeader />
 			<div className="listContainer">
 				{
-					[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+					DataUtils.createIndexArray(16).map(i => {
 						return <TransactionTableRowSkeleton key={i} />
 					})
 				}
