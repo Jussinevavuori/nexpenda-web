@@ -7,6 +7,7 @@ import { Type } from "../Type/Type";
 import { useSmMedia } from "../../hooks/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { useTransactionFormController } from "./useTransactionFormController";
+import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 
 export type TransactionFormProps = {
 	onClose?(): void;
@@ -176,16 +177,17 @@ export function TransactionForm(props: TransactionFormProps) {
 			size="small"
 		/>
 
-		<Button
+		<EnhancedButton
 			type="submit"
 			color="primary"
 			variant="contained"
 			className="submit"
 			size="small"
 			fullWidth
+			loading={controller.loading}
 		>
 			{controller.edit ? "Save" : "Create"}
-		</Button>
+		</EnhancedButton>
 
 	</form >
 }

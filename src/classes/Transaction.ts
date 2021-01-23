@@ -22,10 +22,8 @@ export type JsonTransaction = {
     id: string;
     /** Category's name */
     value: string;
-    /** Category's income icon */
-    incomeIcon: string;
-    /** Category's expense icon */
-    expenseIcon: string;
+    /** Category's icon */
+    icon: string;
   };
 };
 
@@ -63,10 +61,8 @@ export type CompressedTransactionsJson = {
     id: string;
     /** Value (name) */
     v: string;
-    /** Income icon */
-    ii: string;
-    /** Expense icon */
-    ei: string;
+    /** Icon */
+    i: string;
   }[];
 };
 
@@ -126,6 +122,18 @@ export class Transaction {
   }
 
   /**
+   * Transaction icon: use category icon if one exists, else default to
+   * using default icons based on amount sign
+   */
+  get icon() {
+    if (this.category.icon) {
+      return this.category.icon.substr(0, 2);
+    } else {
+      return this.amount.isPositive ? "💰" : "💸";
+    }
+  }
+
+  /**
    * Schema for validating that objects match the JsonTransaction format.
    */
   static JsonSchema: ObjectSchema<JsonTransaction> = object({
@@ -136,8 +144,7 @@ export class Transaction {
     category: object({
       id: string().required(),
       value: string().required(),
-      incomeIcon: string().required(),
-      expenseIcon: string().required(),
+      icon: string().required(),
     }).required(),
   }).required();
 
@@ -177,8 +184,7 @@ export class Transaction {
           object({
             id: string().required(),
             v: string().required(),
-            ii: string().required(),
-            ei: string().required(),
+            i: string().defined(),
           }).required()
         )
         .required(),
@@ -247,8 +253,7 @@ export class Transaction {
       category: {
         id: this.category.id,
         value: this.category.value,
-        incomeIcon: this.category.incomeIcon,
-        expenseIcon: this.category.expenseIcon,
+        icon: this.category.icon,
       },
     };
   }
@@ -278,8 +283,7 @@ export class Transaction {
       const category = data.c.find((c) => c.id === transaction.cid) ?? {
         id: "category_not_found",
         v: "Category not found",
-        ii: "❓",
-        ei: "❓",
+        i: "",
       };
       return new Transaction({
         id: transaction.id,
@@ -289,8 +293,7 @@ export class Transaction {
         category: {
           id: category.id,
           value: category.v,
-          incomeIcon: category.ii,
-          expenseIcon: category.ei,
+          icon: category.i,
         },
       });
     });

@@ -15,6 +15,11 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	const putTransaction = useStoreActions(_ => _.transactions.putTransaction)
 
 	/**
+	 * Loading state
+	 */
+	const [loading, setLoading] = useState(false)
+
+	/**
 	 * Input state
 	 */
 	const [sign, setSign] = useState<"+" | "-">("-")
@@ -128,6 +133,8 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		const formValid = validateForm()
 		if (!formValid) return
 
+		setLoading(true)
+
 		/**
 		 * Parsing
 		 */
@@ -177,6 +184,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 			if (props.onClose) {
 				props.onClose()
 			}
+			setLoading(false)
 			return
 		}
 
@@ -210,9 +218,12 @@ export function useTransactionFormController(props: TransactionFormProps) {
 					return { main: "Error posting transaction." }
 			}
 		})
+
+		setLoading(false)
 	}
 
 	return {
+		loading,
 		onSubmit: handleSubmit,
 		sign: sign,
 		amount: amount,

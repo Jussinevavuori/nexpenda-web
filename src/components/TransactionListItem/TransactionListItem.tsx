@@ -93,16 +93,8 @@ export function TransactionListItem(props: TransactionListItemProps) {
 				>
 					{
 						controller.selectionActive
-							? controller.selected
-								? <SelectedIcon />
-								: null
-							: props.transaction.amount.isPositive
-								? <span className="emoji">
-									{props.transaction.category.incomeIcon.substr(0, 2)}
-								</span>
-								: <span className="emoji">
-									{props.transaction.category.expenseIcon.substr(0, 2)}
-								</span>
+							? controller.selected ? <SelectedIcon /> : null
+							: <span className="emoji">{props.transaction.icon}</span>
 					}
 				</div>
 			</motion.div>
