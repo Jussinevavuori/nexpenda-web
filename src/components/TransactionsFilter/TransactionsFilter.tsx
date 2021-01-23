@@ -7,6 +7,7 @@ import { useMdMedia } from "../../hooks/useMedia";
 import { useTransactionsFilterController } from "./useTransactionsFilterController"
 import { Type } from "../Type/Type";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { useTrueAfterTimeout } from "../../hooks/useTrueAfterTimeout";
 
 export type TransactionsFilterProps = {
 
@@ -14,6 +15,7 @@ export type TransactionsFilterProps = {
 
 export function TransactionsFilter(props: TransactionsFilterProps) {
 
+	const trueAfterTimeout = useTrueAfterTimeout(100)
 	const controller = useTransactionsFilterController(props)
 	const isDesktopLayout = useMdMedia()
 
@@ -21,7 +23,10 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 
 	return <div className="TransactionsFilter">
 		<AnimateSharedLayout>
-			<motion.div layout className={cx("container", { open: controller.open })}>
+			<motion.div
+				layout={trueAfterTimeout}
+				className={cx("container", { open: controller.open })}
+			>
 				<ButtonBase
 					focusRipple
 					disableRipple={controller.open}
@@ -36,10 +41,13 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 					}}
 				>
 					<motion.div
-						layout
+						layout={trueAfterTimeout}
 						className={cx("buttonBase", { open: controller.open })}
 					>
-						<motion.span className="icon startIcon" layout="position">
+						<motion.span
+							className="icon startIcon"
+							layout={trueAfterTimeout ? "position" : false}
+						>
 							<FilterIcon />
 						</motion.span>
 						<AnimatePresence>
@@ -60,7 +68,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 						{
 							controller.open && <motion.span
 								className={cx("inputContainer", { open: controller.open })}
-								layout="position"
+								layout={trueAfterTimeout ? "position" : false}
 								initial={{ opacity: 0, scale: 0 }}
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0 }}
@@ -79,7 +87,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 								initial={{ opacity: 0, y: -10 }}
 								animate={{ opacity: 1, y: 0 }}
 								className="icon endIcon iconButton"
-								layout="position"
+								layout={trueAfterTimeout ? "position" : false}
 							>
 								<div className="iconButtonChild">
 									<CloseIcon

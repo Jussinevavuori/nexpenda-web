@@ -24,95 +24,74 @@ export function ActionsPanel(props: ActionsPanelProps) {
 
 	const controller = useActionsPanelController(props)
 
-	const desktopLayout = useMdMedia()
+	const isDesktopLayout = useMdMedia()
 
 	/**
-	 * Mobile layout
+	 * Mobile selection layout
 	 */
-
-	if (!desktopLayout) {
-
-		/**
-		 * Mobile selection layout
-		 */
-
-		if (controller.isSelectionActive) {
-			return <div className="ActionsPanel mobile selection">
-
-				<div className="selection-info">
-
-					<IconButton
-						onClick={controller.handleDeselectAll}
-						children={<DeselectAllIcon />}
-					/>
-					<Type variant="boldcaps" color="gray-800">
-						{`${controller.selection.length} selected`}
-					</Type>
-
-				</div>
-
-				<div className="selection-actions">
-
-					{
-						controller.allSelected
-							? <IconButton
-								onClick={controller.handleDeselectAll}
-								children={<SelectedAllIcon />}
-							/>
-							: <IconButton
-								onClick={controller.handleSelectAll}
-								children={<SelectAllIcon />}
-							/>
-					}
-					<IconButton
-						className="editButton"
-						disabled={controller.selection.length !== 1}
-						onClick={controller.handleEdit}
-						children={<EditIcon />}
-					/>
-					<IconButton
-						className="deleteButton"
-						disabled={controller.selection.length === 0}
-						onClick={controller.handleDelete}
-						children={<DeleteIcon />}
-					/>
-
-				</div>
-
+	if (!isDesktopLayout && controller.isSelectionActive) {
+		return <div className="ActionsPanel mobile selection">
+			<div className="selection-info">
+				<IconButton
+					onClick={controller.handleDeselectAll}
+					children={<DeselectAllIcon />}
+				/>
+				<Type variant="boldcaps" color="gray-800">
+					{`${controller.selection.length} selected`}
+				</Type>
 			</div>
-		}
-
-		/**
-		 * Mobile default layout
-		 */
-		else {
-			return <div className={cx("ActionsPanel mobile default", {
-				searchIsOpen: controller.isSearchOpen
-			})}>
-
-				<div className="intervalManager">
-					<IntervalManager hideControls />
-				</div>
-
-				<div className="filterManager">
-					<TransactionsFilter />
-				</div>
-
+			<div className="selection-actions">
+				{
+					controller.allSelected
+						? <IconButton
+							onClick={controller.handleDeselectAll}
+							children={<SelectedAllIcon />}
+						/>
+						: <IconButton
+							onClick={controller.handleSelectAll}
+							children={<SelectAllIcon />}
+						/>
+				}
+				<IconButton
+					className="editButton"
+					disabled={controller.selection.length !== 1}
+					onClick={controller.handleEdit}
+					children={<EditIcon />}
+				/>
+				<IconButton
+					className="deleteButton"
+					disabled={controller.selection.length === 0}
+					onClick={controller.handleDelete}
+					children={<DeleteIcon />}
+				/>
 			</div>
-		}
-
+		</div>
 	}
+
+	/**
+	 * Mobile default layout
+	 */
+	else if (!isDesktopLayout && !controller.isSelectionActive) {
+		return <div className={cx("ActionsPanel mobile default", {
+			searchIsOpen: controller.isSearchOpen
+		})}>
+			<div className="intervalManager">
+				<IntervalManager />
+			</div>
+			<div className="filterManager">
+				<TransactionsFilter />
+			</div>
+		</div>
+	}
+
 
 	/**
 	 * Desktop layout
 	 */
 	else {
 		return <>
-
 			<div className="ActionsPanel desktop">
-
 				<div className="actionButtons">
-
 					<Button
 						variant="contained"
 						color="primary"
@@ -124,7 +103,6 @@ export function ActionsPanel(props: ActionsPanelProps) {
 							{"New transaction"}
 						</Type>
 					</Button>
-
 					{
 						controller.isSelectionActive && <>
 							<Button
@@ -151,15 +129,11 @@ export function ActionsPanel(props: ActionsPanelProps) {
 							</Button>
 						</>
 					}
-
 				</div>
-
 				<div className="filtersButton">
 					<TransactionsFilter />
 				</div>
-
 			</div>
-
 		</>
 	}
 }
