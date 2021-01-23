@@ -1,0 +1,92 @@
+@import "main";
+
+.TransactionsFilter {
+  @include md {
+    transform-origin: right;
+    transform: scale(0.93);
+  }
+  & > .container {
+    max-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & .MuiButtonBase-root {
+      padding: 0;
+      &.open {
+        width: 100%;
+      }
+    }
+
+    & .buttonBase {
+      background: white;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 10px 4px 4px;
+      @include md {
+        padding: 7px 14px;
+      }
+      border-radius: 0;
+      @include md {
+        border: 1px solid rgba(0, 0, 0, 0.23);
+        border-radius: 4px;
+      }
+
+      & .icon {
+        &.startIcon {
+          & > svg.MuiSvgIcon-root {
+            margin: 0 8px 0 0;
+          }
+        }
+        &.endIcon {
+          & > svg.MuiSvgIcon-root {
+            margin: 0 0 0 8px;
+          }
+        }
+        & > svg {
+          transform: translateY(2.5px);
+        }
+        &.iconButton {
+          & > .iconButtonChild {
+            border-radius: 4px;
+            padding: 0 4px;
+            transform: translateX(6px) scale(1.5);
+            &:hover {
+              background: $gray-200;
+            }
+            & > svg {
+              transform: scale(0.75) translateY(3px);
+            }
+          }
+          // border: 1px solid rgba(255, 0, 0, 0.2);
+          cursor: pointer;
+        }
+      }
+
+      & .inputContainer {
+        &.open {
+          width: 100%;
+          flex: 1;
+        }
+
+        & .input {
+          width: 100%;
+          height: 100%;
+          transform: scale(1, 1);
+          border: 0;
+          outline: none;
+          @include text-regular-md;
+        }
+      }
+
+      &.open {
+        width: 100%;
+        &:focus-within {
+          border-color: $blue-400;
+        }
+      }
+    }
+  }
+}

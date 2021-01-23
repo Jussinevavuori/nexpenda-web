@@ -1,7 +1,7 @@
 import "./ActionsPanel.scss";
 import React from "react"
+import cx from "classnames"
 import {
-	FilterList as FilterIcon,
 	SelectAll as SelectAllIcon,
 	CheckBox as SelectedAllIcon,
 	Clear as DeselectAllIcon,
@@ -15,6 +15,7 @@ import { useMdMedia } from "../../../hooks/useMedia";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
 import { Type } from "../../../components/Type/Type";
 import { useActionsPanelController } from "./useActionsPanelController";
+import { TransactionsFilter } from "../../../components/TransactionsFilter/TransactionsFilter";
 
 export type ActionsPanelProps = {
 }
@@ -85,18 +86,16 @@ export function ActionsPanel(props: ActionsPanelProps) {
 		 * Mobile default layout
 		 */
 		else {
-			return <div className="ActionsPanel mobile default">
+			return <div className={cx("ActionsPanel mobile default", {
+				searchIsOpen: controller.isSearchOpen
+			})}>
 
 				<div className="intervalManager">
 					<IntervalManager hideControls />
 				</div>
 
 				<div className="filterManager">
-					<IconButton
-						className="filterButton"
-						onClick={controller.handleFilter}
-						children={<FilterIcon />}
-					/>
+					<TransactionsFilter />
 				</div>
 
 			</div>
@@ -112,7 +111,7 @@ export function ActionsPanel(props: ActionsPanelProps) {
 
 			<div className="ActionsPanel desktop">
 
-				<div>
+				<div className="actionButtons">
 
 					<Button
 						variant="contained"
@@ -156,16 +155,7 @@ export function ActionsPanel(props: ActionsPanelProps) {
 				</div>
 
 				<div className="filtersButton">
-					<Button
-						variant="outlined"
-						className="button filterButton"
-						startIcon={<FilterIcon />}
-						onClick={controller.handleFilter}
-					>
-						<Type variant="boldcaps" >
-							{"Filter"}
-						</Type>
-					</Button>
+					<TransactionsFilter />
 				</div>
 
 			</div>

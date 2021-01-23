@@ -3,10 +3,15 @@ import { ActionsPanelProps } from "./ActionsPanel"
 import { useStoreState, useStoreActions } from "../../../store"
 import { DataUtils } from "../../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController"
-import { useFiltersDrawerOpenState } from "../../../components/FiltersDrawer/useFiltersDrawerController"
 import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController"
+import { useBooleanQueryState } from "../../../hooks/useBooleanQueryState"
 
 export function useActionsPanelController(props: ActionsPanelProps) {
+
+	/**
+	 * Search open
+	 */
+	const [isSearchOpen] = useBooleanQueryState("search", "replace", "open")
 
 	/**
 	 * Selection
@@ -66,14 +71,6 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	}, [selection, setEditor, deselectAll])
 
 	/**
-	 * Filters drawer
-	 */
-	const [, setFiltersDrawerOpen] = useFiltersDrawerOpenState()
-	const handleFilter = useCallback(() => {
-		setFiltersDrawerOpen(true)
-	}, [setFiltersDrawerOpen])
-
-	/**
 	 * Create transaction drawer
 	 */
 	const [createDrawerOpen, setCreateDrawerOpen] = useTransactionCreatorDrawerOpenState()
@@ -90,7 +87,7 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 		handleDeselectAll,
 		handleEdit,
 		handleDelete,
-		handleFilter,
 		handleCreate,
+		isSearchOpen
 	}
 }

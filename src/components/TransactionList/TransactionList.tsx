@@ -9,6 +9,7 @@ import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
 import { theme } from "../../styles/main";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
+import { motion } from "framer-motion";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -37,7 +38,7 @@ export function TransactionList(props: TransactionListProps) {
 	}
 
 	// Render list
-	return <div className="TransactionList">
+	return <motion.div layout="position" className="TransactionList">
 		<AutoSizer className="autoSizer">
 			{
 				(autoSizer) => <List
@@ -93,8 +94,7 @@ export function TransactionList(props: TransactionListProps) {
 				/>
 			}
 		</AutoSizer>
-
-	</div>
+	</motion.div>
 }
 
 function toDatestring(date: Date) {

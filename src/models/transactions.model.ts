@@ -11,36 +11,11 @@ import {
 import { Transaction } from "../classes/Transaction";
 import { TransactionService } from "../services/TransactionService";
 import { StoreModel } from "../store";
-import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
-import {
-  transactionSortModel,
-  TransactionSortModel,
-} from "./transactions.sort.model";
-import {
-  SelectedTransactionsModel,
-  selectedTransactionsModel,
-} from "./transactions.selected.model";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
-import { lightFormat } from "date-fns";
 
 export interface TransactionsModel {
-  //==============================================================//
-  // SUBMODELS
-  //==============================================================//
-
-  /**
-   * Selected properties (copies of the above properties using only
-   * selected items i.e. items in the current interval)
-   */
-  selected: SelectedTransactionsModel;
-
-  /**
-   * Current sorting strategy model
-   */
-  sort: TransactionSortModel;
-
   //==============================================================//
   // PROPERTIES
   //==============================================================//
@@ -54,6 +29,16 @@ export interface TransactionsModel {
    * Has the user loaded the transactions
    */
   initialized: boolean;
+
+  /**
+   * Current sorting strategy
+   */
+  sortingStrategy: TransactionSortStrategy;
+
+  /**
+   * Current search term
+   */
+  searchTerm: string;
 
   //==============================================================//
   // COMPUTED PROPERTIES
@@ -93,6 +78,21 @@ export interface TransactionsModel {
    * Clears the state
    */
   clearState: Action<TransactionsModel, void>;
+
+  /**
+   * Toggle the current sorting strategy by a sorting property
+   */
+  toggleSortingStrategy: Action<TransactionsModel, TransactionSortableProperty>;
+
+  /**
+   * Directly set the current sorting strategy to the specified one
+   */
+  setSortingStrategy: Action<TransactionsModel, TransactionSortStrategy>;
+
+  /**
+   * Directly set the current search term
+   */
+  setSearchTerm: Action<TransactionsModel, string>;
 
   //==============================================================//
   // THUNKS
@@ -188,18 +188,13 @@ export interface TransactionsModel {
 
 export const transactionsModel: TransactionsModel = {
   //==============================================================//
-  // SUBMODELS
-  //==============================================================//
-
-  selected: selectedTransactionsModel,
-  sort: transactionSortModel,
-
-  //==============================================================//
   // PROPERTIES
   //==============================================================//
 
   items: [],
   initialized: false,
+  sortingStrategy: "date-descending",
+  searchTerm: "",
 
   //==============================================================//
   // COMPUTED PROPERTIES
@@ -207,63 +202,13 @@ export const transactionsModel: TransactionsModel = {
 
   filteredItems: computed(
     [
-      (_, storeState) => storeState.transactions.items,
+      (_) => _.items,
+      (_) => _.searchTerm,
       (_, storeState) => storeState.interval,
-      (_, storeState) => storeState.filters,
     ],
-    (items, interval, filters) => {
-      return items.filter((item) => {
-        // Filter by start date
-        if (DateUtils.compareDate(item.date, "<", interval.startDate)) {
-          return false;
-        }
-
-        // Filter by end date
-        if (DateUtils.compareDate(item.date, ">", interval.endDate)) {
-          return false;
-        }
-
-        // Filter by search term
-        if (
-          filters.searchTerm &&
-          !DataUtils.textSearch(
-            filters.searchTerm,
-            ...[
-              item.amount.format(),
-              item.category.value,
-              item.comment,
-              lightFormat(item.date, "d.M.yyyy"),
-            ]
-          )
-        ) {
-          return false;
-        }
-
-        // Filter by minimum amount
-        if (item.amount.value < filters.minAmount) {
-          return false;
-        }
-
-        // Filter by maximum amount
-        if (item.amount.value > filters.maxAmount) {
-          return false;
-        }
-
-        // Filter by hidden IDs
-        if (filters.hiddenIds.includes(item.id)) {
-          return false;
-        }
-
-        // Filter by category (if categories filter activated)
-        if (
-          filters.categories.length > 0 &&
-          !filters.categories.includes(item.category.id)
-        ) {
-          return false;
-        }
-
-        // All filters passed: include
-        return true;
+    (items, searchTerm, interval) => {
+      return items.filter((t) => {
+        return t.filter(searchTerm, interval.startDate, interval.endDate);
       });
     }
   ),
@@ -304,6 +249,46 @@ export const transactionsModel: TransactionsModel = {
 
   clearState: action((state) => {
     state.items = [];
+  }),
+
+  toggleSortingStrategy: action((state, property) => {
+    // Define all carousels: each toggle on a property will toggle the sort to
+    // the next sort state in the property's carousel, while clicking on any
+    // other property will set it to the first sort state in the new property's
+    // carousel.
+    const carousels: Record<
+      TransactionSortableProperty,
+      TransactionSortStrategy[]
+    > = {
+      amount: ["amount-descending", "amount-ascending", "none"],
+      category: ["category-descending", "category-ascending", "none"],
+      comment: ["comment-descending", "comment-ascending", "none"],
+      date: ["date-descending", "date-ascending", "none"],
+    };
+
+    // Get the current sort
+    const currentStrategy = state.sortingStrategy;
+
+    // Get the current carousel
+    const carousel = carousels[property];
+
+    // Figure out the index of the item in the carousel which is currently
+    // active or default to -1 for "no item found"
+    const activeSortIndex = carousel.findIndex((_) => _ === currentStrategy);
+
+    // Get the next item's index in the carousel
+    const targetSortIndex = (activeSortIndex + 1) % carousel.length;
+
+    // Return the next item in the carousel
+    state.sortingStrategy = carousel[targetSortIndex];
+  }),
+
+  setSortingStrategy: action((state, sort) => {
+    state.sortingStrategy = sort;
+  }),
+
+  setSearchTerm: action((state, searchTerm) => {
+    state.searchTerm = searchTerm;
   }),
 
   //==============================================================//

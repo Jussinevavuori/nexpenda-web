@@ -58,6 +58,9 @@
       overflow: hidden;
       white-space: nowrap;
     }
+    & .categoryIcon {
+      margin-right: $spacing-2;
+    }
   }
 
   & .comment {

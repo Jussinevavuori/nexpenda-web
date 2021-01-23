@@ -5,7 +5,6 @@ import {
   transactionsModel,
 } from "./models/transactions.model";
 import { intervalModel, IntervalModel } from "./models/interval.model";
-import { FiltersModel, filtersModel } from "./models/filters.model";
 import {
   notificationModel,
   NotificationModel,
@@ -19,7 +18,6 @@ export interface StoreModel {
   selection: SelectionModel;
   interval: IntervalModel;
   history: HistoryModel;
-  filters: FiltersModel;
   auth: AuthModel;
 }
 
@@ -29,7 +27,6 @@ const storeModel: StoreModel = {
   selection: selectionModel,
   interval: intervalModel,
   history: historyModel,
-  filters: filtersModel,
   auth: authModel,
 };
 

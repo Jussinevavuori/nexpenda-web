@@ -8,9 +8,15 @@
     border-bottom: 1px solid $gray-200;
     &.default {
       padding: adjust-spacing($spacing-4, $spacing-icon-button)
-        adjust-spacing($spacing-6, $spacing-icon-button)
+        adjust-spacing($spacing-6, 20px)
         adjust-spacing($spacing-4, $spacing-icon-button)
         adjust-spacing($spacing-6, $spacing-button-horizontal);
+      &.searchIsOpen {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding-right: adjust-spacing($spacing-6, 12px);
+      }
     }
     &.selection {
       padding: adjust-spacing($spacing-4, $spacing-icon-button);
@@ -36,13 +42,22 @@
   &.desktop {
     // Adjust scale visually by small amount
     & > div {
-      transform: scale(0.9);
+      transform: scale(0.95);
       &:first-child {
         transform-origin: left;
       }
       &:last-child {
         transform-origin: right;
       }
+    }
+    & .actionButtons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+    }
+    & .filtersButton {
+      flex: 1;
     }
     & .button {
       padding: $spacing-2 $spacing-4;

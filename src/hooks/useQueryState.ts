@@ -7,10 +7,11 @@ import {
 
 export function useQueryState<T>(options: {
   key: string;
+  method: "push" | "replace";
   decode: (encoded: string | string[] | null) => T;
   encode: (decoded: T) => string | null | undefined;
 }): [T, (t: T) => void] {
-  const { key, decode, encode } = options;
+  const { key, decode, encode, method } = options;
 
   const location = useLocation();
 
@@ -36,11 +37,21 @@ export function useQueryState<T>(options: {
         ...query,
         [key]: encode(target),
       });
-      history.push({
-        search: queryString,
-      });
+
+      switch (method) {
+        case "push":
+          history.push({
+            search: queryString,
+          });
+          break;
+        case "replace":
+          history.replace({ search: queryString });
+          break;
+        default:
+          break;
+      }
     },
-    [encode, key, location, history]
+    [encode, key, location, history, method]
   );
 
   /**

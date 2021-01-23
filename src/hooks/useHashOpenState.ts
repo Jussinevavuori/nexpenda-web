@@ -19,7 +19,7 @@ export function useHashOpenState(
     (target: boolean) => {
       if (target === true) {
         if (!open) {
-          history.push({ hash: targetHash });
+          history.push({ hash: targetHash, search: location.search });
         }
       } else {
         if (open) {
@@ -27,7 +27,7 @@ export function useHashOpenState(
         }
       }
     },
-    [history, targetHash, open]
+    [history, targetHash, open, location.search]
   );
 
   return [open, setOpen];

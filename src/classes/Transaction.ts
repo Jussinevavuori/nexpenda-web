@@ -3,6 +3,8 @@ import { MoneyAmount } from "./MoneyAmount";
 import { array, object, string, number, ObjectSchema } from "yup";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { Category } from "./Category";
+import { DataUtils } from "../utils/DataUtils/DataUtils";
+import { lightFormat } from "date-fns";
 
 /**
  * The (JSON) object format for a transaction.
@@ -131,6 +133,36 @@ export class Transaction {
     } else {
       return this.amount.isPositive ? "💰" : "💸";
     }
+  }
+
+  /**
+   * Filters the transaction based on the given conditions
+   */
+  filter(searchTerm: string, startDate: Date, endDate: Date) {
+    if (DateUtils.compareDate(this.date, "<", startDate)) {
+      return false;
+    }
+
+    if (DateUtils.compareDate(this.date, ">", endDate)) {
+      return false;
+    }
+
+    if (
+      searchTerm &&
+      !DataUtils.textSearch(
+        searchTerm,
+        ...[
+          this.amount.format(),
+          this.category.value,
+          this.comment,
+          lightFormat(this.date, "d.M.yyyy"),
+        ]
+      )
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   /**

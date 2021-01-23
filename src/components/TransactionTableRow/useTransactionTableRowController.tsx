@@ -4,22 +4,6 @@ import { useStoreActions, useStoreState } from "../../store"
 import { TransactionTableRowProps } from "./TransactionTableRow"
 
 export function useTransactionTableRowController(props: TransactionTableRowProps) {
-
-	/**
-	 * Handle category select and deselect
-	 */
-	const categoryFilter = useStoreState(_ => _.filters.categories)
-	const selectCategoryFilter = useStoreActions(_ => _.filters.selectCategory)
-	const deselectCategoryFilter = useStoreActions(_ => _.filters.deselectCategory)
-	const handleCategorySelect = useCallback(() => {
-		const category = props.transaction.category
-		if (categoryFilter.includes(category.id)) {
-			deselectCategoryFilter(category.id)
-		} else {
-			selectCategoryFilter(category.id)
-		}
-	}, [categoryFilter, deselectCategoryFilter, selectCategoryFilter, props.transaction])
-
 	/**
 	 * Selected
 	 */
@@ -78,8 +62,6 @@ export function useTransactionTableRowController(props: TransactionTableRowProps
 
 	return {
 		transaction: props.transaction,
-
-		onSelectCategory: handleCategorySelect,
 
 		onClick: handleClick,
 		onContextMenu: handleContextMenu,

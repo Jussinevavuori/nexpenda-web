@@ -9,9 +9,9 @@ export function useTransactionTableHeaderController(props: TransactionTableHeade
 	const selection = useStoreState(_ => _.selection.selection)
 	const transactions = useStoreState(_ => _.transactions.filteredItems)
 
-	const toggleSort = useStoreActions(_ => _.transactions.sort.toggle)
+	const toggleSort = useStoreActions(_ => _.transactions.toggleSortingStrategy)
 
-	const sortingStrategy = useStoreState(_ => _.transactions.sort.strategy)
+	const sortingStrategy = useStoreState(_ => _.transactions.sortingStrategy)
 
 	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
 	const isAllSelected = useMemo(() => {

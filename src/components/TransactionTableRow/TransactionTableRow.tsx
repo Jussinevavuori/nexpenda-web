@@ -45,6 +45,9 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 		</div>
 		<div className="category">
 			<Type variant="bold" color="gray-800" size="md">
+				<span className="categoryIcon">
+					{controller.transaction.icon}
+				</span>
 				{controller.transaction.category.value}
 			</Type>
 		</div>

@@ -3,7 +3,6 @@ import React from "react"
 import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawer";
 import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawer";
 import { Header } from "../Header/Header";
-import { FiltersDrawer } from "../FiltersDrawer/FiltersDrawer";
 import { useAppFrameController } from "./useAppFrameController";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/useMedia";
@@ -23,7 +22,6 @@ export function AppFrame(props: AppFrameProps) {
 			controller.initialized && <>
 				{isDesktopLayout ? null : <TransactionCreatorDrawer />}
 				<TransactionEditorDrawer />
-				<FiltersDrawer />
 			</>
 		}
 		<div className="header">
