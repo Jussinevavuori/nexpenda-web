@@ -1,15 +1,23 @@
 @import "main";
 
 .AnalyticsMonthlyAverages {
-  & > ul {
-    & > li {
-      padding-bottom: $spacing-4;
-      & > *:first-child {
-        margin-bottom: $spacing-1;
-      }
+  & > .header {
+    margin-bottom: $spacing-1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    & > .Type:first-child {
+      margin-right: $spacing-4;
     }
   }
-  & > .buttons {
-    padding-top: $spacing-4;
+  & > .subtotals {
+    display: flex;
+    align-items: baseline;
+    & > *:not(:last-child) {
+      margin-right: $spacing-4;
+    }
+  }
+  & > .select {
+    padding-top: $spacing-6;
   }
 }

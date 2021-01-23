@@ -9,7 +9,7 @@ import { TransactionContextMenuProps } from "./TransactionContextMenu"
 export function useTransactionContextMenuController(props: TransactionContextMenuProps) {
 
 	const selection = useStoreState(_ => _.selection.selection)
-	const filteredTransactions = useStoreState(_ => _.transactions.filtered.items)
+	const filteredTransactions = useStoreState(_ => _.transactions.filteredItems)
 
 	const deselectAll = useStoreActions(_ => _.selection.deselectAll)
 	const selectAll = useStoreActions(_ => _.selection.selectAll)

@@ -15,42 +15,42 @@ export function AnalyticsTotals(props: AnalyticsTotalsProps) {
 	const controller = useAnalyticsTotalsController(props)
 
 	const content = <div className="AnalyticsTotals">
-		<div className="total">
+		<div className="header">
 			<Type color="gray-600" variant="boldcaps">
 				{"Total"}
 			</Type>
+			<Type color="gray-600" size="md">
+				{`(${controller.totals.totalCount} transactions)`}
+			</Type>
+		</div>
+		<div className="total">
 			<MoneyType
 				animate
-				amount={controller.totals.all}
+				amount={controller.totals.total}
 				size="xxl"
 				colorIfPositive="green-600"
 				colorIfNegative="red-600"
 			/>
 		</div>
-		<div className="subtotal">
-			<Type color="gray-600" variant="boldcaps">
-				{"Total incomes"}
-			</Type>
+		<div className="subtotals">
 			<MoneyType
 				animate
 				amount={controller.totals.incomes}
 				size="lg"
+				variant="regular"
 				colorIfPositive="green-600"
 				colorIfNegative="red-600"
 			/>
-		</div>
-		<div className="subtotal">
-			<Type color="gray-600" variant="boldcaps">
-				{"Total expenses"}
-			</Type>
+			<Type color="gray-800" size="md">{"/"}</Type>
 			<MoneyType
 				animate
 				amount={controller.totals.expenses}
 				size="lg"
+				variant="regular"
 				colorIfPositive="green-600"
 				colorIfNegative="red-600"
 			/>
-		</div >
+		</div>
 	</div >
 
 	if (props.wrapInAnalyticsBlock) {

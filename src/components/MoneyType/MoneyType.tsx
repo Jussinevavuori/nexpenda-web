@@ -15,6 +15,7 @@ export type MoneyTypeProps = {
 	disableAnimationBlur?: boolean;
 	animationDuration?: number;
 	animationStiffness?: number;
+
 } & TypeProps
 
 export function MoneyType(props: MoneyTypeProps) {

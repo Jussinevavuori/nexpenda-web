@@ -105,26 +105,6 @@ export class DataUtils {
   }
 
   /**
-   * Takes in an object and a map function and maps every value
-   * in the object.
-   *
-   * Example:
-   *
-   * ```
-   * mapObject({a: 1, b: 2, c: 3}, (value) => value * 2)
-   * === {a: 2, b: 4, c: 6}
-   * ```
-   *
-   * @param obj Input object to map over
-   * @param fn  Map function
-   */
-  static mapObject<A, B>(obj: Record<ObjectIndexable, A>, fn: (value: A) => B) {
-    return Object.keys(obj).reduce((object, key) => {
-      return { ...object, [key]: fn(obj[key]) };
-    }, {} as Record<ObjectIndexable, B>);
-  }
-
-  /**
    * Searches text
    */
   static textSearch(search: string, ...match: string[]) {

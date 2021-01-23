@@ -1,13 +1,20 @@
 @import "main";
 
 .AnalyticsTotals {
-  & .subtotal,
-  & .total {
-    & > *:first-child {
-      margin-bottom: $spacing-1;
+  & > .header {
+    margin-bottom: $spacing-1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    & > .Type:first-child {
+      margin-right: $spacing-4;
     }
   }
-  & .subtotal {
-    margin-top: $spacing-4;
+  & > .subtotals {
+    display: flex;
+    align-items: baseline;
+    & > *:not(:last-child) {
+      margin-right: $spacing-4;
+    }
   }
 }

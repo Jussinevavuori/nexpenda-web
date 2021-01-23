@@ -5,7 +5,7 @@ import { TransactionTableProps } from "./TransactionTable"
 
 export function useTransactionTableController(props: TransactionTableProps) {
 
-	const items = useStoreState(_ => _.transactions.filtered.items)
+	const items = useStoreState(_ => _.transactions.filteredItems)
 	const sortingStrategy = useStoreState(_ => _.transactions.sort.strategy)
 
 	const sortedItems = useMemo(() => {

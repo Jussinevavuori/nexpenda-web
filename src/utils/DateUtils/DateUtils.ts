@@ -118,4 +118,24 @@ export class DateUtils {
       date.getDate() * DateUtils.DateSerializer.dateFactor
     );
   }
+
+  /**
+   * Serializes a month to a number
+   *
+   * @param date
+   */
+  static serializeMonth(date: Date): number {
+    return date.getFullYear() * 12 + date.getMonth();
+  }
+
+  /**
+   * Deserializes a number to a month
+   *
+   * @param date
+   */
+  static deserializeMonth(serial: number) {
+    const year = Math.floor(serial / 12);
+    const month = Math.floor(serial % 12);
+    return new Date(year, month);
+  }
 }

@@ -29,7 +29,7 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	/**
 	 * Select all
 	 */
-	const filteredTransactions = useStoreState(_ => _.transactions.filtered.items)
+	const filteredTransactions = useStoreState(_ => _.transactions.filteredItems)
 	const selectAll = useStoreActions(_ => _.selection.selectAll)
 	const handleSelectAll = useCallback(() => {
 		selectAll(filteredTransactions.map(_ => _.id))

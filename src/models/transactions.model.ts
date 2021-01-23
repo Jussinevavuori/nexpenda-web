@@ -11,11 +11,6 @@ import {
 import { Transaction } from "../classes/Transaction";
 import { TransactionService } from "../services/TransactionService";
 import { StoreModel } from "../store";
-import { MoneyAmount } from "../classes/MoneyAmount";
-import {
-  filteredTransactionsModel,
-  FilteredTransactionsModel,
-} from "./transactions.filtered.model";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
@@ -28,6 +23,7 @@ import {
   selectedTransactionsModel,
 } from "./transactions.selected.model";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
+import { lightFormat } from "date-fns";
 
 export interface TransactionsModel {
   //==============================================================//
@@ -39,12 +35,6 @@ export interface TransactionsModel {
    * selected items i.e. items in the current interval)
    */
   selected: SelectedTransactionsModel;
-
-  /**
-   * Filtered properties (copies of the above properties using only
-   * filtered items)
-   */
-  filtered: FilteredTransactionsModel;
 
   /**
    * Current sorting strategy model
@@ -70,42 +60,14 @@ export interface TransactionsModel {
   //==============================================================//
 
   /**
+   * Filtered items
+   */
+  filteredItems: Computed<TransactionsModel, Transaction[], StoreModel>;
+
+  /**
    * All categories
    */
   categories: Computed<TransactionsModel, Transaction["category"][]>;
-
-  /**
-   * Current transactions grouped and sorted by dates
-   */
-  itemsByDates: Computed<
-    TransactionsModel,
-    { date: Date; items: Transaction[] }[]
-  >;
-
-  /**
-   * Current amount of transactions
-   */
-  count: Computed<TransactionsModel, number>;
-
-  /**
-   * Minimum possible amount
-   */
-  minimumAmount: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Maximum possible amount
-   */
-  maximumAmount: Computed<TransactionsModel, MoneyAmount>;
-
-  /**
-   * Earliest date
-   */
-  earliestDate: Computed<TransactionsModel, Date>;
-
-  /**
-   * Latest date
-   */
-  latestDate: Computed<TransactionsModel, Date>;
 
   //==============================================================//
   // ACTIONS
@@ -230,7 +192,6 @@ export const transactionsModel: TransactionsModel = {
   //==============================================================//
 
   selected: selectedTransactionsModel,
-  filtered: filteredTransactionsModel,
   sort: transactionSortModel,
 
   //==============================================================//
@@ -244,11 +205,68 @@ export const transactionsModel: TransactionsModel = {
   // COMPUTED PROPERTIES
   //==============================================================//
 
-  itemsByDates: computed((state) => {
-    return DateUtils.groupByDate(state.items, (_) => _.date, {
-      sort: true,
-    });
-  }),
+  filteredItems: computed(
+    [
+      (_, storeState) => storeState.transactions.items,
+      (_, storeState) => storeState.interval,
+      (_, storeState) => storeState.filters,
+    ],
+    (items, interval, filters) => {
+      return items.filter((item) => {
+        // Filter by start date
+        if (DateUtils.compareDate(item.date, "<", interval.startDate)) {
+          return false;
+        }
+
+        // Filter by end date
+        if (DateUtils.compareDate(item.date, ">", interval.endDate)) {
+          return false;
+        }
+
+        // Filter by search term
+        if (
+          filters.searchTerm &&
+          !DataUtils.textSearch(
+            filters.searchTerm,
+            ...[
+              item.amount.format(),
+              item.category.value,
+              item.comment,
+              lightFormat(item.date, "d.M.yyyy"),
+            ]
+          )
+        ) {
+          return false;
+        }
+
+        // Filter by minimum amount
+        if (item.amount.value < filters.minAmount) {
+          return false;
+        }
+
+        // Filter by maximum amount
+        if (item.amount.value > filters.maxAmount) {
+          return false;
+        }
+
+        // Filter by hidden IDs
+        if (filters.hiddenIds.includes(item.id)) {
+          return false;
+        }
+
+        // Filter by category (if categories filter activated)
+        if (
+          filters.categories.length > 0 &&
+          !filters.categories.includes(item.category.id)
+        ) {
+          return false;
+        }
+
+        // All filters passed: include
+        return true;
+      });
+    }
+  ),
 
   categories: computed((state) =>
     DataUtils.unique(
@@ -256,38 +274,6 @@ export const transactionsModel: TransactionsModel = {
       (a, b) => a.id === b.id
     )
   ),
-
-  count: computed((state) => state.items.length),
-
-  minimumAmount: computed((state) => {
-    return state.items.reduce((min, next) => {
-      return next.amount.value < min.value ? next.amount : min;
-    }, new MoneyAmount(0));
-  }),
-
-  maximumAmount: computed((state) => {
-    return state.items.reduce((max, next) => {
-      return next.amount.value > max.value ? next.amount : max;
-    }, new MoneyAmount(0));
-  }),
-
-  earliestDate: computed((state) => {
-    return new Date(
-      state.items.reduce((minTs, next) => {
-        const ts = next.date.getTime();
-        return ts < minTs ? ts : minTs;
-      }, Number.MAX_SAFE_INTEGER)
-    );
-  }),
-
-  latestDate: computed((state) => {
-    return new Date(
-      state.items.reduce((maxTs, next) => {
-        const ts = next.date.getTime();
-        return ts > maxTs ? ts : maxTs;
-      }, 0)
-    );
-  }),
 
   //==============================================================//
   // ACTIONS

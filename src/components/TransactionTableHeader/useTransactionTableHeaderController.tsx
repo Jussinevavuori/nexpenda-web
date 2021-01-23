@@ -7,7 +7,7 @@ import { TransactionTableHeaderProps } from "./TransactionTableHeader"
 export function useTransactionTableHeaderController(props: TransactionTableHeaderProps) {
 
 	const selection = useStoreState(_ => _.selection.selection)
-	const transactions = useStoreState(_ => _.transactions.filtered.items)
+	const transactions = useStoreState(_ => _.transactions.filteredItems)
 
 	const toggleSort = useStoreActions(_ => _.transactions.sort.toggle)
 

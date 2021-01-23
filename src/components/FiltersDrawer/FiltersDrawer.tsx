@@ -2,7 +2,7 @@ import "./FiltersDrawer.scss";
 import React from "react"
 import { useMdMedia } from "../../hooks/useMedia";
 import { Drawer } from "@material-ui/core";
-import { FiltersForm } from "../FiltersForm/FiltersFormController";
+import { FiltersForm } from "../FiltersForm/FiltersForm";
 import { useFiltersDrawerController } from "./useFiltersDrawerController";
 
 export type FiltersDrawerProps = {

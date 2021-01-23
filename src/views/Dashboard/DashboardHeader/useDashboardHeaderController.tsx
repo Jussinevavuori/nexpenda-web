@@ -7,7 +7,7 @@ export function useDashboardHeaderController(props: DashboardHeaderProps) {
 
 	const intervalString = useStoreState(_ => _.interval.smartDisplayString)
 
-	const transactions = useStoreState(_ => _.transactions.filtered.items)
+	const transactions = useStoreState(_ => _.transactions.filteredItems)
 
 	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
 
