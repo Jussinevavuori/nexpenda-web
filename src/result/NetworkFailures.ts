@@ -6,6 +6,8 @@ export type ServerFailureCode =
   | "server/failure-formulating-request"
   | "request/invalid-request-data"
   | "request/too-many-requests"
+  | "request/missing-query-parameters"
+  | "request/missing-url-parameters"
   | "transaction/already-exists"
   | "transaction/not-found"
   | "auth/missing-token"
@@ -22,7 +24,8 @@ export type ServerFailureCode =
   | "database/access-failure"
   | "failure/unimplemented"
   | "failure/error"
-  | "failure/unknown";
+  | "failure/unknown"
+  | "failure/cors";
 
 type NetworkFailureDetails<E> = {
   status: number;

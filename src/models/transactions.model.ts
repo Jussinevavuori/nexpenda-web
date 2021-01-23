@@ -117,15 +117,15 @@ export interface TransactionsModel {
   setTransactionsToState: Action<TransactionsModel, Transaction[]>;
 
   /**
-   * Add single transaction to state or if one with that ID already
-   * exists in state, change it
+   * Add multiple transaction to state or if matching transactions by ID already
+   * exists in state, change them.
    */
-  upsertTransactionToState: Action<TransactionsModel, Transaction>;
+  upsertTransactionsToState: Action<TransactionsModel, Transaction[]>;
 
   /**
-   * Removes a transaction from the state
+   * Removes transactions from the state
    */
-  removeTransactionFromStateById: Action<TransactionsModel, string>;
+  removeTransactionsFromStateById: Action<TransactionsModel, string[]>;
 
   /**
    * Clears the state
@@ -225,12 +225,24 @@ export interface TransactionsModel {
 }
 
 export const transactionsModel: TransactionsModel = {
+  //==============================================================//
+  // SUBMODELS
+  //==============================================================//
+
   selected: selectedTransactionsModel,
   filtered: filteredTransactionsModel,
   sort: transactionSortModel,
 
+  //==============================================================//
+  // PROPERTIES
+  //==============================================================//
+
   items: [],
   initialized: false,
+
+  //==============================================================//
+  // COMPUTED PROPERTIES
+  //==============================================================//
 
   itemsByDates: computed((state) => {
     return DateUtils.groupByDate(state.items, (_) => _.date, {
@@ -277,6 +289,41 @@ export const transactionsModel: TransactionsModel = {
     );
   }),
 
+  //==============================================================//
+  // ACTIONS
+  //==============================================================//
+
+  setTransactionsToState: action((state, transactions) => {
+    state.items = transactions;
+    state.initialized = true;
+  }),
+
+  upsertTransactionsToState: action((state, transactions) => {
+    transactions.forEach((transaction) => {
+      if (state.items.find((_) => _.id === transaction.id)) {
+        state.items = state.items.map((_) => {
+          return _.id === transaction.id ? transaction : _;
+        });
+      } else {
+        state.items.push(transaction);
+      }
+    });
+  }),
+
+  removeTransactionsFromStateById: action((state, ids) => {
+    state.items = state.items.filter((transaction) => {
+      return !ids.includes(transaction.id);
+    });
+  }),
+
+  clearState: action((state) => {
+    state.items = [];
+  }),
+
+  //==============================================================//
+  // THUNKS
+  //==============================================================//
+
   getTransactions: thunk(async (actions) => {
     const result = await TransactionService.getTransactions();
     if (result.isSuccess()) {
@@ -289,34 +336,11 @@ export const transactionsModel: TransactionsModel = {
     return result;
   }),
 
-  setTransactionsToState: action((state, transactions) => {
-    state.items = transactions;
-    state.initialized = true;
-  }),
-
-  upsertTransactionToState: action((state, transaction) => {
-    if (state.items.find((_) => _.id === transaction.id)) {
-      state.items = state.items.map((_) => {
-        return _.id === transaction.id ? transaction : _;
-      });
-    } else {
-      state.items.push(transaction);
-    }
-  }),
-
-  removeTransactionFromStateById: action((state, id) => {
-    state.items = state.items.filter((_) => _.id !== id);
-  }),
-
-  clearState: action((state) => {
-    state.items = [];
-  }),
-
   postTransaction: thunk(async (actions, json, store) => {
     const result = await TransactionService.postTransaction(json);
     if (result.isSuccess()) {
       const transaction = new Transaction(result.value);
-      actions.upsertTransactionToState(transaction);
+      actions.upsertTransactionsToState([transaction]);
     }
     return result;
   }),
@@ -324,10 +348,9 @@ export const transactionsModel: TransactionsModel = {
   postTransactions: thunk(async (actions, jsons, store) => {
     const result = await TransactionService.postTransactions(jsons);
     if (result.isSuccess()) {
-      result.value.forEach((json) => {
-        const transaction = new Transaction(json);
-        actions.upsertTransactionToState(transaction);
-      });
+      actions.upsertTransactionsToState(
+        Transaction.parseCompressedData(result.value)
+      );
     }
     return result;
   }),
@@ -338,7 +361,7 @@ export const transactionsModel: TransactionsModel = {
       const transaction = getState().items.find((_) => _.id === id);
 
       // Delete the transaction
-      actions.removeTransactionFromStateById(id);
+      actions.removeTransactionsFromStateById([id]);
       const result = await TransactionService.deleteTransaction(id);
 
       // If deletion succeeds, create deletion event
@@ -350,7 +373,7 @@ export const transactionsModel: TransactionsModel = {
 
       // If deletion fails, put transaction back
       else if (result.isFailure() && transaction) {
-        actions.upsertTransactionToState(transaction);
+        actions.upsertTransactionsToState([transaction]);
       }
       return result;
     }
@@ -364,9 +387,7 @@ export const transactionsModel: TransactionsModel = {
       });
 
       // Delete the transactions from the state
-      transactions.forEach((transaction) => {
-        actions.removeTransactionFromStateById(transaction.id);
-      });
+      actions.removeTransactionsFromStateById(transactions.map((_) => _.id));
       const result = await TransactionService.deleteTransactions(
         transactions.map((_) => _.id)
       );
@@ -380,9 +401,7 @@ export const transactionsModel: TransactionsModel = {
 
       // If deletion fails, put transaction back
       else if (result.isFailure()) {
-        transactions.forEach((transaction) => {
-          actions.upsertTransactionToState(transaction);
-        });
+        actions.upsertTransactionsToState(transactions);
       }
       return result;
     }
@@ -392,7 +411,7 @@ export const transactionsModel: TransactionsModel = {
     const result = await TransactionService.putTransaction(json);
     if (result.isSuccess()) {
       const transaction = new Transaction(result.value);
-      actions.upsertTransactionToState(transaction);
+      actions.upsertTransactionsToState([transaction]);
     }
     return result;
   }),
@@ -401,10 +420,14 @@ export const transactionsModel: TransactionsModel = {
     const result = await TransactionService.patchTransaction(json);
     if (result.isSuccess()) {
       const transaction = new Transaction(result.value);
-      actions.upsertTransactionToState(transaction);
+      actions.upsertTransactionsToState([transaction]);
     }
     return result;
   }),
+
+  //==============================================================//
+  // LISTENERS
+  //==============================================================//
 
   onAuthChanged: thunkOn(
     (_, store) => [store.auth.logout, store.auth.setAuthToState],

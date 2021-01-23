@@ -72,11 +72,11 @@ export class TransactionService extends Service {
       return result;
     } else if (
       result.value.status === 201 &&
-      Transaction.isJsonArray(result.value.data)
+      Transaction.isCompressedJson(result.value.data)
     ) {
       return new Success(result.value.data);
     } else {
-      return new InvalidServerResponseFailure<JsonTransaction[]>(
+      return new InvalidServerResponseFailure<CompressedTransactionsJson>(
         result.value,
         "transactions/mass/post"
       );
