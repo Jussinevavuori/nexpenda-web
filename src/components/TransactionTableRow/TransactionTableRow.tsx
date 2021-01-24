@@ -14,6 +14,7 @@ import { TransactionForm } from "../TransactionForm/TransactionForm";
 
 export type TransactionTableRowProps = {
 	transaction: Transaction;
+	getAllTransactionIdsBetween(aid: string, bid: string): string[];
 }
 
 export function TransactionTableRow(props: TransactionTableRowProps) {
@@ -33,7 +34,10 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 	}
 
 	return <div
-		className={cx("TransactionTableRow default", { selected: controller.selected })}
+		className={cx("TransactionTableRow default", {
+			selected: controller.selected,
+			contextMenuSelected: controller.contextMenuSelected
+		})}
 		onClick={controller.onClick}
 		onContextMenu={controller.onContextMenu}
 	>

@@ -11,7 +11,7 @@ import {
 	Remove as RemoveIcon
 } from "@material-ui/icons"
 import { Button, IconButton, } from "@material-ui/core";
-import { useMdMedia } from "../../../hooks/useMedia";
+import { useMdMedia, useSmMedia } from "../../../hooks/useMedia";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
 import { Type } from "../../../components/Type/Type";
 import { useActionsPanelController } from "./useActionsPanelController";
@@ -25,6 +25,7 @@ export function ActionsPanel(props: ActionsPanelProps) {
 	const controller = useActionsPanelController(props)
 
 	const isDesktopLayout = useMdMedia()
+	const isLargeMobileLayout = useSmMedia()
 
 	/**
 	 * Mobile selection layout
@@ -76,7 +77,10 @@ export function ActionsPanel(props: ActionsPanelProps) {
 			searchIsOpen: controller.isSearchOpen
 		})}>
 			<div className="intervalManager">
-				<IntervalManager />
+				<IntervalManager
+					reverseControls={!isDesktopLayout}
+					hideNowControl={!isLargeMobileLayout}
+				/>
 			</div>
 			<div className="filterManager">
 				<TransactionsFilter />

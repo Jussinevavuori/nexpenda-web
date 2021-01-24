@@ -2,6 +2,7 @@
 
 .TransactionTableRow {
   display: grid;
+  position: relative;
   grid-template-columns: auto 3fr 2fr 4fr 1.5fr;
   grid-template-areas: "action category amount comment date";
   height: 40px;
@@ -16,6 +17,9 @@
     &.selected {
       background: white;
     }
+    &.contextMenuSelected {
+      border: none;
+    }
     &:hover {
       background: white;
       cursor: default;
@@ -24,6 +28,21 @@
 
   &.selected {
     background: $blue-100;
+  }
+
+  &.contextMenuSelected {
+    &::after {
+      content: "";
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      border: 1px solid $gray-300;
+      border-width: 1px 0;
+      background: $gray-100;
+      z-index: -1;
+    }
   }
 
   &:hover {

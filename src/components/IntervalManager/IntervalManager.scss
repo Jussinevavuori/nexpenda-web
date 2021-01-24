@@ -9,8 +9,15 @@
     color: $gray-800;
   }
   & .arrow-buttons {
+    display: flex;
+    flex-wrap: nowrap;
     margin-right: $spacing-4;
-    display: inline;
+  }
+  & .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    // max-width: 30vw;
   }
   &__Menu {
     padding: $spacing-4 $spacing-8;

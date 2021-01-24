@@ -9,6 +9,8 @@ import { useIntervalManagerController } from "./useIntervalManagerController";
 
 export type IntervalManagerProps = {
 	hideControls?: boolean;
+	reverseControls?: boolean;
+	hideNowControl?: boolean;
 }
 
 export function IntervalManager(props: IntervalManagerProps) {
@@ -18,32 +20,42 @@ export function IntervalManager(props: IntervalManagerProps) {
 	const isDesktopLayout = useSmMedia()
 	const menuLayout = isDesktopLayout && !isMobile
 
+	const dateButton = <Button
+		className="date-button"
+		startIcon={<DateRange />}
+		onClick={e => {
+			controller.setIntervalPickerOpen(true)
+			controller.setIntervalPickerMenuAnchor(e.currentTarget)
+		}}
+	>
+		<span className="label">
+			{controller.intervalLabel}
+		</span>
+	</Button>
+
 	return <>
+
+
 		<div className="IntervalManager">
+			{props.reverseControls ? dateButton : null}
 			{
 				controller.shouldShowControls && <div className="arrow-buttons">
 					<IconButton onClick={controller.handlePrevious}>
 						<ArrowBack />
 					</IconButton>
-					<IconButton onClick={controller.handleToday}>
-						<TodayIcon />
-					</IconButton>
+					{
+						props.hideNowControl
+							? null
+							: <IconButton onClick={controller.handleToday}>
+								<TodayIcon />
+							</IconButton>
+					}
 					<IconButton onClick={controller.handleNext}>
 						<ArrowForward />
 					</IconButton>
 				</div>
 			}
-
-			<Button
-				className="date-button"
-				startIcon={<DateRange />}
-				onClick={e => {
-					controller.setIntervalPickerOpen(true)
-					controller.setIntervalPickerMenuAnchor(e.currentTarget)
-				}}
-			>
-				{controller.intervalLabel}
-			</Button>
+			{!props.reverseControls ? dateButton : null}
 		</div>
 
 		{

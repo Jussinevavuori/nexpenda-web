@@ -36,16 +36,24 @@ function SubComponent(props: SubComponentProps) {
 						</div>
 						: props.timeranges.map((timerange, i) => {
 							return <motion.li layout key={i}>
-								<Type className="category" color="green-800" variant="bold">
-									{timerange.total.category?.value || ""}
-								</Type>
-								<Type className="count" color="gray-600" variant="bold">
-									{
-										props.variant === "income"
-											? timerange.total.incomesCount
-											: timerange.total.expensesCount
-									}
-								</Type>
+								<span className="category">
+									<span className="icon">
+										{
+											timerange.total.category?.icon
+											|| (props.variant === "income" ? "💰" : "💸")
+										}
+									</span>
+									<Type component="span" className="name" color="green-800" variant="bold">
+										{timerange.total.category?.value || ""}
+									</Type>
+									<Type component="span" className="count" color="gray-600" variant="bold">
+										{
+											props.variant === "income"
+												? timerange.total.incomesCount
+												: timerange.total.expensesCount
+										}
+									</Type>
+								</span>
 								<MoneyType
 									animate
 									className="amount"

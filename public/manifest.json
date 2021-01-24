@@ -27,7 +27,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/app/dashboard",
   "display": "standalone",
   "theme_color": "#2a52e2",
   "background_color": "#000000",

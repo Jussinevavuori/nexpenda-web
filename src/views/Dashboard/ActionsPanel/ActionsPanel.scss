@@ -5,20 +5,23 @@
   align-items: center;
   justify-content: space-between;
   &.mobile {
+    & .intervalManager {
+      flex: 1;
+      & .IntervalManager {
+        justify-content: space-between;
+      }
+    }
     border-bottom: 1px solid $gray-200;
     &.default {
       padding: adjust-spacing($spacing-4, $spacing-icon-button)
         adjust-spacing($spacing-6, 20px)
         adjust-spacing($spacing-4, $spacing-icon-button)
-        adjust-spacing($spacing-6, $spacing-icon-button);
+        adjust-spacing($spacing-6, $spacing-button-horizontal);
       &.searchIsOpen {
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
         padding-right: adjust-spacing($spacing-6, 12px);
-        & .filterManager {
-          margin-left: 8px;
-        }
       }
     }
     &.selection {

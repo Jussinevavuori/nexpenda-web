@@ -66,7 +66,10 @@ export function TransactionTable(props: TransactionTableProps) {
 							rowRenderer={(rowProps) => {
 								const entry = controller.items[rowProps.index]
 								return <li key={rowProps.key} style={rowProps.style}>
-									<TransactionTableRow transaction={entry} />
+									<TransactionTableRow
+										getAllTransactionIdsBetween={controller.getAllTransactionIdsBetween}
+										transaction={entry}
+									/>
 								</li>
 							}}
 						/>

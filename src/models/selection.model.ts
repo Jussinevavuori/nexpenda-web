@@ -12,6 +12,11 @@ export type SelectionModel = {
    */
   selectionIds: string[];
 
+  /**
+   * First selection id
+   */
+  firstSelectionId: undefined | string;
+
   //==============================================================//
   // COMPUTED PROPERTIES
   //==============================================================//
@@ -62,6 +67,7 @@ export const selectionModel: SelectionModel = {
   //==============================================================//
 
   selectionIds: [],
+  firstSelectionId: undefined,
 
   //==============================================================//
   // COMPUTED PROPERTIES
@@ -101,7 +107,15 @@ export const selectionModel: SelectionModel = {
   }),
 
   selectAll: action((state, ids) => {
-    state.selectionIds = ids;
+    // Maintain relative orders between IDs from previous state and append
+    // new IDs to end
+    state.selectionIds = ids.sort((a, b) => {
+      const _aidx = state.selectionIds.indexOf(a);
+      const _bidx = state.selectionIds.indexOf(b);
+      const aidx = _aidx < 0 ? Infinity : _aidx;
+      const bidx = _bidx < 0 ? Infinity : _bidx;
+      return aidx - bidx;
+    });
   }),
 
   deselectAll: action((state) => {

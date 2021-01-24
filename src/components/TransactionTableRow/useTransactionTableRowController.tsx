@@ -24,21 +24,10 @@ export function useTransactionTableRowController(props: TransactionTableRowProps
 		setEditingId(null)
 	}, [setEditingId])
 
-	/**
-	 * Handle selection
-	 */
 	const select = useStoreActions(_ => _.selection.select)
-	const handleSelect = useCallback(() => {
-		select(props.transaction.id)
-	}, [props.transaction, select])
-
-	/**
-	 * Handle deselection
-	 */
+	const selectAll = useStoreActions(_ => _.selection.selectAll)
 	const deselect = useStoreActions(_ => _.selection.deselect)
-	const handleDeselect = useCallback(() => {
-		deselect(props.transaction.id)
-	}, [props.transaction, deselect])
+	const deselectAll = useStoreActions(_ => _.selection.deselectAll)
 
 	/**
 	 * Selection active
@@ -49,12 +38,40 @@ export function useTransactionTableRowController(props: TransactionTableRowProps
 	 * Handle click
 	 */
 	const handleClick = useCallback((e: React.MouseEvent) => {
-		if (selected) {
-			handleDeselect()
+		const isShift = e.shiftKey
+		const isCtrl = e.ctrlKey
+
+		if (isShift) {
+			if (selection.length === 0) {
+				select(props.transaction.id)
+			} else {
+				selectAll(
+					props.getAllTransactionIdsBetween(
+						props.transaction.id,
+						selection[0].id
+					)
+				)
+			}
 		} else {
-			handleSelect()
+			if (selected) {
+				if (selection.length <= 1) {
+					deselect(props.transaction.id)
+				} else {
+					if (!isCtrl) {
+						deselectAll()
+						select(props.transaction.id)
+					} else {
+						deselect(props.transaction.id)
+					}
+				}
+			} else {
+				if (!isCtrl) {
+					deselectAll()
+				}
+				select(props.transaction.id)
+			}
 		}
-	}, [handleDeselect, handleSelect, selected])
+	}, [selection, deselect, deselectAll, select, selected, selectAll, props])
 
 	/**
 	 * Handle context menu
@@ -81,9 +98,10 @@ export function useTransactionTableRowController(props: TransactionTableRowProps
 		isEditing,
 		onCloseEditing: handleCloseEditing,
 
-		selected: selected || contextMenuSelected,
-		selectionActive: selectionActive,
-		onSelect: handleSelect,
-		onDeselect: handleDeselect,
+		selected,
+		contextMenuSelected,
+		selectionActive,
+		onSelect: () => select(props.transaction.id),
+		onDeselect: () => deselect(props.transaction.id),
 	}
 }
