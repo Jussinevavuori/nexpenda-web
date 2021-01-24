@@ -1,7 +1,7 @@
+import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
-
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -22,12 +22,15 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	/**
 	 * Input state
 	 */
+	const [icon, setIcon] = useState<string>("")
 	const [sign, setSign] = useState<"+" | "-">("-")
 	const [amount, setAmount] = useState<string>("")
 	const [category, setCategory] = useState<string>("")
 	const [time, setTime] = useState<Date>(new Date())
 	const [comment, setComment] = useState<string>("")
 
+	const [emojiPickerAnchor, setEmojiPickerAnchor] = useState<Element | null>(null)
+	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
 	/**
 	 * Initialize input state from editTransaction. We use the
 	 * `latestEditTransactionId` for preventing double-initializations of
@@ -47,6 +50,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		setCategory(editTransaction.category.value)
 		setComment(editTransaction.comment)
 		setTime(editTransaction.date)
+		setIcon(editTransaction.category.icon)
 	}, [editTransaction])
 
 	/**
@@ -59,6 +63,14 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		time?: string;
 		comment?: string;
 	}>({})
+
+	function validateIcon(): string | undefined {
+		if (emojiRegex().test(icon)) {
+			return icon
+		} else {
+			return undefined
+		}
+	}
 
 	/**
 	 * Validator for amount
@@ -156,12 +168,14 @@ export function useTransactionFormController(props: TransactionFormProps) {
 				category: category.trim(),
 				time: time.getTime(),
 				comment: comment.trim(),
+				categoryIcon: validateIcon(),
 			})
 			: await postTransaction({
 				integerAmount,
 				category: category.trim(),
 				time: time.getTime(),
 				comment: comment.trim(),
+				categoryIcon: validateIcon(),
 			})
 
 		/**
@@ -225,11 +239,17 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	return {
 		loading,
 		onSubmit: handleSubmit,
-		sign: sign,
-		amount: amount,
-		category: category,
-		time: time,
-		comment: comment,
+		sign,
+		amount,
+		category,
+		time,
+		comment,
+		icon,
+		emojiPickerOpen,
+		emojiPickerAnchor,
+		setEmojiPickerOpen,
+		setEmojiPickerAnchor,
+		onIconChange: setIcon,
 		onSignChange: setSign,
 		onAmountChange: setAmount,
 		onCategoryChange: setCategory,

@@ -2,7 +2,7 @@
 
 .Notification {
   margin-bottom: $spacing-14;
-  @include sm {
+  @include md {
     margin-bottom: 0;
   }
   & * {

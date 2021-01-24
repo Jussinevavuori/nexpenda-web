@@ -37,6 +37,8 @@ export type JsonTransaction = {
 export type JsonTransactionInitializer = Omit<JsonTransaction, "category"> & {
   /** Category's value / name */
   category: string;
+  /** Category's icon */
+  categoryIcon?: string;
 };
 
 /**
@@ -176,7 +178,7 @@ export class Transaction {
     category: object({
       id: string().required(),
       value: string().required(),
-      icon: string().required(),
+      icon: string().defined(),
     }).required(),
   }).required();
 

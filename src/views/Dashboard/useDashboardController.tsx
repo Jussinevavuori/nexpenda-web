@@ -6,20 +6,20 @@ export function useDashboardController() {
 
 	const isDesktopLayout = useMdMedia()
 
-	const [transactionFormOpen, setTransactionFormOpen] = useTransactionCreatorDrawerOpenState()
+	const [transactionCreatorFormOpen, setTransactionCreatorFormOpen] = useTransactionCreatorDrawerOpenState()
 
-	const showTransactionForm = useMemo(() => {
-		return isDesktopLayout && transactionFormOpen
-	}, [isDesktopLayout, transactionFormOpen])
+	const showCreateTransactionForm = useMemo(() => {
+		return isDesktopLayout && transactionCreatorFormOpen
+	}, [isDesktopLayout, transactionCreatorFormOpen])
 
 	const handleTransactionFormClose = useCallback(() => {
-		setTransactionFormOpen(true)
-	}, [setTransactionFormOpen])
+		setTransactionCreatorFormOpen(false)
+	}, [setTransactionCreatorFormOpen])
 
 	return {
 		isDesktopLayout,
-		showTransactionForm,
-		handleTransactionFormClose
+		showCreateTransactionForm,
+		handleTransactionFormClose,
 	}
 
 }

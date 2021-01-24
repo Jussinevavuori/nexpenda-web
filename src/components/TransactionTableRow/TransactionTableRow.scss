@@ -7,6 +7,21 @@
   height: 40px;
   align-items: stretch;
 
+  &.editing {
+    height: 110px;
+    @include lg {
+      height: 64px;
+    }
+    background: white;
+    &.selected {
+      background: white;
+    }
+    &:hover {
+      background: white;
+      cursor: default;
+    }
+  }
+
   &.selected {
     background: $blue-100;
   }

@@ -10,6 +10,7 @@ import {
 	CheckBoxOutlineBlank as UnselectedIcon,
 } from "@material-ui/icons"
 import { useTransactionTableRowController } from "./useTransactionTableRowController";
+import { TransactionForm } from "../TransactionForm/TransactionForm";
 
 export type TransactionTableRowProps = {
 	transaction: Transaction;
@@ -19,8 +20,20 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 
 	const controller = useTransactionTableRowController(props)
 
+	if (controller.isEditing) {
+		return <div className={cx("TransactionTableRow editing")}>
+			<TransactionForm
+				hideTitle
+				showCloseButton
+				editTransaction={props.transaction}
+				onClose={controller.onCloseEditing}
+				variant="horizontal"
+			/>
+		</div>
+	}
+
 	return <div
-		className={cx("TransactionTableRow", { selected: controller.selected })}
+		className={cx("TransactionTableRow default", { selected: controller.selected })}
 		onClick={controller.onClick}
 		onContextMenu={controller.onContextMenu}
 	>

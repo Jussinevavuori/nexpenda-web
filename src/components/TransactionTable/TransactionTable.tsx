@@ -1,5 +1,5 @@
 import "./TransactionTable.scss";
-import React from "react"
+import React, { createRef, useEffect } from "react"
 import { TransactionTableHeader } from "../TransactionTableHeader/TransactionTableHeader";
 import { TransactionTableRow } from "../TransactionTableRow/TransactionTableRow";
 import { AutoSizer, List } from "react-virtualized";
@@ -8,6 +8,7 @@ import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/Tran
 import { useTransactionTableController } from "./useTransactionTableController";
 import { motion } from "framer-motion";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
+import { useLgMedia } from "../../hooks/useMedia";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
@@ -15,7 +16,16 @@ export type TransactionTableProps = {
 
 export function TransactionTable(props: TransactionTableProps) {
 
+	const isLargeScreen = useLgMedia()
 	const controller = useTransactionTableController(props)
+
+	// Recalculate virtualized list row heights each time the 
+	// props change / editing state changes / screen size passes
+	// large threshold
+	const virtualizedListRef = createRef<List>()
+	useEffect(() => {
+		virtualizedListRef.current?.recomputeRowHeights()
+	}, [props, virtualizedListRef, controller.editingId, isLargeScreen])
 
 	if (controller.showSkeletons) {
 
@@ -38,11 +48,16 @@ export function TransactionTable(props: TransactionTableProps) {
 				{
 					autoSizer => {
 						return <List
+							ref={virtualizedListRef}
 							className="virtualizedList"
 							height={autoSizer.height}
 							width={autoSizer.width}
 							rowCount={controller.items.length}
-							rowHeight={40}
+							rowHeight={({ index }) => {
+								return controller.items[index].id === controller.editingId
+									? (isLargeScreen ? 60 : 110)
+									: 40
+							}}
 							noRowsRenderer={() => <div className="noTransactions">
 								<Type color="gray-700" variant="boldcaps" size="md">
 									{"No transactions"}

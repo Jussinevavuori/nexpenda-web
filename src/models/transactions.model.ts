@@ -231,11 +231,28 @@ export const transactionsModel: TransactionsModel = {
 
   upsertTransactionsToState: action((state, transactions) => {
     transactions.forEach((transaction) => {
+      // Update category icons if required
+      const existingCategory = state.categories.find(
+        (_) => _.id === transaction.category.id
+      );
+      if (
+        existingCategory &&
+        existingCategory.icon !== transaction.category.icon
+      ) {
+        state.items.forEach((t) => {
+          if (t.category.id === transaction.category.id) {
+            t.category.icon = transaction.category.icon;
+          }
+        });
+      }
+      // Update transaction if one with similary ID already exists
       if (state.items.find((_) => _.id === transaction.id)) {
         state.items = state.items.map((_) => {
           return _.id === transaction.id ? transaction : _;
         });
-      } else {
+      }
+      // Else add transaction if new transaction based on ID
+      else {
         state.items.push(transaction);
       }
     });

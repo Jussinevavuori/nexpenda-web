@@ -1,12 +1,15 @@
 import { useMemo } from "react"
 import { Transaction } from "../../classes/Transaction"
 import { useStoreState } from "../../store"
+import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { TransactionTableProps } from "./TransactionTable"
 
 export function useTransactionTableController(props: TransactionTableProps) {
 
 	const items = useStoreState(_ => _.transactions.filteredItems)
 	const sortingStrategy = useStoreState(_ => _.transactions.sortingStrategy)
+
+	const [editingId] = useTransactionEditorDrawerVariableOpenState()
 
 	const sortedItems = useMemo(() => {
 		return items.sort((a, b) => Transaction.compare(a, b, sortingStrategy))
@@ -17,5 +20,5 @@ export function useTransactionTableController(props: TransactionTableProps) {
 	const shouldShowSkeletons = !initializedItems || !initializedUser
 	const showSkeletons = props.showSkeletons && shouldShowSkeletons
 
-	return { items: sortedItems, showSkeletons }
+	return { items: sortedItems, showSkeletons, editingId }
 }

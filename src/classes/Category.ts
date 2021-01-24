@@ -7,17 +7,17 @@ export class Category {
   /**
    * Category ID
    */
-  public readonly id: string;
+  public id: string;
 
   /**
    * Category value or name
    */
-  public readonly value: string;
+  public value: string;
 
   /**
    * Category icon
    */
-  public readonly icon: string;
+  public icon: string;
 
   constructor(json: JsonTransaction["category"]) {
     this.id = json.id;

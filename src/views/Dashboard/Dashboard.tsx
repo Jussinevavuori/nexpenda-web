@@ -32,19 +32,19 @@ export function Dashboard(props: DashboardProps) {
 		<AnimateSharedLayout>
 			<AnimatePresence>
 				{
-					controller.showTransactionForm
+					controller.showCreateTransactionForm
 						? <motion.section
 							initial={{ opacity: 0, y: -20 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -20, transition: { type: "tween" } }}
 							className={cx(
 								"transactionForm",
-								{ open: controller.showTransactionForm }
+								{ open: controller.showCreateTransactionForm }
 							)}
 						>
 							<TransactionForm
-								variant="horizontal"
 								hideTitle
+								variant="horizontal"
 								onClose={controller.handleTransactionFormClose}
 							/>
 						</motion.section>

@@ -21,7 +21,7 @@ export function AppFrame(props: AppFrameProps) {
 		{
 			controller.initialized && <>
 				{isDesktopLayout ? null : <TransactionCreatorDrawer />}
-				<TransactionEditorDrawer />
+				{isDesktopLayout ? null : <TransactionEditorDrawer />}
 			</>
 		}
 		<div className="header">
