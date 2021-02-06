@@ -94,20 +94,26 @@ export class MoneyAmount {
    * Format the money amount to a string according to the given options
    */
   format(): string {
-    return this.decimalValue.toLocaleString("fi-FI", {
-      style: "currency",
-      currency: "EUR",
-    });
+    return MoneyAmount.format(this.value);
   }
 
   /**
    * Static method for formatting a value
    */
   static format(value: number) {
-    return (value / 100).toLocaleString("fi-FI", {
-      style: "currency",
-      currency: "EUR",
-    });
+    const sign = value < 0 ? "-" : "";
+    const [euros, cents] = Math.abs(value / 100)
+      .toFixed(2)
+      .split(/[.,]/g);
+
+    const eurStr = Array.from(euros)
+      .map((c, i, a) => {
+        const j = a.length - i - 1;
+        return j > 0 && j % 3 === 0 ? c + " " : c;
+      })
+      .join("");
+
+    return `${sign}${eurStr},${cents} €`;
   }
 
   /**
