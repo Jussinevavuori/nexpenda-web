@@ -14,7 +14,7 @@ export function useTransactionEditorDrawerVariableOpenState() {
 			return !!encodedId && typeof encodedId === "string" ? encodedId : null
 		},
 		encode(id) {
-			return id
+			return id ?? undefined
 		}
 	})
 }
