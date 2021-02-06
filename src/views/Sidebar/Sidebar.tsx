@@ -9,7 +9,7 @@ import {
 	Briefcase as BudgetIcon,
 	PlusCircle as PlusIcon
 } from "react-feather"
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 import { Type } from "../../components/Type/Type";
 import { Logo } from "../../components/Logo/Logo";
 import { motion, Variants } from "framer-motion";

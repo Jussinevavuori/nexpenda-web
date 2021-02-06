@@ -12,7 +12,7 @@ import { ChangePassword } from "./views/ChangePassword/ChangePassword";
 import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmail";
 import { Budget } from "./views/Budget/Budget";
 import { AuthFrame } from "./components/AuthFrame/AuthFrame";
-import { usePathTitle } from "./hooks/usePathTitle";
+import { usePathTitle } from "./hooks/application/usePathTitle";
 
 export type RouteData = {
 	name: string,

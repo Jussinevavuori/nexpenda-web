@@ -1,6 +1,6 @@
 import React from "react";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
-import { useMdMedia } from "../../../hooks/useMedia";
+import { useMdMedia } from "../../../hooks/utils/useMedia";
 import "./AnalyticsPanel.scss";
 
 export type AnalyticsPanelProps = {

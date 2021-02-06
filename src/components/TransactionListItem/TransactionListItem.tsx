@@ -5,8 +5,8 @@ import { Transaction } from "../../classes/Transaction";
 import {
 	Check as SelectedIcon,
 } from "react-feather"
-import useLongPress from "../../hooks/useLongPress";
-import { useVibration } from "../../hooks/useVibration";
+import useLongPress from "../../hooks/utils/useLongPress";
+import { useVibration } from "../../hooks/application/useVibration";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
 import { motion, Variants } from "framer-motion";

@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames"
 import { Drawer, DrawerProps, Menu, MenuProps } from "@material-ui/core";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 
 export type ResponsiveMenuProps = {
 	open: boolean,

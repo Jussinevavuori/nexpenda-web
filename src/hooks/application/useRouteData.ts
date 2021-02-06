@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { RouteData, routes, VariableRouteData } from "../Routes";
+import { RouteData, routes, VariableRouteData } from "../../Routes";
 
 export function useRouteData(): RouteData | undefined {
   const location = useLocation();

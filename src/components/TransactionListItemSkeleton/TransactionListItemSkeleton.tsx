@@ -1,7 +1,7 @@
 import "./TransactionListItemSkeleton.scss";
 import React, { useState } from "react"
 import { Skeleton } from "@material-ui/lab";
-import { useRandomValue } from "../../hooks/useRandomValue";
+import { useRandomValue } from "../../hooks/utils/useRandomValue";
 
 export type TransactionListItemSkeletonProps = {
 	i: number;

@@ -1,7 +1,7 @@
 import "./TransactionTableRowSkeleton.scss";
 import React from "react"
 import { Skeleton } from "@material-ui/lab";
-import { useRandomValue } from "../../hooks/useRandomValue";
+import { useRandomValue } from "../../hooks/utils/useRandomValue";
 
 export type TransactionTableRowSkeletonProps = {
 

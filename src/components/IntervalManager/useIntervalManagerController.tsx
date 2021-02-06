@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useHashOpenState } from "../../hooks/useHashOpenState"
+import { useHashOpenState } from "../../hooks/state/useHashOpenState"
 import { useStoreActions, useStoreState } from "../../store"
 import { IntervalManagerProps } from "./IntervalManager"
 

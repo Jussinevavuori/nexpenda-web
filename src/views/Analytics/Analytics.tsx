@@ -3,7 +3,7 @@ import React from "react"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { AnalyticsHeader } from "./AnalyticsHeader/AnalyticsHeader";
 import { theme } from "../../styles/main";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 import { AnalyticsPanel } from "./AnalyticsPanel/AnalyticsPanel";
 import { AnalyticsTotals } from "./AnalyticsTotals/AnalyticsTotals";
 import { AnalyticsCategories } from "./AnalyticsCategories/AnalyticsCategories";

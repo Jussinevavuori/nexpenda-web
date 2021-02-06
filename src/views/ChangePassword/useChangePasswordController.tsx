@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { yupResolver } from "@hookform/resolvers";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom"
-import { useRedirect } from "../../hooks/useRedirect"
+import { useRedirect } from "../../hooks/utils/useRedirect"
 import * as yup from "yup"
 import { useStoreActions } from "../../store"
 

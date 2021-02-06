@@ -1,7 +1,7 @@
 import "./DashboardHeader.scss";
 import React from "react"
 import textureImg from "../../../images/shapelined-_JBKdviweXI-unsplash.jpg";
-import { useMdMedia } from "../../../hooks/useMedia";
+import { useMdMedia } from "../../../hooks/utils/useMedia";
 import { Type } from "../../../components/Type/Type";
 import { ExpandLess as IncomesIcon, ExpandMore as ExpensesIcon } from "@material-ui/icons";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";

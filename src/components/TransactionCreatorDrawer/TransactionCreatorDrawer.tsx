@@ -2,7 +2,7 @@ import "./TransactionCreatorDrawer.scss";
 import React from "react"
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 import { Drawer } from "@material-ui/core";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 import { useTransactionCreatorDrawerController } from "./useTransactionCreatorDrawerController";
 
 export type TransactionCreatorDrawerProps = {}

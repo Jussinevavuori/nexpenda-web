@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from "react";
 import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 
 export function useDashboardController() {
 

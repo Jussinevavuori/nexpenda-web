@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useVhFix } from './hooks/useVhFix';
+import { useVhFix } from './hooks/utils/useVhFix';
 import { Routes } from './Routes';
 import { useStoreActions } from './store';
 import { Notification } from "./components/Notification/Notification"
-import { useHistoryNotifications } from './hooks/useHistoryNotifications';
+import { useHistoryNotifications } from './hooks/application/useHistoryNotifications';
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
 import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcuts';
 

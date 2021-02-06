@@ -1,6 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
 import { routes } from "../../Routes"
-import { useRedirect } from "../../hooks/useRedirect"
+import { useRedirect } from "../../hooks/utils/useRedirect"
 import { useStoreState, useStoreActions } from "../../store"
 import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController"
 import { SidebarProps } from "./Sidebar"

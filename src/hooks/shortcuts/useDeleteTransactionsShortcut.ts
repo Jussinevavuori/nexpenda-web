@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../store";
-import { useIsApplicationActive } from "../useIsApplicationActive";
+import { useIsApplicationActive } from "../application/useIsApplicationActive";
 import { useShortcut } from "./useShortcut";
 
 export function useDeleteTransactionsShortcut() {

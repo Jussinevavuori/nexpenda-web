@@ -5,7 +5,7 @@ import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/Transactio
 import { Header } from "../Header/Header";
 import { useAppFrameController } from "./useAppFrameController";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 
 export type AppFrameProps = {
 	children: React.ReactNode;

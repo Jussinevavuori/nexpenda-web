@@ -1,7 +1,7 @@
 import * as yup from "yup"
 import { useState, useEffect, useCallback } from 'react';
 import { useStoreActions, useStoreState } from '../../store';
-import { useRedirect } from '../../hooks/useRedirect';
+import { useRedirect } from '../../hooks/utils/useRedirect';
 import { useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers';
 

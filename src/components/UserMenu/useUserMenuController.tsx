@@ -1,6 +1,6 @@
 import { Ref, useCallback, useImperativeHandle, useRef, } from "react"
-import { useHashOpenState } from "../../hooks/useHashOpenState"
-import { useRedirect } from "../../hooks/useRedirect"
+import { useHashOpenState } from "../../hooks/state/useHashOpenState"
+import { useRedirect } from "../../hooks/utils/useRedirect"
 import { useStoreActions, useStoreState } from "../../store"
 import { UserMenuProps } from "./UserMenu"
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
-import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
-import { useStoreActions, useStoreState } from "../store";
-import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
+import { DeleteTransactionEvent } from "../../history/DeleteTransactionEvent";
+import { useStoreActions, useStoreState } from "../../store";
+import { DeleteTransactionsEvent } from "../../history/DeleteTransactionsEvent";
 
 export function useHistoryNotifications() {
   const latest = useStoreState((_) => _.history.latest);

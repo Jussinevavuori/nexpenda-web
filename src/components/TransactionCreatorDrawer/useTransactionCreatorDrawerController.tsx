@@ -1,4 +1,4 @@
-import { useBooleanQueryState } from "../../hooks/useBooleanQueryState"
+import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState"
 import { TransactionCreatorDrawerProps } from "./TransactionCreatorDrawer"
 
 export const TransactionCreatorDrawerOpenQuery = "create"

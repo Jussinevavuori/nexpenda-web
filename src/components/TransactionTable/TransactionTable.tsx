@@ -8,7 +8,7 @@ import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/Tran
 import { useTransactionTableController } from "./useTransactionTableController";
 import { motion } from "framer-motion";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
-import { useLgMedia } from "../../hooks/useMedia";
+import { useLgMedia } from "../../hooks/utils/useMedia";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { useRedirect } from "../../hooks/useRedirect"
+import { useRedirect } from "../../hooks/utils/useRedirect"
 import { useStoreActions } from "../../store"
 
 export function useConfirmEmailController() {

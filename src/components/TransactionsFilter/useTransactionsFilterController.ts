@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { useBooleanQueryState } from "../../hooks/useBooleanQueryState";
-import { useDebounce } from "../../hooks/useDebounce";
+import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
+import { useDebounce } from "../../hooks/utils/useDebounce";
 import { useStoreActions } from "../../store";
 import { TransactionsFilterProps } from "./TransactionsFilter";
 

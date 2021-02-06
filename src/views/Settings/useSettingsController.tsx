@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
-import { useRedirect } from "../../hooks/useRedirect"
+import { useRedirect } from "../../hooks/utils/useRedirect"
 
 
 export function useSettingsController() {

@@ -1,7 +1,7 @@
 import "./TransactionEditorDrawer.scss";
 import React from "react"
 import { Drawer } from "@material-ui/core";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 import { useTransactionEditorDrawerController } from "./useTransactionEditorDrawerController";
 

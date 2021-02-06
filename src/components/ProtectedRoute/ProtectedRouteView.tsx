@@ -3,7 +3,7 @@ import textureImg from "../../images/pexels-johannes-plenio-1103970.jpg"
 import React, { useCallback, useState } from "react"
 import { Type } from "../Type/Type";
 import { CircularProgress } from "@material-ui/core";
-import { useInterval } from "../../hooks/useInterval";
+import { useInterval } from "../../hooks/utils/useInterval";
 
 export type ProtectedRouteViewProps = {
 

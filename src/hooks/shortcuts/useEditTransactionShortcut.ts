@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useTransactionEditorDrawerVariableOpenState } from "../../components/TransactionEditorDrawer/useTransactionEditorDrawerController";
 import { useStoreState } from "../../store";
-import { useIsApplicationActive } from "../useIsApplicationActive";
+import { useIsApplicationActive } from "../application/useIsApplicationActive";
 import { useShortcut } from "./useShortcut";
 
 export function useEditTransactionShortcut() {

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useRedirect } from "../../hooks/useRedirect";
+import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState } from "../../store";
 
 export function useLogoController() {

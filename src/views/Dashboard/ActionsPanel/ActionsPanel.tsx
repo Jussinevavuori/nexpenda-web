@@ -11,7 +11,7 @@ import {
 	Remove as RemoveIcon
 } from "@material-ui/icons"
 import { Button, IconButton, } from "@material-ui/core";
-import { useMdMedia, useSmMedia } from "../../../hooks/useMedia";
+import { useMdMedia, useSmMedia } from "../../../hooks/utils/useMedia";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
 import { Type } from "../../../components/Type/Type";
 import { useActionsPanelController } from "./useActionsPanelController";

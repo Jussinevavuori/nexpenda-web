@@ -4,7 +4,7 @@ import { useStoreState, useStoreActions } from "../../../store"
 import { DataUtils } from "../../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController"
-import { useBooleanQueryState } from "../../../hooks/useBooleanQueryState"
+import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState"
 
 export function useActionsPanelController(props: ActionsPanelProps) {
 

@@ -1,4 +1,4 @@
-import { RouteData, routes } from "../Routes";
+import { RouteData, routes } from "../../Routes";
 import { useHistory } from "react-router-dom";
 
 export type RouteSelector = (r: typeof routes) => RouteData | string;

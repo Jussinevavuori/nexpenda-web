@@ -3,7 +3,7 @@ import React from "react";
 import textureImg from "../../../images/shapelined-_JBKdviweXI-unsplash.jpg";
 import { Type } from "../../../components/Type/Type";
 import { useAnalyticsHeaderController } from "./useAnalyticsHeaderController";
-import { useMdMedia } from "../../../hooks/useMedia";
+import { useMdMedia } from "../../../hooks/utils/useMedia";
 
 
 export function AnalyticsHeader() {

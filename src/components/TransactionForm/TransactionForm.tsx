@@ -5,7 +5,7 @@ import { TextField, InputAdornment, Button, ButtonGroup, Menu, IconButton } from
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
-import { useMdMedia, useSmMedia } from "../../hooks/useMedia";
+import { useMdMedia, useSmMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { useTransactionFormController } from "./useTransactionFormController";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";

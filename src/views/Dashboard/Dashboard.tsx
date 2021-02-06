@@ -8,7 +8,7 @@ import { DashboardHeader } from "./DashboardHeader/DashboardHeader";
 import { TransactionForm } from "../../components/TransactionForm/TransactionForm";
 import { useDashboardController } from "./useDashboardController";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
-import { useTrueAfterTimeout } from "../../hooks/useTrueAfterTimeout";
+import { useTrueAfterTimeout } from "../../hooks/utils/useTrueAfterTimeout";
 
 export type DashboardProps = {
 }

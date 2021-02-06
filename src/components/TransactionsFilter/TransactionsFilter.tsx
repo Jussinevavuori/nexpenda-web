@@ -3,11 +3,11 @@ import React, { useRef } from "react"
 import cx from "classnames"
 import { Search as FilterIcon, Clear as CloseIcon } from "@material-ui/icons"
 import { ButtonBase } from "@material-ui/core";
-import { useMdMedia } from "../../hooks/useMedia";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 import { useTransactionsFilterController } from "./useTransactionsFilterController"
 import { Type } from "../Type/Type";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
-import { useTrueAfterTimeout } from "../../hooks/useTrueAfterTimeout";
+import { useTrueAfterTimeout } from "../../hooks/utils/useTrueAfterTimeout";
 
 export type TransactionsFilterProps = {
 

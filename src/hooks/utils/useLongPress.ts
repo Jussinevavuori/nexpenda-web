@@ -6,7 +6,7 @@ import {
   useMemo,
   HTMLProps,
 } from "react";
-import { useVibration } from "./useVibration";
+import { useVibration } from "../application/useVibration";
 
 export default function useLongPress(
   callback: () => void,
