@@ -31,11 +31,14 @@ export function useTransactionFormController(props: TransactionFormProps) {
 
 	const [emojiPickerAnchor, setEmojiPickerAnchor] = useState<Element | null>(null)
 	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
-	/**
-	 * Initialize input state from editTransaction. We use the
-	 * `latestEditTransactionId` for preventing double-initializations of
-	 * the same transaction.
-	 */
+
+	// If existing category selected and it has an icon, display
+	// it (unless an icon is selected)
+	const existingCategoryIcon = categories.find(_ => _.value === category)?.icon
+
+	// Initialize input state from editTransaction. We use the
+	// `latestEditTransactionId` for preventing double-initializations of
+	// the same transaction.
 	const latestEditTransactionId = useRef<string>('')
 	useEffect(() => {
 		if (!editTransaction) {
@@ -245,6 +248,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		time,
 		comment,
 		icon,
+		existingCategoryIcon,
 		emojiPickerOpen,
 		emojiPickerAnchor,
 		setEmojiPickerOpen,

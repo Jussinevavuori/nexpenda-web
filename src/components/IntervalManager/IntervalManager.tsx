@@ -6,6 +6,8 @@ import { ArrowBack, ArrowForward, DateRange, RadioButtonUnchecked as TodayIcon }
 import { useSmMedia } from "../../hooks/useMedia";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerForm";
 import { useIntervalManagerController } from "./useIntervalManagerController";
+import { createClassnames } from "../../utils/Utils/createClassnames";
+import { motion } from "framer-motion"
 
 export type IntervalManagerProps = {
 	hideControls?: boolean;
@@ -15,31 +17,40 @@ export type IntervalManagerProps = {
 
 export function IntervalManager(props: IntervalManagerProps) {
 
+	const cx = createClassnames({
+		controlsHidden: props.hideControls,
+		controlsReversed: props.reverseControls,
+		nowControlHidden: props.hideControls
+	})
+
 	const controller = useIntervalManagerController(props)
 
 	const isDesktopLayout = useSmMedia()
 	const menuLayout = isDesktopLayout && !isMobile
 
-	const dateButton = <Button
-		className="date-button"
-		startIcon={<DateRange />}
-		onClick={e => {
-			controller.setIntervalPickerOpen(true)
-			controller.setIntervalPickerMenuAnchor(e.currentTarget)
-		}}
-	>
-		<span className="label">
-			{controller.intervalLabel}
-		</span>
-	</Button>
+	const dateButton = <motion.div layout="position">
+		<Button
+			className={cx("date-button")}
+			startIcon={<DateRange />}
+			onClick={e => {
+				controller.setIntervalPickerOpen(true)
+				controller.setIntervalPickerMenuAnchor(e.currentTarget)
+			}}
+		>
+			<span className={cx("label")}>
+				{controller.intervalLabel}
+			</span>
+		</Button>
+	</motion.div>
 
 	return <>
 
 
-		<div className="IntervalManager">
+		<motion.div className={cx("IntervalManager")}>
 			{props.reverseControls ? dateButton : null}
 			{
-				controller.shouldShowControls && <div className="arrow-buttons">
+				controller.shouldShowControls &&
+				<motion.div layout="position" className={cx("arrow-buttons")}>
 					<IconButton onClick={controller.handlePrevious}>
 						<ArrowBack />
 					</IconButton>
@@ -53,10 +64,10 @@ export function IntervalManager(props: IntervalManagerProps) {
 					<IconButton onClick={controller.handleNext}>
 						<ArrowForward />
 					</IconButton>
-				</div>
+				</motion.div>
 			}
 			{!props.reverseControls ? dateButton : null}
-		</div>
+		</motion.div>
 
 		{
 			/**
@@ -75,7 +86,7 @@ export function IntervalManager(props: IntervalManagerProps) {
 					transformOrigin={{ horizontal: "left", vertical: "top" }}
 					getContentAnchorEl={null}
 				>
-					<div className="IntervalManager__Menu">
+					<div className={cx("IntervalManager__Menu")}>
 						<IntervalPickerForm
 							onConfirm={() => {
 								controller.setIntervalPickerMenuAnchor(undefined)
@@ -92,7 +103,7 @@ export function IntervalManager(props: IntervalManagerProps) {
 					}}
 					anchor={"bottom"}
 				>
-					<div className="IntervalManager__Drawer">
+					<div className={cx("IntervalManager__Drawer")}>
 						<IntervalPickerForm
 							onConfirm={() => {
 								controller.setIntervalPickerMenuAnchor(undefined)

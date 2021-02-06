@@ -12,6 +12,10 @@
     display: flex;
     flex-wrap: nowrap;
     margin-right: $spacing-4;
+    &.controlsReversed {
+      margin-left: $spacing-4;
+      margin-right: 0;
+    }
   }
   & .label {
     overflow: hidden;

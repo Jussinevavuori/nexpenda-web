@@ -135,6 +135,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			<div>
 				<EmojiPicker
 					native
+					disableAutoFocus
 					onEmojiClick={(e, emoji) => {
 						controller.setEmojiPickerAnchor(null)
 						controller.setEmojiPickerOpen(false)
@@ -155,7 +156,9 @@ export function TransactionForm(props: TransactionFormProps) {
 				}}
 			>
 				{
-					controller.icon || (controller.sign === "+" ? "💰" : "💸")
+					controller.icon
+					|| controller.existingCategoryIcon
+					|| (controller.sign === "+" ? "💰" : "💸")
 				}
 			</Button>
 			<Autocomplete
@@ -206,6 +209,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			value={controller.time}
 			onChange={d => controller.onTimeChange(d as Date)}
 			format="dd/MM/yyyy"
+			autoOk
 			id="transaction-time"
 			className="transaction-time"
 			variant={largerLayout ? "inline" : "dialog"}

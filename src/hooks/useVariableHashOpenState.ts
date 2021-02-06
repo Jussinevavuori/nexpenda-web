@@ -25,9 +25,9 @@ export function useVariableHashOpenState(
       if (typeof target === "string") {
         const hash = `${targetHash}@${target}`;
         if (value === null) {
-          history.push({ hash });
+          history.push({ hash, search: location.search });
         } else {
-          history.replace({ hash });
+          history.replace({ hash, search: location.search });
         }
       } else {
         if (value !== null) {
@@ -35,7 +35,7 @@ export function useVariableHashOpenState(
         }
       }
     },
-    [history, targetHash, value]
+    [history, targetHash, value, location.search]
   );
 
   return [value, setValue];

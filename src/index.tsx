@@ -10,13 +10,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { theme } from "./styles/theme";
-import DateFnsUtils from "@date-io/date-fns"
+import { LocalizedUtils } from "./utils/LocaleUtils/CustomLocale";
 
 ReactDOM.render(
 	<React.StrictMode>
 		<StoreProvider store={store}>
 			<ThemeProvider theme={theme}>
-				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+				<MuiPickersUtilsProvider
+					utils={LocalizedUtils}
+					locale={LocalizedUtils.Locale}
+				>
 					<BrowserRouter>
 						<App />
 					</BrowserRouter>

@@ -48,18 +48,19 @@
           transform: translateY(2.5px);
         }
         &.iconButton {
-          & > .iconButtonChild {
-            border-radius: 4px;
-            padding: 0 4px;
-            transform: translateX(6px) scale(1.5);
-            &:hover {
-              background: $gray-200;
-            }
-            & > svg {
-              transform: scale(0.75) translateY(3px);
+          @include md {
+            & > .iconButtonChild {
+              border-radius: 4px;
+              padding: 0 4px;
+              transform: translateX(6px) scale(1.5);
+              &:hover {
+                background: $gray-200;
+              }
+              & > svg {
+                transform: scale(0.75) translateY(3px);
+              }
             }
           }
-          // border: 1px solid rgba(255, 0, 0, 0.2);
           cursor: pointer;
         }
       }

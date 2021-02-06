@@ -18,7 +18,7 @@
     &.titleHidden {
       grid-template: "amount amount category category category" auto "comment comment time submit close" auto / 1fr 1fr 1fr 1fr auto;
     }
-    gap: 0 $spacing-2;
+    gap: $spacing-2;
     @include lg {
       grid-template: "title title title title close" auto "amount category comment time submit" auto/ 5fr 4.2fr 3.5fr 3.6fr auto;
       &.titleHidden {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react"
-import { useVariableHashOpenState } from "../../hooks/useVariableHashOpenState"
+import { useQueryState } from "../../hooks/useQueryState"
 import { useStoreState } from "../../store"
 import { TransactionEditorDrawerProps } from "./TransactionEditorDrawer"
 
@@ -7,7 +7,16 @@ import { TransactionEditorDrawerProps } from "./TransactionEditorDrawer"
 export const TransactionEditorDrawerOpenHash = `edit`
 
 export function useTransactionEditorDrawerVariableOpenState() {
-	return useVariableHashOpenState(TransactionEditorDrawerOpenHash)
+	return useQueryState<null | string>({
+		key: TransactionEditorDrawerOpenHash,
+		method: "push",
+		decode(encodedId) {
+			return !!encodedId && typeof encodedId === "string" ? encodedId : null
+		},
+		encode(id) {
+			return id
+		}
+	})
 }
 
 export function useTransactionEditorDrawerController(props: TransactionEditorDrawerProps) {
