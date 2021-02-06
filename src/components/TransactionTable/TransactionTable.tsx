@@ -14,6 +14,8 @@ export type TransactionTableProps = {
 	showSkeletons?: boolean;
 }
 
+const virtualizedListRef = createRef<List>()
+
 export function TransactionTable(props: TransactionTableProps) {
 
 	const isLargeScreen = useLgMedia()
@@ -22,10 +24,9 @@ export function TransactionTable(props: TransactionTableProps) {
 	// Recalculate virtualized list row heights each time the 
 	// props change / editing state changes / screen size passes
 	// large threshold
-	const virtualizedListRef = createRef<List>()
 	useEffect(() => {
 		virtualizedListRef.current?.recomputeRowHeights()
-	}, [props, virtualizedListRef, controller.editingId, isLargeScreen])
+	}, [props, controller.editingId, isLargeScreen, controller.items])
 
 	if (controller.showSkeletons) {
 

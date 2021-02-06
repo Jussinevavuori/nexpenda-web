@@ -6,13 +6,13 @@ import { useShortcut } from "./useShortcut";
 export function useCreateTransactionShortcut() {
   const isApplicationActive = useIsApplicationActive();
 
-  const [, setOpen] = useTransactionCreatorDrawerOpenState();
+  const [isOpen, setIsOpen] = useTransactionCreatorDrawerOpenState();
 
   const handler = useCallback(() => {
     if (isApplicationActive) {
-      setOpen(true);
+      setIsOpen(!isOpen);
     }
-  }, [isApplicationActive, setOpen]);
+  }, [isApplicationActive, isOpen, setIsOpen]);
 
   useShortcut({ key: "N", shift: true }, handler);
 }

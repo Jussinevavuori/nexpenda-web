@@ -15,16 +15,17 @@ export type TransactionListProps = {
 	showSkeletons?: boolean;
 }
 
+const virtualizedListRef = createRef<List>()
+
 export function TransactionList(props: TransactionListProps) {
 
 	const controller = useTransactionListController(props)
 
 	// Recalculate virtualized list row heights each time the 
 	// props change
-	const virtualizedListRef = createRef<List>()
 	useEffect(() => {
 		virtualizedListRef.current?.recomputeRowHeights()
-	}, [props, virtualizedListRef])
+	}, [props, controller.itemsByDates])
 
 	// Render skeletons
 	if (controller.showSkeletons) {

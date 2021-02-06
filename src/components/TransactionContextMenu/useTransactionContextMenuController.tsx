@@ -86,9 +86,13 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	/**
 	 * Deletion
 	 */
+	const deleteTransactions = useStoreActions(_ => _.transactions.deleteTransactions)
 	const handleDelete = useCallback(() => {
+		if (menu.transaction) {
+			deleteTransactions([menu.transaction.id])
+		}
 		handleClose()
-	}, [handleClose])
+	}, [handleClose, deleteTransactions, menu])
 
 	return {
 		position: menu.position,
