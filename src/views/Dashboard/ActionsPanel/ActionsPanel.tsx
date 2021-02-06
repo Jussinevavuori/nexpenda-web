@@ -1,6 +1,5 @@
 import "./ActionsPanel.scss";
 import React from "react"
-import cx from "classnames"
 import {
 	SelectAll as SelectAllIcon,
 	CheckBox as SelectedAllIcon,
