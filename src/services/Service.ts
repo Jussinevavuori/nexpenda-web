@@ -4,6 +4,8 @@ import { store } from "../store";
 import jwt from "jsonwebtoken";
 import { Success } from "../result/Success";
 import { NetworkFailure } from "../result/NetworkFailures";
+import { routes } from "../Routes";
+import { StorageService } from "./StorageService";
 
 export type ServiceRequestConfig = {
   enableLogoutOnUnauthorized: boolean;
@@ -100,7 +102,11 @@ export class Service {
       failure.code === "auth/unauthenticated" &&
       config?.enableLogoutOnUnauthorized
     ) {
-      window.location.pathname = "/";
+      const accessToken = store.getState().auth.accessToken;
+      StorageService.components.hadAccessToken.setValue(!!accessToken);
+      window.location.pathname = routes.logOut.path;
+      window.location.search = "";
+      window.location.hash = "";
     }
   }
 

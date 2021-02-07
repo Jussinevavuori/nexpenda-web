@@ -36,6 +36,14 @@ export class HistoryEvent<T = void> {
   }
 
   /**
+   * Check if the event can be restored i.e. does it have a
+   * restoration strategy
+   */
+  get canBeRestored() {
+    return !!this.restorationStrategy;
+  }
+
+  /**
    * Has this history event already been displayed to the user
    */
   displayed: boolean = false;
@@ -43,9 +51,9 @@ export class HistoryEvent<T = void> {
   /**
    * The restoration function to use upon undo
    */
-  readonly restorationStrategy: () => MaybePromise<T>;
+  readonly restorationStrategy: undefined | (() => MaybePromise<T>);
 
-  constructor(type: string, restorationStrategy: () => MaybePromise<T>) {
+  constructor(type: string, restorationStrategy?: () => MaybePromise<T>) {
     this.id = uuid();
     this.type = type;
     this.time = new Date();
@@ -60,7 +68,9 @@ export class HistoryEvent<T = void> {
     if (this._restored) {
       return new HistoryEventAlreadyRestoredFailure();
     }
-    this._restored = true;
-    return this.restorationStrategy();
+    if (this.restorationStrategy) {
+      this._restored = true;
+      return this.restorationStrategy();
+    }
   }
 }

@@ -53,7 +53,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "update-scss-vars": "node .\\scripts\\update-scss-to-ts.js",
-    "generate-pwa-assets": "pwa-asset-generator ./public/logo-white.png ./public/assets --type png --background black --manifest ./public/manifest.json --opaque false --padding 20%"
+    "generate-pwa-assets": "pwa-asset-generator ./public/logo-white.png ./public/assets --type png --background black --manifest ./public/manifest.json --opaque false --padding 20%",
+    "create-component": "node .\\scripts\\create-component",
+    "create-view": "node .\\scripts\\create-view",
+    "create-view-component": "node .\\scripts\\create-view-component"
   },
   "eslintConfig": {
     "extends": "react-app"

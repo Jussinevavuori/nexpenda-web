@@ -13,6 +13,7 @@ import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmail";
 import { Budget } from "./views/Budget/Budget";
 import { AuthFrame } from "./components/AuthFrame/AuthFrame";
 import { usePathTitle } from "./hooks/application/usePathTitle";
+import { Logout } from "./views/Logout/Logout";
 
 export type RouteData = {
 	name: string,
@@ -63,6 +64,11 @@ export const routes = {
 		path: "/register",
 		title: "Register"
 	} as RouteData,
+	logOut: {
+		name: "logOut",
+		path: "/logout",
+		title: "Log out"
+	} as RouteData,
 	changePassword(token: string): RouteData {
 		return {
 			name: "changePassword",
@@ -112,6 +118,12 @@ export function Routes() {
 		<Route exact path={routes.confirmEmail(":token").path}>
 			<AuthFrame>
 				<ConfirmEmail />
+			</AuthFrame>
+		</Route>
+
+		<Route exact path={routes.logOut.path}>
+			<AuthFrame>
+				<Logout />
 			</AuthFrame>
 		</Route>
 

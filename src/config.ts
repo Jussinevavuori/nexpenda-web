@@ -1,8 +1,10 @@
+import { StorageService } from "./services/StorageService";
+
 export class Config {
   static get API_URL() {
     const env = process.env.NODE_ENV;
 
-    const override = window.localStorage.getItem("API_URL");
+    const override = StorageService.components.apiUrlOverride.getValue();
 
     if (override) {
       return override;
