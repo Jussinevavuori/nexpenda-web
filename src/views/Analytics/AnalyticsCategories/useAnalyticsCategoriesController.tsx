@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context"
 import { AnalyticsCategoriesProps } from "./AnalyticsCategories"
 
@@ -5,12 +6,32 @@ export function useAnalyticsCategoriesController(props: AnalyticsCategoriesProps
 
 	const analytics = useAnalyticsContext()
 
+	const [isShowingPercentages, setIsShowingPercentages] = useState(false)
+
+	const categories = analytics.selected.categories
+
+	const incomes = Object.values(categories.incomes).sort((a, b) => {
+		return b.total - a.total
+	})
+	const expenses = Object.values(categories.expenses).sort((a, b) => {
+		return a.total - b.total
+	})
+
+	const hasNoIncomes = incomes.length === 0
+	const hasNoExpenses = expenses.length === 0
+
 	return {
-		incomesCategories: analytics.categories.map(_ => _["active"])
-			.filter(_ => _.total.incomes.value !== 0)
-			.sort((a, b) => b.total.incomes.value - a.total.incomes.value),
-		expensesCategories: analytics.categories.map(_ => _["active"])
-			.filter(_ => _.total.expenses.value !== 0)
-			.sort((a, b) => a.total.expenses.value - b.total.expenses.value),
+		incomes,
+		expenses,
+		hasNoIncomes,
+		hasNoExpenses,
+		isShowingPercentages,
+		isShowingValues: !isShowingPercentages,
+		showPercentages() {
+			setIsShowingPercentages(true)
+		},
+		showValues() {
+			setIsShowingPercentages(false)
+		},
 	}
 }

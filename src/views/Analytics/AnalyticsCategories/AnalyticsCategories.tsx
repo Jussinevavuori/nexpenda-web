@@ -4,117 +4,99 @@ import { useAnalyticsCategoriesController } from "./useAnalyticsCategoriesContro
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { Category as CategoriesIcon } from "@material-ui/icons"
 import { Type } from "../../../components/Type/Type";
-import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { AnimateSharedLayout, motion } from "framer-motion"
-import { Timerange } from "../../../utils/AnalyticsUtils/Timerange";
+import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
+import { Button, ButtonGroup } from "@material-ui/core";
 
 export type AnalyticsCategoriesProps = {
-	wrapInAnalyticsBlock?: boolean;
-}
-
-type SubComponentProps = {
-	timeranges: Timerange[];
-	variant: "expense" | "income";
-}
-
-function SubComponent(props: SubComponentProps) {
-	return <div className={props.variant}>
-		<motion.div layout>
-			<Type color="gray-600" variant="boldcaps">
-				{props.variant === "income" ? "Incomes" : "Expenses"}
-			</Type>
-		</motion.div>
-
-		<AnimateSharedLayout>
-			<ul className={props.variant}>
-				{
-					props.timeranges.length === 0
-						? <div className="empty">
-							<Type color="gray-600">
-								{`No ${props.variant}s available`}
-							</Type>
-						</div>
-						: props.timeranges.map((timerange, i) => {
-							return <motion.li layout key={i}>
-								<span className="category">
-									<span className="icon">
-										{
-											timerange.total.category?.icon
-											|| (props.variant === "income" ? "💰" : "💸")
-										}
-									</span>
-									<Type component="span" className="name" color="green-800" variant="bold">
-										{timerange.total.category?.value || ""}
-									</Type>
-									<Type component="span" className="count" color="gray-600" variant="bold">
-										{
-											props.variant === "income"
-												? timerange.total.incomesCount
-												: timerange.total.expensesCount
-										}
-									</Type>
-								</span>
-								<MoneyType
-									animate
-									className="amount"
-									colorIfPositive="green-600"
-									colorIfNegative="red-600"
-									amount={
-										props.variant === "income"
-											? timerange.total.incomes
-											: timerange.total.expenses
-									}
-								/>
-								<Type className="percentage" color="gray-600" variant="bold">
-									{
-										(props.variant === "income"
-											? timerange.total.percentage.incomes.ofTotal.toFixed(1)
-											: timerange.total.percentage.expenses.ofTotal.toFixed(1))
-										+ " %"
-									}
-								</Type>
-								<motion.div layoutId={`${props.variant}-${i}`} className="bars">
-									<motion.div
-										layoutId={`${props.variant}-${i}-background-bar`}
-										className="backgroundBar"
-									/>
-									<motion.div
-										layoutId={`${props.variant}-${i}-active-bar`}
-										className={`activeBar ${props.variant}`}
-										style={
-											{
-												width: `${props.variant === "income"
-													? timerange.total.percentage.incomes.ofMax
-													: timerange.total.percentage.expenses.ofMax
-													}%`
-											}
-										}
-									/>
-								</motion.div>
-							</motion.li>
-						})
-				}
-			</ul>
-		</AnimateSharedLayout>
-	</div>
 }
 
 export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 
 	const controller = useAnalyticsCategoriesController(props)
 
-	const content = <div className="AnalyticsCategories">
-		<SubComponent timeranges={controller.incomesCategories} variant="income" />
-		<SubComponent timeranges={controller.expensesCategories} variant="expense" />
-	</div>
+	return <AnalyticsBlock
+		header="Categories"
+		headerIcon={<CategoriesIcon />}
+		headerContent={<div className="AnalyticsCategories__headerContent">
+			<ButtonGroup size="small">
+				<Button
+					color="primary"
+					size="small"
+					variant={controller.isShowingValues ? "contained" : "outlined"}
+					onClick={controller.showValues}
+				>
+					{"€"}
+				</Button>
+				<Button
+					color="primary"
+					size="small"
+					variant={controller.isShowingPercentages ? "contained" : "outlined"}
+					onClick={controller.showPercentages}
+				>
+					{"%"}
+				</Button>
+			</ButtonGroup>
+		</div>}
+	>
+		<div className="AnalyticsCategories">
+			<AnimateSharedLayout>
+				<motion.div layout className="incomes">
+					<Type color="gray-600" variant="boldcaps">
+						{"Incomes"}
+					</Type>
+					<ul>
+						{
+							controller.hasNoIncomes
+								? <div className="empty">
+									<Type color="gray-600">
+										{`No incomes available`}
+									</Type>
+								</div>
+								: controller.incomes.map((category, i) => (
+									<AnalyticsCategory
+										variant="income"
+										show={controller.isShowingPercentages ? "percentage" : "value"}
+										category={category.category}
+										total={category.total}
+										count={category.transactions}
+										percentageOfMax={category.percentageOfMax}
+										percentageOfTotal={category.percentageOfTotal}
+										key={category.category.id}
+									/>
+								))
+						}
+					</ul>
+				</motion.div>
+				<motion.div layout className="expenses">
+					<Type color="gray-600" variant="boldcaps">
+						{"Expenses"}
+					</Type>
+					<ul>
+						{
+							controller.hasNoExpenses
+								? <div className="empty">
+									<Type color="gray-600">
+										{`No expenses available`}
+									</Type>
+								</div>
+								: controller.expenses.map((category, i) => (
+									<AnalyticsCategory
+										variant="expense"
+										show={controller.isShowingPercentages ? "percentage" : "value"}
+										category={category.category}
+										total={category.total}
+										count={category.transactions}
+										percentageOfMax={category.percentageOfMax}
+										percentageOfTotal={category.percentageOfTotal}
+										key={category.id}
+									/>
+								))
+						}
+					</ul>
+				</motion.div>
+			</AnimateSharedLayout>
+		</div>
+	</AnalyticsBlock>
 
-	if (props.wrapInAnalyticsBlock) {
-		return <AnalyticsBlock
-			header="Categories"
-			headerIcon={<CategoriesIcon />}
-			children={content}
-		/>
-	} else {
-		return content
-	}
 }

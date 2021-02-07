@@ -11,16 +11,16 @@ import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 
 export type AnalyticsAllTimeLineProps = {
-	wrapInAnalyticsBlock?: boolean;
 }
 
 export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 
 	const controller = useAnalyticsAllTimeLineController(props)
 
-	const content = <div className="AnalyticsAllTimeLine">
-
-		<div className="total">
+	return <AnalyticsBlock
+		header="All time"
+		headerIcon={<ChartIcon />}
+		headerContent={<div className="AnalyticsAllTimeLine__total">
 			<Type color="gray-700">
 				{`In total you have saved`}
 			</Type>
@@ -29,41 +29,37 @@ export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 				colorIfPositive="green-600"
 				colorIfNegative="red-600"
 			/>
+		</div>}
+	>
+		<div className="AnalyticsAllTimeLine">
+			<div className="chart">
+				<ResponsiveContainer height={200} width="100%">
+
+					<LineChart
+						data={controller.data}
+					>
+						<CartesianGrid
+							vertical={false}
+							color={theme.blue_200}
+						/>
+						<YAxis
+							tickLine={false}
+							tickFormatter={(value) => MoneyAmount.largeFormat(Number(value))}
+						/>
+						<Tooltip
+							formatter={(value: any) => MoneyAmount.format(Number(value))}
+							labelFormatter={label => format(controller.deserializeMonth(Number(label) + controller.labelOffset), "MMMM, yyyy")}
+						/>
+						<Line
+							strokeWidth={2}
+							type="natural"
+							dataKey="y"
+							stroke={theme.blue_400}
+						/>
+					</LineChart>
+				</ResponsiveContainer>
+
+			</div>
 		</div>
-
-		<ResponsiveContainer height={200} width="100%">
-			<LineChart
-				data={controller.data}
-			>
-				<CartesianGrid
-					vertical={false}
-					color={theme.blue_200}
-				/>
-				<YAxis
-					tickFormatter={(value) => MoneyAmount.largeFormat(Number(value) * 100)}
-				/>
-				<Tooltip
-					formatter={(value) => MoneyAmount.format(Number(value) * 100)}
-					labelFormatter={label => format(controller.deserializeMonth(Number(label) + controller.labelOffset), "MMMM, yyyy")}
-				/>
-				<Line
-					strokeWidth={2}
-					type="natural"
-					dataKey="y"
-					stroke={theme.blue_500}
-				/>
-			</LineChart>
-		</ResponsiveContainer>
-
-	</div>
-
-	if (props.wrapInAnalyticsBlock) {
-		return <AnalyticsBlock
-			header="All time"
-			headerIcon={<ChartIcon />}
-			children={content}
-		/>
-	} else {
-		return content
-	}
+	</AnalyticsBlock>
 }

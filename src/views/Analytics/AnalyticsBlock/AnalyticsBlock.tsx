@@ -6,11 +6,19 @@ import { Type } from "../../../components/Type/Type";
 export type AnalyticsBlockProps = {
 	header?: string;
 	headerIcon?: React.ReactNode;
+	headerContent?: React.ReactNode;
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 export function AnalyticsBlock(props: AnalyticsBlockProps) {
 
-	const { className, children, header, headerIcon, ...divProps } = props
+	const {
+		className,
+		children,
+		header,
+		headerIcon,
+		headerContent,
+		...divProps
+	} = props
 
 	return <div
 		className={cx("AnalyticsBlock", props.className)}
@@ -21,6 +29,9 @@ export function AnalyticsBlock(props: AnalyticsBlockProps) {
 			<Type variant="bold">
 				{header}
 			</Type>
+			<div className="header-content">
+				{props.headerContent}
+			</div>
 		</div>
 		<div className="content">
 			{children}

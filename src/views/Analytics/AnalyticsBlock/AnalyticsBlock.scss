@@ -13,5 +13,8 @@
       transform: scale(0.8);
       color: $gray-800;
     }
+    & > .header-content {
+      flex: 1;
+    }
   }
 }

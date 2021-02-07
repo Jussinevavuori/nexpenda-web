@@ -7,8 +7,7 @@ import { useMdMedia } from "../../../hooks/utils/useMedia";
 
 
 export function AnalyticsHeader() {
-
-	const controller = useAnalyticsHeaderController()
+	useAnalyticsHeaderController()
 
 	const isDesktop = useMdMedia()
 
@@ -18,9 +17,6 @@ export function AnalyticsHeader() {
 			<div className="title">
 				<Type component="h1" size="xl" color="gray-900" variant="bold">
 					{"Analytics"}
-				</Type>
-				<Type component="h2" size="xl" color="gray-600" variant="bold">
-					{controller.intervalLabel}
 				</Type>
 			</div>
 
@@ -39,9 +35,6 @@ export function AnalyticsHeader() {
 			<div className="title">
 				<Type component="h1" size="xl" color="white" variant="bold">
 					{"Analytics"}
-				</Type>
-				<Type component="h2" size="xl" color="blue-300" variant="bold">
-					{controller.intervalLabel}
 				</Type>
 			</div>
 

@@ -4,5 +4,7 @@ import { AnalyticsTotalsProps } from "./AnalyticsTotals"
 export function useAnalyticsTotalsController(props: AnalyticsTotalsProps) {
 	const analytics = useAnalyticsContext()
 
-	return { totals: analytics.base["active"].total }
+	return {
+		totals: analytics.selected.total
+	}
 }

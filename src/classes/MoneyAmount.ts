@@ -123,14 +123,15 @@ export class MoneyAmount {
     let sign = value < 0 ? "-" : "";
     let scale = 1000;
     let unit = "k";
-    if (value > 100 * 1000 * 1000) {
+    const absvalue = Math.abs(value);
+    if (absvalue > 100 * 1000 * 1000) {
       scale = 1000 * 1000;
       unit = "M";
-    } else if (value > 100 * 1000 * 1000 * 1000) {
+    } else if (absvalue > 100 * 1000 * 1000 * 1000) {
       scale = 1000 * 1000 * 1000;
       unit = "B";
     }
-    let scaledAmount = Math.floor(value / (100 * scale));
+    let scaledAmount = Math.floor(absvalue / (100 * scale));
     return `${sign}${scaledAmount} ${unit}`;
   }
 

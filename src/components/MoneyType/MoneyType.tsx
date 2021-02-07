@@ -6,7 +6,7 @@ import { Type, TypeProps } from "../Type/Type";
 import { animate } from "framer-motion"
 
 export type MoneyTypeProps = {
-	amount: MoneyAmount;
+	amount: MoneyAmount | number;
 
 	colorIfNegative?: TypeProps["color"];
 	colorIfPositive?: TypeProps["color"];
@@ -23,6 +23,8 @@ export function MoneyType(props: MoneyTypeProps) {
 	const {
 		amount,
 
+		className,
+
 		color,
 		colorIfNegative,
 		colorIfPositive,
@@ -33,6 +35,10 @@ export function MoneyType(props: MoneyTypeProps) {
 		disableAnimationBlur,
 		...typeProps
 	} = props
+
+	const moneyAmount = typeof props.amount === "number"
+		? new MoneyAmount(props.amount)
+		: props.amount
 
 	/**
 	 * Ref to the real component for updating the text value
@@ -56,7 +62,7 @@ export function MoneyType(props: MoneyTypeProps) {
 		}
 
 		const start = latestValueRef.current
-		const end = amount.value
+		const end = moneyAmount.value
 
 		const controls = animate(start, end, {
 			duration: animationDuration ?? 0.5,
@@ -90,23 +96,23 @@ export function MoneyType(props: MoneyTypeProps) {
 		})
 
 		return () => controls.stop()
-	}, [enableAnimation, amount, animationDuration, animationStiffness, disableAnimationBlur])
+	}, [enableAnimation, moneyAmount, animationDuration, animationStiffness, disableAnimationBlur])
 
-	return <span className={cx("MoneyType", {
-		positive: props.amount.isNonNegative,
-		negative: props.amount.isNegative,
+	return <span className={cx("MoneyType", className, {
+		positive: moneyAmount.isNonNegative,
+		negative: moneyAmount.isNegative,
 	})}>
 		<Type
 			ref={nodeRef}
 			variant="bold"
 			color={
-				props.amount.isNegative
+				moneyAmount.isNegative
 					? colorIfNegative ?? color
 					: colorIfPositive ?? color
 			}
 			{...typeProps}
 		>
-			{amount.format()}
+			{moneyAmount.format()}
 		</Type>
 	</span >
 }

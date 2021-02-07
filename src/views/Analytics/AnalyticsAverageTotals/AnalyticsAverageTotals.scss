@@ -1,6 +1,6 @@
 @import "main";
 
-.AnalyticsMonthlyAverages {
+.AnalyticsAverageTotals {
   & > .header {
     margin-bottom: $spacing-1;
     display: flex;
@@ -16,8 +16,5 @@
     & > *:not(:last-child) {
       margin-right: $spacing-4;
     }
-  }
-  & > .select {
-    padding-top: $spacing-6;
   }
 }

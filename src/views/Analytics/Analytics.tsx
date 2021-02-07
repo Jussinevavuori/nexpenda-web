@@ -8,18 +8,18 @@ import { AnalyticsPanel } from "./AnalyticsPanel/AnalyticsPanel";
 import { AnalyticsTotals } from "./AnalyticsTotals/AnalyticsTotals";
 import { AnalyticsCategories } from "./AnalyticsCategories/AnalyticsCategories";
 import { AnalyticsAllTimeLine } from "./AnalyticsAllTimeLine/AnalyticsAllTimeLine";
-import { AnalyticsMonthlyAverages } from "./AnalyticsMonthlyAverages/AnalyticsMonthlyAverages";
 import { AnalyticsContextProvider } from "../../contexts/AnalyticsContext.context";
-// import { useAnalyticsController } from "./useAnalyticsController";
+import { useAnalyticsController } from "./useAnalyticsController";
+import { Type } from "../../components/Type/Type";
+import { AnalyticsAllTimeColumns } from "./AnalyticsAllTimeColumns/AnalyticsAllTimeColumns";
+import { AnalyticsAverageCategories } from "./AnalyticsAverageCategories/AnalyticsAverageCategories";
+import { AnalyticsAverageTotals } from "./AnalyticsAverageTotals/AnalyticsAverageTotals";
 
 export type AnalyticsProps = {
-	wrapInAnalyticsBlock?: boolean;
 }
 
 export function Analytics(props: AnalyticsProps) {
-
-	// const controller = useAnalyticsController(props)
-
+	const controller = useAnalyticsController(props)
 	const isDesktop = useMdMedia()
 
 	return <AnalyticsContextProvider>
@@ -28,7 +28,7 @@ export function Analytics(props: AnalyticsProps) {
 			<section className="headerContainer" >
 				<AnalyticsHeader />
 				{
-					isDesktop ? null : <div className="panelContainer">
+					!isDesktop && <div className="panelContainer">
 						<AnalyticsPanel />
 					</div>
 				}
@@ -36,12 +36,39 @@ export function Analytics(props: AnalyticsProps) {
 
 
 			<section className="analyticsBlocksContainer">
-				<AnalyticsAllTimeLine wrapInAnalyticsBlock />
-				<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 600: 2 }}>
+				<AnalyticsAllTimeLine />
+				<AnalyticsAllTimeColumns />
+				<Type
+					component="h2"
+					variant="bold"
+					size="xl"
+					color="gray-900"
+				>
+					{controller.intervalLabel}
+				</Type>
+				<ResponsiveMasonry
+					columnsCountBreakPoints={{ 350: 1, 700: 2 }}
+				>
 					<Masonry gutter={theme.spacing_4}>
-						<AnalyticsTotals wrapInAnalyticsBlock />
-						<AnalyticsCategories wrapInAnalyticsBlock />
-						<AnalyticsMonthlyAverages wrapInAnalyticsBlock />
+						<AnalyticsTotals />
+						<AnalyticsCategories />
+					</Masonry>
+				</ResponsiveMasonry>
+				<Type
+					component="h2"
+					variant="bold"
+					size="xl"
+					color="gray-900"
+				>
+					{"Past year habits"}
+				</Type>
+				<ResponsiveMasonry
+					columnsCountBreakPoints={{ 350: 1, 700: 2 }}
+				>
+					<Masonry gutter={theme.spacing_4}>
+						<AnalyticsAverageTotals />
+						<AnalyticsAverageCategories showOnly="incomes" />
+						<AnalyticsAverageCategories showOnly="expenses" />
 					</Masonry>
 				</ResponsiveMasonry>
 			</section>

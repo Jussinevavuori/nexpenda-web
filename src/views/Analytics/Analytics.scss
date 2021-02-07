@@ -28,5 +28,8 @@
     @include md {
       padding: $spacing-8 $spacing-16 $spacing-16;
     }
+    & > h2 {
+      margin: $spacing-8 0 $spacing-4;
+    }
   }
 }
