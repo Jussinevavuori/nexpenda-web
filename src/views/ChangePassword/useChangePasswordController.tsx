@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useCallback, useEffect, useState } from "react"
 import { yupResolver } from "@hookform/resolvers";
 import { useForm } from "react-hook-form";
@@ -82,6 +83,7 @@ export function useChangePasswordController() {
 		if (token) {
 			changePassword({ ...values, token }).then(result => {
 				if (result.isSuccess()) {
+					ReactGA.event({ action: "change_password", category: "user" })
 					setPasswordChangeSuccessful(true)
 				} else {
 					setError("Could not change password")

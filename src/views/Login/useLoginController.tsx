@@ -1,4 +1,5 @@
-import * as yup from "yup"
+import ReactGA from "react-ga";
+import * as yup from "yup";
 import { useState, useEffect, useCallback } from 'react';
 import { useStoreActions, useStoreState } from '../../store';
 import { useRedirect } from '../../hooks/utils/useRedirect';
@@ -55,6 +56,7 @@ export function useLoginController() {
 		 *  On success redirect
 		 */
 		if (result.isSuccess()) {
+			ReactGA.event({ action: "login", category: "user" })
 			return redirect(routes => routes.dashboard)
 		}
 

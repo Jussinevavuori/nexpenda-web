@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useCallback, useState } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
@@ -27,6 +28,8 @@ export function useFileDownloaderController(props: FileDownloaderProps) {
 		spreadsheet.downloadFile()
 
 		setLoading(false)
+
+		ReactGA.event({ action: "download_file", category: "data_import_export" })
 
 		notify({
 			message: `File downloaded.`

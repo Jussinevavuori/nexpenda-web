@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 let deferredPromptEvent: any;
 
 /**
@@ -9,6 +10,9 @@ export function usePwaInstall() {
     ? async () => {
         deferredPromptEvent.prompt();
         const choiceResult = await deferredPromptEvent.userChoice;
+        if (choiceResult) {
+          ReactGA.event({ action: "install_pwa", category: "pwa" });
+        }
         return choiceResult;
       }
     : null;
@@ -17,5 +21,10 @@ export function usePwaInstall() {
 // Catch the install event and prevent initial prompt
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
+  ReactGA.event({
+    action: "display_installer",
+    category: "pwa",
+    nonInteraction: true,
+  });
   deferredPromptEvent = e;
 });

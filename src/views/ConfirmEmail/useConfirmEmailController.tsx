@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useRedirect } from "../../hooks/utils/useRedirect"
@@ -26,7 +27,9 @@ export function useConfirmEmailController() {
 		if (token) {
 			confirmEmail({ token }).then(result => {
 				setSuccess(result.isSuccess())
-				if (result.isFailure()) {
+				if (result.isSuccess()) {
+					ReactGA.event({ action: "confirm_email", category: "user" })
+				} else {
 					switch (result.reason) {
 						case "invalidServerResponse":
 							setError("Could not contact server. Try again later.")

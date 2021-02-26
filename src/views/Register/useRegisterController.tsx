@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useCallback, useState } from 'react';
 import { InferType, object, string } from "yup"
 import { useStoreActions } from '../../store';
@@ -42,6 +43,7 @@ export function useRegisterController() {
 		setError(undefined)
 		const result = await register({ email: values.email, password: values.password })
 		if (result.isSuccess()) {
+			ReactGA.event({ action: "sign_up", category: "user" })
 			setRegistered(true)
 		} else {
 			setError(() => {

@@ -11,6 +11,11 @@ import { ThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { theme } from "./styles/theme";
 import { LocalizedUtils } from "./utils/LocaleUtils/CustomLocale";
+import ReactGA from "react-ga";
+
+// Initialize Google Analytics
+export const GOOGLE_ANALYTICS_TRACKING_ID = "G-J8X5HQ1J5K";
+ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID);
 
 ReactDOM.render(
 	<React.StrictMode>

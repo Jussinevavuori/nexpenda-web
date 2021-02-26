@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useState, useCallback } from "react"
 import { useStoreActions, useStoreState } from "../../../store"
 import { SettingsProfilePanelProps } from "./SettingsProfilePanel"
@@ -57,6 +58,7 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 					severity: "error"
 				})
 			} else {
+				ReactGA.event({ action: "change_profile_name", category: "user" })
 				notify({
 					message: "Succesfully updated profile name",
 					severity: "success"

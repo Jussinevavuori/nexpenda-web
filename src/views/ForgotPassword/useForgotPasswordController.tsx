@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useState } from "react"
 import * as yup from "yup";
 import { useStoreActions } from "../../store";
@@ -42,6 +43,7 @@ export function useForgotPasswordController() {
 		setError(undefined)
 		const result = await forgotPassword(values)
 		if (result.isSuccess()) {
+			ReactGA.event({ action: "forgot_password", category: "user" })
 			setSuccess(true)
 		} else {
 			setError(() => {

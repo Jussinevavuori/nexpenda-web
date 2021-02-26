@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
@@ -185,6 +186,8 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		 * Handle success by reseting form
 		 */
 		if (result.isSuccess()) {
+
+			ReactGA.event({ action: "create_transaction", category: "transaction" })
 
 			if (editTransaction) {
 				notify({

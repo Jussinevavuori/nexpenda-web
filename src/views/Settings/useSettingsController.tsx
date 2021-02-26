@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
@@ -14,6 +15,7 @@ export function useSettingsController() {
 	const handleLogout = useCallback(async function () {
 		const result = await logout()
 		if (result.isSuccess()) {
+			ReactGA.event({ action: "logout", category: "user" })
 			redirect(_ => _.login)
 		}
 	}, [logout, redirect])
