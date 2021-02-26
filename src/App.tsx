@@ -6,29 +6,12 @@ import { Notification } from "./components/Notification/Notification"
 import { useHistoryNotifications } from './hooks/application/useHistoryNotifications';
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
 import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcuts';
+import { useGtagTracking } from './hooks/gtag/useGtagTracking';
 
 function App() {
-
-	const notify = useStoreActions(_ => _.notification.notify)
-	useEffect(() => {
-		(window as any).notify = () => {
-			notify({ message: "Test" })
-		}
-	}, [notify])
-
-	/**
-	 * Fix viewheight for mobile from root
-	 */
+	useGtagTracking()
 	useVhFix()
-
-	/**
-	 * Notify on certain history events
-	 */
 	useHistoryNotifications()
-
-	/**
-	 * Apply shortcuts
-	 */
 	useApplicationShortcuts()
 
 	/**
