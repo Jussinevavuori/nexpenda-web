@@ -44,7 +44,7 @@ export function useRegisterController() {
 		const result = await register({ email: values.email, password: values.password })
 		if (result.isSuccess()) {
 			ReactGA.event({
-				action: "Sign up",
+				action: "sign_up",
 				category: "User",
 			})
 			setRegistered(true)

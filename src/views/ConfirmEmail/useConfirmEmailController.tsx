@@ -29,7 +29,7 @@ export function useConfirmEmailController() {
 				setSuccess(result.isSuccess())
 				if (result.isSuccess()) {
 					ReactGA.event({
-						action: "Confirm email",
+						action: "confirm_email",
 						category: "User",
 					})
 				} else {

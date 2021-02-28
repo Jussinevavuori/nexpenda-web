@@ -42,7 +42,7 @@ export function useFileUploaderController(props: FileUploaderProps) {
 		// If read succeeded, show result, else show error
 		if (readResult.isSuccess()) {
 			ReactGA.event({
-				action: "Upload file",
+				action: "upload_transactions_file",
 				category: "Transactions Files",
 				label: "Upload file",
 				value: readResult.value.total,
