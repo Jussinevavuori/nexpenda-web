@@ -1,10 +1,10 @@
-/** Layout constants */
+// Layout constants
 
 $header-height: 5rem;
 $mobile-header-height: 160px;
 $sidebar-width: 290px;
 
-/** Colors: Blue */
+// Colors: Blue
 
 $blue-900: #060040;
 $blue-800: #030380;
@@ -16,7 +16,7 @@ $blue-300: #83aff4;
 $blue-200: #c7e1fb;
 $blue-100: #eaf5fe;
 
-/** Colors: Red */
+// Colors: Red
 
 $red-900: #610a3b;
 $red-800: #881348;
@@ -28,7 +28,7 @@ $red-300: #f79b96;
 $red-200: #fbccc3;
 $red-100: #fef4ef;
 
-/** Colors: Green */
+// Colors: Green
 
 $green-900: #00151b;
 $green-800: #034549;
@@ -40,7 +40,7 @@ $green-300: #7fe5b6;
 $green-200: #b4f2d3;
 $green-100: #edfdf4;
 
-/** Colors: Gray */
+// Colors: Gray
 
 $gray-900: #141414;
 $gray-840: #1b1a1a;
@@ -56,12 +56,12 @@ $gray-300: #d4d2dd;
 $gray-200: #f0f0f5;
 $gray-100: #f9f9fb;
 
-/** Colors: Misc */
+// Colors: Misc
 
 $white: #ffffff;
 $black: #000000;
 
-/** Primary color as blue */
+// Primary color as blue
 
 $primary-900: $blue-900;
 $primary-800: $blue-800;
@@ -73,18 +73,18 @@ $primary-300: $blue-300;
 $primary-200: $blue-200;
 $primary-100: $blue-100;
 
-/** Borders */
+// Borders
 
 $border-color: $gray-300;
 $border: $border-color 1px solid;
 
-/** Typography: Fonts */
+// Typography: Fonts
 
 $roboto: "Roboto", Helvetica, Arial, sans-serif;
 $roboto-condensed: "Roboto Condensed", Helvetica, Arial, sans-serif;
 $poppins: "Poppins", "Roboto", Helvetica, Arial, sans-serif;
 
-/** Spacing */
+// Spacing
 
 $spacing-1: 0.25rem;
 $spacing-2: 0.5rem;
@@ -104,7 +104,7 @@ $spacing-32: 8rem;
 $spacing-36: 9rem;
 $spacing-40: 10rem;
 
-/** Fixed spacings in px units for specific usecases */
+// Fixed spacings in px units for specific usecases
 
 $fixed-spacing-1: 4px;
 $fixed-spacing-2: 8px;
@@ -124,19 +124,19 @@ $fixed-spacing-32: 128px;
 $fixed-spacing-36: 144px;
 $fixed-spacing-40: 160px;
 
-/** Known paddings */
+// Known paddings
 
 $spacing-icon-button: 12px;
 $spacing-button-vertical: 6px;
 $spacing-button-horizontal: 8px;
 
-/** Spacing adjusting for known paddings */
+// Spacing adjusting for known paddings
 
 @function adjust-spacing($spacing, $adjustment) {
   @return calc(#{$spacing} - #{$adjustment});
 }
 
-/** Animations */
+// Animations
 
 $timing-1: 100ms;
 $timing-2: 200ms;
@@ -144,13 +144,13 @@ $timing-3: 300ms;
 
 $animate-snap-back: cubic-bezier(0.21, 1.47, 0, 1);
 
-/** Radii */
+// Radii
 
 $radius-sm: 4px;
 $radius-md: 8px;
 $radius-lg: 12px;
 
-/** Typography: Font sizes */
+// Typography: Font sizes
 
 $text-xxxl: 3rem;
 $text-xxl: 2.25rem;
@@ -159,19 +159,19 @@ $text-lg: 1.25rem;
 $text-md: 0.95rem;
 $text-sm: 0.75rem;
 
-/** Typography: Font weights */
+// Typography: Font weights
 
 $text-light: 300;
 $text-bold: 700;
 $text-regular: 400;
 
-/** Typography: Text Spacing */
+// Typography: Text Spacing
 
 $text-regular-spacing: 0px;
 $text-bold-spacing: 0px;
 $text-boldcaps-spacing: 0.69px;
 
-/** Typography: Font variants */
+// Typography: Font variants
 
 @mixin text-regular {
   font-weight: $text-regular;
@@ -192,7 +192,7 @@ $text-boldcaps-spacing: 0.69px;
   letter-spacing: $text-boldcaps-spacing;
 }
 
-/** Typography: Full font types */
+// Typography: Full font types
 
 @mixin text-regular-xxxl {
   font-size: $text-xxxl;
@@ -284,12 +284,12 @@ $text-boldcaps-spacing: 0.69px;
   @include text-boldcaps;
 }
 
-/** 100 vh fix for mobile */
+// 100 vh fix for mobile
 
 $fullvh: var(--full-vh, 100vh);
 $vh: var(--vh, 1vh);
 
-/** Breakpoints and breakpoint mixins */
+// Breakpoints and breakpoint mixins
 
 $bp-sm: 600px;
 $bp-md: 900px;
@@ -331,10 +331,7 @@ $bp-lg: 1200px;
   }
 }
 
-/**
-OLD
-*/
-
+// Old
 $font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-medium: 500;

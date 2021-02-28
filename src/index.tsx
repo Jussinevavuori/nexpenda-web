@@ -13,9 +13,22 @@ import { theme } from "./styles/theme";
 import { LocalizedUtils } from "./utils/LocaleUtils/CustomLocale";
 import ReactGA from "react-ga";
 
+document.head.prepend((() => {
+	const el = document.createElement("script")
+	el.innerHTML = `
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag("js", new Date());
+		gtag("config", "G-LVM2P76WDY");
+	`
+	return el
+})())
+
 // Initialize Google Analytics
 export const GOOGLE_ANALYTICS_TRACKING_ID = "G-LVM2P76WDY";
-ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID);
+ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID, { debug: true });
 
 ReactDOM.render(
 	<React.StrictMode>
