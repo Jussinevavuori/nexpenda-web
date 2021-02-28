@@ -24,6 +24,7 @@ document.head.prepend((() => {
 		gtag("config", "G-LVM2P76WDY");
 	`
 	return el
+
 })())
 
 // Initialize Google Analytics
