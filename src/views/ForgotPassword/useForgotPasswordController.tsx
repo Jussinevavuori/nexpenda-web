@@ -44,7 +44,7 @@ export function useForgotPasswordController() {
 		const result = await forgotPassword(values)
 		if (result.isSuccess()) {
 			ReactGA.event({
-				action: "forgot_password",
+				action: "Forgot Password",
 				category: "User",
 			})
 			setSuccess(true)

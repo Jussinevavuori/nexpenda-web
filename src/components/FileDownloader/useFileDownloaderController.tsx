@@ -30,7 +30,7 @@ export function useFileDownloaderController(props: FileDownloaderProps) {
 		setLoading(false)
 
 		ReactGA.event({
-			action: "download_transactions_file",
+			action: "Download Transactions File",
 			category: "Transactions Files",
 			label: spreadsheet.getFileName(),
 			value: spreadsheet.getRowsCount(),

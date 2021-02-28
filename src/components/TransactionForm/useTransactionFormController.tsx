@@ -187,12 +187,21 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		 */
 		if (result.isSuccess()) {
 
-			ReactGA.event({
-				action: "create_transaction",
-				category: "Transactions",
-				label: result.value.category.value,
-				value: result.value.integerAmount,
-			})
+			if (editTransaction) {
+				ReactGA.event({
+					action: "Edit Transaction",
+					category: "Transactions",
+					label: result.value.category.value,
+					value: result.value.integerAmount / 100,
+				})
+			} else {
+				ReactGA.event({
+					action: "Create Transaction",
+					category: "Transactions",
+					label: result.value.category.value,
+					value: result.value.integerAmount / 100,
+				})
+			}
 
 			if (editTransaction) {
 				notify({

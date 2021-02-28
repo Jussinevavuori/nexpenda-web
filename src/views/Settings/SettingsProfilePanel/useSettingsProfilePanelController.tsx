@@ -59,7 +59,7 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 				})
 			} else {
 				ReactGA.event({
-					action: "change_profile_name",
+					action: "Change Profile Name",
 					category: "Profile",
 				})
 				notify({

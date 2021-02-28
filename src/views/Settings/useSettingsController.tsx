@@ -16,7 +16,7 @@ export function useSettingsController() {
 		const result = await logout()
 		if (result.isSuccess()) {
 			ReactGA.event({
-				action: "logout",
+				action: "Logout",
 				category: "User",
 			})
 			redirect(_ => _.login)
