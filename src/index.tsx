@@ -14,7 +14,7 @@ import { LocalizedUtils } from "./utils/LocaleUtils/CustomLocale";
 import ReactGA from "react-ga";
 
 // Initialize Google Analytics
-export const GOOGLE_ANALYTICS_TRACKING_ID = "G-J8X5HQ1J5K";
+export const GOOGLE_ANALYTICS_TRACKING_ID = "G-Y74KDL8GJ9";
 ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID, { debug: true });
 
 ReactDOM.render(
