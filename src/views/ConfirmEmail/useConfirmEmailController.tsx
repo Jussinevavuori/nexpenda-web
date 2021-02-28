@@ -28,7 +28,10 @@ export function useConfirmEmailController() {
 			confirmEmail({ token }).then(result => {
 				setSuccess(result.isSuccess())
 				if (result.isSuccess()) {
-					ReactGA.event({ action: "confirm_email", category: "user" })
+					ReactGA.event({
+						action: "Confirm email",
+						category: "User",
+					})
 				} else {
 					switch (result.reason) {
 						case "invalidServerResponse":

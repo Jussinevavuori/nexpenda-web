@@ -58,7 +58,10 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 					severity: "error"
 				})
 			} else {
-				ReactGA.event({ action: "change_profile_name", category: "user" })
+				ReactGA.event({
+					action: "Change Profile Name",
+					category: "Profile",
+				})
 				notify({
 					message: "Succesfully updated profile name",
 					severity: "success"

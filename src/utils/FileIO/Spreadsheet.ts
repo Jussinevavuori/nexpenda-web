@@ -24,6 +24,11 @@ export abstract class Spreadsheet<T extends object> {
   private _workbook?: XLSX.WorkBook;
 
   /**
+   * Rows count
+   */
+  protected _rowsCount: number = 0;
+
+  /**
    * Escpaes a filename: removes unwanted characters and slices to
    * wanted length
    */
@@ -151,6 +156,13 @@ export abstract class Spreadsheet<T extends object> {
   protected abstract getFileSheetName(): string;
 
   /**
+   * Gets number of rows
+   */
+  getRowsCount(): number {
+    return this._rowsCount;
+  }
+
+  /**
    * Generates a spreadsheet for downloading
    */
   createFile(rows: T[]) {
@@ -158,6 +170,11 @@ export abstract class Spreadsheet<T extends object> {
      * Create new book
      */
     const workbook = XLSX.utils.book_new();
+
+    /**
+     * Update rows count
+     */
+    this._rowsCount = rows.length;
 
     /**
      * Sort rows and map to objects of wanted shape

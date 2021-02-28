@@ -56,7 +56,10 @@ export function useLoginController() {
 		 *  On success redirect
 		 */
 		if (result.isSuccess()) {
-			ReactGA.event({ action: "login", category: "user" })
+			ReactGA.event({
+				action: "Login",
+				category: "User",
+			})
 			return redirect(routes => routes.dashboard)
 		}
 

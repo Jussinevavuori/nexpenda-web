@@ -3,6 +3,7 @@ import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
+import { transactionsModel } from "../../models/transactions.model";
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -187,7 +188,12 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		 */
 		if (result.isSuccess()) {
 
-			ReactGA.event({ action: "create_transaction", category: "transaction" })
+			ReactGA.event({
+				action: "Create transaction",
+				category: "Transactions",
+				label: result.value.category.value,
+				value: result.value.integerAmount,
+			})
 
 			if (editTransaction) {
 				notify({

@@ -41,7 +41,12 @@ export function useFileUploaderController(props: FileUploaderProps) {
 
 		// If read succeeded, show result, else show error
 		if (readResult.isSuccess()) {
-			ReactGA.event({ action: "upload_file", category: "data_import_export" })
+			ReactGA.event({
+				action: "Upload file",
+				category: "Transactions Files",
+				label: "Upload file",
+				value: readResult.value.total,
+			})
 			const s = readResult.value.succeeded
 			const t = readResult.value.total
 			notify({ message: `File read (${s}/ ${t} rows)` })

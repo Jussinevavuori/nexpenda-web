@@ -83,7 +83,11 @@ export function useChangePasswordController() {
 		if (token) {
 			changePassword({ ...values, token }).then(result => {
 				if (result.isSuccess()) {
-					ReactGA.event({ action: "change_password", category: "user" })
+					ReactGA.event({
+						action: "Change password",
+						category: "User",
+					})
+
 					setPasswordChangeSuccessful(true)
 				} else {
 					setError("Could not change password")

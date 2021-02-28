@@ -11,7 +11,10 @@ export function usePwaInstall() {
         deferredPromptEvent.prompt();
         const choiceResult = await deferredPromptEvent.userChoice;
         if (choiceResult) {
-          ReactGA.event({ action: "install_pwa", category: "pwa" });
+          ReactGA.event({
+            action: "Install PWA",
+            category: "Transactions",
+          });
         }
         return choiceResult;
       }
@@ -22,8 +25,8 @@ export function usePwaInstall() {
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   ReactGA.event({
-    action: "display_installer",
-    category: "pwa",
+    action: "Display PWA installer",
+    category: "PWA",
     nonInteraction: true,
   });
   deferredPromptEvent = e;
