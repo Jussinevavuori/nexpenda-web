@@ -3,7 +3,6 @@ import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
-import { transactionsModel } from "../../models/transactions.model";
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
