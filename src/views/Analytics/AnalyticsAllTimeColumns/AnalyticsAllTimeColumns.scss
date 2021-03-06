@@ -1,6 +1,10 @@
 @import "main";
 
 .AnalyticsAllTimeColumns {
+  &__headerContent {
+    display: flex;
+    justify-content: flex-end;
+  }
   & > .chart {
     margin-left: -26px;
   }
