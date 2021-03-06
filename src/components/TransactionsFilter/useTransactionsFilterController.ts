@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
 import { useDebounce } from "../../hooks/utils/useDebounce";
-import { useStoreActions } from "../../store";
+import { useStoreActions, useStoreState } from "../../store";
 import { TransactionsFilterProps } from "./TransactionsFilter";
 
 export function useTransactionsFilterController(
   props: TransactionsFilterProps
 ) {
   const setSearchTerm = useStoreActions((_) => _.transactions.setSearchTerm);
+  const smartSearch = useStoreState((_) => _.transactions.smartSearch);
 
   const [input, setInput] = useState("");
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const [open, setOpen] = useBooleanQueryState("search", "replace", "open");
   const onOpen = useCallback(() => setOpen(true), [setOpen]);
@@ -31,5 +33,15 @@ export function useTransactionsFilterController(
     onClose,
     input,
     setInput,
+
+    smartSearch,
+
+    isInputFocused,
+    handleInputBlur() {
+      setIsInputFocused(false);
+    },
+    handleInputFocus() {
+      setIsInputFocused(true);
+    },
   };
 }

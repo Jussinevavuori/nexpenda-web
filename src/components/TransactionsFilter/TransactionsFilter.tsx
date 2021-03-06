@@ -73,11 +73,49 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0 }}
 							>
+								<AnimatePresence exitBeforeEnter={false}>
+									{
+										controller.open &&
+										!controller.isInputFocused &&
+										controller.smartSearch.matchCategories.length > 0 &&
+										<motion.div
+											className="smartCategoriesContainer"
+											transition={{ duration: 0.1 }}
+											initial={{ opacity: 0, y: -10 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: 10 }}
+										>
+											<motion.div
+												className="smartCategories"
+												transition={{ duration: 0.2 }}
+											>
+												{
+													controller.smartSearch.matchCategories.map(c => {
+														return <span className="smartCategory" key={c.id}>
+															<span className="icon">
+																{c.icon || "💰"}
+															</span>
+															<span className="name">
+																{c.name}
+															</span>
+														</span>
+													})
+												}
+											</motion.div>
+										</motion.div>
+									}
+								</AnimatePresence>
+
+
 								<input
 									ref={inputRef}
 									className="input"
-									value={controller.input}
+									value={controller.isInputFocused
+										? controller.input
+										: controller.smartSearch.search}
 									onChange={(e) => controller.setInput(e.target.value)}
+									onFocus={controller.handleInputFocus}
+									onBlur={controller.handleInputBlur}
 								/>
 							</motion.span>
 						}

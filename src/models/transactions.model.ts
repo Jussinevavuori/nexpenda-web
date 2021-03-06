@@ -14,6 +14,7 @@ import { StoreModel } from "../store";
 import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
+import { SmartTransactionFilter } from "../classes/SmartTransactionFilter";
 
 export interface TransactionsModel {
   //==============================================================//
@@ -43,6 +44,11 @@ export interface TransactionsModel {
   //==============================================================//
   // COMPUTED PROPERTIES
   //==============================================================//
+
+  /**
+   * Current smart search
+   */
+  smartSearch: Computed<TransactionsModel, SmartTransactionFilter, StoreModel>;
 
   /**
    * Filtered items
@@ -200,17 +206,25 @@ export const transactionsModel: TransactionsModel = {
   // COMPUTED PROPERTIES
   //==============================================================//
 
-  filteredItems: computed(
+  smartSearch: computed(
     [
-      (_) => _.items,
       (_) => _.searchTerm,
-      (_, storeState) => storeState.interval,
+      (_) => _.categories,
+      (_, storeState) => storeState.interval.startDate,
+      (_, storeState) => storeState.interval.endDate,
     ],
-    (items, searchTerm, interval) => {
-      return items.filter((t) => {
-        return t.filter(searchTerm, interval.startDate, interval.endDate);
+    (searchTerm, categories, startDate, endDate) => {
+      return new SmartTransactionFilter(searchTerm, {
+        categories,
+        startDate,
+        endDate,
       });
     }
+  ),
+
+  filteredItems: computed(
+    [(_) => _.items, (_) => _.smartSearch],
+    (items, search) => items.filter((t) => search.compare(t))
   ),
 
   categories: computed((state) =>

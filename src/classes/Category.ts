@@ -31,4 +31,18 @@ export class Category {
   public get name() {
     return this.value;
   }
+
+  /**
+   * Get non-whitespace version of the category's value (name) by replacing
+   * all whitespace with a dash, all in lowercase
+   *
+   * @example
+   * ```
+   * Category.value = "Other expenses"
+   * Category.slug = "other-expenses"
+   * ```
+   */
+  public get slug() {
+    return this.value.toLowerCase().replace(/\s+/g, "-");
+  }
 }
