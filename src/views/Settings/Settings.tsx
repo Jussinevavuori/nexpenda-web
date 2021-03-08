@@ -8,6 +8,7 @@ import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
 import { SettingsSection } from "./SettingsSection/SettingsSection";
+import { ThemePicker } from "../../components/ThemePicker/ThemePicker";
 
 export type SettingsProps = {
 }
@@ -39,6 +40,10 @@ export function Settings(props: SettingsProps) {
 			>
 				{"Log out"}
 			</Button>
+		</SettingsSection>
+
+		<SettingsSection className="customization" sectionTitle="Customize">
+			<ThemePicker />
 		</SettingsSection>
 
 		<SettingsSection className="fileHandlers" sectionTitle="Export and import data">

@@ -12,8 +12,11 @@ export class SmartTransactionFilter {
     endDate: Date;
   };
   public readonly matchCategories: Category[];
+  public readonly originalSearch: string;
+  public readonly isEmpty: boolean;
 
   constructor(search: string, context: SmartTransactionFilter["context"]) {
+    this.originalSearch = search;
     this.context = context;
 
     this.matchCategories = SmartTransactionFilter.getCategoriesFromSearch(
@@ -26,8 +29,13 @@ export class SmartTransactionFilter {
     ])
       .trim()
       .replace(/\s+/g, " ");
+
+    this.isEmpty = !this.search && this.matchCategories.length === 0;
   }
 
+  /**
+   * Function to compare whether a transaction matches the current filter
+   */
   compare(transaction: Transaction) {
     // Match by start date
     if (DateUtils.compareDate(transaction.date, "<", this.context.startDate)) {
@@ -62,8 +70,15 @@ export class SmartTransactionFilter {
     return true;
   }
 
+  /**
+   * Prefix from values separator <prefix>:<values>
+   */
   static prefixSeparator = ":";
-  static valueSeparator = ";";
+
+  /**
+   * Value from value separator <value_1>;<value_2>
+   */
+  static valuesSeparator = ";";
 
   /**
    * Returns the search string with all smart filters removed
@@ -108,7 +123,7 @@ export class SmartTransactionFilter {
     try {
       // Prefix-value separator character and value-value separator character
       const prefixSep = SmartTransactionFilter.prefixSeparator;
-      const valueSep = SmartTransactionFilter.valueSeparator;
+      const valueSep = SmartTransactionFilter.valuesSeparator;
 
       // Construct regexp and match
       // eslint-disable-next-line
@@ -118,7 +133,7 @@ export class SmartTransactionFilter {
       // Extract values
       return match?.[0]?.split(prefixSep)?.[1]?.split(valueSep) ?? [];
     } catch (e) {
-      console.log(
+      console.warn(
         `An error occured while extracting value from "${search}" with prefix ${prefix}:`,
         e
       );
@@ -126,6 +141,9 @@ export class SmartTransactionFilter {
     }
   }
 
+  /**
+   * Category prefix
+   */
   static categoryPrefix = "category";
 
   /**
@@ -149,5 +167,30 @@ export class SmartTransactionFilter {
     });
 
     return categories;
+  }
+
+  /**
+   * Set the category in the original search
+   */
+  getSearchTermWithCategory(category: Category[] | Category | undefined) {
+    let search = this.search;
+
+    // All categories as an array
+    const categories = Array.isArray(category)
+      ? category
+      : category
+      ? [category]
+      : [];
+
+    // Prepend category if one defined
+    if (categories.length > 0) {
+      const prefix = SmartTransactionFilter.categoryPrefix;
+      const prefixSep = SmartTransactionFilter.prefixSeparator;
+      const valuesSep = SmartTransactionFilter.valuesSeparator;
+      const values = categories.map((_) => _.slug);
+      search = `${prefix}${prefixSep}${values.join(valuesSep)}`;
+    }
+
+    return search;
   }
 }

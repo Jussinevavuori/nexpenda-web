@@ -1,5 +1,7 @@
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
+import { Transaction } from "../../classes/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
+import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
@@ -19,6 +21,13 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	const [, setEditor] = useTransactionEditorDrawerVariableOpenState()
 
 	const menu = useTransactionContextMenu()
+
+	const latestTransaction = useRef<Transaction | undefined>()
+	useEffect(() => {
+		if (menu.transaction) {
+			latestTransaction.current = menu.transaction
+		}
+	}, [menu])
 
 	/**
 	 * Handle close
@@ -94,18 +103,73 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 		handleClose()
 	}, [handleClose, deleteTransactions, menu])
 
+	/**
+	 * Filtering by category
+	 */
+	const smartSearch = useStoreState(_ => _.transactions.smartSearch)
+	const setSearch = useStoreActions(_ => _.transactions.setSearchTerm)
+	const { 1: setIsSearchOpen } = useIsSearchOpen()
+
+	const isCategoryFilterToggledOn = useMemo(() => {
+		return smartSearch.matchCategories.some(c => {
+			return c.id === menu.transaction?.category.id
+		})
+	}, [smartSearch, menu])
+
+	const handleToggleCategoryFilter = useCallback(() => {
+
+		// Ensure transaction selected
+		const transaction = menu.transaction
+		if (!transaction) return
+
+		// If category included, remove it, else toggle it on
+		const categoryAlreadyIncluded = smartSearch.matchCategories.some(_ => _.id === transaction.category.id)
+
+		// Get new categories by excluding or adding the category
+		const categories = categoryAlreadyIncluded
+			? smartSearch.matchCategories.filter(_ => _.id !== transaction.category.id)
+			: smartSearch.matchCategories.concat(transaction.category)
+
+		// If added category, open search
+		if (!categoryAlreadyIncluded) {
+			setIsSearchOpen(true)
+		}
+
+		// Get new search
+		const newSearch = smartSearch.getSearchTermWithCategory(categories)
+		setSearch(newSearch)
+
+		console.log(
+			{
+				categoryAlreadyIncluded,
+				prev: smartSearch.matchCategories,
+				current: categories,
+				newSearch,
+				prevSearch: smartSearch.originalSearch
+			}
+		)
+
+		// Close
+		handleClose()
+	}, [handleClose, menu, smartSearch, setSearch, setIsSearchOpen])
+
+
 	return {
 		position: menu.position,
 		transaction: menu.transaction,
+		latestTransaction: menu.transaction ?? latestTransaction.current,
 
-		isAllSelected: isAllSelected,
-		isSelected: isSelected,
+		isAllSelected,
+		isSelected,
+		isCategoryFilterToggledOn,
 
 		onSelectAllToggle: handleSelectAllToggle,
 		onSelectToggle: handleSelectToggle,
 
 		onDelete: handleDelete,
 		onEdit: handleEdit,
+
+		onToggleCategoryFilter: handleToggleCategoryFilter,
 
 		onClose: handleClose,
 	}

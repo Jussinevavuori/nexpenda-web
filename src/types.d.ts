@@ -33,3 +33,21 @@ type TransactionSortStrategy =
  * All possible themes
  */
 type Theme = "blue" | "green";
+
+type ThemePropertyLabel =
+  | "color-100"
+  | "color-200"
+  | "color-300"
+  | "color-400"
+  | "color-500"
+  | "color-600"
+  | "color-700"
+  | "color-800"
+  | "color-900";
+
+type ThemeProperty = {
+  type: "color";
+  label: ThemePropertyLabel;
+  sourceName: string;
+  targetName: string;
+};

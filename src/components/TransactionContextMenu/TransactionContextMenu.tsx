@@ -1,6 +1,6 @@
 import "./TransactionContextMenu.scss";
 import React from "react"
-import { Menu, MenuItem } from "@material-ui/core";
+import { Divider, Menu, MenuItem } from "@material-ui/core";
 import {
 	SelectAll as SelectAllIcon,
 	Clear as DeselectAllIcon,
@@ -8,8 +8,10 @@ import {
 	CheckBox as DeselectIcon,
 	Delete as DeleteIcon,
 	Edit as EditIcon,
+	Search as SearchIcon,
 } from "@material-ui/icons";
 import { useTransactionContextMenuController } from "./useTransactionContextMenuController";
+import { Type } from "../Type/Type";
 
 
 export type TransactionContextMenuProps = {
@@ -26,33 +28,78 @@ export function TransactionContextMenu(props: TransactionContextMenuProps) {
 		anchorPosition={controller.position}
 		onClose={controller.onClose}
 	>
+
+		{/* Edit */}
 		<MenuItem
 			onClick={controller.onEdit}
 			className="editItem"
 		>
 			<EditIcon />
-			{"Edit"}
+			<Type disablePointerEvents component="label" variant="bold" color="primary-600">
+				{"Edit"}
+			</Type>
+			<Type disablePointerEvents className="shortcut" component="span" color="gray-500">
+				{"Shift + E"}
+			</Type>
 		</MenuItem>
+
+		{/* Delete */}
 		<MenuItem
 			onClick={controller.onDelete}
 			className="deleteItem"
 		>
 			<DeleteIcon />
-			{"Delete"}
+			<Type disablePointerEvents component="label" variant="bold" color="red-600">
+				{"Delete"}
+			</Type>
+			<Type disablePointerEvents className="shortcut" component="span" color="gray-500">
+				{"Shift + D"}
+			</Type>
 		</MenuItem>
+
+		<Divider />
+
+		{/* Select */}
 		<MenuItem
 			onClick={controller.onSelectToggle}
 			className="selectItem"
 		>
 			{controller.isSelected ? <DeselectIcon /> : <SelectIcon />}
-			{controller.isSelected ? "Deselect" : "Select"}
+			<Type disablePointerEvents component="label" variant="bold">
+				{controller.isSelected ? "Deselect" : "Select"}
+			</Type>
 		</MenuItem>
+
+		{/* Select all */}
 		<MenuItem
 			onClick={controller.onSelectAllToggle}
 			className="selectAllItem"
 		>
 			{controller.isAllSelected ? <DeselectAllIcon /> : <SelectAllIcon />}
-			{controller.isAllSelected ? "Deselect all" : "Select all"}
+
+			<Type disablePointerEvents component="label" variant="bold">
+				{controller.isAllSelected ? "Deselect all" : "Select all"}
+			</Type>
+			<Type disablePointerEvents className="shortcut" component="span" color="gray-500">
+				{controller.isAllSelected ? "Shift + Alt + A" : "Shift + A"}
+			</Type>
+		</MenuItem>
+
+		<Divider />
+
+		{/* Toggle category filter */}
+		<MenuItem
+			onClick={controller.onToggleCategoryFilter}
+			className="toggleCategoryFilter"
+		>
+			<SearchIcon />
+			<Type disablePointerEvents component="label" variant="bold">
+				{
+					controller.isCategoryFilterToggledOn
+						? `Cancel filter by category ${controller.latestTransaction?.category.name}`
+						: `Filter by category ${controller.latestTransaction?.category.name}`
+				}
+			</Type>
 		</MenuItem>
 	</Menu>
 }

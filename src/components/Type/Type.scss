@@ -7,6 +7,10 @@
     font-weight: inherit;
   }
 
+  &.disablePointerEvents {
+    pointer-events: none;
+  }
+
   /** Variants */
   &.Type-variant-regular {
     @include text-regular;

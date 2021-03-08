@@ -1,12 +1,20 @@
 @import "main";
 
 .TransactionContextMenu {
+  & .MuiDivider-root {
+    margin: $spacing-2 0;
+    background: $gray-300;
+  }
   & .MuiMenuItem-root {
+    & .shortcut {
+      padding-left: $spacing-2;
+      margin-left: auto;
+    }
     & svg {
       margin-right: 0.5rem;
     }
     &.editItem svg {
-      color: $primary-500;
+      color: $primary-600;
     }
     &.deleteItem svg {
       color: $red-500;

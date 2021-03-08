@@ -20,21 +20,45 @@ export function useSidebarController(props: SidebarProps) {
 
 	const [, setTransactionCreatorOpen] = useTransactionCreatorDrawerOpenState()
 
+
 	return {
 		isDashboard: !!dashboardMatch,
 		isAnalytics: !!analyticsMatch,
 		isBudget: !!budgetMatch,
 		isSettings: !!settingsMatch,
 
-		onDashboard: () => redirect(routes.dashboard),
-		onAnalytics: () => redirect(routes.analytics),
-		onBudget: () => redirect(routes.budget),
-		onSettings: () => redirect(routes.settings),
+		onDashboard() {
+			redirect(routes.dashboard)
+			unfocus()
+		},
+		onAnalytics() {
+			redirect(routes.analytics)
+			unfocus()
+		},
+		onBudget() {
+			redirect(routes.budget)
+			unfocus()
+		},
+		onSettings() {
+			redirect(routes.settings)
+			unfocus()
+		},
 
 		user: user,
 		logout: () => logout(),
 
 
 		onTransactionCreatorOpen: () => setTransactionCreatorOpen(true),
+	}
+}
+
+function unfocus() {
+	try {
+		const el = window.document.activeElement
+		if (el) {
+			(el as HTMLElement).blur()
+		}
+	} catch (e) {
+		return null
 	}
 }
