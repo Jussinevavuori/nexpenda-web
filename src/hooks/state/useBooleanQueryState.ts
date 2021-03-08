@@ -4,22 +4,13 @@ import { useQueryState } from "./useQueryState";
 export function useBooleanQueryState(
   key: string,
   method: Parameters<typeof useQueryState>[0]["method"],
-  truthy: string = "true",
-  falsy: string | undefined | null = undefined
+  truthy: string = "true"
 ) {
-  const encode = useCallback(
-    (value: boolean) => {
-      return value ? truthy : falsy;
-    },
-    [truthy, falsy]
-  );
+  const encode = useCallback((v: boolean) => (v ? truthy : falsy), [truthy]);
 
-  const decode = useCallback(
-    (arg: any) => {
-      return arg === truthy;
-    },
-    [truthy]
-  );
+  const decode = useCallback((arg: any) => arg === truthy, [truthy]);
 
   return useQueryState<boolean>({ key, encode, decode, method });
 }
+
+const falsy = undefined;

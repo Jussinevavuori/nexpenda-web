@@ -1,6 +1,7 @@
 @import "main";
 
-.UserAvatar {
+.UserAvatar.MuiAvatar-root {
+  background-color: $primary-400;
   & img {
     width: 100%;
     height: 100%;

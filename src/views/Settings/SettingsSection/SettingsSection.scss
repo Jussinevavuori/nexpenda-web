@@ -1,8 +1,10 @@
 @import "main";
 
 .SettingsSection {
-  margin: 0 auto $spacing-12;
+  margin: 0 auto;
   max-width: 600px;
+  padding: $spacing-8 $spacing-6;
+
   & > .sectionTitle {
     display: block;
     margin-bottom: $spacing-4;

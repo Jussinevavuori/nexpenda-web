@@ -5,6 +5,11 @@
   grid-template:
     "avatar name" auto
     "avatar email" auto / auto 1fr;
+  &.avatarDisabled {
+    grid-template:
+      "name" auto
+      "email" auto / 1fr;
+  }
   gap: $spacing-2 $spacing-6;
   place-items: center left;
 

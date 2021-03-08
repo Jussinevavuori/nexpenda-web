@@ -9,12 +9,15 @@ import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
 import { SettingsSection } from "./SettingsSection/SettingsSection";
 import { ThemePicker } from "../../components/ThemePicker/ThemePicker";
+import { SettingsHeader } from "./SettingsHeader/SettingsHeader";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 
 export type SettingsProps = {
 }
 
 export function Settings(props: SettingsProps) {
 
+	const isDesktop = useMdMedia()
 	const controller = useSettingsController()
 
 	// Loading
@@ -29,17 +32,10 @@ export function Settings(props: SettingsProps) {
 
 	return <div className="Settings">
 
+		<SettingsHeader />
+
 		<SettingsSection className="profilePanel" sectionTitle="Profile">
-			<SettingsProfilePanel />
-			<Button
-				color="primary"
-				variant="contained"
-				onClick={controller.handleLogout}
-				startIcon={<LogoutIcon />}
-				fullWidth
-			>
-				{"Log out"}
-			</Button>
+			<SettingsProfilePanel disableAvatar={!isDesktop} />
 		</SettingsSection>
 
 		<SettingsSection className="customization" sectionTitle="Customize">
@@ -54,6 +50,20 @@ export function Settings(props: SettingsProps) {
 		<SettingsSection sectionTitle="Version">
 			<Type>
 				{"1.0.0"}
+			</Type>
+		</SettingsSection>
+
+		<SettingsSection sectionTitle="Log out">
+			<Type>
+				<Button
+					color="primary"
+					variant="contained"
+					onClick={controller.handleLogout}
+					startIcon={<LogoutIcon />}
+					fullWidth
+				>
+					{"Log out"}
+				</Button>
 			</Type>
 		</SettingsSection>
 

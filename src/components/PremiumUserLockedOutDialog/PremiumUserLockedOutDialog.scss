@@ -1,0 +1,7 @@
+@import "main";
+
+.PremiumUserLockedOutDialog {
+  & .price {
+    padding: $spacing-6;
+  }
+}

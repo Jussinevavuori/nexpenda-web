@@ -1,5 +1,6 @@
 import "./SettingsProfilePanel.scss";
 import React from "react"
+import cx from "classnames"
 import { useSettingsProfilePanelController } from "./useSettingsProfilePanelController"
 import { CircularProgress, IconButton, TextField } from "@material-ui/core";
 import { Type } from "../../../components/Type/Type";
@@ -7,7 +8,7 @@ import { Clear as ClearIcon, Check as CheckIcon, Edit as EditIcon } from "@mater
 import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
 
 export type SettingsProfilePanelProps = {
-
+	disableAvatar?: boolean;
 }
 
 export function SettingsProfilePanel(props: SettingsProfilePanelProps) {
@@ -16,11 +17,16 @@ export function SettingsProfilePanel(props: SettingsProfilePanelProps) {
 
 	if (!controller.user) return null
 
-	return <div className="SettingsProfilePanel">
+	return <div className={cx("SettingsProfilePanel", {
+		avatarDisabled: props.disableAvatar
+	})}>
 
-		<div className="avatarContainer">
-			<UserAvatar />
-		</div>
+		{
+			!props.disableAvatar &&
+			<div className="avatarContainer">
+				<UserAvatar />
+			</div>
+		}
 
 		<div className="nameContainer" onClick={controller.name.handleStartEdit}>
 			{

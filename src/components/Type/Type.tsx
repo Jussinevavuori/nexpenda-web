@@ -59,6 +59,8 @@ export type TypeProps = Omit<TypographyProps, "color" | "variant"> & {
 
 	size?: "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
 
+	center?: boolean;
+
 	disablePointerEvents?: boolean;
 
 }
@@ -70,6 +72,7 @@ export const Type = forwardRef<HTMLElement, TypeProps>((props, ref) => {
 		size,
 		color,
 		variant,
+		center,
 		disablePointerEvents,
 		...typographyProps
 	} = props
@@ -91,7 +94,8 @@ export const Type = forwardRef<HTMLElement, TypeProps>((props, ref) => {
 			`Type-variant-${textVariant}`,
 			`Type-size-${textSize}`,
 			{
-				disablePointerEvents,
+				centered: center,
+				pointerEventsDisabled: disablePointerEvents,
 			}
 		)}
 	/>

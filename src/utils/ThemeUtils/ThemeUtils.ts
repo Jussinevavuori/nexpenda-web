@@ -5,6 +5,23 @@ export class ThemeUtils {
   static themes: Theme[] = ["blue", "green", "red", "yellow", "pink", "purple"];
 
   /**
+   * Property to access all freemium themes
+   */
+  static freeThemes: Theme[] = ["blue", "green"];
+
+  /**
+   * Property to access all premium themes
+   */
+  static premiumThemes: Theme[] = ["red", "yellow", "pink", "purple"];
+
+  /**
+   * Check if a theme is a premium theme
+   */
+  static isPremiumTheme(theme: Theme) {
+    return this.premiumThemes.includes(theme);
+  }
+
+  /**
    * Check if a variable is a valid theme
    */
   static isTheme(val: any): val is Theme {

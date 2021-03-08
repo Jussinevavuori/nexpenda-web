@@ -14,8 +14,11 @@ if (!regex.test(componentName)) {
 	process.exit(0)
 }
 
+// Get directory name or default to /src/components
+const directoryName = process.argv[3] || "components"
+
 // Get target paths
-const targetDirectory = path.join(__dirname, "..", "src", "components", componentName)
+const targetDirectory = path.join(__dirname, "..", "src", directoryName, componentName)
 const targetComponentFilePath = path.join(targetDirectory, `${componentName}.tsx`)
 const targetControllerFilePath = path.join(targetDirectory, `use${componentName}Controller.ts`)
 const targetStylesFilePath = path.join(targetDirectory, `${componentName}.scss`)

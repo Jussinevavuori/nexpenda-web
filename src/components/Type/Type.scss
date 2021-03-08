@@ -7,7 +7,12 @@
     font-weight: inherit;
   }
 
-  &.disablePointerEvents {
+  &.centered {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  &.pointerEventsDisabled {
     pointer-events: none;
   }
 

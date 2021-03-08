@@ -7,6 +7,7 @@ import { useHistoryNotifications } from './hooks/application/useHistoryNotificat
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
 import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcuts';
 import { useGtagTracking } from './hooks/gtag/useGtagTracking';
+import { PremiumUserLockedOutDialog } from './components/PremiumUserLockedOutDialog/PremiumUserLockedOutDialog';
 
 function App() {
 	useGtagTracking()
@@ -22,6 +23,7 @@ function App() {
 
 	return <>
 		<TransactionContextMenuProvider>
+			<PremiumUserLockedOutDialog />
 			<Notification />
 			<Routes />
 		</TransactionContextMenuProvider>
