@@ -1,4 +1,5 @@
 import { object, string, ObjectSchema } from "yup";
+import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
 
 export type JsonAuth = {
   id: string;
@@ -6,11 +7,13 @@ export type JsonAuth = {
   photoUrl: string | undefined;
   email: string | undefined;
   googleId: string | undefined;
+  prefersColorScheme?: string | undefined;
 };
 
 export type UpdatableJsonAuthFields = {
   displayName?: string | undefined;
   photoUrl?: string | undefined;
+  prefersColorScheme?: string | undefined;
 };
 
 export class Auth {
@@ -19,6 +22,7 @@ export class Auth {
   email?: string;
   photoUrl?: string;
   googleId?: string;
+  prefersColorScheme?: Theme | undefined;
 
   constructor(json: JsonAuth) {
     this.id = json.id;
@@ -26,6 +30,10 @@ export class Auth {
     this.email = json.email ?? undefined;
     this.photoUrl = json.photoUrl ?? undefined;
     this.googleId = json.googleId ?? undefined;
+
+    if (ThemeUtils.isTheme(json.prefersColorScheme)) {
+      this.prefersColorScheme = json.prefersColorScheme;
+    }
   }
 
   /**

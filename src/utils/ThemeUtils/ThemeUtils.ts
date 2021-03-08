@@ -2,7 +2,14 @@ export class ThemeUtils {
   /**
    * Property to access all themes
    */
-  static themes: Theme[] = ["blue", "green"];
+  static themes: Theme[] = ["blue", "green", "red", "yellow", "pink", "purple"];
+
+  /**
+   * Check if a variable is a valid theme
+   */
+  static isTheme(val: any): val is Theme {
+    return typeof val === "string" && this.themes.includes(val as Theme);
+  }
 
   /**
    * Property to access all theme property labels

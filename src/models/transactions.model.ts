@@ -109,10 +109,13 @@ export interface TransactionsModel {
    */
   getTransactions: Thunk<
     TransactionsModel,
-    void,
+    { force?: boolean },
     any,
     StoreModel,
-    ReturnType<typeof TransactionService["getTransactions"]>
+    Promise<
+      | undefined
+      | PromiseType<ReturnType<typeof TransactionService["getTransactions"]>>
+    >
   >;
 
   /**
@@ -186,10 +189,14 @@ export interface TransactionsModel {
   //==============================================================//
 
   /**
-   * Listening to auth changes (fetching data on login,
-   * clearing state on logout)
+   * Fetch data on login
    */
-  onAuthChanged: ThunkOn<TransactionsModel, any, StoreModel>;
+  onLogin: ThunkOn<TransactionsModel, any, StoreModel>;
+
+  /**
+   * Clear data on logout
+   */
+  onLogout: ThunkOn<TransactionsModel, any, StoreModel>;
 }
 
 export const transactionsModel: TransactionsModel = {
@@ -326,7 +333,11 @@ export const transactionsModel: TransactionsModel = {
   // THUNKS
   //==============================================================//
 
-  getTransactions: thunk(async (actions) => {
+  getTransactions: thunk(async (actions, payload, helpers) => {
+    const hasFetchedSome = helpers.getState().items.length > 0;
+    if (hasFetchedSome && !payload.force) {
+      return undefined;
+    }
     const result = await TransactionService.getTransactions();
     if (result.isSuccess()) {
       actions.setTransactionsToState(
@@ -431,18 +442,17 @@ export const transactionsModel: TransactionsModel = {
   // LISTENERS
   //==============================================================//
 
-  onAuthChanged: thunkOn(
-    (_, store) => [store.auth.logout, store.auth.setAuthToState],
-    (actions, target) => {
-      const [loggedOut, loggedIn] = target.resolvedTargets;
-      switch (target.type) {
-        case loggedOut:
-          actions.clearState();
-          break;
-        case loggedIn:
-          actions.getTransactions();
-          break;
-      }
+  onLogin: thunkOn(
+    (_, store) => store.auth.setAuthToState,
+    (actions) => {
+      actions.getTransactions({});
+    }
+  ),
+
+  onLogout: thunkOn(
+    (_, store) => store.auth.logout,
+    (actions) => {
+      actions.clearState();
     }
   ),
 };

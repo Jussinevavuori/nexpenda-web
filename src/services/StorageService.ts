@@ -1,3 +1,5 @@
+import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
+
 export type StorageServiceOptions = {
   storage: "local" | "session";
 };
@@ -90,12 +92,13 @@ export class StorageService {
     return {
       hadAccessToken: StorageService.hadAccessToken,
       apiUrlOverride: StorageService.apiUrlOverride,
+      latestSelectedTheme: StorageService.latestSelectedTheme,
     };
   }
 
-  protected static get hadAccessToken() {
+  static get hadAccessToken() {
     return StorageService.createComponent<boolean>({
-      key: "had_access_token",
+      key: "@nexpenda/hadAccessToken",
       decode(value) {
         return value === "true";
       },
@@ -108,9 +111,28 @@ export class StorageService {
     });
   }
 
-  protected static get apiUrlOverride() {
+  static get latestSelectedTheme() {
+    return StorageService.createComponent<Theme | undefined>({
+      key: "@nexpenda/latestSelectedTheme",
+      decode(value) {
+        if (ThemeUtils.isTheme(value)) {
+          return value;
+        } else {
+          return undefined;
+        }
+      },
+      encode(value) {
+        return value;
+      },
+      options: {
+        storage: "local",
+      },
+    });
+  }
+
+  static get apiUrlOverride() {
     return StorageService.createComponent<string | undefined>({
-      key: "api_url",
+      key: "@nexpenda/apiUrlOverride",
       decode(value) {
         return value || undefined;
       },
