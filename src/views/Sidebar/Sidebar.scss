@@ -66,14 +66,16 @@
             outline: none;
             background: $gray-200;
             &.active {
-              background: $blue-600;
+              background: $primary-600;
+              transition: background-color $timing-theme;
             }
           }
 
           &:active {
             background: $gray-300;
             &.active {
-              background: $blue-700;
+              background: $primary-700;
+              transition: background-color $timing-theme;
             }
           }
 
@@ -90,7 +92,8 @@
           }
 
           &.active {
-            background: $blue-500;
+            background: $primary-500;
+            transition: background-color $timing-theme;
             color: white;
             & .Type,
             & svg {
@@ -121,12 +124,14 @@
         &.add {
           & svg {
             transform: scale(1.2);
-            color: $blue-500;
+            color: $primary-500;
+            transition: color $timing-theme;
           }
         }
 
         &.active svg {
-          color: $blue-500;
+          color: $primary-500;
+          transition: color $timing-theme;
         }
 
         &::after {
@@ -138,9 +143,10 @@
           width: 100%;
           height: $size;
           border-radius: $size $size 0 0;
-          background: $blue-500;
+          background: $primary-500;
           transform: translateY(100%) scale(0);
-          transition: transform $timing-3 $animate-snap-back;
+          transition: transform $timing-3 $animate-snap-back,
+            background-color $timing-theme;
         }
 
         &.active::after {

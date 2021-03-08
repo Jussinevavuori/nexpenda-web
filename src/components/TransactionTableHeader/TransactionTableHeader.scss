@@ -18,10 +18,10 @@
       cursor: pointer;
       color: $gray-600;
       &.allselected {
-        color: $blue-500;
+        color: $primary-500;
       }
       &.someselected {
-        color: $blue-500;
+        color: $primary-500;
       }
     }
 
@@ -31,7 +31,7 @@
   }
 
   & .sortbutton {
-    color: $blue-500;
+    color: $primary-500;
   }
 
   & .amount,

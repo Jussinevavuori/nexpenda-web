@@ -28,3 +28,8 @@ type TransactionSortStrategy =
   | "category-descending"
   | "comment-ascending"
   | "comment-descending";
+
+/**
+ * All possible themes
+ */
+type Theme = "blue" | "green";

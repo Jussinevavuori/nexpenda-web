@@ -95,7 +95,7 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 					<Type variant="boldcaps" size="sm" color="white">
 						{`${controller.transactionsCount} transactions`}
 					</Type>
-					<Type variant="boldcaps" size="sm" color="blue-300">
+					<Type variant="boldcaps" size="sm" color="primary-300">
 						{controller.intervalString}
 					</Type>
 
@@ -116,4 +116,4 @@ export function DashboardHeader(props: DashboardHeaderProps) {
 
 		</div>
 	}
-} 
+}

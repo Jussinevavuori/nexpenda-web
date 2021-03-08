@@ -11,6 +11,7 @@ import {
 } from "./models/notification.model";
 import { selectionModel, SelectionModel } from "./models/selection.model";
 import { historyModel, HistoryModel } from "./models/history.model";
+import { configModel, ConfigModel } from "./models/config.model";
 
 export interface StoreModel {
   notification: NotificationModel;
@@ -19,6 +20,7 @@ export interface StoreModel {
   interval: IntervalModel;
   history: HistoryModel;
   auth: AuthModel;
+  config: ConfigModel;
 }
 
 const storeModel: StoreModel = {
@@ -28,6 +30,7 @@ const storeModel: StoreModel = {
   interval: intervalModel,
   history: historyModel,
   auth: authModel,
+  config: configModel,
 };
 
 export const store = createStore(storeModel);

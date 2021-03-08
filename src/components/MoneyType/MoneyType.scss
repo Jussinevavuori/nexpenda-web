@@ -7,10 +7,10 @@
 
   &.applyColor {
     &.positive {
-      color: $color-positive-main;
+      color: $green-500;
     }
     &.negative {
-      color: $color-negative-main;
+      color: $red-500;
     }
   }
 }

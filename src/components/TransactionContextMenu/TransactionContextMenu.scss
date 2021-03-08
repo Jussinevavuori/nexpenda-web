@@ -6,10 +6,10 @@
       margin-right: 0.5rem;
     }
     &.editItem svg {
-      color: $color-primary-main;
+      color: $primary-500;
     }
     &.deleteItem svg {
-      color: $color-error-main;
+      color: $red-500;
     }
   }
 }

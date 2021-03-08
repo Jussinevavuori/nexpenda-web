@@ -27,7 +27,7 @@
   }
 
   &.selected {
-    background: $blue-100;
+    background: $primary-100;
   }
 
   &.contextMenuSelected {
@@ -63,7 +63,7 @@
       cursor: pointer;
       color: $gray-600;
       &.selected {
-        color: $blue-500;
+        color: $primary-500;
       }
     }
   }

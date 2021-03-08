@@ -51,6 +51,36 @@
     color: black;
   }
 
+  /** Primaries */
+
+  &.Type-color-primary-100 {
+    color: $primary-100;
+  }
+  &.Type-color-primary-200 {
+    color: $primary-200;
+  }
+  &.Type-color-primary-300 {
+    color: $primary-300;
+  }
+  &.Type-color-primary-400 {
+    color: $primary-400;
+  }
+  &.Type-color-primary-500 {
+    color: $primary-500;
+  }
+  &.Type-color-primary-600 {
+    color: $primary-600;
+  }
+  &.Type-color-primary-700 {
+    color: $primary-700;
+  }
+  &.Type-color-primary-800 {
+    color: $primary-800;
+  }
+  &.Type-color-primary-900 {
+    color: $primary-900;
+  }
+
   /** Blues */
 
   &.Type-color-blue-100 {
