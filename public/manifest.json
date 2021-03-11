@@ -8,6 +8,7 @@
     "url": "https://www.jussinevavuori.com/"
   },
   "description": "Nexpenda - application to help you keep track of your earnings, spendings, budgets and more",
+  "scope": "https://app.nexpenda.com",
   "icons": [
     {
       "src": "assets/manifest-icon-192.png",
