@@ -12,6 +12,7 @@ import {
 import { selectionModel, SelectionModel } from "./models/selection.model";
 import { historyModel, HistoryModel } from "./models/history.model";
 import { configModel, ConfigModel } from "./models/config.model";
+import { stripeModel, StripeModel } from "./models/stripe.model";
 
 export interface StoreModel {
   notification: NotificationModel;
@@ -21,6 +22,7 @@ export interface StoreModel {
   history: HistoryModel;
   auth: AuthModel;
   config: ConfigModel;
+  stripe: StripeModel;
 }
 
 const storeModel: StoreModel = {
@@ -31,6 +33,7 @@ const storeModel: StoreModel = {
   history: historyModel,
   auth: authModel,
   config: configModel,
+  stripe: stripeModel,
 };
 
 export const store = createStore(storeModel);

@@ -132,12 +132,12 @@ export interface TransactionsModel {
   /**
    * Post and multiple transactions to state
    */
-  postTransactions: Thunk<
+  massPostTransactions: Thunk<
     TransactionsModel,
-    Parameters<typeof TransactionService["postTransactions"]>[0],
+    Parameters<typeof TransactionService["massPostTransactions"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof TransactionService["postTransactions"]>
+    ReturnType<typeof TransactionService["massPostTransactions"]>
   >;
 
   /**
@@ -154,12 +154,12 @@ export interface TransactionsModel {
   /**
    * Delete and remove multiple transactions from state
    */
-  deleteTransactions: Thunk<
+  massDeleteTransactions: Thunk<
     TransactionsModel,
     string[],
     any,
     StoreModel,
-    ReturnType<typeof TransactionService["deleteTransactions"]>
+    ReturnType<typeof TransactionService["massDeleteTransactions"]>
   >;
 
   /**
@@ -358,8 +358,8 @@ export const transactionsModel: TransactionsModel = {
     return result;
   }),
 
-  postTransactions: thunk(async (actions, jsons, store) => {
-    const result = await TransactionService.postTransactions(jsons);
+  massPostTransactions: thunk(async (actions, jsons, store) => {
+    const result = await TransactionService.massPostTransactions(jsons);
     if (result.isSuccess()) {
       actions.upsertTransactionsToState(
         Transaction.parseCompressedData(result.value)
@@ -392,7 +392,7 @@ export const transactionsModel: TransactionsModel = {
     }
   ),
 
-  deleteTransactions: thunk(
+  massDeleteTransactions: thunk(
     async (actions, ids, { getState, getStoreActions }) => {
       // Get the transactions
       const transactions = getState().items.filter((_) => {
@@ -401,7 +401,7 @@ export const transactionsModel: TransactionsModel = {
 
       // Delete the transactions from the state
       actions.removeTransactionsFromStateById(transactions.map((_) => _.id));
-      const result = await TransactionService.deleteTransactions(
+      const result = await TransactionService.massDeleteTransactions(
         transactions.map((_) => _.id)
       );
 

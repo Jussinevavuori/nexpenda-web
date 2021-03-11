@@ -18,6 +18,8 @@ export type JsonTransaction = {
   integerAmount: number;
   /** The transaction's comment */
   comment?: string | undefined;
+  /** Created at timestamp */
+  createdAt: number;
   /** The transaction's category and metadata */
   category: {
     /** Category ID */
@@ -34,7 +36,10 @@ export type JsonTransaction = {
  * for creating or updating a transaction. Leaves the category data
  * out, lets the server handle the categories.
  */
-export type JsonTransactionInitializer = Omit<JsonTransaction, "category"> & {
+export type JsonTransactionInitializer = Omit<
+  JsonTransaction,
+  "category" | "createdAt" | "id" | "uid"
+> & {
   /** Category's value / name */
   category: string;
   /** Category's icon */
@@ -50,12 +55,14 @@ export type CompressedTransactionsJson = {
   t: {
     /** ID */
     id: string;
-    /** Time */
+    /** Time (seconds) */
     t: number;
     /** Category ID (refers to a category in `c`) */
     cid: string;
     /** Integer amount */
     a: number;
+    /** Created at timestamp (seconds) */
+    ca: number;
     /** Comment */
     c?: string | undefined;
   }[];
@@ -97,6 +104,11 @@ export class Transaction {
   public readonly category: Category;
 
   /**
+   * Transaction creation timestamp
+   */
+  public readonly createdAt: Date;
+
+  /**
    * Create transaction from a JSON transaction.
    *
    * @param json Crea
@@ -113,6 +125,9 @@ export class Transaction {
 
     // Create MoneyAmount object from integerAmount, ensure integer
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
+
+    // Timestamp to date
+    this.createdAt = new Date(json.time);
 
     // Use ID (if none exists, create new UUID)
     this.id = json.id || uuid.v4();
@@ -173,6 +188,7 @@ export class Transaction {
   static JsonSchema: ObjectSchema<JsonTransaction> = object({
     id: string().required(),
     time: number().positive().integer().required(),
+    createdAt: number().positive().integer().required(),
     integerAmount: number().integer().required(),
     comment: string(),
     category: object({
@@ -207,6 +223,7 @@ export class Transaction {
           object({
             id: string().required(),
             t: number().positive().integer().required(),
+            ca: number().positive().integer().required(),
             cid: string().required(),
             a: number().integer().required(),
             c: string(),
@@ -284,6 +301,7 @@ export class Transaction {
       comment: this.comment,
       integerAmount: this.amount.value,
       id: this.id,
+      createdAt: this.createdAt.getTime(),
       category: {
         id: this.category.id,
         value: this.category.value,
@@ -295,14 +313,26 @@ export class Transaction {
   /**
    * Convert Transaction to JsonTransactionInitializer
    */
-  toJsonInitializer(): JsonTransactionInitializer {
-    return {
+  toJsonInitializer(options: {}): JsonTransactionInitializer;
+  toJsonInitializer(options: {
+    id: true;
+  }): JsonTransactionInitializer & { id: string };
+  toJsonInitializer(
+    options: { id?: true } = {}
+  ):
+    | JsonTransactionInitializer
+    | (JsonTransactionInitializer & { id: string }) {
+    const json = {
       time: this.date.getTime(),
       category: this.category.value,
       comment: this.comment,
       integerAmount: this.amount.value,
-      id: this.id,
     };
+    if (options.id) {
+      return { ...json, id: this.id };
+    } else {
+      return json;
+    }
   }
 
   /**
@@ -323,7 +353,8 @@ export class Transaction {
         id: transaction.id,
         integerAmount: transaction.a,
         comment: transaction.c,
-        time: transaction.t,
+        time: transaction.t * 1000,
+        createdAt: transaction.ca * 1000,
         category: {
           id: category.id,
           value: category.v,

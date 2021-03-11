@@ -3,6 +3,7 @@ import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
+import { JsonTransactionInitializer } from "../../classes/Transaction";
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -162,25 +163,20 @@ export function useTransactionFormController(props: TransactionFormProps) {
 			) * (sign === "+" ? 1 : -1)
 		)
 
+		const json: JsonTransactionInitializer = {
+			integerAmount,
+			category: category.trim(),
+			time: time.getTime(),
+			comment: comment.trim(),
+			categoryIcon: validateIcon(),
+		}
+
 		/**
 		 * Post or edit transaction
 		 */
 		const result = editTransaction
-			? await putTransaction({
-				id: editTransaction.id,
-				integerAmount,
-				category: category.trim(),
-				time: time.getTime(),
-				comment: comment.trim(),
-				categoryIcon: validateIcon(),
-			})
-			: await postTransaction({
-				integerAmount,
-				category: category.trim(),
-				time: time.getTime(),
-				comment: comment.trim(),
-				categoryIcon: validateIcon(),
-			})
+			? await putTransaction({ id: editTransaction.id, ...json })
+			: await postTransaction(json)
 
 		/**
 		 * Handle success by reseting form

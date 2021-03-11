@@ -1,0 +1,30 @@
+@import "main";
+
+.Subscribe {
+  & header h2 {
+    padding-top: $spacing-3;
+  }
+
+  & ul.features {
+    padding-bottom: $spacing-8;
+    & > h3 {
+      padding-bottom: $spacing-8;
+    }
+    & > li.feature {
+      padding-bottom: $spacing-8;
+      & > P {
+        padding-top: $spacing-2;
+        max-width: 300px;
+      }
+    }
+  }
+
+  & .products {
+    & > ul {
+      padding: $spacing-8 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: $spacing-4;
+    }
+  }
+}

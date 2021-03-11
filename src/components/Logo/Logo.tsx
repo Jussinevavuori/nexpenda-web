@@ -1,32 +1,40 @@
 import "./Logo.scss";
 import React from "react"
 import cx from "classnames"
-import { TypeProps } from "../Type/Type";
-import { useLogoController } from "./useLogoController";
+import { Type, TypeProps } from "../Type/Type";
+// import { useLogoController } from "./useLogoController";
 
-export type LogoProps = {
-	size?: TypeProps["size"];
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
+export type LogoProps = TypeProps & {
+	defaultLetterProps?: TypeProps;
+	highlightLetterProps?: TypeProps;
+};
 
 export function Logo(props: LogoProps) {
 
-	const { className, size, ...spanProps } = props
+	const { defaultLetterProps, highlightLetterProps, ...typeProps } = props
 
-	const controller = useLogoController()
+	// const controller = useLogoController()
 
-	return <span
-		className={cx("Logo", className, `size-${size}`)}
-		onClick={controller.handleClick}
-		{...spanProps}
-	>
-		<span className="letter-0">N</span>
-		<span className="letter-1">e</span>
-		<span className="letter-2">x</span>
-		<span className="letter-3">p</span>
-		<span className="letter-4">e</span>
-		<span className="letter-5">n</span>
-		<span className="letter-6">d</span>
-		<span className="letter-7">a</span>
-		<span className="letter-8">.</span>
+	const getProps = (variant: "default" | "highlight"): TypeProps => {
+		return {
+			component: "span",
+			size: "xl",
+			variant: "bold",
+			color: variant === "highlight" ? "primary-500" : "black",
+			...typeProps,
+			...(variant === "default" ? defaultLetterProps : highlightLetterProps)
+		}
+	}
+
+	return <span className={cx("Logo")}>
+		<Type {...getProps("default")}>{"N"}</Type>
+		<Type {...getProps("default")}>{"e"}</Type>
+		<Type {...getProps("highlight")}>{"x"}</Type>
+		<Type {...getProps("default")}>{"p"}</Type>
+		<Type {...getProps("default")}>{"e"}</Type>
+		<Type {...getProps("default")}>{"n"}</Type>
+		<Type {...getProps("default")}>{"d"}</Type>
+		<Type {...getProps("default")}>{"a"}</Type>
+		<Type {...getProps("default")}>{"."}</Type>
 	</span>
 }

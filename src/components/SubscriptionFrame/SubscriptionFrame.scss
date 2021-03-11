@@ -1,0 +1,36 @@
+@import "main";
+
+.SubscriptionFrame {
+  $max-width: 600px;
+  @mixin width {
+    width: calc(100vw - #{$spacing-12});
+    max-width: $max-width;
+  }
+  & > header {
+    & > .headerContent {
+      @include width;
+    }
+
+    &.stickyHeader {
+      position: sticky;
+      top: 0;
+      & > .headerContent {
+        padding: $spacing-4 0;
+        margin: 0 auto;
+      }
+    }
+
+    &.customHeader > .headerContent {
+      padding: 0 0 $spacing-6;
+      margin: 0 auto;
+    }
+
+    background: $primary-500;
+  }
+  & > main {
+    @include width;
+    margin: 0 auto;
+
+    padding: $spacing-8 0;
+  }
+}

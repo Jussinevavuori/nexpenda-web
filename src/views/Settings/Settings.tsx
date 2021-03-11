@@ -47,6 +47,26 @@ export function Settings(props: SettingsProps) {
 			<FileDownloader />
 		</SettingsSection>
 
+		{
+			process.env.NODE_ENV === "development" &&
+			<SettingsSection sectionTitle="Subscribe">
+				<Button
+					variant="outlined"
+					onClick={controller.handleSubscribe}
+					fullWidth
+				>
+					{"Buy premium"}
+				</Button>
+				<Button
+					variant="outlined"
+					onClick={controller.handleGoToCheckout}
+					fullWidth
+				>
+					{"Go to checkout"}
+				</Button>
+			</SettingsSection>
+		}
+
 		<SettingsSection sectionTitle="Version">
 			<Type>
 				{"1.0.0"}
@@ -54,17 +74,15 @@ export function Settings(props: SettingsProps) {
 		</SettingsSection>
 
 		<SettingsSection sectionTitle="Log out">
-			<Type>
-				<Button
-					color="primary"
-					variant="contained"
-					onClick={controller.handleLogout}
-					startIcon={<LogoutIcon />}
-					fullWidth
-				>
-					{"Log out"}
-				</Button>
-			</Type>
+			<Button
+				color="primary"
+				variant="contained"
+				onClick={controller.handleLogout}
+				startIcon={<LogoutIcon />}
+				fullWidth
+			>
+				{"Log out"}
+			</Button>
 		</SettingsSection>
 
 

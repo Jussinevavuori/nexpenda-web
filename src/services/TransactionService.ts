@@ -33,9 +33,7 @@ export class TransactionService extends Service {
    * Post a transaction (in json, without id or uid) and return
    * created json transaction response as Result.
    */
-  static async postTransaction(
-    json: Omit<JsonTransactionInitializer, "id" | "uid">
-  ) {
+  static async postTransaction(json: JsonTransactionInitializer) {
     const result = await Service.post("/transactions", json, {
       service: { enableLogoutOnUnauthorized: true },
     });
@@ -55,18 +53,18 @@ export class TransactionService extends Service {
   /**
    * Post many transactions by IDs and return created json transactions as result.
    */
-  static async postTransactions(
-    jsons: Array<Omit<JsonTransactionInitializer, "id" | "uid">>
-  ) {
+  static async massPostTransactions(jsons: JsonTransactionInitializer[]) {
     const result = await Service.post(
       `/transactions/mass/post`,
-      {
-        transactions: jsons,
-      },
-      {
-        service: { enableLogoutOnUnauthorized: true },
-      }
+      { transactions: jsons },
+      { service: { enableLogoutOnUnauthorized: true } }
     );
+
+    if (result.isSuccess()) {
+      console.log(result.value.data);
+    } else {
+      console.log("Early failure");
+    }
 
     if (result.isFailure()) {
       return result;
@@ -106,7 +104,7 @@ export class TransactionService extends Service {
   /**
    * Delete many transactions by IDs and return empty Result.
    */
-  static async deleteTransactions(ids: string[]) {
+  static async massDeleteTransactions(ids: string[]) {
     const result = await Service.post(
       `/transactions/mass/delete`,
       { ids },
@@ -131,7 +129,9 @@ export class TransactionService extends Service {
    * Put a transaction on the server as json (upsert) and
    * return upserted json transaction as Result.
    */
-  static async putTransaction(json: JsonTransactionInitializer) {
+  static async putTransaction(
+    json: JsonTransactionInitializer & { id: string }
+  ) {
     const result = await Service.put(`/transactions/${json.id}`, json, {
       service: { enableLogoutOnUnauthorized: true },
     });
@@ -152,7 +152,9 @@ export class TransactionService extends Service {
    * Patch a transaction on the server as json (partial update)
    * and return updated json transaction as Result.
    */
-  static async patchTransaction(json: JsonTransactionInitializer) {
+  static async patchTransaction(
+    json: JsonTransactionInitializer & { id: string }
+  ) {
     const result = await Service.patch(`/transactions/${json.id}`, json, {
       service: { enableLogoutOnUnauthorized: true },
     });

@@ -9,7 +9,7 @@ export function useDeleteTransactionsShortcut() {
   const selectedIds = useStoreState((_) => _.selection.selectionIds);
 
   const deleteTransactions = useStoreActions(
-    (_) => _.transactions.deleteTransactions
+    (_) => _.transactions.massDeleteTransactions
   );
 
   const handler = useCallback(() => {

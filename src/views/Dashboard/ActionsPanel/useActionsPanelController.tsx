@@ -53,7 +53,7 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	/**
 	 * Deletion
 	 */
-	const deleteTransactions = useStoreActions(_ => _.transactions.deleteTransactions)
+	const deleteTransactions = useStoreActions(_ => _.transactions.massDeleteTransactions)
 	const handleDelete = useCallback(async () => {
 		deleteTransactions(selection.map(_ => _.id))
 		deselectAll()

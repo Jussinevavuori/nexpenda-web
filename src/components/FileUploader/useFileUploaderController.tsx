@@ -8,7 +8,7 @@ import { FileUploaderProps } from "./FileUploader"
 
 export function useFileUploaderController(props: FileUploaderProps) {
 
-	const postTransactions = useStoreActions(_ => _.transactions.postTransactions)
+	const postTransactions = useStoreActions(_ => _.transactions.massPostTransactions)
 
 	const [result, setResult] = useState<undefined | null | SpreadsheetReadFileResult<IOJsonTransaction>>()
 	const [parsing, setParsing] = useState(false)

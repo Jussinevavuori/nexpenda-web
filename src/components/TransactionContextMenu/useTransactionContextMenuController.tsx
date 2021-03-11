@@ -95,7 +95,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	/**
 	 * Deletion
 	 */
-	const deleteTransactions = useStoreActions(_ => _.transactions.deleteTransactions)
+	const deleteTransactions = useStoreActions(_ => _.transactions.massDeleteTransactions)
 	const handleDelete = useCallback(() => {
 		if (menu.transaction) {
 			deleteTransactions([menu.transaction.id])
