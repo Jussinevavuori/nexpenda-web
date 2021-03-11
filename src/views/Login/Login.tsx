@@ -94,10 +94,10 @@ export function Login() {
 					variant="outlined"
 					onClick={controller.handleGoogleSubmit}
 					fullWidth
-					startIcon={<div className="authprovider-logo">
-						<img src={googleLogo} alt="Google Logo" />
-					</div>}
 				>
+					<div className="authprovider-logo">
+						<img src={googleLogo} alt="Google Logo" />
+					</div>
 					{"Log in with Google"}
 				</Button>
 

@@ -1,23 +1,13 @@
 @import "main";
 
 .Login {
-  & .MuiButton-startIcon.MuiButton-iconSizeMedium > .authprovider-logo {
-    position: relative;
-    height: 1rem;
-    width: 1rem;
+  & .authprovider-logo {
+    display: flex;
+    align-items: center;
     margin-right: $spacing-2;
     & img {
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 100%;
-      width: 100%;
-      position: relative;
       height: 1rem;
       width: 1rem;
-      margin-right: $spacing-2;
-      position: absolute;
     }
   }
 }
