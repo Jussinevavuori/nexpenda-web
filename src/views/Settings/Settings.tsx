@@ -67,11 +67,6 @@ export function Settings(props: SettingsProps) {
 			</SettingsSection>
 		}
 
-		<SettingsSection sectionTitle="Version">
-			<Type>
-				{"1.0.0"}
-			</Type>
-		</SettingsSection>
 
 		<SettingsSection sectionTitle="Log out">
 			<Button
@@ -86,5 +81,16 @@ export function Settings(props: SettingsProps) {
 		</SettingsSection>
 
 
+		<div className="version">
+			<Type component="span" size="sm" color="gray-600">
+				{"Version"}
+			</Type>
+			<Type component="span" variant="bold" size="sm" color="gray-700" >
+				{"0.1.1"}
+			</Type>
+			<Type component="span" variant="bold" size="sm" color="gray-600">
+				{"Alpha"}
+			</Type>
+		</div>
 	</div >
 }
