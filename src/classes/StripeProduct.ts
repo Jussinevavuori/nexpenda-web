@@ -59,6 +59,18 @@ export class StripeProduct {
     this.data = json;
   }
 
+  get isPremiumMembership() {
+    return this.data.name === "Nexpenda Premium";
+  }
+
+  get monthlyPrice() {
+    return this.data.prices.find((_) => _.recurring.interval === "month");
+  }
+
+  get yearlyPrice() {
+    return this.data.prices.find((_) => _.recurring.interval === "year");
+  }
+
   static JsonPriceSchema: ObjectSchema<JsonStripePrice> = object({
     id: string().defined(),
     object: string().defined(),
@@ -114,5 +126,13 @@ export class StripeProduct {
 
   static isJsonArray(arg: any): arg is JsonStripeProduct[] {
     return Array.isArray(arg) && arg.every(StripeProduct.isJson);
+  }
+
+  static currencyToSymbol(currency: string) {
+    switch (currency.toLowerCase()) {
+      case "eur":
+        return "€";
+    }
+    return currency.toUpperCase();
   }
 }

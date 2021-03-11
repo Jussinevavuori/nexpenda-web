@@ -42,4 +42,8 @@
   &.size-xxxl * {
     font-size: $text-xxxl;
   }
+
+  & .premiumLetter:nth-child(9) {
+    margin-left: $spacing-2;
+  }
 }

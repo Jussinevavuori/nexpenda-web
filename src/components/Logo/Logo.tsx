@@ -7,22 +7,62 @@ import { Type, TypeProps } from "../Type/Type";
 export type LogoProps = TypeProps & {
 	defaultLetterProps?: TypeProps;
 	highlightLetterProps?: TypeProps;
+	premiumLetterProps?: TypeProps;
+
+	premium?: boolean;
 };
 
 export function Logo(props: LogoProps) {
 
-	const { defaultLetterProps, highlightLetterProps, ...typeProps } = props
+	const { defaultLetterProps, highlightLetterProps, premiumLetterProps, premium, ...typeProps } = props
 
 	// const controller = useLogoController()
 
-	const getProps = (variant: "default" | "highlight"): TypeProps => {
-		return {
-			component: "span",
-			size: "xl",
-			variant: "bold",
-			color: variant === "highlight" ? "primary-500" : "black",
-			...typeProps,
-			...(variant === "default" ? defaultLetterProps : highlightLetterProps)
+	const getProps = (variant: "default" | "highlight" | "premium"): TypeProps => {
+		switch (variant) {
+			case "default":
+				return {
+					component: "span",
+					size: "xl",
+					variant: "bold",
+					color: "black",
+					...typeProps,
+					...defaultLetterProps,
+					className: cx(
+						"defaultLetter",
+						typeProps.className,
+						defaultLetterProps?.className
+					)
+				}
+			case "highlight":
+				return {
+					component: "span",
+					size: "xl",
+					variant: "bold",
+					color: "primary-500",
+					...typeProps,
+					...highlightLetterProps,
+					className: cx(
+						"highlightLetter",
+						typeProps.className,
+						highlightLetterProps?.className
+					)
+				}
+			case "premium":
+				return {
+					component: "span",
+					size: "md",
+					variant: "bold",
+					color: "primary-700",
+					...typeProps,
+					...premiumLetterProps,
+					className: cx(
+						"premiumLetter",
+						typeProps.className,
+						premiumLetterProps?.className
+					)
+				}
+
 		}
 	}
 
@@ -35,6 +75,22 @@ export function Logo(props: LogoProps) {
 		<Type {...getProps("default")}>{"n"}</Type>
 		<Type {...getProps("default")}>{"d"}</Type>
 		<Type {...getProps("default")}>{"a"}</Type>
-		<Type {...getProps("default")}>{"."}</Type>
+
+		{
+			!premium &&
+			<Type {...getProps("default")}>{"."}</Type>
+		}
+
+		{
+			premium && <>
+				<Type {...getProps("premium")}>{"P"}</Type>
+				<Type {...getProps("premium")}>{"r"}</Type>
+				<Type {...getProps("premium")}>{"e"}</Type>
+				<Type {...getProps("premium")}>{"m"}</Type>
+				<Type {...getProps("premium")}>{"i"}</Type>
+				<Type {...getProps("premium")}>{"u"}</Type>
+				<Type {...getProps("premium")}>{"m"}</Type>
+			</>
+		}
 	</span>
 }

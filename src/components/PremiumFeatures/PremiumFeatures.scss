@@ -1,0 +1,26 @@
+@import "main";
+
+.PremiumFeatures {
+  padding-bottom: $spacing-8;
+  & > h3 {
+    padding-bottom: $spacing-8;
+  }
+  & > li.feature {
+    padding-bottom: $spacing-8;
+    display: grid;
+    grid-template:
+      "icon title" auto
+      ". description" auto / #{$spacing-8} 1fr;
+    gap: $spacing-3;
+    & > svg {
+      grid-area: icon;
+      color: $primary-600;
+    }
+    & > h4 {
+      grid-area: title;
+    }
+    & > p {
+      grid-area: description;
+    }
+  }
+}

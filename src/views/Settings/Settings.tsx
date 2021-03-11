@@ -57,13 +57,6 @@ export function Settings(props: SettingsProps) {
 				>
 					{"Buy premium"}
 				</Button>
-				<Button
-					variant="outlined"
-					onClick={controller.handleGoToCheckout}
-					fullWidth
-				>
-					{"Go to checkout"}
-				</Button>
 			</SettingsSection>
 		}
 

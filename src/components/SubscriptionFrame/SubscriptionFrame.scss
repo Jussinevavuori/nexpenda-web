@@ -17,6 +17,24 @@
       & > .headerContent {
         padding: $spacing-4 0;
         margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        & > .logoContainer,
+        & > .authContainer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          & svg {
+            color: white;
+          }
+        }
+        & > .authContainer > .auth {
+          display: none;
+          @include sm {
+            display: block;
+          }
+        }
       }
     }
 
@@ -25,12 +43,24 @@
       margin: 0 auto;
     }
 
-    background: $primary-500;
+    background: $primary-600;
   }
   & > main {
     @include width;
     margin: 0 auto;
 
     padding: $spacing-8 0;
+  }
+
+  & header h2 {
+    padding-top: $spacing-4;
+    &::before {
+      content: "";
+      display: block;
+      height: 2px;
+      width: 100px;
+      background: white;
+      margin: $spacing-4 0 $spacing-4;
+    }
   }
 }

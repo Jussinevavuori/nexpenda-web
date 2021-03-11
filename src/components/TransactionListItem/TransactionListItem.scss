@@ -38,6 +38,7 @@
       overflow: hidden;
 
       & .emoji {
+        line-height: 1;
         transform: scale(1.6);
       }
     }
