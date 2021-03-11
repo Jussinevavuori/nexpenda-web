@@ -386,9 +386,15 @@ export class Transaction {
       case "comment-descending":
         return b.comment.localeCompare(a.comment);
       case "date-ascending":
-        return a.date.getTime() - b.date.getTime();
+        return (
+          DateUtils.compareDate(a.date, b.date) ||
+          a.createdAt.getTime() - b.createdAt.getTime()
+        );
       case "date-descending":
-        return b.date.getTime() - a.date.getTime();
+        return (
+          DateUtils.compareDate(b.date, a.date) ||
+          b.createdAt.getTime() - a.createdAt.getTime()
+        );
       default:
         return 0;
     }

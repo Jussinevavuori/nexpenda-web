@@ -49,28 +49,42 @@ export class DateUtils {
 
   /**
    * Utility function to compare two dates, where only the date is taken into
-   * account, not the time.
+   * account, not the time. If an operator is given, will return a boolean value,
+   * else will return a numerical value of the comparison as the difference in
+   * days.
    *
    * @param a  Left hand operator date
-   * @param op Operator to specify which comparison to run
+   * @param op Operator to specify which comparison to run (optional)
    * @param b  Right hand operator date
    */
-  static compareDate(a: Date, op: DateUtilsCompareOperator, b: Date) {
+  static compareDate(a: Date, op: DateUtilsCompareOperator, b: Date): boolean;
+  static compareDate(a: Date, b: Date): number;
+  static compareDate(
+    ...args: [Date, DateUtilsCompareOperator, Date] | [Date, Date]
+  ): boolean | number {
+    // Get dates and optional operator
+    const [a, b] = args.length === 3 ? [args[0], args[2]] : [args[0], args[1]];
+    const op = args.length === 3 ? args[1] : undefined;
+
     // Serialize dates for easy comparison
     const _a = DateUtils.serializeDate(a);
     const _b = DateUtils.serializeDate(b);
 
-    switch (op) {
-      case "<":
-        return _a < _b;
-      case "<=":
-        return _a <= _b;
-      case "==":
-        return _a === _b;
-      case ">=":
-        return _a >= _b;
-      case ">":
-        return _a > _b;
+    if (op) {
+      switch (op) {
+        case "<":
+          return _a < _b;
+        case "<=":
+          return _a <= _b;
+        case "==":
+          return _a === _b;
+        case ">=":
+          return _a >= _b;
+        case ">":
+          return _a > _b;
+      }
+    } else {
+      return _a - _b;
     }
   }
 

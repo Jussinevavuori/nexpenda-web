@@ -36,7 +36,8 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 	return <div
 		className={cx("TransactionTableRow default", {
 			selected: controller.selected,
-			contextMenuSelected: controller.contextMenuSelected
+			contextMenuSelected: controller.contextMenuSelected,
+			isUpcoming: props.transaction.isUpcoming
 		})}
 		onClick={controller.onClick}
 		onContextMenu={controller.onContextMenu}

@@ -60,12 +60,6 @@ export class TransactionService extends Service {
       { service: { enableLogoutOnUnauthorized: true } }
     );
 
-    if (result.isSuccess()) {
-      console.log(result.value.data);
-    } else {
-      console.log("Early failure");
-    }
-
     if (result.isFailure()) {
       return result;
     } else if (
