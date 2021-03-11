@@ -16,7 +16,7 @@ export type LoginProps = {
 export function Login() {
 	const controller = useLoginController()
 
-	return <div className="Login__TEMP">
+	return <div className="Login">
 
 		<Type
 			component="h1"
@@ -94,7 +94,7 @@ export function Login() {
 					variant="outlined"
 					onClick={controller.handleGoogleSubmit}
 					fullWidth
-					startIcon={<div className="google-logo">
+					startIcon={<div className="authprovider-logo">
 						<img src={googleLogo} alt="Google Logo" />
 					</div>}
 				>
