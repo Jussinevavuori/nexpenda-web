@@ -1,13 +1,13 @@
 @import "main";
 
 .Login {
-  & .authprovider-logo {
+  .authprovider-logo {
     display: flex;
     align-items: center;
     margin-right: $spacing-2;
-    & img {
-      height: 1rem;
-      width: 1rem;
+    img {
+      height: 1.3rem;
+      width: 1.3rem;
     }
   }
 }
