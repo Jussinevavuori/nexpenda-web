@@ -1,7 +1,7 @@
 @import "main";
 
 .Login {
-  & .authprovider-logo {
+  & .MuiButton-startIcon.MuiButton-iconSizeMedium > .authprovider-logo {
     height: 1rem;
     width: 1rem;
     margin-right: $spacing-2;
