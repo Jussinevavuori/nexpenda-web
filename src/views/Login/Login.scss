@@ -1,9 +1,19 @@
 @import "main";
 
 .Login {
-  & .logo.google-logo#google-logo {
+  & .google-logo {
     height: 1rem;
     width: 1rem;
     margin-right: $spacing-2;
+    position: relative;
+    & img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+    }
   }
 }
