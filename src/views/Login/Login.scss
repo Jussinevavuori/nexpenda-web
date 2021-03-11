@@ -1,7 +1,7 @@
 @import "main";
 
 .Login {
-  & .logo.google-logo {
+  & .logo.google-logo#google-logo {
     height: 1rem;
     width: 1rem;
     margin-right: $spacing-2;
