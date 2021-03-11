@@ -84,7 +84,7 @@ function writeVarsCssFile(scssVariables) {
 			.filter(_ => !_.name.startsWith("primary-"))
 			.map(_ => `--${_.name}: ${_.value};`),
 		...nums.map(x => `--primary-${x}00: var(--blue-${x}00);`),
-		`};`
+		`}`
 	]
 	const fileContents = rows.join("\n")
 	console.log(chalk.green(`Generated vars.css file contents. (${rows.length} rows)`))
