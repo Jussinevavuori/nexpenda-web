@@ -1,4 +1,4 @@
-import { object, string, ObjectSchema } from "yup";
+import { object, string, ObjectSchema, boolean } from "yup";
 import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
 
 export type JsonAuth = {
@@ -8,6 +8,7 @@ export type JsonAuth = {
   email: string | undefined;
   googleId: string | undefined;
   prefersColorScheme?: string | undefined;
+  isAdmin?: boolean;
 };
 
 export type UpdatableJsonAuthFields = {
@@ -23,6 +24,7 @@ export class Auth {
   photoUrl?: string;
   googleId?: string;
   prefersColorScheme?: Theme | undefined;
+  isAdmin: boolean;
 
   constructor(json: JsonAuth) {
     this.id = json.id;
@@ -30,6 +32,7 @@ export class Auth {
     this.email = json.email ?? undefined;
     this.photoUrl = json.photoUrl ?? undefined;
     this.googleId = json.googleId ?? undefined;
+    this.isAdmin = !!json.isAdmin;
 
     if (ThemeUtils.isTheme(json.prefersColorScheme)) {
       this.prefersColorScheme = json.prefersColorScheme;
@@ -58,6 +61,7 @@ export class Auth {
     photoUrl: string(),
     email: string(),
     googleId: string(),
+    isAdmin: boolean(),
   }).required();
 
   /**
@@ -82,6 +86,7 @@ export class Auth {
       email: this.email,
       googleId: this.googleId,
       photoUrl: this.photoUrl,
+      isAdmin: this.isAdmin,
     };
   }
 }

@@ -48,7 +48,8 @@ export function Settings(props: SettingsProps) {
 		</SettingsSection>
 
 		{
-			process.env.NODE_ENV === "development" &&
+			(process.env.NODE_ENV === "development" ||
+				controller.user.isAdmin) &&
 			<SettingsSection sectionTitle="Subscribe">
 				<Button
 					variant="outlined"
