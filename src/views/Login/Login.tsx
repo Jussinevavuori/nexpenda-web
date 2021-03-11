@@ -16,7 +16,7 @@ export type LoginProps = {
 export function Login() {
 	const controller = useLoginController()
 
-	return <div className="Login">
+	return <div className="Login__TEMP">
 
 		<Type
 			component="h1"
