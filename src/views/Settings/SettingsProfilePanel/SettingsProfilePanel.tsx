@@ -2,10 +2,12 @@ import "./SettingsProfilePanel.scss";
 import React from "react"
 import cx from "classnames"
 import { useSettingsProfilePanelController } from "./useSettingsProfilePanelController"
-import { CircularProgress, IconButton, TextField } from "@material-ui/core";
+import { Button, CircularProgress, IconButton, TextField } from "@material-ui/core";
 import { Type } from "../../../components/Type/Type";
 import { Clear as ClearIcon, Check as CheckIcon, Edit as EditIcon } from "@material-ui/icons";
 import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
+import { Link } from "react-router-dom";
+import { routes } from "../../../Routes";
 
 export type SettingsProfilePanelProps = {
 	disableAvatar?: boolean;
@@ -28,7 +30,7 @@ export function SettingsProfilePanel(props: SettingsProfilePanelProps) {
 			</div>
 		}
 
-		<div className="nameContainer" onClick={controller.name.handleStartEdit}>
+		<div className="container nameContainer" onClick={controller.name.handleStartEdit}>
 			{
 				controller.name.editing
 					? <div className="editNameContainer">
@@ -89,13 +91,44 @@ export function SettingsProfilePanel(props: SettingsProfilePanelProps) {
 			}
 		</div>
 
-		<div className="emailContainer">
+		<div className="container emailContainer">
 			<Type component="label" size="sm" variant="boldcaps" color="gray-700">
 				{"Email"}
 			</Type>
 			<Type>
 				{controller.user.email}
 			</Type>
+		</div>
+
+		<div className="container accountTypeContainer">
+			<Type component="label" size="sm" variant="boldcaps" color="gray-700">
+				{"Account type"}
+			</Type>
+			{
+				controller.user.isPremium
+					? <div className="account">
+
+						<Type >
+							{"Premium"}
+						</Type>
+
+						<Button size="small" variant="text" onClick={controller.handleManageSubscription}>
+							{"Manage"}
+						</Button>
+
+					</div>
+					: <div className="account">
+						<Type>
+							{"Free"}
+						</Type>
+
+						<Link to={routes.subscribe.path}>
+							<Button size="small" variant="text" >
+								{"Upgrade"}
+							</Button>
+						</Link>
+					</div>
+			}
 		</div>
 
 	</div>

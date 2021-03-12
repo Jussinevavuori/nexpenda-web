@@ -1,5 +1,7 @@
 import { object, string, ObjectSchema, boolean } from "yup";
 import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
+import { StripeCustomer } from "./StripeCustomer";
+import { StripeSubscription } from "./StripeSubscription";
 
 export type JsonAuth = {
   id: string;
@@ -9,6 +11,12 @@ export type JsonAuth = {
   googleId: string | undefined;
   prefersColorScheme?: string | undefined;
   isAdmin?: boolean;
+  isPremium?: boolean;
+
+  stripe?: {
+    customer?: JsonStripeCustomer;
+    subscriptions?: JsonStripeSubscription[];
+  };
 };
 
 export type UpdatableJsonAuthFields = {
@@ -25,6 +33,10 @@ export class Auth {
   googleId?: string;
   prefersColorScheme?: Theme | undefined;
   isAdmin: boolean;
+  isPremium: boolean;
+
+  customer: StripeCustomer | undefined;
+  subscriptions: StripeSubscription[];
 
   constructor(json: JsonAuth) {
     this.id = json.id;
@@ -33,6 +45,15 @@ export class Auth {
     this.photoUrl = json.photoUrl ?? undefined;
     this.googleId = json.googleId ?? undefined;
     this.isAdmin = !!json.isAdmin;
+    this.isPremium = !!json.isPremium;
+
+    this.customer = json.stripe?.customer
+      ? new StripeCustomer(json.stripe.customer)
+      : undefined;
+
+    this.subscriptions = (json.stripe?.subscriptions ?? []).map(
+      (jsonSub) => new StripeSubscription(jsonSub)
+    );
 
     if (ThemeUtils.isTheme(json.prefersColorScheme)) {
       this.prefersColorScheme = json.prefersColorScheme;

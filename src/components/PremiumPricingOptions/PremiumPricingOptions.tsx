@@ -40,7 +40,7 @@ export function PremiumPricingOptions(props: PremiumPricingOptionsProps) {
 
 				<span className="dealBadge">
 					<DealIcon />
-					<Type variant="bold">
+					<Type variant="bold" component="span">
 						{"Save "}
 						{controller.percentageYearlyCheaperThanMonthly}
 					</Type>

@@ -4,11 +4,13 @@
   display: grid;
   grid-template:
     "avatar name" auto
-    "avatar email" auto / auto 1fr;
+    "avatar email" auto
+    ". account" auto / auto 1fr;
   &.avatarDisabled {
     grid-template:
       "name" auto
-      "email" auto / 1fr;
+      "email" auto
+      "account" auto / 1fr;
   }
   gap: $spacing-2 $spacing-6;
   place-items: center left;
@@ -61,9 +63,21 @@
     grid-area: email;
     width: 100%;
   }
+  & > .accountTypeContainer {
+    grid-area: account;
+    width: 100%;
 
-  & > .nameContainer,
-  & > .emailContainer {
+    & > .account {
+      display: flex;
+      align-items: center;
+      & a,
+      & button {
+        margin-left: auto;
+      }
+    }
+  }
+
+  & > .container {
     height: 48px;
   }
 }

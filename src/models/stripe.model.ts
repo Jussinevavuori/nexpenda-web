@@ -45,6 +45,17 @@ export interface StripeModel {
     ReturnType<typeof StripeService["createCheckoutSession"]>
   >;
 
+  /**
+   * Function to start a subscribtion checkout session
+   */
+  createBillingPortalSession: Thunk<
+    StripeModel,
+    void,
+    any,
+    StoreModel,
+    ReturnType<typeof StripeService["createBillingPortalSession"]>
+  >;
+
   //==============================================================//
   // LISTENERS
   //==============================================================//
@@ -82,8 +93,13 @@ export const stripeModel: StripeModel = {
     return result;
   }),
 
-  createCheckoutSession: thunk(async (actions, payload, helpers) => {
+  createCheckoutSession: thunk(async (_, payload) => {
     const result = await StripeService.createCheckoutSession(payload);
+    return result;
+  }),
+
+  createBillingPortalSession: thunk(async () => {
+    const result = await StripeService.createBillingPortalSession();
     return result;
   }),
 

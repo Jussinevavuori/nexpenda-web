@@ -11,6 +11,8 @@ import { SettingsSection } from "./SettingsSection/SettingsSection";
 import { ThemePicker } from "../../components/ThemePicker/ThemePicker";
 import { SettingsHeader } from "./SettingsHeader/SettingsHeader";
 import { useMdMedia } from "../../hooks/utils/useMedia";
+import { SettingsSubscriptionManager } from "../../components/SettingsPremiumSubscription/SettingsSubscriptionManager";
+import { SubscribeBanner } from "../../components/SubscribeBanner/SubscribeBanner";
 
 export type SettingsProps = {
 }
@@ -38,6 +40,15 @@ export function Settings(props: SettingsProps) {
 			<SettingsProfilePanel disableAvatar={!isDesktop} />
 		</SettingsSection>
 
+		{
+			(process.env.NODE_ENV === "development" || controller.user.isAdmin) &&
+			!controller.user.isPremium &&
+			<SettingsSection>
+				<SubscribeBanner />
+			</SettingsSection>
+		}
+
+
 		<SettingsSection className="customization" sectionTitle="Customize">
 			<ThemePicker />
 		</SettingsSection>
@@ -48,16 +59,9 @@ export function Settings(props: SettingsProps) {
 		</SettingsSection>
 
 		{
-			(process.env.NODE_ENV === "development" ||
-				controller.user.isAdmin) &&
-			<SettingsSection sectionTitle="Subscribe">
-				<Button
-					variant="outlined"
-					onClick={controller.handleSubscribe}
-					fullWidth
-				>
-					{"Buy premium"}
-				</Button>
+			controller.canManageBilling &&
+			<SettingsSection sectionTitle="Manage your subscription">
+				<SettingsSubscriptionManager />
 			</SettingsSection>
 		}
 

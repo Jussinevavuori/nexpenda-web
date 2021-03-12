@@ -23,4 +23,16 @@
       grid-area: description;
     }
   }
+
+  &.variant-condensed {
+    & > li.feature {
+      padding-bottom: $spacing-1;
+    }
+  }
+
+  &.color-white {
+    & > li.feature > svg {
+      color: white;
+    }
+  }
 }

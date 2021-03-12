@@ -15,7 +15,6 @@ import { AuthFrame } from "./components/AuthFrame/AuthFrame";
 import { usePathTitle } from "./hooks/application/usePathTitle";
 import { Logout } from "./views/Logout/Logout";
 import { Subscribe } from "./views/Subscribe/Subscribe";
-import { SubscribeCanceled } from "./views/SubscribeCanceled/SubscribeCanceled";
 import { SubscribeSuccess } from "./views/SubscribeSuccess/SubscribeSuccess";
 
 export type RouteData = {
@@ -81,11 +80,6 @@ export const routes = {
 		name: "subscribeSuccess",
 		path: "/subscribe/success",
 		title: "Succesfully subscribed"
-	},
-	subscribeCancel: {
-		name: "subscribeCancel",
-		path: "/subscribe/cancel",
-		title: "Canceled subscription"
 	},
 	changePassword(token: string): RouteData {
 		return {
@@ -171,10 +165,6 @@ export function Routes() {
 
 		<ProtectedRoute exact path={routes.subscribe.path}>
 			<Subscribe />
-		</ProtectedRoute>
-
-		<ProtectedRoute exact path={routes.subscribeCancel.path}>
-			<SubscribeCanceled />
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.subscribeSuccess.path}>

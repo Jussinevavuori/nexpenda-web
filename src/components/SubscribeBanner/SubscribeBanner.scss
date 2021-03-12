@@ -1,0 +1,16 @@
+@import "main";
+
+.SubscribeBanner {
+  background: $primary-600;
+  width: 100%;
+  padding: $spacing-6;
+  border-radius: $spacing-1;
+
+  & > p {
+    margin-bottom: $spacing-4;
+  }
+
+  & > button {
+    margin-top: $spacing-4;
+  }
+}

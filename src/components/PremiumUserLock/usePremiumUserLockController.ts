@@ -1,8 +1,11 @@
+import { useAuth } from "../../hooks/application/useAuth";
 import { useIsLockedOutDialogOpen } from "../../hooks/application/useIsLockedOutDialogOpen";
 import { PremiumUserLockProps } from "./PremiumUserLock";
 
 export function usePremiumUserLockController(props: PremiumUserLockProps) {
-  const isLocked = props.isLocked;
+  const user = useAuth();
+
+  const isLocked = props.isLocked && !user?.isPremium;
 
   const [isDialogOpen, setIsDialogOpen] = useIsLockedOutDialogOpen();
 

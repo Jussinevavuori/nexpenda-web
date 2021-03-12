@@ -31,5 +31,6 @@ export function useSettingsController() {
 		user,
 		handleLogout,
 		handleSubscribe,
+		canManageBilling: !!user?.customer,
 	}
 }

@@ -6,7 +6,7 @@
   padding: adjust-spacing($spacing-4, $spacing-icon-button)
     adjust-spacing($spacing-6, $spacing-button-horizontal)
     adjust-spacing($spacing-4, $spacing-icon-button)
-    adjust-spacing($spacing-6, $spacing-icon-button);
+    adjust-spacing($spacing-6, $spacing-button-horizontal);
 
   & > .IntervalManager {
     justify-content: space-between;

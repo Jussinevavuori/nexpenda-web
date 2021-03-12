@@ -3,6 +3,7 @@ import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFai
 import { Success } from "../result/Success";
 import {
   StripeSessionIdResponse,
+  StripeSessionUrlResponse,
   StripeUtils,
 } from "../utils/StripeUtils/StripeUtils";
 import { Config } from "../config";
@@ -62,6 +63,33 @@ export class StripeService extends Service {
       }
     } catch (e) {
       return new ErrorFailure<StripeSessionIdResponse>(e);
+    }
+  }
+
+  /**
+   * Start subscription by creating a checkout session
+   */
+  static async createBillingPortalSession() {
+    const result = await Service.post("/stripe/create-billing-portal-session");
+
+    try {
+      const stripe = await this.getStripe();
+
+      if (result.isFailure()) {
+        return result;
+      } else if (!stripe) {
+        return new StripeInitializationFailure<StripeSessionUrlResponse>();
+      } else if (StripeUtils.isStripeSessionUrlResponse(result.value.data)) {
+        window.location.href = result.value.data.url;
+        return new Success(result.value.data);
+      } else {
+        return new InvalidServerResponseFailure<StripeSessionUrlResponse>(
+          result.value,
+          "/stripe/create-billing-portal-session"
+        );
+      }
+    } catch (e) {
+      return new ErrorFailure<StripeSessionUrlResponse>(e);
     }
   }
 }

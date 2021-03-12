@@ -7,6 +7,10 @@ body * {
   font-family: $poppins;
 }
 
+a {
+  text-decoration: none;
+}
+
 /** 1vh and 100vh fixes */
 :root {
   --full-vh: 100vh;

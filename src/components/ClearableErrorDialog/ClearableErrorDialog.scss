@@ -1,0 +1,15 @@
+@import "main";
+
+.ClearableErrorDialog {
+  background: $red-200;
+  border: 1px solid $red-700;
+  border-radius: $spacing-1;
+  margin-bottom: $spacing-6;
+  padding: $spacing-4;
+
+  & header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -74,9 +74,15 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 		handleCancelEditName()
 	}, [handleCancelEditName, updateProfile, notify, nameValue])
 
+	const manageSubscription = useStoreActions(_ => _.stripe.createBillingPortalSession)
+
 	return {
 		editNameInputId,
 		user,
+		async handleManageSubscription() {
+			const result = await manageSubscription()
+			if (!result.isFailure()) console.error(result)
+		},
 		name: {
 			editing: editingName,
 			handleStartEdit: handleStartEditName,
