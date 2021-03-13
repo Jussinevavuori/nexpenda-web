@@ -22,7 +22,7 @@ export function usePwaInstall() {
 }
 
 // Catch the install event and prevent initial prompt
-window.addEventListener("beforeinstallprompt", (e) => {
+window.addEventListener("beforeinstallprompt", (e: any) => {
   e.preventDefault();
   ReactGA.event({
     action: "Display PWA Installer",

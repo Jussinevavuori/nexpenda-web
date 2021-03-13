@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import ReactGA from "react-ga";
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './serviceWorkerRegistration';
 import { store } from './store';
 import { StoreProvider } from 'easy-peasy';
 import { BrowserRouter } from 'react-router-dom';
