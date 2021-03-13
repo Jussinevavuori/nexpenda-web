@@ -1,13 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.18ca9b79.chunk.css",
-    "main.js": "/static/js/main.67f815b0.chunk.js",
-    "main.js.map": "/static/js/main.67f815b0.chunk.js.map",
+    "main.js": "/static/js/main.a3151b39.chunk.js",
+    "main.js.map": "/static/js/main.a3151b39.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.0c87e67b.js",
     "runtime-main.js.map": "/static/js/runtime-main.0c87e67b.js.map",
     "static/js/2.3aad1ff6.chunk.js": "/static/js/2.3aad1ff6.chunk.js",
     "static/js/2.3aad1ff6.chunk.js.map": "/static/js/2.3aad1ff6.chunk.js.map",
     "index.html": "/index.html",
+    "service-worker.js": "/service-worker.js",
+    "service-worker.js.map": "/service-worker.js.map",
     "static/css/main.18ca9b79.chunk.css.map": "/static/css/main.18ca9b79.chunk.css.map",
     "static/js/2.3aad1ff6.chunk.js.LICENSE.txt": "/static/js/2.3aad1ff6.chunk.js.LICENSE.txt",
     "static/media/logo_google.fda2fe0a.png": "/static/media/logo_google.fda2fe0a.png",
@@ -18,6 +20,6 @@
     "static/js/runtime-main.0c87e67b.js",
     "static/js/2.3aad1ff6.chunk.js",
     "static/css/main.18ca9b79.chunk.css",
-    "static/js/main.67f815b0.chunk.js"
+    "static/js/main.a3151b39.chunk.js"
   ]
 }

@@ -27,7 +27,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": "/app/dashboard",
+  "start_url": "/app/dashboard/",
   "scope": "/",
   "display": "standalone",
   "theme_color": "#2a52e2",
