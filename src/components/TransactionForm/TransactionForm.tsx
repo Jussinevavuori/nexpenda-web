@@ -73,7 +73,10 @@ export function TransactionForm(props: TransactionFormProps) {
 				variant={controller.sign === "+" ? "contained" : "outlined"}
 				onClick={() => {
 					controller.onSignChange("+")
-					amountInputRef.current?.focus()
+					const amountInput = amountInputRef.current
+					if (amountInput) {
+						amountInput.focus()
+					}
 				}}
 			>
 				{"+"}
@@ -84,7 +87,10 @@ export function TransactionForm(props: TransactionFormProps) {
 				variant={controller.sign === "-" ? "contained" : "outlined"}
 				onClick={() => {
 					controller.onSignChange("-")
-					amountInputRef.current?.focus()
+					const amountInput = amountInputRef.current
+					if (amountInput) {
+						amountInput.focus()
+					}
 				}}
 			>
 				{"-"}

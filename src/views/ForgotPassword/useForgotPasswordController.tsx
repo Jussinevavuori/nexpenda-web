@@ -1,16 +1,16 @@
 import ReactGA from "react-ga";
+import * as z from "zod";
 import { useState } from "react"
-import * as yup from "yup";
 import { useStoreActions } from "../../store";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export const forgotPasswordValidationSchema = yup.object({
-	email: yup.string().defined().min(3).max(255).email(),
-}).defined()
+export const forgotPasswordValidationSchema = z.object({
+	email: z.string().min(3).max(255).email(),
+})
 
-export type ForgotPasswordFormType = yup.InferType<typeof forgotPasswordValidationSchema>
+export type ForgotPasswordFormType = z.TypeOf<typeof forgotPasswordValidationSchema>
 
 export function useForgotPasswordController() {
 
@@ -33,7 +33,7 @@ export function useForgotPasswordController() {
 	 * Form state
 	 */
 	const form = useForm<ForgotPasswordFormType>({
-		resolver: yupResolver(forgotPasswordValidationSchema),
+		resolver: zodResolver(forgotPasswordValidationSchema),
 	})
 
 	/**

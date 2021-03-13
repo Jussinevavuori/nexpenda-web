@@ -7,6 +7,12 @@ export class Failure<T, R = string> implements IResult<T, R> {
 
   constructor(reason: R) {
     this.reason = reason;
+
+    if (process.env.NODE_ENV === "development") {
+      console.error(this);
+    } else {
+      console.error(this.reason);
+    }
   }
 
   public getOr(fallback: T): T {

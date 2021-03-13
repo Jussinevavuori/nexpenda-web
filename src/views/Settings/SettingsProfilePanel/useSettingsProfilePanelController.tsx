@@ -21,9 +21,12 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 	const handleStartEditName = useCallback(() => {
 		setEditingName(true)
 		setNameValue(user?.displayName ?? "")
-		setImmediate(() => {
-			document.getElementById(editNameInputId)?.focus()
-		})
+		setTimeout(() => {
+			const element = document.getElementById(editNameInputId)
+			if (element) {
+				element.focus()
+			}
+		}, 0)
 	}, [setEditingName, user])
 
 	const handleCancelEditName = useCallback(() => {
@@ -80,8 +83,7 @@ export function useSettingsProfilePanelController(props: SettingsProfilePanelPro
 		editNameInputId,
 		user,
 		async handleManageSubscription() {
-			const result = await manageSubscription()
-			if (!result.isFailure()) console.error(result)
+			manageSubscription()
 		},
 		name: {
 			editing: editingName,

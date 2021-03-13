@@ -1,10 +1,5 @@
 import { Service } from "./Service";
-import {
-  CompressedTransactionsJson,
-  JsonTransaction,
-  JsonTransactionInitializer,
-  Transaction,
-} from "../classes/Transaction";
+import { Transaction } from "../classes/Transaction";
 import { Success } from "../result/Success";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 
@@ -19,7 +14,7 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Transaction.isCompressedJson(result.value.data)) {
+    } else if (Transaction.CompressedJsonSchema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<CompressedTransactionsJson>(
@@ -40,7 +35,7 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Transaction.isJson(result.value.data)) {
+    } else if (Transaction.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonTransaction>(
@@ -64,7 +59,7 @@ export class TransactionService extends Service {
       return result;
     } else if (
       result.value.status === 201 &&
-      Transaction.isCompressedJson(result.value.data)
+      Transaction.CompressedJsonSchema.check(result.value.data)
     ) {
       return new Success(result.value.data);
     } else {
@@ -132,7 +127,7 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Transaction.isJson(result.value.data)) {
+    } else if (Transaction.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonTransaction>(
@@ -155,7 +150,7 @@ export class TransactionService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Transaction.isJson(result.value.data)) {
+    } else if (Transaction.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonTransaction[]>(

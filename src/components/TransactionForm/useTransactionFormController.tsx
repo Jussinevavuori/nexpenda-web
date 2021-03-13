@@ -3,7 +3,6 @@ import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
-import { JsonTransactionInitializer } from "../../classes/Transaction";
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -222,7 +221,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		 * Handle error messages
 		 */
 		setErrors(() => {
-			console.error(result)
 			if (result.reason === "invalidServerResponse") {
 				return { main: "Invalid response received from server" }
 			}

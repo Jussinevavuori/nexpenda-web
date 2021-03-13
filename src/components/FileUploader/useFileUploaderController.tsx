@@ -3,14 +3,14 @@ import React, { useState } from "react"
 import { useStoreActions } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet"
-import { IOJsonTransaction, TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
+import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
 import { FileUploaderProps } from "./FileUploader"
 
 export function useFileUploaderController(props: FileUploaderProps) {
 
 	const postTransactions = useStoreActions(_ => _.transactions.massPostTransactions)
 
-	const [result, setResult] = useState<undefined | null | SpreadsheetReadFileResult<IOJsonTransaction>>()
+	const [result, setResult] = useState<undefined | null | SpreadsheetReadFileResult<JsonSpreadsheetTransaction>>()
 	const [parsing, setParsing] = useState(false)
 	const [uploading, setUploading] = useState(false)
 

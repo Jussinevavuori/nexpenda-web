@@ -12,7 +12,7 @@ export class AuthService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Auth.isJson(result.value.data)) {
+    } else if (Auth.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonAuth>(
@@ -34,7 +34,7 @@ export class AuthService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Auth.isJson(result.value.data)) {
+    } else if (Auth.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonAuth>(
@@ -228,7 +228,7 @@ export class AuthService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (Auth.isJson(result.value.data)) {
+    } else if (Auth.Schema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<JsonAuth>(

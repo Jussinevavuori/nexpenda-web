@@ -1,25 +1,23 @@
 import ReactGA from "react-ga";
+import * as z from "zod"
 import { useCallback, useEffect, useState } from "react"
-import { yupResolver } from "@hookform/resolvers";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useParams } from "react-router-dom"
 import { useRedirect } from "../../hooks/utils/useRedirect"
-import * as yup from "yup"
 import { useStoreActions } from "../../store"
 
-export const changePasswordValidationSchema = yup.object({
-	password: yup.string().defined().min(6).max(255),
-}).defined()
-
-export type ChangePasswordFormType = yup.InferType<typeof changePasswordValidationSchema>
-
+export const changePasswordValidationSchema = z.object({
+	password: z.string().min(6).max(255),
+})
+export type ChangePasswordFormType = z.TypeOf<typeof changePasswordValidationSchema>
 
 export function useChangePasswordController() {
 	/**
 	 * React hook form
 	 */
 	const form = useForm<ChangePasswordFormType>({
-		resolver: yupResolver(changePasswordValidationSchema),
+		resolver: zodResolver(changePasswordValidationSchema),
 	})
 
 	const { token } = useParams<{ token?: string }>()
@@ -110,7 +108,7 @@ export function useChangePasswordController() {
 	/**
 	 * Email and password error shorthands for react hook form
 	 */
-	const passwordError = form.formState.touched.password && form.errors.password?.message
+	const passwordError = form.formState.touched.password && form.formState.errors.password?.message
 
 	return {
 		validTokenEmail,

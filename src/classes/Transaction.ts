@@ -1,82 +1,10 @@
 import * as uuid from "uuid";
 import { MoneyAmount } from "./MoneyAmount";
-import { array, object, string, number, ObjectSchema } from "yup";
+import * as z from "zod";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { Category } from "./Category";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 import { lightFormat } from "date-fns";
-
-/**
- * The (JSON) object format for a transaction.
- */
-export type JsonTransaction = {
-  /** The transaction's ID */
-  id: string;
-  /** The transaction's timestamp */
-  time: number;
-  /** The transaction's size */
-  integerAmount: number;
-  /** The transaction's comment */
-  comment?: string | undefined;
-  /** Created at timestamp */
-  createdAt: number;
-  /** The transaction's category and metadata */
-  category: {
-    /** Category ID */
-    id: string;
-    /** Category's name */
-    value: string;
-    /** Category's icon */
-    icon: string;
-  };
-};
-
-/**
- * The (JSON) object format for an object to send to the server
- * for creating or updating a transaction. Leaves the category data
- * out, lets the server handle the categories.
- */
-export type JsonTransactionInitializer = Omit<
-  JsonTransaction,
-  "category" | "createdAt" | "id" | "uid"
-> & {
-  /** Category's value / name */
-  category: string;
-  /** Category's icon */
-  categoryIcon?: string;
-};
-
-/**
- * The (JSON) object format of a compressed dataset sent to the user
- * by the server.
- */
-export type CompressedTransactionsJson = {
-  /** Transactions as compressed objects */
-  t: {
-    /** ID */
-    id: string;
-    /** Time (seconds) */
-    t: number;
-    /** Category ID (refers to a category in `c`) */
-    cid: string;
-    /** Integer amount */
-    a: number;
-    /** Created at timestamp (seconds) */
-    ca: number;
-    /** Comment */
-    c?: string | undefined;
-  }[];
-  /** Categories as compressed objects */
-  c: {
-    /** ID */
-    id: string;
-    /** Value (name) */
-    v: string;
-    /** Icon */
-    i: string;
-  }[];
-};
-
 export class Transaction {
   /**
    * Transaction ID
@@ -182,115 +110,64 @@ export class Transaction {
     return true;
   }
 
-  /**
-   * Schema for validating that objects match the JsonTransaction format.
-   */
-  static JsonSchema: ObjectSchema<JsonTransaction> = object({
-    id: string().required(),
-    time: number().positive().integer().required(),
-    createdAt: number().positive().integer().required(),
-    integerAmount: number().integer().required(),
-    comment: string(),
-    category: object({
-      id: string().required(),
-      value: string().required(),
-      icon: string().defined(),
-    }).required(),
-  }).required();
+  static Schema = z.object({
+    id: z.string(),
+    time: z.number().positive().int(),
+    createdAt: z.number().positive().int(),
+    integerAmount: z.number().int(),
+    comment: z.string().optional(),
+    category: z.object({
+      id: z.string(),
+      value: z.string(),
+      icon: z.string(),
+    }),
+  });
 
   /**
    * Schema for validating that objects match the JsonTransactionInitializer
    * format.
    */
-  static InitializerJsonSchema: ObjectSchema<JsonTransactionInitializer> = object(
-    {
-      id: string().required(),
-      time: number().positive().integer().required(),
-      category: string().required(),
-      integerAmount: number().integer().required(),
-      comment: string(),
-    }
-  ).required();
+  static InitializerSchema = z.object({
+    time: z.number().positive().int(),
+    integerAmount: z.number().int(),
+    comment: z.string().optional(),
+    category: z.string(),
+    categoryIcon: z.string().optional(),
+  });
+
+  /**
+   * Schema for validating that objects match the JsonTransactionInitializer
+   * format.
+   */
+  static IdInitializerSchema = Transaction.InitializerSchema.merge(
+    z.object({
+      id: z.string(),
+    })
+  );
 
   /**
    * Schema for validating that objects match the
    * CompressedTransactionsDataJson format.
    */
-  static CompressedJsonSchema: ObjectSchema<CompressedTransactionsJson> = object(
-    {
-      t: array()
-        .of(
-          object({
-            id: string().required(),
-            t: number().positive().integer().required(),
-            ca: number().positive().integer().required(),
-            cid: string().required(),
-            a: number().integer().required(),
-            c: string(),
-          }).required()
-        )
-        .required(),
-      c: array()
-        .of(
-          object({
-            id: string().required(),
-            v: string().required(),
-            i: string().defined(),
-          }).required()
-        )
-        .required(),
-    }
-  ).required();
-
-  /**
-   * Validates the value as a JsonTransaction
-   */
-  static isJson(arg: any): arg is JsonTransaction {
-    try {
-      Transaction.JsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Validates the value as a JsonTransactionInitializer
-   */
-  static isInitializerJson(arg: any): arg is JsonTransactionInitializer {
-    try {
-      Transaction.InitializerJsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Validiates the value as a CompressedJsonTransaction
-   */
-  static isCompressedJson(arg: any): arg is CompressedTransactionsJson {
-    try {
-      Transaction.CompressedJsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Validiates the value as an array of JsonTransactions
-   */
-  static isJsonArray(arg: any): arg is JsonTransaction[] {
-    return Array.isArray(arg) && arg.every(Transaction.isJson);
-  }
-
-  /**
-   * Validiates the value as an array of JsonTransactionInitializers
-   */
-  static isInitializerJsonArray(arg: any): arg is JsonTransactionInitializer[] {
-    return Array.isArray(arg) && arg.every(Transaction.isInitializerJson);
-  }
+  static CompressedJsonSchema = z.object({
+    t: z.array(
+      z.object({
+        id: z.string(),
+        t: z.number().positive().int(),
+        ca: z.number().positive().int(),
+        cid: z.string(),
+        a: z.number().int(),
+        c: z.string().optional(),
+      })
+    ),
+    c: z.array(
+      z.object({
+        id: z.string(),
+        v: z.string(),
+        i: z.string(),
+      })
+    ),
+  });
 
   /**
    * Convert Transaction to JsonTransaction
@@ -314,20 +191,17 @@ export class Transaction {
    * Convert Transaction to JsonTransactionInitializer
    */
   toJsonInitializer(options: {}): JsonTransactionInitializer;
-  toJsonInitializer(options: {
-    id: true;
-  }): JsonTransactionInitializer & { id: string };
+  toJsonInitializer(options: { id: true }): JsonTransactionIdInitializer;
   toJsonInitializer(
     options: { id?: true } = {}
-  ):
-    | JsonTransactionInitializer
-    | (JsonTransactionInitializer & { id: string }) {
-    const json = {
+  ): JsonTransactionInitializer | JsonTransactionIdInitializer {
+    const json: JsonTransactionInitializer = {
       time: this.date.getTime(),
       category: this.category.value,
       comment: this.comment,
       integerAmount: this.amount.value,
     };
+
     if (options.id) {
       return { ...json, id: this.id };
     } else {

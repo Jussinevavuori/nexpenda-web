@@ -1,5 +1,4 @@
-import { object, ObjectSchema, string } from "yup";
-
+import * as z from "zod";
 export class StripeCustomer {
   data: JsonStripeCustomer;
 
@@ -7,21 +6,8 @@ export class StripeCustomer {
     this.data = json;
   }
 
-  static JsonSchema: ObjectSchema<JsonStripeCustomer> = object({
-    id: string().defined(),
-    object: string<"customer">().defined().equals(["customer"]),
-  }).defined();
-
-  static isJson(arg: any): arg is JsonStripeCustomer {
-    try {
-      StripeCustomer.JsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  static isJsonArray(arg: any): arg is JsonStripeCustomer[] {
-    return Array.isArray(arg) && arg.every(StripeCustomer.isJson);
-  }
+  static Schema = z.object({
+    id: z.string(),
+    object: z.literal("customer"),
+  });
 }

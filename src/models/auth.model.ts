@@ -217,7 +217,7 @@ export const authModel: AuthModel = {
   }),
 
   setAuthToState: action((state, json) => {
-    if (Auth.isJson(json)) {
+    if (Auth.Schema.check(json)) {
       state.user = new Auth(json);
     }
   }),

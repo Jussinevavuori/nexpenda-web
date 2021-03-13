@@ -1,17 +1,17 @@
 import ReactGA from "react-ga";
+import * as z from "zod"
 import { useCallback, useState } from 'react';
-import { InferType, object, string } from "yup"
 import { useStoreActions } from '../../store';
 import { useRedirect } from '../../hooks/utils/useRedirect';
 import { useForm } from "react-hook-form"
-import { yupResolver } from '@hookform/resolvers';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-export const registerValidationSchema = object({
-	email: string().defined().max(255).email(),
-	password: string().defined().min(6).max(255),
-}).defined()
+export const registerValidationSchema = z.object({
+	email: z.string().max(255).email(),
+	password: z.string().min(6).max(255),
+})
 
-export type RegisterFormType = InferType<typeof registerValidationSchema>
+export type RegisterFormType = z.TypeOf<typeof registerValidationSchema>
 
 export function useRegisterController() {
 
@@ -33,7 +33,7 @@ export function useRegisterController() {
 	 * Form state
 	 */
 	const form = useForm<RegisterFormType>({
-		resolver: yupResolver(registerValidationSchema),
+		resolver: zodResolver(registerValidationSchema),
 	})
 
 	/**

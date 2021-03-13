@@ -1,5 +1,5 @@
 import XLSX from "xlsx";
-import * as yup from "yup";
+import * as z from "zod";
 import { Failure } from "../../result/Failure";
 import { ErrorFailure } from "../../result/GenericFailures";
 import {
@@ -43,7 +43,7 @@ export abstract class Spreadsheet<T extends object> {
   /**
    * The schema (must be implemented by implementing class)
    */
-  public abstract schema: yup.ObjectSchema<T>;
+  public abstract schema: z.Schema<T>;
 
   /**
    * Options for spreadsheet (must be implemented by implementing class)
@@ -78,7 +78,7 @@ export abstract class Spreadsheet<T extends object> {
             : columnValue;
         }
       });
-      const validation = await this.schema.validate(transformed);
+      const validation = await this.schema.parse(transformed);
       return new Success(validation);
     } catch (e) {
       return new ErrorFailure<T>(e, { silent: true });

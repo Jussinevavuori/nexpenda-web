@@ -1,25 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.99625062.chunk.css",
-    "main.js": "/static/js/main.c348df18.chunk.js",
-    "main.js.map": "/static/js/main.c348df18.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.04173a94.js",
-    "runtime-main.js.map": "/static/js/runtime-main.04173a94.js.map",
-    "static/js/2.23685483.chunk.js": "/static/js/2.23685483.chunk.js",
-    "static/js/2.23685483.chunk.js.map": "/static/js/2.23685483.chunk.js.map",
+    "main.css": "/static/css/main.18ca9b79.chunk.css",
+    "main.js": "/static/js/main.ccbef45b.chunk.js",
+    "main.js.map": "/static/js/main.ccbef45b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.0c87e67b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.0c87e67b.js.map",
+    "static/js/2.06648922.chunk.js": "/static/js/2.06648922.chunk.js",
+    "static/js/2.06648922.chunk.js.map": "/static/js/2.06648922.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.128f149582af71621592ba9de1f7a17d.js": "/precache-manifest.128f149582af71621592ba9de1f7a17d.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.99625062.chunk.css.map": "/static/css/main.99625062.chunk.css.map",
-    "static/js/2.23685483.chunk.js.LICENSE.txt": "/static/js/2.23685483.chunk.js.LICENSE.txt",
-    "static/media/logo_google.png": "/static/media/logo_google.696b80ec.png",
-    "static/media/pexels-johannes-plenio-1103970.jpg": "/static/media/pexels-johannes-plenio-1103970.afe78909.jpg",
-    "static/media/shapelined-_JBKdviweXI-unsplash.jpg": "/static/media/shapelined-_JBKdviweXI-unsplash.f356b661.jpg"
+    "static/css/main.18ca9b79.chunk.css.map": "/static/css/main.18ca9b79.chunk.css.map",
+    "static/js/2.06648922.chunk.js.LICENSE.txt": "/static/js/2.06648922.chunk.js.LICENSE.txt",
+    "static/media/logo_google.fda2fe0a.png": "/static/media/logo_google.fda2fe0a.png",
+    "static/media/pexels-johannes-plenio-1103970.b9a92a4f.jpg": "/static/media/pexels-johannes-plenio-1103970.b9a92a4f.jpg",
+    "static/media/shapelined-_JBKdviweXI-unsplash.2801e984.jpg": "/static/media/shapelined-_JBKdviweXI-unsplash.2801e984.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.04173a94.js",
-    "static/js/2.23685483.chunk.js",
-    "static/css/main.99625062.chunk.css",
-    "static/js/main.c348df18.chunk.js"
+    "static/js/runtime-main.0c87e67b.js",
+    "static/js/2.06648922.chunk.js",
+    "static/css/main.18ca9b79.chunk.css",
+    "static/js/main.ccbef45b.chunk.js"
   ]
 }

@@ -49,6 +49,12 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
     this.message = details.message;
     this.code = details.code;
     this.data = details.data;
+
+    if (process.env.NODE_ENV === "development") {
+      console.error(this);
+    } else {
+      console.error(`E${this.code}: ${this.message} <${this.status}>`);
+    }
   }
 
   static FromAxiosError<T>(

@@ -1,4 +1,4 @@
-import { JsonTransaction, Transaction } from "../classes/Transaction";
+import { Transaction } from "../classes/Transaction";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 import { NetworkFailure } from "../result/NetworkFailures";
 import { Success } from "../result/Success";

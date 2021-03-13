@@ -12,10 +12,7 @@ export function useSettingsSubscriptionManagerController(
   const user = useAuth();
 
   async function handleManageBilling() {
-    const result = await createBillingPortalSession();
-    if (result.isFailure()) {
-      console.error(result);
-    }
+    createBillingPortalSession();
   }
 
   return {

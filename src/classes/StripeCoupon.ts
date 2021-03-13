@@ -1,4 +1,4 @@
-import { object, ObjectSchema, string, number, boolean, mixed } from "yup";
+import * as z from "zod";
 
 export class StripeCoupon {
   data: JsonStripeCoupon;
@@ -7,37 +7,22 @@ export class StripeCoupon {
     this.data = json;
   }
 
-  static JsonSchema: ObjectSchema<JsonStripeCoupon> = object({
-    id: string().defined(),
-    object: string<"coupon">().defined().equals(["coupon"]),
-    amount_off: number().defined().nullable(),
-    created: number().defined(),
-    currency: string().defined().nullable(),
-    duration: string<"once" | "repeating" | "forever">()
-      .defined()
-      .equals(["forever", "once", "repeating"]),
-    duration_in_months: number().defined().nullable(),
-    metadata: mixed(),
-    name: string().defined(),
-    percent_off: number().defined().nullable(),
-    applies_to: mixed(),
-    livemode: boolean().defined(),
-    max_redemptions: number().defined().nullable(),
-    redeem_by: number().defined().nullable(),
-    times_redeemed: number().defined().nullable(),
-    valid: boolean().defined(),
-  }).defined();
-
-  static isJson(arg: any): arg is JsonStripeCoupon {
-    try {
-      StripeCoupon.JsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  static isJsonArray(arg: any): arg is JsonStripeCoupon[] {
-    return Array.isArray(arg) && arg.every(StripeCoupon.isJson);
-  }
+  static Schema = z.object({
+    id: z.string(),
+    object: z.literal("coupon"),
+    amount_off: z.number().nullable(),
+    created: z.number(),
+    currency: z.string().nullable(),
+    duration: z.enum(["forever", "once", "repeating"]),
+    duration_in_months: z.number().nullable(),
+    metadata: z.any(),
+    name: z.string(),
+    percent_off: z.number().nullable(),
+    applies_to: z.any(),
+    livemode: z.boolean(),
+    max_redemptions: z.number().nullable(),
+    redeem_by: z.number().nullable(),
+    times_redeemed: z.number().nullable(),
+    valid: z.boolean(),
+  });
 }

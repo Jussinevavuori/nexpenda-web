@@ -1,17 +1,17 @@
 import ReactGA from "react-ga";
-import * as yup from "yup";
+import * as z from "zod";
 import { useState, useEffect, useCallback } from 'react';
 import { useStoreActions, useStoreState } from '../../store';
 import { useRedirect } from '../../hooks/utils/useRedirect';
 import { useForm } from "react-hook-form"
-import { yupResolver } from '@hookform/resolvers';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-export const loginValidationSchema = yup.object({
-	email: yup.string().defined().email(),
-	password: yup.string().defined(),
-}).defined()
+export const loginValidationSchema = z.object({
+	email: z.string().email(),
+	password: z.string(),
+})
 
-export type LoginFormType = yup.InferType<typeof loginValidationSchema>
+export type LoginFormType = z.TypeOf<typeof loginValidationSchema>
 
 export function useLoginController() {
 	const redirect = useRedirect()
@@ -29,7 +29,7 @@ export function useLoginController() {
 	 * Login form state
 	 */
 	const form = useForm<LoginFormType>({
-		resolver: yupResolver(loginValidationSchema),
+		resolver: zodResolver(loginValidationSchema),
 	})
 
 	/**
@@ -62,8 +62,6 @@ export function useLoginController() {
 			})
 			return redirect(routes => routes.dashboard)
 		}
-
-		console.error(result)
 
 		/**
 		 * On failure, first attempt to recover from email-not-confirmed error

@@ -1,27 +1,12 @@
-import * as yup from "yup";
-import { JsonTransactionInitializer } from "../../classes/Transaction";
+import { Transaction } from "../../classes/Transaction";
 import { Spreadsheet } from "./Spreadsheet";
 
 /* eslint-disable no-useless-escape */
-
-export type IOJsonTransaction = Pick<
-  JsonTransactionInitializer,
-  "category" | "comment" | "integerAmount" | "time" | "categoryIcon"
->;
-
-export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
+export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransaction> {
   /**
    * The spreadsheet schema
    */
-  public schema = yup
-    .object<IOJsonTransaction>({
-      comment: yup.string(),
-      categoryIcon: yup.string(),
-      category: yup.string().defined().min(1),
-      integerAmount: yup.number().defined().integer(),
-      time: yup.number().defined().positive().integer(),
-    })
-    .defined();
+  public schema = Transaction.InitializerSchema;
 
   /**
    * The spreadsheet options
@@ -66,7 +51,7 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
   /**
    * Spreadsheet creator
    */
-  createRow(row: IOJsonTransaction): object {
+  createRow(row: JsonSpreadsheetTransaction): object {
     return {
       amount: row.integerAmount / 100,
       comment: row.comment || "",
@@ -94,7 +79,7 @@ export class TransactionSpreadsheet extends Spreadsheet<IOJsonTransaction> {
   /**
    * Spreadsheet row order
    */
-  sortRows(rows: IOJsonTransaction[]): IOJsonTransaction[] {
+  sortRows(rows: JsonSpreadsheetTransaction[]): JsonSpreadsheetTransaction[] {
     return rows.sort((a, b) => {
       return a.time - b.time;
     });

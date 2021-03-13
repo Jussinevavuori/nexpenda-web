@@ -1,5 +1,3 @@
-import { JsonTransaction } from "./Transaction";
-
 /**
  * Defines a category object
  */
@@ -19,7 +17,7 @@ export class Category {
    */
   public icon: string;
 
-  constructor(json: JsonTransaction["category"]) {
+  constructor(json: JsonCategory) {
     this.id = json.id;
     this.value = json.value;
     this.icon = json.icon;

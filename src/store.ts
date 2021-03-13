@@ -11,7 +11,7 @@ import {
 } from "./models/notification.model";
 import { selectionModel, SelectionModel } from "./models/selection.model";
 import { historyModel, HistoryModel } from "./models/history.model";
-import { configModel, ConfigModel } from "./models/config.model";
+import { themeModel, ThemeModel } from "./models/theme.model";
 import { stripeModel, StripeModel } from "./models/stripe.model";
 
 export interface StoreModel {
@@ -21,7 +21,7 @@ export interface StoreModel {
   interval: IntervalModel;
   history: HistoryModel;
   auth: AuthModel;
-  config: ConfigModel;
+  theme: ThemeModel;
   stripe: StripeModel;
 }
 
@@ -32,7 +32,7 @@ const storeModel: StoreModel = {
   interval: intervalModel,
   history: historyModel,
   auth: authModel,
-  config: configModel,
+  theme: themeModel,
   stripe: stripeModel,
 };
 

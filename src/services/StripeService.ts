@@ -22,7 +22,7 @@ export class StripeService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (StripeProduct.isJsonArray(result.value.data)) {
+    } else if (StripeProduct.ArraySchema.check(result.value.data)) {
       return new Success(result.value.data);
     } else {
       return new InvalidServerResponseFailure<StripeProduct[]>(

@@ -1,5 +1,5 @@
 import "./MoneyType.scss";
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useMemo, useRef } from "react"
 import cx from "classnames"
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { Type, TypeProps } from "../Type/Type";
@@ -36,9 +36,9 @@ export function MoneyType(props: MoneyTypeProps) {
 		...typeProps
 	} = props
 
-	const moneyAmount = typeof props.amount === "number"
-		? new MoneyAmount(props.amount)
-		: props.amount
+	const moneyAmount = useMemo(() => typeof amount === "number"
+		? new MoneyAmount(amount)
+		: amount, [amount])
 
 	/**
 	 * Ref to the real component for updating the text value

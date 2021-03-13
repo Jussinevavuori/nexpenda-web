@@ -36,7 +36,10 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 							controller.onOpen()
 						}
 						setTimeout(() => {
-							inputRef.current?.focus()
+							const input = inputRef.current
+							if (input) {
+								input.focus()
+							}
 						}, 0)
 					}}
 				>

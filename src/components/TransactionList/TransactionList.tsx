@@ -24,7 +24,10 @@ export function TransactionList(props: TransactionListProps) {
 	// Recalculate virtualized list row heights each time the 
 	// props change
 	useEffect(() => {
-		virtualizedListRef.current?.recomputeRowHeights()
+		const virtualizedList = virtualizedListRef.current
+		if (virtualizedList) {
+			virtualizedList.recomputeRowHeights()
+		}
 	}, [props, controller.itemsByDates])
 
 	// Render skeletons

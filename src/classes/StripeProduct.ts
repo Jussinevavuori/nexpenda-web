@@ -1,12 +1,4 @@
-import {
-  object,
-  ObjectSchema,
-  string,
-  number,
-  boolean,
-  array,
-  mixed,
-} from "yup";
+import * as z from "zod";
 import { StripePrice } from "./StripePrice";
 export class StripeProduct {
   data: JsonStripeProduct;
@@ -27,36 +19,25 @@ export class StripeProduct {
     return this.data.prices.find((_) => _.recurring.interval === "year");
   }
 
-  static JsonSchema: ObjectSchema<JsonStripeProduct> = object({
-    id: string().defined(),
-    object: string<"product">().defined().equals(["product"]),
-    active: boolean().defined(),
-    attributes: array().defined(),
-    created: number().defined(),
-    description: string().defined().nullable(),
-    images: array().defined(),
-    livemode: boolean().defined(),
-    metadata: mixed(),
-    name: string().defined(),
-    statement_descriptor: mixed(),
-    type: string().defined(),
-    unit_label: string().defined().nullable(),
-    updated: number().defined(),
-    prices: array().of(StripePrice.JsonSchema).defined(),
-  }).defined();
+  static Schema = z.object({
+    id: z.string(),
+    object: z.literal("product"),
+    active: z.boolean(),
+    attributes: z.array(z.any()),
+    created: z.number(),
+    description: z.string().nullable(),
+    images: z.array(z.any()),
+    livemode: z.boolean(),
+    metadata: z.any(),
+    name: z.string(),
+    statement_descriptor: z.any(),
+    type: z.string(),
+    unit_label: z.string().nullable(),
+    updated: z.number(),
+    prices: z.array(StripePrice.Schema),
+  });
 
-  static isJson(arg: any): arg is JsonStripeProduct {
-    try {
-      StripeProduct.JsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  static isJsonArray(arg: any): arg is JsonStripeProduct[] {
-    return Array.isArray(arg) && arg.every(StripeProduct.isJson);
-  }
+  static ArraySchema = z.array(StripeProduct.Schema);
 
   static currencyToSymbol(currency: string) {
     switch (currency.toLowerCase()) {

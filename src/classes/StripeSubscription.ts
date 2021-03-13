@@ -1,12 +1,4 @@
-import {
-  object,
-  ObjectSchema,
-  string,
-  array,
-  number,
-  boolean,
-  mixed,
-} from "yup";
+import * as z from "zod";
 import { StripeDiscount } from "./StripeDiscount";
 import { StripeSubscriptionItem } from "./StripeSubscriptionItem";
 
@@ -17,48 +9,30 @@ export class StripeSubscription {
     this.data = json;
   }
 
-  static JsonSchema: ObjectSchema<JsonStripeSubscription> = object({
-    id: string().defined(),
-    status: string<JsonStripeSubscriptionStatus>()
-      .defined()
-      .equals([
-        "active",
-        "canceled",
-        "incomplete",
-        "incomplete_expired",
-        "past_due",
-        "trialing",
-        "unpaid",
-      ]),
-    object: string<"subscription">().defined().equals(["subscription"]),
-    items: array().of(StripeSubscriptionItem.JsonSchema).defined(),
-
-    cancel_at: number().defined().nullable(),
-    canceled_at: number().defined().nullable(),
-    cancel_at_period_end: boolean().defined(),
-    collection_method: string<"charge_automatically" | "send_invoice">()
-      .defined()
-      .equals(["charge_automatically", "send_invoice"]),
-    created: number().defined(),
-    current_period_end: number().defined(),
-    current_period_start: number().defined(),
-    days_until_due: number().defined().nullable(),
-    discount: StripeDiscount.JsonSchema.nullable(),
-    ended_at: number().defined().nullable(),
-    start_date: number().defined(),
-    metadata: mixed(),
-  }).defined();
-
-  static isJson(arg: any): arg is JsonStripeSubscription {
-    try {
-      StripeSubscription.JsonSchema.validateSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  static isJsonArray(arg: any): arg is JsonStripeSubscription[] {
-    return Array.isArray(arg) && arg.every(StripeSubscription.isJson);
-  }
+  static Schema = z.object({
+    id: z.string(),
+    status: z.enum([
+      "active",
+      "canceled",
+      "incomplete",
+      "incomplete_expired",
+      "past_due",
+      "trialing",
+      "unpaid",
+    ]),
+    object: z.literal("subscription"),
+    items: z.array(StripeSubscriptionItem.Schema),
+    cancel_at: z.number().nullable(),
+    canceled_at: z.number().nullable(),
+    cancel_at_period_end: z.boolean(),
+    collection_method: z.enum(["charge_automatically", "send_invoice"]),
+    created: z.number(),
+    current_period_end: z.number(),
+    current_period_start: z.number(),
+    days_until_due: z.number().nullable(),
+    discount: StripeDiscount.Schema.nullable(),
+    ended_at: z.number().nullable(),
+    start_date: z.number(),
+    metadata: z.any(),
+  });
 }

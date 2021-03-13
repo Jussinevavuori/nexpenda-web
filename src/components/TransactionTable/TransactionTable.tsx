@@ -25,7 +25,10 @@ export function TransactionTable(props: TransactionTableProps) {
 	// props change / editing state changes / screen size passes
 	// large threshold
 	useEffect(() => {
-		virtualizedListRef.current?.recomputeRowHeights()
+		const virtualizedList = virtualizedListRef.current
+		if (virtualizedList) {
+			virtualizedList.recomputeRowHeights()
+		}
 	}, [props, controller.editingId, isLargeScreen, controller.items])
 
 	if (controller.showSkeletons) {

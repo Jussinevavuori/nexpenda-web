@@ -1,4 +1,4 @@
-import { object, string, ObjectSchema, boolean } from "yup";
+import * as z from "zod";
 import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
 import { StripeCustomer } from "./StripeCustomer";
 import { StripeSubscription } from "./StripeSubscription";
@@ -13,10 +13,8 @@ export type JsonAuth = {
   isAdmin?: boolean;
   isPremium?: boolean;
 
-  stripe?: {
-    customer?: JsonStripeCustomer;
-    subscriptions?: JsonStripeSubscription[];
-  };
+  customer?: JsonStripeCustomer;
+  subscriptions?: JsonStripeSubscription[];
 };
 
 export type UpdatableJsonAuthFields = {
@@ -47,11 +45,11 @@ export class Auth {
     this.isAdmin = !!json.isAdmin;
     this.isPremium = !!json.isPremium;
 
-    this.customer = json.stripe?.customer
-      ? new StripeCustomer(json.stripe.customer)
+    this.customer = json.customer
+      ? new StripeCustomer(json.customer)
       : undefined;
 
-    this.subscriptions = (json.stripe?.subscriptions ?? []).map(
+    this.subscriptions = (json.subscriptions ?? []).map(
       (jsonSub) => new StripeSubscription(jsonSub)
     );
 
@@ -74,40 +72,18 @@ export class Auth {
   }
 
   /**
-   * JsonSchema defining shape of JsonAuth for yup validatioin
+   * Schema of json Auth objects
    */
-  static JsonSchema: ObjectSchema<JsonAuth> = object({
-    id: string().required().min(1),
-    displayName: string(),
-    photoUrl: string(),
-    email: string(),
-    googleId: string(),
-    isAdmin: boolean(),
-  }).required();
-
-  /**
-   * Is the value a valid JsonAuth
-   */
-  static isJson(arg: any): arg is JsonAuth {
-    try {
-      Auth.JsonSchema.isValidSync(arg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Convert Auth to JsonAuth
-   */
-  toJson(): JsonAuth {
-    return {
-      id: this.id,
-      displayName: this.displayName,
-      email: this.email,
-      googleId: this.googleId,
-      photoUrl: this.photoUrl,
-      isAdmin: this.isAdmin,
-    };
-  }
+  static Schema = z.object({
+    id: z.string().min(1),
+    displayName: z.string().optional(),
+    photoUrl: z.string().optional(),
+    email: z.string().optional(),
+    googleId: z.string().optional(),
+    isAdmin: z.boolean().optional(),
+    isPremium: z.boolean().optional(),
+    prefersColorScheme: z.string().optional(),
+    customer: StripeCustomer.Schema.optional(),
+    subscriptions: z.array(StripeSubscription.Schema).optional(),
+  });
 }
