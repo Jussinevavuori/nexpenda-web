@@ -80,8 +80,6 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
    * Spreadsheet row order
    */
   sortRows(rows: JsonSpreadsheetTransaction[]): JsonSpreadsheetTransaction[] {
-    return rows.sort((a, b) => {
-      return a.time - b.time;
-    });
+    return rows.sort((a, b) => a.time - b.time);
   }
 }

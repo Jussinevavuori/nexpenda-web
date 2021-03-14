@@ -23,7 +23,7 @@ export function PremiumFeatures(props: PremiumFeaturesProps) {
 		`color-${props.color ?? "default"}`
 	)}>
 
-		<li className="feature analytics">
+		{/* <li className="feature analytics">
 			<FeatureIcon />
 			<Type
 				component="h4"
@@ -40,7 +40,7 @@ export function PremiumFeatures(props: PremiumFeaturesProps) {
 					{"transactions you can create."}
 				</Type>
 			}
-		</li>
+		</li> */}
 
 		<li className="feature budgets">
 			<FeatureIcon />

@@ -23,6 +23,7 @@ export function useFileDownloaderController(props: FileDownloaderProps) {
 			integerAmount: t.amount.value,
 			time: t.date.getTime(),
 			comment: t.comment,
+			categoryIcon: t.category.icon ?? "",
 		})))
 
 		spreadsheet.downloadFile()
@@ -36,9 +37,7 @@ export function useFileDownloaderController(props: FileDownloaderProps) {
 			value: spreadsheet.getRowsCount(),
 		})
 
-		notify({
-			message: `File downloaded.`
-		})
+		notify({ message: `File downloaded.` })
 
 	}, [setLoading, notify, transactions])
 

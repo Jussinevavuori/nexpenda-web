@@ -10,6 +10,8 @@ export type ServerFailureCode =
   | "request/missing-url-parameters"
   | "transaction/already-exists"
   | "transaction/not-found"
+  | "budget/already-exists"
+  | "budget/not-found"
   | "auth/missing-token"
   | "auth/invalid-token"
   | "auth/user-has-no-password"

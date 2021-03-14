@@ -9,7 +9,7 @@ export type ProtectedRouteProps = {
 	showLoadingScreenOnUnitialized?: boolean;
 } & RouteProps
 
-export default function ProtectedRoute(props: ProtectedRouteProps) {
+export function ProtectedRoute(props: ProtectedRouteProps) {
 
 	const { fallbackRoute, showLoadingScreenOnUnitialized, ...routeProps } = props
 

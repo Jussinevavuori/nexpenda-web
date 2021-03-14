@@ -4,6 +4,7 @@ import { useStoreActions, useStoreState } from "../../store";
 import { DeleteTransactionsEvent } from "../../history/DeleteTransactionsEvent";
 import { LoggedOutEvent } from "../../history/LoggedOutEvent";
 import { HistoryEvent } from "../../history/HistoryEvent";
+import { DeleteBudgetEvent } from "../../history/DeleteBudgetEvent";
 
 export function useHistoryNotifications() {
   const latest = useStoreState((_) => _.history.latest);
@@ -45,6 +46,14 @@ export function useHistoryNotifications() {
     [notifyEvent]
   );
 
+  const handleDeleteBudgetEvent = useCallback(
+    (e: DeleteBudgetEvent) => {
+      notifyEvent(e, "Deleted budget");
+      e.displayed = true;
+    },
+    [notifyEvent]
+  );
+
   const handleLoggedOutEvent = useCallback(
     (e: LoggedOutEvent) => {
       notifyEvent(e, `You have been logged out`);
@@ -62,11 +71,14 @@ export function useHistoryNotifications() {
       handleDeleteTransactionsEvent(latest);
     } else if (latest instanceof LoggedOutEvent) {
       handleLoggedOutEvent(latest);
+    } else if (latest instanceof DeleteBudgetEvent) {
+      handleDeleteBudgetEvent(latest);
     }
   }, [
     latest,
     handleDeleteTransactionEvent,
     handleDeleteTransactionsEvent,
     handleLoggedOutEvent,
+    handleDeleteBudgetEvent,
   ]);
 }

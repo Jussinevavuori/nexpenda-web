@@ -1,21 +1,22 @@
-import React from "react"
+import { lazy, Suspense } from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Login } from './views/Login/Login';
-import { Register } from './views/Register/Register';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import { Dashboard } from './views/Dashboard/Dashboard';
-import { Settings } from "./views/Settings/Settings";
-import { Analytics } from "./views/Analytics/Analytics";
-import { ForgotPassword } from "./views/ForgotPassword/ForgotPassword";
-import { AppFrame } from "./components/AppFrame/AppFrame";
-import { ChangePassword } from "./views/ChangePassword/ChangePassword";
-import { ConfirmEmail } from "./views/ConfirmEmail/ConfirmEmail";
-import { Budget } from "./views/Budget/Budget";
-import { AuthFrame } from "./components/AuthFrame/AuthFrame";
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { usePathTitle } from "./hooks/application/usePathTitle";
-import { Logout } from "./views/Logout/Logout";
-import { Subscribe } from "./views/Subscribe/Subscribe";
-import { SubscribeSuccess } from "./views/SubscribeSuccess/SubscribeSuccess";
+import { AuthFrame } from "./components/AuthFrame/AuthFrame"
+import { AppFrame } from "./components/AppFrame/AppFrame"
+import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
+const Login = lazy(() => import("./views/Login/Login").then(_ => ({ default: _.Login })))
+const Register = lazy(() => import('./views/Register/Register').then(_ => ({ default: _.Register })))
+const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
+const Settings = lazy(() => import("./views/Settings/Settings").then(_ => ({ default: _.Settings })))
+const Analytics = lazy(() => import("./views/Analytics/Analytics").then(_ => ({ default: _.Analytics })))
+const ForgotPassword = lazy(() => import("./views/ForgotPassword/ForgotPassword").then(_ => ({ default: _.ForgotPassword })))
+const ChangePassword = lazy(() => import("./views/ChangePassword/ChangePassword").then(_ => ({ default: _.ChangePassword })))
+const ConfirmEmail = lazy(() => import("./views/ConfirmEmail/ConfirmEmail").then(_ => ({ default: _.ConfirmEmail })))
+const Budget = lazy(() => import("./views/Budget/Budget").then(_ => ({ default: _.Budget })))
+const Logout = lazy(() => import("./views/Logout/Logout").then(_ => ({ default: _.Logout })))
+const Subscribe = lazy(() => import("./views/Subscribe/Subscribe").then(_ => ({ default: _.Subscribe })))
+const SubscribeSuccess = lazy(() => import("./views/SubscribeSuccess/SubscribeSuccess").then(_ => ({ default: _.SubscribeSuccess })))
 
 export type RouteData = {
 	name: string,
@@ -105,75 +106,100 @@ export function Routes() {
 
 		<Route exact path={routes.login.path}>
 			<AuthFrame>
-				<Login />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Login />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.register.path}>
 			<AuthFrame>
-				<Register />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Register />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.forgotPassword.path}>
 			<AuthFrame>
-				<ForgotPassword />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<ForgotPassword />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.changePassword(":token").path}>
 			<AuthFrame>
-				<ChangePassword />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<ChangePassword />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.confirmEmail(":token").path}>
 			<AuthFrame>
-				<ConfirmEmail />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<ConfirmEmail />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<Route exact path={routes.logOut.path}>
 			<AuthFrame>
-				<Logout />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Logout />
+				</Suspense>
 			</AuthFrame>
 		</Route>
 
 		<ProtectedRoute exact path={routes.dashboard.path}>
 			<AppFrame>
-				<Dashboard />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Dashboard />
+				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.analytics.path}>
 			<AppFrame>
-				<Analytics />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Analytics />
+				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.budget.path}>
 			<AppFrame>
-				<Budget />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Budget />
+				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.settings.path}>
 			<AppFrame>
-				<Settings />
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Settings />
+				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.subscribe.path}>
-			<Subscribe />
+			<Suspense fallback={<RouteSuspenseFallback />}>
+				<Subscribe />
+			</Suspense>
 		</ProtectedRoute>
 
 		<ProtectedRoute exact path={routes.subscribeSuccess.path}>
-			<SubscribeSuccess />
+			<Suspense fallback={<RouteSuspenseFallback />}>
+				<SubscribeSuccess />
+			</Suspense>
 		</ProtectedRoute>
 
 		<Route path="/">
 			<Redirect to={routes.dashboard.path} />
 		</Route>
+
 	</Switch>
 
 }

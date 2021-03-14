@@ -13,7 +13,6 @@ export function AuthFrame(props: AuthFrameProps) {
 	const controller = useAuthFrameController()
 
 	return <div className="AuthFrame">
-
 		<nav>
 			<Logo />
 			{
@@ -30,6 +29,5 @@ export function AuthFrame(props: AuthFrameProps) {
 		</nav>
 
 		<div className="content">{props.children}</div>
-
 	</div>
 }

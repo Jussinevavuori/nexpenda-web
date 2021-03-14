@@ -208,8 +208,9 @@ export abstract class Spreadsheet<T extends object> {
     /**
      * Download file
      */
-    const filename = Spreadsheet.escapeFileName(this.getFileName(), "xlsx");
-    XLSX.writeFile(this._workbook, filename);
+    const type: XLSX.BookType = "xlsx";
+    const filename = Spreadsheet.escapeFileName(this.getFileName(), type);
+    XLSX.writeFile(this._workbook, filename, { bookType: type });
     return Success.Empty();
   }
 
