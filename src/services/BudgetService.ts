@@ -55,7 +55,7 @@ export class BudgetService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else if (result.value.status === 204) {
+    } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
       return new InvalidServerResponseFailure<JsonBudget[]>(
