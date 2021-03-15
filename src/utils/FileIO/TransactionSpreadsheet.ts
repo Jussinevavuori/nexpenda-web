@@ -16,7 +16,7 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
       names: ["Kategoria", "Category", "Class", "Luokka"],
     },
     integerAmount: {
-      names: ["Summa", "Sum", "Määrä", "Amount"],
+      names: ["Summa", "Sum", "Määrä", "Amount", "integerAmount"],
       transformBeforeValidation: (value: any) => {
         const string = String(value)
           .replace(/,/g, ".")
@@ -44,7 +44,14 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
       ],
     },
     categoryIcon: {
-      names: ["Ikoni", "Icon", "Category icon", "Kategoria ikoni", "Kuvake"],
+      names: [
+        "Ikoni",
+        "Icon",
+        "Category icon",
+        "categoryIcon",
+        "Kategoria ikoni",
+        "Kuvake",
+      ],
     },
   };
 

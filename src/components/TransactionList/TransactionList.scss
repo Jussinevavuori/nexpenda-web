@@ -8,6 +8,32 @@
     outline: none;
   }
 
+  & .upcomingTransactionsHandle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $fixed-spacing-2
+      adjust-spacing($fixed-spacing-6, $spacing-button-horizontal)
+      $fixed-spacing-2 $fixed-spacing-6;
+  }
+
+  & .upcomingTransactionsList {
+    position: relative;
+    // padding-bottom: $fixed-spacing-2;
+    & > * {
+      transform: translateY(-#{$fixed-spacing-4});
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: $fixed-spacing-2;
+      left: $fixed-spacing-6;
+      right: $fixed-spacing-6;
+      height: 1px;
+      background: $gray-300;
+    }
+  }
+
   & .emptyTransactions {
     margin: $spacing-12 $spacing-6;
     text-align: center;
@@ -17,6 +43,7 @@
   }
 
   & .dateGroup {
+    transition: top 330ms $animate-snap-back;
     &:first-child {
       margin-top: $spacing-4;
     }

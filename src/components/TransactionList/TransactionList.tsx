@@ -1,5 +1,4 @@
 import "./TransactionList.scss";
-import React, { createRef, useEffect } from "react"
 import { TransactionListItem } from "../TransactionListItem/TransactionListItem";
 import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
@@ -7,28 +6,17 @@ import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
 import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
-import { theme } from "../../styles/main";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
-import { motion } from "framer-motion";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
 }
 
-const virtualizedListRef = createRef<List>()
 
 export function TransactionList(props: TransactionListProps) {
 
 	const controller = useTransactionListController(props)
-
-	// Recalculate virtualized list row heights each time the 
-	// props change
-	useEffect(() => {
-		const virtualizedList = virtualizedListRef.current
-		if (virtualizedList) {
-			virtualizedList.recomputeRowHeights()
-		}
-	}, [props, controller.itemsByDates])
 
 	// Render skeletons
 	if (controller.showSkeletons) {
@@ -42,63 +30,126 @@ export function TransactionList(props: TransactionListProps) {
 	}
 
 	// Render list
-	return <motion.div layout="position" className="TransactionList">
-		<AutoSizer className="autoSizer">
-			{
-				(autoSizer) => <List
-					ref={virtualizedListRef}
-					className="virtualizedList"
-					height={autoSizer.height}
-					width={autoSizer.width}
-					rowCount={controller.itemsByDates.length}
-					rowHeight={({ index }) => {
-						// Title total height    40 px
-						// Item total height     80 px
-						return controller.itemsByDates[index].items.length * 80 + 40
-							+ (index === 0 ? Number(theme.fixed_spacing_4.replace(/\D/g, "")) : 0)
-					}}
-					noRowsRenderer={() => {
-						return <div className="emptyTransactions">
-							<Type >
-								{"No transactions. Start by creating your first transaction."}
-							</Type>
-							<Button
-								color="primary"
-								variant="contained"
-								onClick={controller.handleCreate}
-							>
-								{"Create"}
-							</Button>
-						</div>
-					}}
-					rowRenderer={(rowProps) => {
-						const entry = controller.itemsByDates[rowProps.index]
+	return <AnimateSharedLayout>
+		<motion.div className="TransactionList">
 
-						return <div
-							className="dateGroup"
-							key={rowProps.key}
-							style={rowProps.style}
-						>
-							<div className="dateGroupHeader">
-								<Type variant="bold" color="gray-700" size="md">
-									{toDatestring(entry.date)}
-								</Type>
-							</div>
-							<ul>
-								{
-									entry.items.map(item => {
-										return <li key={item.id}>
-											<TransactionListItem transaction={item} />
-										</li>
-									})
+			{/* Actual items */}
+			<AutoSizer className="autoSizer">
+				{
+					(autoSizer) => <motion.div layout="position" initial={false}>
+						<List
+							ref={controller.virtualizedListRef}
+							className="virtualizedList"
+							height={autoSizer.height}
+							width={autoSizer.width}
+							rowCount={controller.rowCount}
+							rowHeight={({ index }) => controller.calculateRowHeight(index)}
+							noRowsRenderer={() => {
+								return <div className="emptyTransactions">
+									<Type >
+										{"No transactions. Start by creating your first transaction."}
+									</Type>
+									<Button
+										color="primary"
+										variant="contained"
+										onClick={controller.handleCreate}
+									>
+										{"Create"}
+									</Button>
+								</div>
+							}}
+							rowRenderer={(rowProps) => {
+								if (rowProps.index === 0) {
+
+									if (controller.upcomingItemsByDates.length === 0) {
+										return null
+									}
+
+									return <motion.div layout="position" initial={false} className="upcomingTransactions">
+										<motion.div className="upcomingTransactionsHandle">
+											<Type
+												variant="bold"
+												color="gray-600"
+												onClick={controller.handleOpenUpcomingToggle}
+											>
+												{`${controller.upcomingTransactionsCount} upcoming transactions`}
+											</Type>
+											<Button
+												variant="text"
+												color="primary"
+												onClick={controller.handleOpenUpcomingToggle}
+											>
+												{controller.isUpcomingOpen ? "Hide" : "Show"}
+											</Button>
+										</motion.div>
+										<AnimatePresence>
+											{
+												controller.isUpcomingOpen &&
+												<motion.div
+													className="upcomingTransactionsList"
+													exit={{ transformOrigin: "top", scaleY: 0, opacity: 0, transition: { duration: 0.18, type: "tween" } }}
+													initial={{ transformOrigin: "top", scaleY: 0, opacity: 0 }}
+													animate={{ transformOrigin: "top", scaleY: 1, opacity: 1 }}
+												>
+													{
+														controller.upcomingItemsByDates.map(entry => {
+															return <div
+																className="dateGroup upcoming"
+																key={entry.date.getTime()}
+															>
+																<div className="dateGroupHeader upcoming">
+																	<Type variant="bold" color="gray-700" size="md">
+																		{toDatestring(entry.date)}
+																	</Type>
+																</div>
+																<ul>
+																	{
+																		entry.items.map(item => {
+																			return <li key={item.id}>
+																				<TransactionListItem transaction={item} />
+																			</li>
+																		})
+																	}
+																</ul>
+															</div>
+														})
+													}
+												</motion.div>
+											}
+										</AnimatePresence>
+									</motion.div>
+								} else {
+
+									const entry = controller.itemsByDates[rowProps.index - 1]
+
+									return <div
+										className="dateGroup"
+										key={rowProps.key}
+										style={rowProps.style}
+									>
+										<div className="dateGroupHeader">
+											<Type variant="bold" color="gray-700" size="md">
+												{toDatestring(entry.date)}
+											</Type>
+										</div>
+										<ul>
+											{
+												entry.items.map(item => {
+													return <li key={item.id}>
+														<TransactionListItem transaction={item} />
+													</li>
+												})
+											}
+										</ul>
+									</div>
 								}
-							</ul>
-						</div>
-					}}
-				/>
-			}
-		</AutoSizer>
-	</motion.div>
+							}}
+						/>
+					</motion.div>
+				}
+			</AutoSizer>
+		</motion.div>
+	</AnimateSharedLayout>
 }
 
 function toDatestring(date: Date) {
