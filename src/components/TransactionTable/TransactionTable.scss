@@ -19,6 +19,22 @@
     outline: none;
   }
 
+  & .upcomingTransactions {
+    & .upcomingTransactionsHandle {
+      height: 32px;
+      overflow: hidden;
+      & button {
+        height: 100%;
+        @include text-regular;
+        color: $gray-800;
+      }
+    }
+  }
+
+  & li.transactionTableRowContainer {
+    transition: top 330ms $animate-snap-back;
+  }
+
   & li {
     list-style: none;
   }

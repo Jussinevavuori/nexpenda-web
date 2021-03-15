@@ -106,6 +106,15 @@
       overflow: hidden;
       white-space: nowrap;
     }
+
+    & .upcomingTag {
+      background: $primary-200;
+      margin-right: $spacing-1;
+      padding: 1px 5px;
+      border-radius: $spacing-1;
+      @include text-boldcaps-sm;
+      color: $primary-400;
+    }
   }
 
   & .date {

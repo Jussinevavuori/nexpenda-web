@@ -97,12 +97,6 @@ export function useTransactionListController(props: TransactionListProps) {
 		showSkeletons,
 		handleCreate,
 		isUpcomingOpen,
-		handleOpenUpcoming() {
-			setIsUpcomingOpen(true)
-		},
-		handleOpenUpcomingClose() {
-			setIsUpcomingOpen(false)
-		},
 		handleOpenUpcomingToggle() {
 			setIsUpcomingOpen(_ => !_)
 		},

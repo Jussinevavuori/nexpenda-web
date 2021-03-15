@@ -1,35 +1,22 @@
 import "./TransactionTable.scss";
-import React, { createRef, useEffect } from "react"
 import { TransactionTableHeader } from "../TransactionTableHeader/TransactionTableHeader";
 import { TransactionTableRow } from "../TransactionTableRow/TransactionTableRow";
 import { AutoSizer, List } from "react-virtualized";
 import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";
 import { useTransactionTableController } from "./useTransactionTableController";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
-import { useLgMedia } from "../../hooks/utils/useMedia";
+import { Button } from "@material-ui/core";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
 }
 
-const virtualizedListRef = createRef<List>()
-
 export function TransactionTable(props: TransactionTableProps) {
 
-	const isLargeScreen = useLgMedia()
 	const controller = useTransactionTableController(props)
 
-	// Recalculate virtualized list row heights each time the 
-	// props change / editing state changes / screen size passes
-	// large threshold
-	useEffect(() => {
-		const virtualizedList = virtualizedListRef.current
-		if (virtualizedList) {
-			virtualizedList.recomputeRowHeights()
-		}
-	}, [props, controller.editingId, isLargeScreen, controller.items])
 
 	if (controller.showSkeletons) {
 
@@ -52,24 +39,67 @@ export function TransactionTable(props: TransactionTableProps) {
 				{
 					autoSizer => {
 						return <List
-							ref={virtualizedListRef}
+							ref={controller.virtualizedListRef}
 							className="virtualizedList"
 							height={autoSizer.height}
 							width={autoSizer.width}
-							rowCount={controller.items.length}
-							rowHeight={({ index }) => {
-								return controller.items[index].id === controller.editingId
-									? (isLargeScreen ? 60 : 110)
-									: 40
-							}}
+							rowCount={controller.rowCount}
+							rowHeight={({ index }) => controller.calculateRowHeight(index)}
 							noRowsRenderer={() => <div className="noTransactions">
 								<Type color="gray-700" variant="boldcaps" size="md">
 									{"No transactions"}
 								</Type>
 							</div>}
 							rowRenderer={(rowProps) => {
-								const entry = controller.items[rowProps.index]
-								return <li key={rowProps.key} style={rowProps.style}>
+
+								if (rowProps.index === 0) {
+									if (controller.upcomingItemsCount > 0) {
+										return <motion.div layout="position" initial={false} className="upcomingTransactions">
+											<motion.div className="upcomingTransactionsHandle">
+												<Button
+													variant="text"
+													color="primary"
+													onClick={controller.handleToggleIsUpcomingOpen}
+													fullWidth
+												>
+													{controller.isUpcomingOpen ? "Hide" : "Show"}
+													{` ${controller.upcomingItemsCount} upcoming transactions`}
+												</Button>
+											</motion.div>
+											<AnimatePresence>
+												{
+													controller.isUpcomingOpen &&
+													<motion.div
+														className="upcomingTransactionsList"
+														exit={{ transformOrigin: "top", scaleY: 0, opacity: 0, transition: { duration: 0.18, type: "tween" } }}
+														initial={{ transformOrigin: "top", scaleY: 0, opacity: 0 }}
+														animate={{ transformOrigin: "top", scaleY: 1, opacity: 1 }}
+													>
+														{
+															controller.upcomingItems.map(entry => {
+																return <li key={entry.id}>
+																	<TransactionTableRow
+																		getAllTransactionIdsBetween={controller.getAllTransactionIdsBetween}
+																		transaction={entry}
+																	/>
+																</li>
+															})
+														}
+													</motion.div>
+												}
+											</AnimatePresence>
+										</motion.div>
+									} else {
+										return null
+									}
+								}
+
+								const entry = controller.items[rowProps.index - 1]
+								return <li
+									key={entry.id}
+									style={rowProps.style}
+									className="transactionTableRowContainer"
+								>
 									<TransactionTableRow
 										getAllTransactionIdsBetween={controller.getAllTransactionIdsBetween}
 										transaction={entry}

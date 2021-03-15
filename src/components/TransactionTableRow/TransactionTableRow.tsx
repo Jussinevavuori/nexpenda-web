@@ -80,6 +80,12 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 		</div>
 		<div className="comment">
 			<Type color="gray-700" variant="regular" size="md">
+				{
+					controller.transaction.isUpcoming &&
+					<span className="upcomingTag">
+						{"Upcoming"}
+					</span>
+				}
 				{controller.transaction.comment}
 			</Type>
 		</div>
