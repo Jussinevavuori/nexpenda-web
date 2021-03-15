@@ -13,11 +13,6 @@ export class Budget {
   private readonly _label: undefined | string;
 
   /**
-   * Type of budget
-   */
-  public readonly type: BudgetType;
-
-  /**
    * Integer amount of budget. If budget is type EXPENSE,
    * this is the max limit. If budget is type INCOME, this is
    * the appromixated income.
@@ -37,10 +32,21 @@ export class Budget {
   constructor(json: JsonBudget) {
     this.id = json.id;
     this._label = json.label;
-    this.type = json.type;
     this.integerAmount = json.integerAmount;
     this.createdAt = new Date(json.createdAt);
     this.categoryIds = json.categoryIds;
+  }
+
+  get type() {
+    return this.integerAmount >= 0 ? "income" : "expense";
+  }
+
+  get isIncome() {
+    return this.integerAmount >= 0;
+  }
+
+  get isExpense() {
+    return this.integerAmount < 0;
   }
 
   getLabel(allCategories: Category[]) {
@@ -77,7 +83,6 @@ export class Budget {
   static Schema = z.object({
     id: z.string(),
     label: z.string().optional(),
-    type: z.enum(["INCOME", "EXPENSE"]),
     integerAmount: z.number().int(),
     createdAt: z.number().positive().int(),
     categoryIds: z.array(z.string()),
@@ -94,7 +99,6 @@ export class Budget {
    */
   static InitializerSchema = z.object({
     label: z.string().optional(),
-    type: z.enum(["INCOME", "EXPENSE"]),
     integerAmount: z.number().int(),
     categoryIds: z.array(z.string()),
   });
@@ -116,7 +120,6 @@ export class Budget {
     return {
       id: this.id,
       label: this._label,
-      type: this.type,
       categoryIds: this.categoryIds,
       createdAt: this.createdAt.getTime(),
       integerAmount: this.integerAmount,
@@ -134,7 +137,6 @@ export class Budget {
     const json: JsonBudgetInitializer = {
       categoryIds: this.categoryIds,
       integerAmount: this.integerAmount,
-      type: this.type,
       label: this._label,
     };
 
