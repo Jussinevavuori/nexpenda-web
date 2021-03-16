@@ -1,6 +1,7 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 import { Auth, JsonAuth } from "../classes/Auth";
 import { AuthService } from "../services/AuthService";
+import { ProfileService } from "../services/ProfileService";
 import { StoreModel } from "../store";
 
 export interface AuthModel {
@@ -72,7 +73,7 @@ export interface AuthModel {
     void,
     any,
     StoreModel,
-    ReturnType<typeof AuthService["getProfile"]>
+    ReturnType<typeof ProfileService["getProfile"]>
   >;
 
   /**
@@ -80,10 +81,10 @@ export interface AuthModel {
    */
   updateProfile: Thunk<
     AuthModel,
-    Parameters<typeof AuthService["updateProfile"]>[0],
+    Parameters<typeof ProfileService["updateProfile"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof AuthService["updateProfile"]>
+    ReturnType<typeof ProfileService["updateProfile"]>
   >;
 
   /**
@@ -232,7 +233,7 @@ export const authModel: AuthModel = {
   //==============================================================//
 
   getProfile: thunk(async (actions, payload) => {
-    const profile = await AuthService.getProfile();
+    const profile = await ProfileService.getProfile();
     if (profile.isSuccess()) {
       actions.setAuthToState(profile.value);
     }
@@ -241,7 +242,7 @@ export const authModel: AuthModel = {
   }),
 
   updateProfile: thunk(async (actions, payload) => {
-    const profile = await AuthService.updateProfile(payload);
+    const profile = await ProfileService.updateProfile(payload);
     if (profile.isSuccess()) {
       actions.setAuthToState(profile.value);
     }
@@ -255,7 +256,7 @@ export const authModel: AuthModel = {
   loginWithEmailPassword: thunk(async (actions, payload) => {
     const result = await AuthService.loginWithEmailAndPassword(payload);
     if (result.isSuccess()) {
-      const profile = await AuthService.getProfile();
+      const profile = await ProfileService.getProfile();
       if (profile.isSuccess()) {
         actions.setAuthToState(profile.value);
       }
@@ -266,7 +267,7 @@ export const authModel: AuthModel = {
   registerWithEmailPassword: thunk(async (actions, payload) => {
     const result = await AuthService.registerWithEmailAndPassword(payload);
     if (result.isSuccess()) {
-      const profile = await AuthService.getProfile();
+      const profile = await ProfileService.getProfile();
       if (profile.isSuccess()) {
         actions.setAuthToState(profile.value);
       }
