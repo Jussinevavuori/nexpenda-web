@@ -1,0 +1,26 @@
+@import "main";
+
+.CategorySelectorDialog {
+  &__Content.MuiDialogContent-root {
+    padding-top: 0;
+    padding-bottom: 0;
+    // margin-left: -$spacing-6;
+    // margin-right: -$spacing-6;
+    max-width: 90vw;
+    width: 440px;
+    // max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    & ul {
+      flex: 1;
+      & .MuiMenuItem-root {
+        padding-top: $spacing-3;
+        padding-bottom: $spacing-3;
+        gap: $spacing-4;
+      }
+    }
+    & .search {
+      width: 100%;
+    }
+  }
+}

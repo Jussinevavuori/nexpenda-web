@@ -6,19 +6,25 @@
   border-radius: $spacing-1;
   display: grid;
   grid-template:
-    "percentage label" auto
-    "percentage amount" auto
-    "categories categories" auto / auto 1fr;
+    "percentage details manage" auto
+    "categories categories categories" auto / auto 1fr;
   gap: $spacing-3 $spacing-4;
 
   & > .percentage {
     grid-area: percentage;
+    align-self: center;
   }
-  & > .label {
-    grid-area: label;
-  }
-  & > .amount {
-    grid-area: amount;
+  & > .details {
+    grid-area: details;
+    display: flex;
+    gap: $spacing-2;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    & > .label {
+    }
+    & > .amount {
+    }
   }
   & > .categories {
     grid-area: categories;
@@ -26,5 +32,16 @@
     align-items: center;
     flex-wrap: wrap;
     gap: $spacing-2;
+    padding-top: $spacing-1;
+  }
+  & > .manage {
+    grid-area: manage;
+    margin-top: -1 * $spacing-4;
+    margin-right: -1 * $spacing-4;
+    & > .MuiIconButton-root {
+      border-top-right-radius: $spacing-1;
+      border-top-left-radius: $spacing-1;
+      border-bottom-right-radius: $spacing-1;
+    }
   }
 }

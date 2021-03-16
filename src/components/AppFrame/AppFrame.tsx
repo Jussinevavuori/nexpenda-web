@@ -6,6 +6,8 @@ import { Header } from "../Header/Header";
 import { useAppFrameController } from "./useAppFrameController";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/utils/useMedia";
+import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
+import { BudgetCreatorDrawer } from "../BudgetCreatorDrawer/BudgetCreatorDrawer";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -22,6 +24,8 @@ export function AppFrame(props: AppFrameProps) {
 			controller.initialized && <>
 				{isDesktopLayout ? null : <TransactionCreatorDrawer />}
 				{isDesktopLayout ? null : <TransactionEditorDrawer />}
+				<BudgetEditorDrawer />
+				<BudgetCreatorDrawer />
 			</>
 		}
 		<div className="header">

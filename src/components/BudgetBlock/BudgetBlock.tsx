@@ -6,6 +6,9 @@ import { Budget } from "../../classes/Budget";
 import { PercentageCircle } from "../PercentageCircle/PercentageCircle";
 import { CategoryChip } from "../CategoryChip/CategoryChip";
 import { Type } from "../Type/Type";
+import { IconButton } from "@material-ui/core";
+import { MoreVert } from "@material-ui/icons";
+import { BudgetBlockMenu } from "../BudgetBlockMenu/BudgetBlockMenu";
 
 export type BudgetBlockProps = {
 	budget: Budget
@@ -15,34 +18,53 @@ export function BudgetBlock(props: BudgetBlockProps) {
 
 	const controller = useBudgetBlockController(props)
 
-	return <div className={cx("BudgetBlock")}>
+	return <>
 
-		<div className={cx("percentage")}>
-			<PercentageCircle
-				percentage={controller.percentage}
-				variant={props.budget.isExpense ? "expense" : "income"}
-			/>
-		</div>
-		<div className={cx("label")}>
-			<Type variant="bold" size="sm">
-				{controller.budgetLabel}
-			</Type>
-		</div>
-		<div className={cx("amount")}>
-			{controller.progress.formatAbsValue()}
-			{" / "}
-			{props.budget.amount.formatAbsValue()}
-		</div>
-		<div className={cx("categories")}>
-			{
-				controller.budgetCategories.map(category => {
-					return <CategoryChip
-						category={category}
-						key={category.id}
-					/>
-				})
-			}
-		</div>
+		<BudgetBlockMenu
+			budget={props.budget}
+			open={controller.isMenuOpen}
+			onClose={controller.handleMenuClose}
+			MenuProps={{
+				anchorEl: controller.menuAnchorEl,
+			}}
+		/>
 
-	</div>
+		<div className={cx("BudgetBlock")}>
+
+			<div className={cx("percentage")}>
+				<PercentageCircle
+					percentage={controller.percentage}
+					variant={props.budget.isExpense ? "expense" : "income"}
+				/>
+			</div>
+			<div className={cx("details")}>
+				<div className={cx("label")}>
+					<Type variant="bold" size="sm">
+						{controller.budgetLabel}
+					</Type>
+				</div>
+				<div className={cx("amount")}>
+					{controller.progress.formatAbsValue()}
+					{" / "}
+					{props.budget.amount.formatAbsValue()}
+				</div>
+			</div>
+			<div className={cx("categories")}>
+				{
+					controller.budgetCategories.map(category => {
+						return <CategoryChip
+							category={category}
+							key={category.id}
+						/>
+					})
+				}
+			</div>
+			<div className={cx("manage")}>
+				<IconButton onClick={controller.handleMenuOpen}>
+					<MoreVert />
+				</IconButton>
+			</div>
+
+		</div>
+	</>
 }

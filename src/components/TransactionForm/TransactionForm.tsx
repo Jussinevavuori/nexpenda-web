@@ -46,7 +46,7 @@ export function TransactionForm(props: TransactionFormProps) {
 	return <form
 		className={cx(`TransactionForm`, props.variant || "vertical", {
 			titleHidden: !!props.hideTitle,
-			hasCloseBUtton: !!props.showCloseButton
+			hasCloseButton: !!props.showCloseButton
 		})}
 		onSubmit={handleSubmit}
 	>
