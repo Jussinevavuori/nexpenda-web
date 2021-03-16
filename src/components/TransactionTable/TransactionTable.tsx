@@ -54,7 +54,13 @@ export function TransactionTable(props: TransactionTableProps) {
 
 								if (rowProps.index === 0) {
 									if (controller.upcomingItemsCount > 0) {
-										return <motion.div layout="position" initial={false} className="upcomingTransactions">
+										return <motion.div
+											layout="position"
+											initial={false}
+											className="upcomingTransactions"
+											style={rowProps.style}
+											key={rowProps.key}
+										>
 											<motion.div className="upcomingTransactionsHandle">
 												<Button
 													variant="text"

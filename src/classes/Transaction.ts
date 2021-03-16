@@ -76,7 +76,9 @@ export class Transaction {
     if (this.category.icon) {
       return this.category.icon.substr(0, 2);
     } else {
-      return this.amount.isPositive ? "💰" : "💸";
+      return this.amount.isPositive
+        ? Category.defaultIncomeIcon
+        : Category.defaultExpenseIcon;
     }
   }
 

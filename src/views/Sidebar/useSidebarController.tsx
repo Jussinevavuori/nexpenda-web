@@ -9,7 +9,7 @@ export function useSidebarController(props: SidebarProps) {
 
 	const dashboardMatch = useRouteMatch(routes.dashboard)
 	const analyticsMatch = useRouteMatch(routes.analytics)
-	const budgetMatch = useRouteMatch(routes.budget)
+	const budgetsMatch = useRouteMatch(routes.budgets)
 	const settingsMatch = useRouteMatch(routes.settings)
 
 	const user = useStoreState(_ => _.auth.user)
@@ -24,7 +24,7 @@ export function useSidebarController(props: SidebarProps) {
 	return {
 		isDashboard: !!dashboardMatch,
 		isAnalytics: !!analyticsMatch,
-		isBudget: !!budgetMatch,
+		isBudget: !!budgetsMatch,
 		isSettings: !!settingsMatch,
 
 		onDashboard() {
@@ -36,7 +36,7 @@ export function useSidebarController(props: SidebarProps) {
 			unfocus()
 		},
 		onBudget() {
-			redirect(routes.budget)
+			redirect(routes.budgets)
 			unfocus()
 		},
 		onSettings() {

@@ -1,5 +1,4 @@
 import "./Dashboard.scss"
-import React from "react";
 import cx from "classnames"
 import { TransactionList } from "../../components/TransactionList/TransactionList";
 import { ActionsPanel } from "./ActionsPanel/ActionsPanel";
@@ -52,7 +51,11 @@ export function Dashboard(props: DashboardProps) {
 				}
 			</AnimatePresence>
 
-			<motion.section layout={trueAfterTimeout} initial={false} className="transactionsList">
+			<motion.section
+				layout={trueAfterTimeout && controller.isDesktopLayout ? "position" : undefined}
+				initial={false}
+				className="transactionsList"
+			>
 				{
 					controller.isDesktopLayout
 						? <TransactionTable showSkeletons />

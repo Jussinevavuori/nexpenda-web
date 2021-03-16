@@ -4,7 +4,6 @@
 		"prefix": "viewcomp",
 		"body": [
 			"import \"./$1.scss\";",
-			"import React from \"react\"",
 			"",
 			"export type $1ViewProps = {",
 			"",
@@ -21,7 +20,6 @@
 		"scope": "javascriptreact,typescriptreact",
 		"prefix": "contcomp",
 		"body": [
-			"import React from \"react\"",
 			"import { $1View } from \"./$1View\"",
 			"",
 			"export type $1Props = {",
@@ -38,7 +36,6 @@
 		"prefix": "newcomp",
 		"body": [
 			"import \"./$1.scss\";",
-			"import React from \"react\"",
 			"",
 			"export type $1Props = {",
 			"",

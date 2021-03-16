@@ -13,7 +13,7 @@ const Analytics = lazy(() => import("./views/Analytics/Analytics").then(_ => ({ 
 const ForgotPassword = lazy(() => import("./views/ForgotPassword/ForgotPassword").then(_ => ({ default: _.ForgotPassword })))
 const ChangePassword = lazy(() => import("./views/ChangePassword/ChangePassword").then(_ => ({ default: _.ChangePassword })))
 const ConfirmEmail = lazy(() => import("./views/ConfirmEmail/ConfirmEmail").then(_ => ({ default: _.ConfirmEmail })))
-const Budget = lazy(() => import("./views/Budget/Budget").then(_ => ({ default: _.Budget })))
+const Budgets = lazy(() => import("./views/Budgets/Budgets").then(_ => ({ default: _.Budgets })))
 const Logout = lazy(() => import("./views/Logout/Logout").then(_ => ({ default: _.Logout })))
 const Subscribe = lazy(() => import("./views/Subscribe/Subscribe").then(_ => ({ default: _.Subscribe })))
 const SubscribeSuccess = lazy(() => import("./views/SubscribeSuccess/SubscribeSuccess").then(_ => ({ default: _.SubscribeSuccess })))
@@ -42,10 +42,10 @@ export const routes = {
 		path: "/app/analytics",
 		title: "Analytics"
 	} as RouteData,
-	budget: {
-		name: "budget",
-		path: "/app/budget",
-		title: "Budget"
+	budgets: {
+		name: "budgets",
+		path: "/app/budgets",
+		title: "Budgets"
 	} as RouteData,
 	settings: {
 		name: "settings",
@@ -168,10 +168,10 @@ export function Routes() {
 			</AppFrame>
 		</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.budget.path}>
+		<ProtectedRoute exact path={routes.budgets.path}>
 			<AppFrame>
 				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Budget />
+					<Budgets />
 				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>

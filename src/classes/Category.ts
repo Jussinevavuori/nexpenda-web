@@ -30,6 +30,9 @@ export class Category {
     return this.value;
   }
 
+  static defaultIncomeIcon = "💰";
+  static defaultExpenseIcon = "💸";
+
   /**
    * Get non-whitespace version of the category's value (name) by replacing
    * all whitespace with a dash, all in lowercase

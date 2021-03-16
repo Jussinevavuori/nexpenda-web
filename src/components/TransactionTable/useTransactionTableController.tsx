@@ -77,11 +77,6 @@ export function useTransactionTableController(props: TransactionTableProps) {
 		// Upcoming items
 		if (index === 0) {
 			const baseHeight = 32
-			console.log({
-				upcomingItemsCount, isUpcomingOpen, baseHeight, total: sortedUpcomingItems.reduce((h, item) => {
-					return h + (item.id === editingId ? editingHeight : rowHeight)
-				}, 0)
-			})
 			if (!upcomingItemsCount) {
 				return 0
 			} else if (isUpcomingOpen) {

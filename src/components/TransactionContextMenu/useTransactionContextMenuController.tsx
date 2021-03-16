@@ -139,16 +139,6 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 		const newSearch = smartSearch.getSearchTermWithCategory(categories)
 		setSearch(newSearch)
 
-		console.log(
-			{
-				categoryAlreadyIncluded,
-				prev: smartSearch.matchCategories,
-				current: categories,
-				newSearch,
-				prevSearch: smartSearch.originalSearch
-			}
-		)
-
 		// Close
 		handleClose()
 	}, [handleClose, menu, smartSearch, setSearch, setIsSearchOpen])

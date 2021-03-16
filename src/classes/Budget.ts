@@ -1,5 +1,7 @@
 import * as z from "zod";
 import { Category } from "./Category";
+import { MoneyAmount } from "./MoneyAmount";
+import { Transaction } from "./Transaction";
 
 export class Budget {
   /**
@@ -13,11 +15,16 @@ export class Budget {
   private readonly _label: undefined | string;
 
   /**
-   * Integer amount of budget. If budget is type EXPENSE,
-   * this is the max limit. If budget is type INCOME, this is
-   * the appromixated income.
+   * Integer amount of budget. Negative values correspond to expense budgets,
+   * while positive amounts correspond to estimated incomes.
    */
   public readonly integerAmount: number;
+
+  /**
+   * Money amount of the budget. Negative values correspond to expense budgets,
+   * while positive amounts correspond to estimated incomes.
+   */
+  public readonly amount: MoneyAmount;
 
   /**
    * Creation date
@@ -33,6 +40,7 @@ export class Budget {
     this.id = json.id;
     this._label = json.label;
     this.integerAmount = json.integerAmount;
+    this.amount = new MoneyAmount(json.integerAmount);
     this.createdAt = new Date(json.createdAt);
     this.categoryIds = json.categoryIds;
   }
@@ -68,6 +76,21 @@ export class Budget {
     }
 
     return label;
+  }
+
+  /**
+   * Check if a budget includes a transaction. A budget includes a transaction
+   * if their signs match and the transaction's category is included in the
+   * budget.
+   */
+  includesTransaction(transaction: Transaction) {
+    const signMatch =
+      (this.isIncome && transaction.amount.isNonNegative) ||
+      (this.isExpense && transaction.amount.isNegative);
+    if (!signMatch) {
+      return false;
+    }
+    return this.categoryIds.some((_) => _ === transaction.category.id);
   }
 
   /**
@@ -145,5 +168,26 @@ export class Budget {
     } else {
       return json;
     }
+  }
+
+  /**
+   * Separates a list of budgets into income budgets and expense budgets
+   */
+  static separateBudgets(budgets: Budget[]) {
+    let incomeBudgets: Budget[] = [];
+    let expenseBudgets: Budget[] = [];
+
+    for (const budget of budgets) {
+      if (budget.isExpense) {
+        expenseBudgets.push(budget);
+      } else {
+        incomeBudgets.push(budget);
+      }
+    }
+
+    return {
+      incomeBudgets,
+      expenseBudgets,
+    };
   }
 }

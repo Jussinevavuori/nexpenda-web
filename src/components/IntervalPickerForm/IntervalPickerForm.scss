@@ -3,7 +3,23 @@
 .IntervalPickerForm {
   @include sm {
     max-width: 80vw;
-    min-width: 400px;
+    min-width: 300px;
+  }
+
+  & section.intervalLength {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -1 * $spacing-4;
+    & button {
+      flex: 1;
+      border-radius: 0;
+      border-bottom: 3px solid $gray-200;
+      &.active {
+        border-bottom-color: $primary-500;
+      }
+    }
   }
 
   & section.title {
@@ -11,10 +27,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding: $spacing-2 0;
 
-    border-bottom: $border;
-    margin-bottom: $spacing-4;
-    padding-bottom: $spacing-4;
+    // border-bottom: $border;
+    // margin-bottom: $spacing-4;
+    // padding-bottom: $spacing-4;
 
     & * {
       color: $gray-800;
@@ -41,18 +58,11 @@
     }
   }
 
-  & section.intervalLength {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  & section.dateSection {
-    padding: $spacing-4 0;
-
-    & > *:first-child {
-      margin-bottom: $spacing-4;
-    }
-  }
+  // & section.dateSection {
+  // padding: $spacing-4 0;
+  //
+  // & > *:first-child {
+  // margin-bottom: $spacing-4;
+  // }
+  // }
 }

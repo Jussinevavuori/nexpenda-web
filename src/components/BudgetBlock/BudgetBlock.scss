@@ -1,0 +1,30 @@
+@import "main";
+
+.BudgetBlock {
+  padding: $spacing-4;
+  border: 1px solid $gray-300;
+  border-radius: $spacing-1;
+  display: grid;
+  grid-template:
+    "percentage label" auto
+    "percentage amount" auto
+    "categories categories" auto / auto 1fr;
+  gap: $spacing-3 $spacing-4;
+
+  & > .percentage {
+    grid-area: percentage;
+  }
+  & > .label {
+    grid-area: label;
+  }
+  & > .amount {
+    grid-area: amount;
+  }
+  & > .categories {
+    grid-area: categories;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+  }
+}

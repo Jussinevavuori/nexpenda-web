@@ -98,6 +98,13 @@ export class MoneyAmount {
   }
 
   /**
+   * Format the money amount to a string according to the given options
+   */
+  formatAbsValue(): string {
+    return MoneyAmount.format(Math.abs(this.value));
+  }
+
+  /**
    * Static method for formatting a value
    */
   static format(value: number) {

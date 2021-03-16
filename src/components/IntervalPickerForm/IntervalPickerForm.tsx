@@ -7,10 +7,10 @@ import {
 	RadioButtonUnchecked as NowIcon,
 	Today as CalendarIcon
 } from "@material-ui/icons";
-import { DatePicker } from "@material-ui/pickers";
+// import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
-import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
-import { DateUtils } from "../../utils/DateUtils/DateUtils";
+// import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
+// import { DateUtils } from "../../utils/DateUtils/DateUtils";
 import { useIntervalPickerFormController } from "./useIntervalPickerFormController";
 
 export type IntervalPickerFormProps = {
@@ -22,6 +22,54 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 	const controller = useIntervalPickerFormController(props)
 
 	return <div className="IntervalPickerForm">
+
+
+		<section className="intervalLength">
+
+			{/* <Button
+				variant="text"
+				color={controller.isDay ? "primary" : "default"}
+				onClick={controller.onDay}
+			>
+				{"Day"}
+			</Button>
+
+			<Button
+				variant="text"
+				color={controller.isWeek ? "primary" : "default"}
+				onClick={controller.onWeek}
+			>
+				{"Week"}
+			</Button> */}
+
+			<Button
+				variant="text"
+				className={controller.isMonth ? "active" : ""}
+				color={controller.isMonth ? "primary" : "default"}
+				onClick={controller.onMonth}
+			>
+				{"Month"}
+			</Button>
+
+			<Button
+				variant="text"
+				className={controller.isYear ? "active" : ""}
+				color={controller.isYear ? "primary" : "default"}
+				onClick={controller.onYear}
+			>
+				{"Year"}
+			</Button>
+
+			<Button
+				variant="text"
+				className={controller.isAll ? "active" : ""}
+				color={controller.isAll ? "primary" : "default"}
+				onClick={controller.onAll}
+			>
+				{"All"}
+			</Button>
+
+		</section>
 
 		<section className="title">
 
@@ -60,51 +108,7 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 			</div>
 
 		</section>
-
-		<section className="intervalLength">
-
-			<Button
-				variant="text"
-				color={controller.isDay ? "primary" : "default"}
-				onClick={controller.onDay}
-			>
-				{"Day"}
-			</Button>
-
-			<Button
-				variant="text"
-				color={controller.isWeek ? "primary" : "default"}
-				onClick={controller.onWeek}
-			>
-				{"Week"}
-			</Button>
-
-			<Button
-				variant="text"
-				color={controller.isMonth ? "primary" : "default"}
-				onClick={controller.onMonth}
-			>
-				{"Month"}
-			</Button>
-
-			<Button
-				variant="text"
-				color={controller.isYear ? "primary" : "default"}
-				onClick={controller.onYear}
-			>
-				{"Year"}
-			</Button>
-
-			<Button
-				variant="text"
-				color={controller.isAll ? "primary" : "default"}
-				onClick={controller.onAll}
-			>
-				{"All"}
-			</Button>
-
-		</section>
-
+		{/* 
 		<section className="dateSection">
 
 			<DatePicker
@@ -129,7 +133,7 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 				fullWidth
 			/>
 
-		</section>
+		</section> */}
 
 		{
 			props.onConfirm && <Button

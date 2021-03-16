@@ -1,0 +1,38 @@
+@import "main";
+
+.PercentageCircle {
+  position: relative;
+
+  & label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  & svg {
+    & circle.background {
+      fill: $primary-100;
+    }
+    & path {
+      fill: transparent;
+      stroke-width: 4px;
+      stroke-linecap: round;
+      &.inactive {
+        stroke: $primary-200;
+      }
+      &.active {
+        stroke: $primary-500;
+      }
+
+      &.isOverflow {
+        &.variant-expense {
+          color: $red-600;
+        }
+        &.variant-income {
+          color: $green-600;
+        }
+      }
+    }
+  }
+}
