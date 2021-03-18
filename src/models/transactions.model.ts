@@ -15,7 +15,6 @@ import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 import { SmartTransactionFilter } from "../classes/SmartTransactionFilter";
-import { INITIAL_TIMESTAMP } from "..";
 
 export interface TransactionsModel {
   //==============================================================//
@@ -344,12 +343,6 @@ export const transactionsModel: TransactionsModel = {
     } else {
       actions.setTransactionsToState([]);
     }
-    const now = new Date().getTime();
-    console.log(
-      `${payload?.before ? "First" : "All"} transactions loaded at ${
-        now - INITIAL_TIMESTAMP
-      } ms`
-    );
     return result;
   }),
 

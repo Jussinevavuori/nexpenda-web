@@ -12,8 +12,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { LocalizedUtils } from "./utils/LocaleUtils/CustomLocale";
 import { MaterialUiThemeProvider } from "./components/MaterialUiThemeProvider/MaterialUiThemeProvider";
+import { ThemeUtils } from "./utils/ThemeUtils/ThemeUtils";
 
-export const INITIAL_TIMESTAMP = new Date().getTime()
+// Initialize theme immediately
+ThemeUtils.initialize();
 
 ReactDOM.render(
 	<React.StrictMode>

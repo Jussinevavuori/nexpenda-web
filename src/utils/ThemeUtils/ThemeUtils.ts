@@ -1,4 +1,14 @@
+import { StorageService } from "../../services/StorageService";
+
 export class ThemeUtils {
+  // Initialize theme variables
+  static initialize() {
+    const initialTheme = StorageService.latestSelectedTheme.getValue();
+    if (initialTheme) {
+      ThemeUtils.switchThemeVariables(initialTheme);
+    }
+  }
+
   /**
    * Property to access all themes
    */
