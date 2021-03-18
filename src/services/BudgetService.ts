@@ -8,9 +8,13 @@ export class BudgetService extends Service {
    * Get all budgets for user as Result
    */
   static async getBudgets() {
-    const result = await Service.get("/budgets", {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+    const result = await Service.get(
+      "/budgets",
+      {},
+      {
+        service: { enableLogoutOnUnauthorized: true },
+      }
+    );
 
     if (result.isFailure()) {
       return result;

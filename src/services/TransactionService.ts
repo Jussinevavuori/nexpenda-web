@@ -7,8 +7,22 @@ export class TransactionService extends Service {
   /**
    * Get all transactions for user as Result
    */
-  static async getTransactions() {
-    const result = await Service.get("/transactions", {
+  static async getTransactions(
+    options: {
+      after?: Date;
+      before?: Date;
+    } = {}
+  ) {
+    // Construct query parameters
+    const queryParams: Record<string, string> = {};
+    if (options.after && options.after.getTime()) {
+      queryParams["after"] = options.after.getTime().toString();
+    }
+    if (options.before && options.before.getTime()) {
+      queryParams["before"] = options.before.getTime().toString();
+    }
+
+    const result = await Service.get("/transactions", queryParams, {
       service: { enableLogoutOnUnauthorized: true },
     });
 

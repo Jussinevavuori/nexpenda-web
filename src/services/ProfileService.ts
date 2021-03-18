@@ -8,7 +8,7 @@ export class ProfileService extends Service {
    * Fetches the user's profile if the user is signed in.
    */
   static async getProfile() {
-    const result = await Service.get<JsonAuth>("/profile", {});
+    const result = await Service.get<JsonAuth>("/profile", {}, {});
 
     if (result.isFailure()) {
       return result;

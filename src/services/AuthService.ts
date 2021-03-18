@@ -68,7 +68,8 @@ export class AuthService extends Service {
    */
   static async validatePasswordChangeToken(credentials: { token: string }) {
     const result = await Service.get(
-      `/auth/change_password/${credentials.token}`
+      `/auth/change_password/${credentials.token}`,
+      {}
     );
 
     if (result.isFailure()) {

@@ -18,7 +18,7 @@ export class StripeService extends Service {
   }
 
   static async getProducts() {
-    const result = await this.get("/stripe/products");
+    const result = await this.get("/stripe/products", {});
 
     if (result.isFailure()) {
       return result;

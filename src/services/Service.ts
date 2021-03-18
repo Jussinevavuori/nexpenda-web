@@ -33,8 +33,19 @@ export class Service {
   /**
    * Construct endpoint from path, base URL already handled
    */
-  protected static endpoint(path: string) {
-    return `${Service.baseURL}${path}`;
+  protected static endpoint(
+    path: string,
+    queryParams: Record<string, string> = {}
+  ) {
+    const query =
+      Object.entries(queryParams).length === 0
+        ? ""
+        : "?" +
+          Object.entries(queryParams)
+            .map((p) => `${p[0]}=${p[1]}`)
+            .join("&");
+
+    return `${Service.baseURL}${path}${query}`;
   }
 
   /**
@@ -148,6 +159,7 @@ export class Service {
    */
   protected static async handleRequest<T>(
     path: string,
+    queryParams: Record<string, string>,
     config: RequestConfig | undefined,
     requestFunction: (
       url: string,
@@ -158,7 +170,7 @@ export class Service {
     await Service.onBeforeRequest(config?.service);
 
     // Request configuration
-    const url = Service.endpoint(path);
+    const url = Service.endpoint(path, queryParams);
     const options = Service.getConfig(config?.axios);
 
     // Run request
@@ -187,9 +199,10 @@ export class Service {
    */
   protected static async get<ResponseData = any>(
     path: string,
+    queryParams: Record<string, string>,
     config?: RequestConfig | undefined
   ) {
-    return Service.handleRequest(path, config, (url, options) => {
+    return Service.handleRequest(path, queryParams, config, (url, options) => {
       return Service.axios.get<ResponseData>(url, options);
     });
   }
@@ -202,7 +215,7 @@ export class Service {
     data?: RequestData,
     config?: RequestConfig
   ) {
-    return Service.handleRequest(path, config, (url, options) => {
+    return Service.handleRequest(path, {}, config, (url, options) => {
       return Service.axios.post<ResponseData>(url, data, options);
     });
   }
@@ -214,7 +227,7 @@ export class Service {
     path: string,
     config?: RequestConfig | undefined
   ) {
-    return Service.handleRequest(path, config, (url, options) => {
+    return Service.handleRequest(path, {}, config, (url, options) => {
       return Service.axios.delete<ResponseData>(url, options);
     });
   }
@@ -227,7 +240,7 @@ export class Service {
     data?: RequestData,
     config?: RequestConfig
   ) {
-    return Service.handleRequest(path, config, (url, options) => {
+    return Service.handleRequest(path, {}, config, (url, options) => {
       return Service.axios.put<ResponseData>(url, data, options);
     });
   }
@@ -240,7 +253,7 @@ export class Service {
     data?: RequestData,
     config?: RequestConfig
   ) {
-    return Service.handleRequest(path, config, (url, options) => {
+    return Service.handleRequest(path, {}, config, (url, options) => {
       return Service.axios.patch<ResponseData>(url, data, options);
     });
   }

@@ -1,4 +1,5 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { INITIAL_TIMESTAMP } from "..";
 import { Auth, JsonAuth } from "../classes/Auth";
 import { AuthService } from "../services/AuthService";
 import { ProfileService } from "../services/ProfileService";
@@ -220,6 +221,8 @@ export const authModel: AuthModel = {
   setAuthToState: action((state, json) => {
     if (Auth.Schema.check(json)) {
       state.user = new Auth(json);
+      const now = new Date().getTime();
+      console.log(`Profile loaded at ${now - INITIAL_TIMESTAMP} ms`);
     }
   }),
 
