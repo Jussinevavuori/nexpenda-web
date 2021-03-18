@@ -103,6 +103,19 @@ export class Service {
   ) {}
 
   /**
+   * Redirect to logout
+   */
+  protected static async redirectOnUnauthorized() {
+    const accessToken = store.getState().auth.accessToken;
+    StorageService.components.hadAccessToken.setValue(!!accessToken);
+    if (window.location.pathname.match(/subscribe|app/)) {
+      window.location.pathname = routes.logOut.path;
+      window.location.search = "";
+      window.location.hash = "";
+    }
+  }
+
+  /**
    * On failure hook
    */
   protected static async onFailedRequest(
@@ -113,11 +126,7 @@ export class Service {
       failure.code === "auth/unauthenticated" &&
       config?.enableLogoutOnUnauthorized
     ) {
-      const accessToken = store.getState().auth.accessToken;
-      StorageService.components.hadAccessToken.setValue(!!accessToken);
-      window.location.pathname = routes.logOut.path;
-      window.location.search = "";
-      window.location.hash = "";
+      this.redirectOnUnauthorized();
     }
   }
 
