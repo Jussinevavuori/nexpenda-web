@@ -15,7 +15,6 @@ import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 import { SmartTransactionFilter } from "../classes/SmartTransactionFilter";
-import { endOfMonth, startOfMonth } from "date-fns";
 import { INITIAL_TIMESTAMP } from "..";
 
 export interface TransactionsModel {
@@ -337,6 +336,7 @@ export const transactionsModel: TransactionsModel = {
 
   getTransactions: thunk(async (actions, payload, helpers) => {
     const result = await TransactionService.getTransactions(payload);
+
     if (result.isSuccess()) {
       actions.setTransactionsToState(
         Transaction.parseCompressedData(result.value)
@@ -344,6 +344,12 @@ export const transactionsModel: TransactionsModel = {
     } else {
       actions.setTransactionsToState([]);
     }
+    const now = new Date().getTime();
+    console.log(
+      `${payload?.before ? "First" : "All"} transactions loaded at ${
+        now - INITIAL_TIMESTAMP
+      } ms`
+    );
     return result;
   }),
 
@@ -443,23 +449,7 @@ export const transactionsModel: TransactionsModel = {
   onLogin: thunkOn(
     (_, store) => store.auth.setAuthToState,
     async (actions) => {
-      // Speed optimization: we first fetch only transactions for this
-      // month. After they have been fetched, we wait a second before we
-      // fetch all transactions.
-      //
-      // While we have to fetch this month's transactions twice, this speeds
-      // up initial load time which is considered more beneficial.
-      await actions.getTransactions({
-        after: startOfMonth(new Date()),
-        before: endOfMonth(new Date()),
-      });
-      const now = new Date().getTime();
-      console.log(`First transactions loaded at ${now - INITIAL_TIMESTAMP} ms`);
-      setTimeout(async () => {
-        await actions.getTransactions();
-        const now = new Date().getTime();
-        console.log(`All transactions loaded at ${now - INITIAL_TIMESTAMP} ms`);
-      }, 1000);
+      await actions.getTransactions();
     }
   ),
 
