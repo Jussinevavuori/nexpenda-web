@@ -23,6 +23,13 @@
     }
   }
 
+  & > .feedbackSection {
+    & label {
+      display: block;
+      padding-bottom: $spacing-4;
+    }
+  }
+
   &.loading {
     display: flex;
     flex-direction: column;

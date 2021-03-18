@@ -2,6 +2,7 @@ import ReactGA from "react-ga";
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
+import { useFeedbackDialogOpenState } from "../../components/FeedbackDialog/useFeedbackDialogController";
 
 
 export function useSettingsController() {
@@ -27,10 +28,19 @@ export function useSettingsController() {
 		redirect(_ => _.subscribe)
 	}
 
+	/**
+	 * Feedback dialog state
+	 */
+	const [, setIsFeedbackDialogOpen] = useFeedbackDialogOpenState()
+	const handleOpenFeedbackDialog = useCallback(() => {
+		setIsFeedbackDialogOpen(true)
+	}, [setIsFeedbackDialogOpen])
+
 	return {
 		user,
 		handleLogout,
 		handleSubscribe,
 		canManageBilling: !!user?.customer,
+		handleOpenFeedbackDialog,
 	}
 }

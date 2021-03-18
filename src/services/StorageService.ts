@@ -144,4 +144,19 @@ export class StorageService {
       },
     });
   }
+
+  static hasDismissedBetaFeatureBanner(feature: string) {
+    return StorageService.createComponent<boolean>({
+      key: `@nexpenda/hasDismissedBetaFeatureBanner/${feature}`,
+      decode(value) {
+        return value === "dismissed";
+      },
+      encode(value) {
+        return value ? "dismissed" : undefined;
+      },
+      options: {
+        storage: "local",
+      },
+    });
+  }
 }

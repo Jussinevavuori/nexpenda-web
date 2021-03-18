@@ -8,6 +8,7 @@ import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
 import { BudgetCreatorDrawer } from "../BudgetCreatorDrawer/BudgetCreatorDrawer";
+import { FeedbackDialog } from "../FeedbackDialog/FeedbackDialog";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -26,6 +27,7 @@ export function AppFrame(props: AppFrameProps) {
 				{isDesktopLayout ? null : <TransactionEditorDrawer />}
 				<BudgetEditorDrawer />
 				<BudgetCreatorDrawer />
+				<FeedbackDialog />
 			</>
 		}
 		<div className="header">

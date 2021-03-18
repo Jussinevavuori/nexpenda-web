@@ -1,0 +1,10 @@
+@import "main";
+
+.FeedbackDialog {
+  &__form {
+    & .MuiDialogActions-root {
+      padding-right: 24px;
+      padding-bottom: 12px;
+    }
+  }
+}

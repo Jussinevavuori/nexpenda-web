@@ -10,6 +10,7 @@ import { Type } from "../../components/Type/Type";
 import { BudgetBlock } from "../../components/BudgetBlock/BudgetBlock";
 import { Button } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
+import { BetaFeatureBanner } from "../../components/BetaFeatureBanner/BetaFeatureBanner";
 
 export type BudgetsProps = {
 
@@ -21,6 +22,7 @@ export function Budgets(props: BudgetsProps) {
 
 	return <BudgetsContextProvider>
 		<div className={cx("Budgets")}>
+
 			<section className="headerContainer">
 				<BudgetsHeader />
 				{
@@ -31,6 +33,9 @@ export function Budgets(props: BudgetsProps) {
 			</section>
 
 			<section className="budgetsContainer">
+
+				<BetaFeatureBanner feature="Budgets" />
+
 				<div className="budgetsList incomes">
 					<div className="budgetsListHeader">
 						<Type component="h2" variant="bold" color="gray-600">

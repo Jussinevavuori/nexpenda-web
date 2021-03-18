@@ -1,7 +1,7 @@
 import "./Settings.scss";
 import React from "react"
 import { Button, CircularProgress } from "@material-ui/core";
-import { ExitToApp as LogoutIcon } from "@material-ui/icons";
+import { ExitToApp as LogoutIcon, Feedback as FeedbackIcon } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
 import { FileUploader } from "../../components/FileUploader/FileUploader";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
@@ -64,6 +64,25 @@ export function Settings(props: SettingsProps) {
 				<SettingsSubscriptionManager />
 			</SettingsSection>
 		}
+
+
+		<SettingsSection
+			sectionTitle="Send feedback"
+			className="feedbackSection"
+		>
+			<Type color="gray-800" component="label">
+				{"Send honest feedback, report bugs or tell us what you love "}
+				{"about Nexpenda below!"}
+			</Type>
+			<Button
+				variant="outlined"
+				onClick={controller.handleOpenFeedbackDialog}
+				startIcon={<FeedbackIcon />}
+				fullWidth
+			>
+				{"Send feedback"}
+			</Button>
+		</SettingsSection>
 
 
 		<SettingsSection sectionTitle="Log out">
