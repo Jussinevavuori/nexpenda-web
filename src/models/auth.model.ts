@@ -3,6 +3,7 @@ import { INITIAL_TIMESTAMP } from "..";
 import { Auth, JsonAuth } from "../classes/Auth";
 import { AuthService } from "../services/AuthService";
 import { ProfileService } from "../services/ProfileService";
+import { StorageService } from "../services/StorageService";
 import { StoreModel } from "../store";
 
 export interface AuthModel {
@@ -220,7 +221,13 @@ export const authModel: AuthModel = {
 
   setAuthToState: action((state, json) => {
     if (Auth.Schema.check(json)) {
-      state.user = new Auth(json);
+      const user = new Auth(json);
+      state.user = user;
+
+      if (user.prefersColorScheme) {
+        StorageService.latestSelectedTheme.setValue(user.prefersColorScheme);
+      }
+
       const now = new Date().getTime();
       console.log(`Profile loaded at ${now - INITIAL_TIMESTAMP} ms`);
     }
