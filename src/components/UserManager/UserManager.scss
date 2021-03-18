@@ -3,6 +3,7 @@
 .UserManager {
   & .MuiAvatar-root {
     background-color: $primary-400;
+    transition: background-color $timing-theme;
     transform: scale(0.9);
     transform-origin: right;
     cursor: pointer;

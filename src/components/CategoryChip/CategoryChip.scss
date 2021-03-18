@@ -2,6 +2,7 @@
 
 .CategoryChip {
   background: $primary-200;
+  transition: background-color $timing-theme;
   padding: 2px 6px;
   border-radius: 20px;
   display: flex;

@@ -27,6 +27,7 @@
           left: 0;
           transform: translateY(-50%);
           background: $primary-600;
+          transition: background-color $timing-theme;
         }
       }
     }

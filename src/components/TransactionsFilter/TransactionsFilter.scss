@@ -104,6 +104,7 @@
         width: 100%;
         &:focus-within {
           border-color: $primary-400;
+          transition: border-color $timing-theme;
         }
       }
     }

@@ -2,6 +2,7 @@
 
 .ProtectedRouteView {
   background: $primary-500;
+  transition: background-color $timing-theme;
   height: $fullvh;
   width: 100%;
   display: grid;

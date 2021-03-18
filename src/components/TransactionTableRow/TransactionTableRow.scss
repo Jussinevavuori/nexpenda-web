@@ -28,6 +28,7 @@
 
   &.selected {
     background: $primary-100;
+    transition: background-color $timing-theme;
   }
 
   &.contextMenuSelected {
@@ -64,6 +65,7 @@
       color: $gray-600;
       &.selected {
         color: $primary-500;
+        transition: color $timing-theme;
       }
     }
   }
@@ -109,6 +111,7 @@
 
     & .upcomingTag {
       background: $primary-200;
+      transition: background-color $timing-theme, color $timing-theme;
       margin-right: $spacing-1;
       padding: 1px 5px;
       border-radius: $spacing-1;

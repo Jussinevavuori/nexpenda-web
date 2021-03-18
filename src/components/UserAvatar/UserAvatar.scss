@@ -2,6 +2,7 @@
 
 .UserAvatar.MuiAvatar-root {
   background-color: $primary-400;
+  transition: background-color $timing-theme;
   & img {
     width: 100%;
     height: 100%;

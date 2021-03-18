@@ -15,6 +15,7 @@
 
   & span.letter-2 {
     color: $primary-500;
+    transition: color $timing-theme;
   }
 
   /** Sizes */

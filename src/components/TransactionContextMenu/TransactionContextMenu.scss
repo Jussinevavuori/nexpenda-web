@@ -15,6 +15,7 @@
     }
     &.editItem svg {
       color: $primary-600;
+      transition: color $timing-theme;
     }
     &.deleteItem svg {
       color: $red-500;

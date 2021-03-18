@@ -9,6 +9,7 @@
 
     &.yearly {
       background: $primary-600;
+      transition: background-color $timing-theme;
       border: 1px solid $primary-600;
       & * {
         color: white;
@@ -57,6 +58,7 @@
       &.yearly {
         background: $white;
         color: $primary-700;
+        transition: color $timing-theme;
 
         &:hover,
         &:focus {
@@ -69,6 +71,7 @@
 
       &.monthly {
         background: $primary-500;
+        transition: background-color $timing-theme;
         color: $white;
 
         &:hover,

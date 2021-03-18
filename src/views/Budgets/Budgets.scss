@@ -54,6 +54,7 @@
         margin-top: $spacing-4;
         // @include text-regular;
         color: $primary-600;
+        transition: color $timing-theme;
       }
     }
   }

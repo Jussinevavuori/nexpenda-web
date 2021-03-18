@@ -20,6 +20,7 @@
 
   &.pressed {
     background: $primary-100;
+    transition: background-color $timing-theme;
   }
 
   & .icon {
@@ -45,6 +46,7 @@
 
     &.selectionActive.selected .iconContainer {
       background-color: $primary-500;
+      transition: background-color $timing-theme;
       color: white;
     }
   }

@@ -19,9 +19,11 @@
       color: $gray-600;
       &.allselected {
         color: $primary-500;
+        transition: color $timing-theme;
       }
       &.someselected {
         color: $primary-500;
+        transition: color $timing-theme;
       }
     }
 
@@ -32,6 +34,7 @@
 
   & .sortbutton {
     color: $primary-500;
+    transition: color $timing-theme;
   }
 
   & .amount,

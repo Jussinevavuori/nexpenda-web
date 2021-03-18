@@ -18,6 +18,7 @@
       border-bottom: 3px solid $gray-200;
       &.active {
         border-bottom-color: $primary-500;
+        transition: border-bottom-color $timing-theme;
       }
     }
   }

@@ -2,6 +2,7 @@
 
 .SubscribeBanner {
   background: $primary-600;
+  transition: background-color $timing-theme;
   width: 100%;
   padding: $spacing-6;
   border-radius: $spacing-1;

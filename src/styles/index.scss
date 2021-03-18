@@ -59,6 +59,7 @@ a {
   }
   ::-webkit-scrollbar-thumb {
     background: $primary-500;
+    transition: background-color $timing-theme;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-track {

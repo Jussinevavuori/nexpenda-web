@@ -15,6 +15,7 @@
       & .MuiMenuItem-root {
         & svg {
           color: $primary-500;
+          transition: color $timing-theme;
           margin-right: $spacing-3;
         }
       }
