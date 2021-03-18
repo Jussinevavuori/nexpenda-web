@@ -10,6 +10,11 @@ export class ThemeUtils {
   }
 
   /**
+   * Default theme
+   */
+  static freeDefaultTheme: Theme = "blue";
+
+  /**
    * Property to access all themes
    */
   static themes: Theme[] = ["blue", "green", "red", "yellow", "pink", "purple"];

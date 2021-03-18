@@ -54,7 +54,9 @@ export const themeModel: ThemeModel = {
   // PROPERTIES
   //==============================================================//
 
-  theme: StorageService.latestSelectedTheme.getValue() ?? "blue",
+  theme:
+    StorageService.latestSelectedTheme.getValue() ??
+    ThemeUtils.freeDefaultTheme,
 
   //==============================================================//
   // ACTIONS
@@ -80,7 +82,16 @@ export const themeModel: ThemeModel = {
     (actions, target) => {
       const theme = target.payload.prefersColorScheme;
       if (ThemeUtils.isTheme(theme)) {
-        actions.setTheme(theme);
+        if (ThemeUtils.isPremiumTheme(theme)) {
+          if (target.payload.isPremium) {
+            actions.setTheme(theme);
+          } else {
+            actions.setTheme(ThemeUtils.freeDefaultTheme);
+            StorageService.latestSelectedTheme.clearValue();
+          }
+        } else {
+          actions.setTheme(theme);
+        }
       }
     }
   ),
