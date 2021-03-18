@@ -56,6 +56,12 @@ export interface AuthModel {
   setAuthToState: Action<AuthModel, JsonAuth>;
 
   /**
+   * Sets the current user with partial user JSON object. Does not trigger
+   * login events.
+   */
+  updateAuthToState: Action<AuthModel, JsonAuth>;
+
+  /**
    * Action to set the current user to null
    */
   clearState: Action<AuthModel, void>;
@@ -229,6 +235,17 @@ export const authModel: AuthModel = {
     }
   }),
 
+  updateAuthToState: action((state, json) => {
+    if (Auth.Schema.check(json)) {
+      const user = new Auth(json);
+      state.user = user;
+
+      if (user.prefersColorScheme) {
+        StorageService.latestSelectedTheme.setValue(user.prefersColorScheme);
+      }
+    }
+  }),
+
   clearState: action((state) => {
     state.user = null;
     state.accessToken = null;
@@ -250,7 +267,7 @@ export const authModel: AuthModel = {
   updateProfile: thunk(async (actions, payload) => {
     const profile = await ProfileService.updateProfile(payload);
     if (profile.isSuccess()) {
-      actions.setAuthToState(profile.value);
+      actions.updateAuthToState(profile.value);
     }
     return profile;
   }),
