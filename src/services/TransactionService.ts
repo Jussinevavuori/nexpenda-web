@@ -135,7 +135,8 @@ export class TransactionService extends Service {
   static async putTransaction(
     json: JsonTransactionInitializer & { id: string }
   ) {
-    const result = await Service.put(`/transactions/${json.id}`, json, {
+    const { id, ...data } = json;
+    const result = await Service.put(`/transactions/${id}`, data, {
       service: { enableLogoutOnUnauthorized: true },
     });
 
@@ -158,7 +159,8 @@ export class TransactionService extends Service {
   static async patchTransaction(
     json: JsonTransactionInitializer & { id: string }
   ) {
-    const result = await Service.patch(`/transactions/${json.id}`, json, {
+    const { id, ...data } = json;
+    const result = await Service.patch(`/transactions/${id}`, data, {
       service: { enableLogoutOnUnauthorized: true },
     });
 
