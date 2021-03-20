@@ -3,15 +3,18 @@ import { Spreadsheet } from "./Spreadsheet";
 
 /* eslint-disable no-useless-escape */
 export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransaction> {
+  public options = TransactionSpreadsheet.options;
+  public schema = TransactionSpreadsheet.schema;
+
   /**
    * The spreadsheet schema
    */
-  public schema = Transaction.InitializerSchema;
+  public static schema = Transaction.InitializerSchema;
 
   /**
    * The spreadsheet options
    */
-  public options = {
+  public static options = {
     category: {
       names: ["Kategoria", "Category", "Class", "Luokka"],
     },

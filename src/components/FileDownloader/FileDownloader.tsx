@@ -20,6 +20,6 @@ export function FileDownloader(props: FileDownloaderProps) {
 		loading={controller.loading}
 		endIcon={<DownloadIcon />}
 	>
-		{"Download file"}
+		{"Export transactions"}
 	</EnhancedButton>
 }

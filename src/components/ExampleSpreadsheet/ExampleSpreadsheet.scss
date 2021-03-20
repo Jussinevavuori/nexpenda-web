@@ -1,0 +1,41 @@
+@import "main";
+
+.ExampleSpreadsheet {
+  & thead {
+    & tr {
+      & td {
+        border: 1px solid $gray-300;
+        border-bottom: 2px solid $gray-300;
+        & .Type {
+          padding: 2px $spacing-3;
+        }
+      }
+    }
+  }
+
+  & tbody {
+    & tr {
+      & td {
+        border: 1px solid $gray-300;
+        & .Type {
+          min-width: max-content;
+          padding: 2px $spacing-3;
+        }
+      }
+    }
+  }
+
+  &__tooltip {
+    background: white;
+    padding: $spacing-2;
+    & ul {
+      padding: $spacing-2 0;
+      & li {
+        display: list-item;
+        list-style: disc;
+        list-style-position: inside;
+        text-transform: capitalize;
+      }
+    }
+  }
+}

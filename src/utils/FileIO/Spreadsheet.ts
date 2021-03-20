@@ -10,11 +10,23 @@ import {
 import { Success } from "../../result/Success";
 import { FileIO } from "./FileIO";
 
-export type SpreadsheetReadFileResult<T> = {
+export type SpreadsheetReadSheetResult<T> = {
   rows: T[];
   succeeded: number;
   failed: number;
   total: number;
+};
+
+export type SpreadsheetReadFileResult<T> = {
+  workbook: XLSX.WorkBook;
+  sheets: Record<
+    string,
+    {
+      sheetName: string;
+      index: number;
+      result: SpreadsheetReadSheetResult<T>;
+    }
+  >;
 };
 
 export abstract class Spreadsheet<T extends object> {
@@ -86,12 +98,8 @@ export abstract class Spreadsheet<T extends object> {
   }
 
   /**
-   * Takes a HTML input (input) and reads a file from it. On file upload,
-   * parses the file to an arraybuffer, then an XLSX workbook, from which
-   * it parses all the rows to objects and returns all the succesfully
-   * parsed rows.
-   *
-   * @param input HTMLInputElement (with type of file)
+   * Uses the read file function to read every single sheet into an array of
+   * sheets.
    */
   async readFile(input: HTMLInputElement) {
     try {
@@ -101,10 +109,81 @@ export abstract class Spreadsheet<T extends object> {
         return new SpreadsheetReadFileFailure<SpreadsheetReadFileResult<T>>();
       }
 
+      // Create workbook
+      const workbook = XLSX.read(arrayBuffer.value, { type: "buffer" });
+      this._workbook = workbook;
+
+      // Set up result array
+      const sheets: SpreadsheetReadFileResult<T>["sheets"] = {};
+
+      // Read each sheet separately
+      for (let index = 0; index < workbook.SheetNames.length; index++) {
+        // Get sheet name
+        const sheetName = workbook.SheetNames[index];
+
+        // Read sheet to JSON
+        const sheet = workbook.Sheets[sheetName];
+        const json = XLSX.utils.sheet_to_json(sheet, { raw: true });
+
+        // Parse rows
+        const rowParsers = json.map((row) => this.parseRow(row));
+        const parsedRows = await Promise.all(rowParsers);
+        const succeededRows = Success.All(parsedRows);
+        const failedRows = Failure.All(parsedRows);
+
+        // Warn on failed rows
+        if (failedRows.length > 0) {
+          console.warn(`Failed parsing ${failedRows.length} rows`, failedRows);
+        }
+
+        // Add result to sheets
+        sheets[sheetName] = {
+          sheetName,
+          index,
+          result: {
+            rows: succeededRows.map((_) => _.value),
+            succeeded: succeededRows.length,
+            failed: failedRows.length,
+            total: succeededRows.length + failedRows.length,
+          },
+        };
+      }
+
+      return new Success<SpreadsheetReadFileResult<T>>({
+        workbook,
+        sheets,
+      });
+    } catch (error) {
+      return new ErrorFailure<SpreadsheetReadFileResult<T>>(error, {
+        silent: true,
+      });
+    }
+  }
+
+  /**
+   * Takes a HTML input (input) and reads a file from it. On file upload,
+   * parses the file to an arraybuffer, then an XLSX workbook, from which
+   * it parses all the rows to objects and returns all the succesfully
+   * parsed rows.
+   *
+   * @param input HTMLInputElement (with type of file)
+   */
+  async readSheet(
+    input: HTMLInputElement,
+    options: { sheetIndex?: number } = {}
+  ) {
+    try {
+      // Parse as text
+      const arrayBuffer = await FileIO.readFileAsArrayBuffer(input);
+      if (arrayBuffer.isFailure()) {
+        return new SpreadsheetReadFileFailure<SpreadsheetReadSheetResult<T>>();
+      }
+
       // Create workbook and read to JSON
       const workbook = XLSX.read(arrayBuffer.value, { type: "buffer" });
       this._workbook = workbook;
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const sheetIndex = options.sheetIndex ?? 0;
+      const sheet = workbook.Sheets[workbook.SheetNames[sheetIndex]];
       const json = XLSX.utils.sheet_to_json(sheet, { raw: true });
 
       // Parse rows
@@ -119,14 +198,14 @@ export abstract class Spreadsheet<T extends object> {
       }
 
       // Return succeeded rows and count of failed rows
-      return new Success<SpreadsheetReadFileResult<T>>({
+      return new Success<SpreadsheetReadSheetResult<T>>({
         rows: succeededRows.map((_) => _.value),
         succeeded: succeededRows.length,
         failed: failedRows.length,
         total: succeededRows.length + failedRows.length,
       });
     } catch (error) {
-      return new ErrorFailure<SpreadsheetReadFileResult<T>>(error, {
+      return new ErrorFailure<SpreadsheetReadSheetResult<T>>(error, {
         silent: true,
       });
     }

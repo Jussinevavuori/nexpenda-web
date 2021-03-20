@@ -1,0 +1,41 @@
+@import "main";
+
+.TransactionSpreadsheetReadSheetResult {
+  & .tableContainer {
+    max-width: 100%;
+    overflow: auto;
+  }
+  & table {
+    & thead {
+      & tr {
+        & td {
+          border: 1px solid $gray-300;
+          border-bottom: 2px solid $gray-300;
+          & .Type {
+            padding: 2px $spacing-3;
+          }
+        }
+      }
+    }
+
+    & tbody {
+      & tr {
+        & td {
+          border: 1px solid $gray-300;
+          & .Type {
+            min-width: max-content;
+            padding: 2px $spacing-3;
+            &.empty {
+              color: $gray-500;
+              font-style: italic;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .footer {
+    padding-top: $spacing-2;
+  }
+}

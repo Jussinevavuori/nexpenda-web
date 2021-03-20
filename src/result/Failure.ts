@@ -5,13 +5,15 @@ export class Failure<T, R = string> implements IResult<T, R> {
   public readonly resultType: "failure" = "failure";
   public readonly reason: R;
 
-  constructor(reason: R) {
+  constructor(reason: R, options: { silent?: boolean } = {}) {
     this.reason = reason;
 
-    if (process.env.NODE_ENV === "development") {
-      console.error(this);
-    } else {
-      console.error(this.reason);
+    if (!options.silent) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(this);
+      } else {
+        console.error(this.reason);
+      }
     }
   }
 

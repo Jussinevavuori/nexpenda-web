@@ -1,0 +1,10 @@
+@import "main";
+
+.FileUploaderDrawer {
+  &__content {
+    padding: $spacing-4;
+    @include md {
+      width: 660px;
+    }
+  }
+}

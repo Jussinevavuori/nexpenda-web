@@ -208,5 +208,16 @@ export function createTheme(variant: Theme) {
       common: { black: _.black, white: _.white },
       background: { default: _.white, paper: _.white },
     },
+    /**
+     * Overrides
+     */
+    overrides: {
+      MuiTooltip: {
+        tooltip: {
+          backgroundColor: "#ffffff",
+          border: `1px solid ${colors[variant][500]}`,
+        },
+      },
+    },
   });
 }

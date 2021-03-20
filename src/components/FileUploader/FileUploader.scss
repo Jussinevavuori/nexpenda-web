@@ -1,7 +1,66 @@
 @import "main";
 
 .FileUploader {
-  & .cancelButton {
-    max-width: 48px;
+  &__uploadFileStep {
+    & .exampleSpreadsheetContainer {
+      padding: $spacing-4 0;
+    }
+  }
+
+  &__reviewStep {
+    & .reviewSpreadsheetContainer {
+      padding: $spacing-4 0;
+    }
+  }
+
+  &__finishedStep {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-4;
+
+    & svg {
+      font-size: 6rem;
+      color: $green-500;
+    }
+  }
+
+  &__stepActions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $spacing-4;
+  }
+
+  &__reviewTabs {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      display: block;
+      height: 2px;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      background: $gray-300;
+    }
+  }
+
+  & .iconTypeContainer {
+    display: flex;
+    align-items: top;
+    gap: $spacing-2;
+    padding-top: $spacing-4;
+
+    & svg {
+      color: $primary-600;
+    }
+
+    &.error {
+      svg {
+        color: $red-500;
+      }
+    }
   }
 }

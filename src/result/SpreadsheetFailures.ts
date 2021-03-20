@@ -5,7 +5,7 @@ export class SpreadsheetReadRowFailure<T> extends Failure<
   "spreadsheet-read-row-failure"
 > {
   constructor() {
-    super("spreadsheet-read-row-failure");
+    super("spreadsheet-read-row-failure", { silent: true });
   }
 }
 

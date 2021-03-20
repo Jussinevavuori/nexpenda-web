@@ -1,9 +1,8 @@
 import "./Settings.scss";
 import React from "react"
 import { Button, CircularProgress } from "@material-ui/core";
-import { ExitToApp as LogoutIcon, Feedback as FeedbackIcon } from "@material-ui/icons";
+import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIcon } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
-import { FileUploader } from "../../components/FileUploader/FileUploader";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
@@ -53,8 +52,20 @@ export function Settings(props: SettingsProps) {
 			<ThemePicker />
 		</SettingsSection>
 
-		<SettingsSection className="fileHandlers" sectionTitle="Export and import data">
-			<FileUploader />
+		<SettingsSection className="fileHandlers" sectionTitle="Import and export">
+			<Type>
+				{"Import existing transactions from your own spreadsheets "}
+				{"or export all your transactions into a .xlsx spreadsheet."}
+			</Type>
+			<Button
+				color="primary"
+				variant="outlined"
+				endIcon={<UploadIcon />}
+				onClick={controller.handleOpenFileUploaderDrawer}
+				fullWidth
+			>
+				{"Import transactions"}
+			</Button>
 			<FileDownloader />
 		</SettingsSection>
 

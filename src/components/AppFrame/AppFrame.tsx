@@ -9,6 +9,7 @@ import { useMdMedia } from "../../hooks/utils/useMedia";
 import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
 import { BudgetCreatorDrawer } from "../BudgetCreatorDrawer/BudgetCreatorDrawer";
 import { FeedbackDialog } from "../FeedbackDialog/FeedbackDialog";
+import { FileUploaderDrawer } from "../FileUploaderDrawer/FileUploaderDrawer";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -28,6 +29,7 @@ export function AppFrame(props: AppFrameProps) {
 				<BudgetEditorDrawer />
 				<BudgetCreatorDrawer />
 				<FeedbackDialog />
+				<FileUploaderDrawer />
 			</>
 		}
 		<div className="header">

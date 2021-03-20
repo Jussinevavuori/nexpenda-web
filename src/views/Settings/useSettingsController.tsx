@@ -3,16 +3,15 @@ import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
 import { useFeedbackDialogOpenState } from "../../components/FeedbackDialog/useFeedbackDialogController";
+import { useFileUploaderDrawerOpenState } from "../../components/FileUploaderDrawer/useFileUploaderDrawerController";
 
 
 export function useSettingsController() {
 	const redirect = useRedirect()
-
-	/**
-	 * Auth and logout
-	 */
 	const user = useStoreState(_ => _.auth.user)
 	const logout = useStoreActions(_ => _.auth.logout)
+
+	// Auth and logout
 	const handleLogout = useCallback(async function () {
 		const result = await logout()
 		if (result.isSuccess()) {
@@ -24,13 +23,18 @@ export function useSettingsController() {
 		}
 	}, [logout, redirect])
 
+	// Subscribe
 	const handleSubscribe = () => {
 		redirect(_ => _.subscribe)
 	}
 
-	/**
-	 * Feedback dialog state
-	 */
+	// Upload state
+	const [, setIsFileUploaderDrawerOpen] = useFileUploaderDrawerOpenState()
+	const handleOpenFileUploaderDrawer = useCallback(() => {
+		setIsFileUploaderDrawerOpen(true)
+	}, [setIsFileUploaderDrawerOpen])
+
+	// Feedback dialog state
 	const [, setIsFeedbackDialogOpen] = useFeedbackDialogOpenState()
 	const handleOpenFeedbackDialog = useCallback(() => {
 		setIsFeedbackDialogOpen(true)
@@ -41,6 +45,7 @@ export function useSettingsController() {
 		handleLogout,
 		handleSubscribe,
 		canManageBilling: !!user?.customer,
+		handleOpenFileUploaderDrawer,
 		handleOpenFeedbackDialog,
 	}
 }
