@@ -14,9 +14,8 @@ export const registerValidationSchema = z.object({
 export type RegisterFormType = z.TypeOf<typeof registerValidationSchema>
 
 export function useRegisterController() {
-
+	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const redirect = useRedirect()
-
 	const register = useStoreActions(_ => _.auth.registerWithEmailPassword)
 
 	/**
@@ -103,5 +102,8 @@ export function useRegisterController() {
 		togglePasswordVisibility,
 		emailError,
 		passwordError,
+		handleGoogleSubmit() {
+			loginWithGoogle()
+		}
 	}
 }

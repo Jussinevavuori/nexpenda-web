@@ -3,6 +3,7 @@ import React from "react"
 import { Logo } from "../Logo/Logo";
 import { Button } from "@material-ui/core";
 import { useAuthFrameController } from "./useAuthFrameController";
+import { GetApp } from "@material-ui/icons";
 
 export type AuthFrameProps = {
 	children?: React.ReactNode;
@@ -14,17 +15,19 @@ export function AuthFrame(props: AuthFrameProps) {
 
 	return <div className="AuthFrame">
 		<nav>
-			<Logo />
+			<a href="https://nexpenda.com" target="_blank" rel="noreferrer noopener">
+				<Logo />
+			</a>
 			{
-				controller.handlePwaInstall
-					? <Button
-						color="primary"
-						variant="contained"
-						onClick={controller.handlePwaInstall}
-					>
-						{"Install"}
-					</Button>
-					: null
+				controller.handlePwaInstall &&
+				<Button
+					color="primary"
+					variant="contained"
+					onClick={controller.handlePwaInstall}
+					startIcon={<GetApp />}
+				>
+					{"Install Nexpenda"}
+				</Button>
 			}
 		</nav>
 

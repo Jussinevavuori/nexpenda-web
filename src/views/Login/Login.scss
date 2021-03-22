@@ -1,13 +1,19 @@
 @import "main";
 
 .Login {
-  .authprovider-logo {
-    display: flex;
-    align-items: center;
-    margin-right: $spacing-2;
-    img {
-      height: 1.3rem;
-      width: 1.3rem;
+  & .oauthProviders {
+    padding: $spacing-6 0;
+    margin-bottom: $spacing-6;
+    border-bottom: 1px solid $gray-300;
+    width: 100%;
+    & .oauthproviderLogo {
+      display: flex;
+      align-items: center;
+      margin-right: $spacing-2;
+      img {
+        height: 1.3rem;
+        width: 1.3rem;
+      }
     }
   }
 }

@@ -1,4 +1,19 @@
 @import "main";
 
 .Register {
+  & .oauthProviders {
+    padding-bottom: $spacing-8;
+    margin-bottom: $spacing-8;
+    border-bottom: 1px solid $gray-300;
+    width: 100%;
+    & .oauthproviderLogo {
+      display: flex;
+      align-items: center;
+      margin-right: $spacing-2;
+      img {
+        height: 1.3rem;
+        width: 1.3rem;
+      }
+    }
+  }
 }

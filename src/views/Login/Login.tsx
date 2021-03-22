@@ -30,6 +30,19 @@ export function Login() {
 		<main>
 			<form noValidate onSubmit={controller.handleSubmit}>
 
+				<div className="oauthProviders">
+					<Button
+						variant="outlined"
+						onClick={controller.handleGoogleSubmit}
+						fullWidth
+					>
+						<div className="oauthproviderLogo">
+							<img src={googleLogo} alt="Google Logo" />
+						</div>
+						{"Log in with Google"}
+					</Button>
+				</div>
+
 				<TextField
 					id="login-email"
 					name="email"
@@ -89,17 +102,6 @@ export function Login() {
 						</Type>
 						: null
 				}
-
-				<Button
-					variant="outlined"
-					onClick={controller.handleGoogleSubmit}
-					fullWidth
-				>
-					<div className="authprovider-logo">
-						<img src={googleLogo} alt="Google Logo" />
-					</div>
-					{"Log in with Google"}
-				</Button>
 
 			</form>
 		</main>

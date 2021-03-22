@@ -1,6 +1,7 @@
 import "./Register.scss"
 import React from 'react';
 import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core";
+import googleLogo from "../../images/logo_google.png"
 import {
 	Email as EmailIcon,
 	Visibility as PasswordVisibleIcon,
@@ -25,10 +26,25 @@ export function Register() {
 			color="black"
 			size="xxl"
 		>
-			{"Create account"}
+			{"Welcome!"}
 		</Type>
 
 		<main>
+
+			<div className="oauthProviders">
+				<Button
+					variant="outlined"
+					onClick={controller.handleGoogleSubmit}
+					fullWidth
+				>
+					<div className="oauthproviderLogo">
+						<img src={googleLogo} alt="Google Logo" />
+					</div>
+					{"Log in with Google"}
+				</Button>
+			</div>
+
+
 			{
 				controller.registered
 					? <>
