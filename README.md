@@ -1,44 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Visit the project's homepage at [nexpenda.com](https://nexpenda.com)
 
-## Available Scripts
+# Get your spending under control.
+Experience a new way of tracking your expenses.
 
-In the project directory, you can run:
+## Say goodbye to clunky spreadsheets
 
-### `npm start`
+Stop fiddling with creating, updating and maintaining difficult and outdated Excel files! We provide you a better alternative to spreadsheets.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* Faster data entry both for mobile and desktop users
+* Analytics, charts, budgets and more straight out of the box
+* Importing data from your existing spreadsheets
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## How does it work?
 
-### `npm test`
+* Log your incomes and expenses
+  Get into the habit of logging your incomes and expenses as they come, once a week or at the end of every month.
+* Set up your budgets
+  Estimate your monthly incomes and expenses and set up limits for how much you want to be spending on different categories.
+* We provide the rest
+  Once you start logging your transactions, we will automatically provide you with all the rest! See below for all features.
+  
+## All these features, for free
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Easy and fast
+  No more frustrations or slow interfaces. Logging your transactions takes only seconds.
 
-### `npm run build`
+* Analytics
+  Get insights, charts, detailed overviews and more to understand your spending habits.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Budgets
+  Estimate your incomes, set up your spending limits and follow your progress.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+* Use on the go
+  Use Nexpenda in your browser on your mobile or desktop and access your data from the cloud anywhere!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Use your data
+  Easily import and export data to and from your own spreadsheets.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Security
+  Your data is protected and secure with us.  All these features, for free
