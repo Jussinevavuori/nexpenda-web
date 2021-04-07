@@ -1,0 +1,13 @@
+@import "main";
+
+// Generate all color styles
+@each $name, $color in $colors {
+  .PiechartCircle > path.segment.color-#{$name} {
+    stroke: $color;
+    stroke-width: 4px;
+    fill: transparent;
+  }
+}
+
+.PiechartCircle {
+}

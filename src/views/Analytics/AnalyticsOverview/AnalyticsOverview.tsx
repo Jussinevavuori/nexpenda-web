@@ -7,7 +7,7 @@ import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
-import { PercentageCircle } from "../../../components/PercentageCircle/PercentageCircle";
+import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircle";
 
 export type AnalyticsOverviewProps = {
 
@@ -50,7 +50,20 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 			</div>
 
 			<div className="chart">
-				<PercentageCircle percentage={78} />
+				<PiechartCircle
+					data={[
+						{
+							color: "blue-700",
+							amount: 100,
+							label: "Yup 1"
+						},
+						{
+							color: "blue-600",
+							amount: 200,
+							label: "Yup 2"
+						}
+					]}
+				/>
 			</div>
 
 		</section>

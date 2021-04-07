@@ -10,7 +10,7 @@ export function usePercentageCircleController(props: PercentageCircleProps) {
   // Get fill percentage
   const fillPercentage = Math.min(percentage, 100);
 
-  // Radius: default to 20
+  // Radius: default to 26
   const radius =
     0.5 * (Math.max(0, props.size ?? 0) || PercentageCircleDefaultSize);
 
