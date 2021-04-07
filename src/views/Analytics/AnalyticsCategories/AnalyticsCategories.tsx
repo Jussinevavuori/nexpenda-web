@@ -2,7 +2,6 @@ import "./AnalyticsCategories.scss";
 import React from "react"
 import { useAnalyticsCategoriesController } from "./useAnalyticsCategoriesController"
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
-import { Category as CategoriesIcon } from "@material-ui/icons"
 import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
@@ -17,7 +16,6 @@ export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 
 	return <AnalyticsBlock
 		header="Categories"
-		headerIcon={<CategoriesIcon />}
 		headerContent={<div className="AnalyticsCategories__headerContent">
 			<ButtonGroup size="small">
 				<Button

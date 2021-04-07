@@ -216,6 +216,8 @@ export function createTheme(variant: Theme) {
         tooltip: {
           backgroundColor: "#ffffff",
           border: `1px solid ${colors[variant][500]}`,
+          color: `${colors["gray"][800]}`,
+          fontSize: _.text_sm,
         },
       },
     },

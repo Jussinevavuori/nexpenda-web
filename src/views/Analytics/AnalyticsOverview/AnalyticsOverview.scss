@@ -3,7 +3,7 @@
 .AnalyticsOverview {
   border: $border;
   border-radius: $radius-md;
-  padding: $spacing-4;
+  padding: $spacing-8 $spacing-6;
 
   & > header {
     display: flex;
@@ -11,12 +11,12 @@
   }
 
   & > section {
-    padding-top: $spacing-8;
+    padding-top: $spacing-10;
   }
 
   & > section.total {
     display: grid;
-    grid-template: "label label" auto "total chart" auto "change chart" auto / 1fr auto;
+    grid-template: "label chart" auto "total chart" auto "change chart" auto / 1fr auto;
     gap: $spacing-1;
 
     & > .label {
@@ -34,7 +34,6 @@
       gap: $spacing-2;
 
       & svg {
-        color: $green-600;
         font-size: 20px;
       }
     }
@@ -47,7 +46,7 @@
 
   & > .subtotals {
     display: flex;
-    gap: $spacing-16;
+    gap: $spacing-12;
 
     & > .subtotal {
       display: grid;
@@ -55,31 +54,31 @@
       gap: $spacing-1;
       position: relative;
 
+      &::before {
+        $size: 1.5px;
+
+        position: absolute;
+        content: "";
+        display: block;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: $size;
+        height: 90%;
+        border-radius: 0.5 * $size;
+      }
+
+      &.income::before {
+        background: $green-500;
+      }
+      &.expense::before {
+        background: $red-400;
+      }
+
       & > .label {
         grid-area: label;
         position: relative;
         padding-left: $spacing-5;
-
-        &::before {
-          $size: 7px;
-
-          position: absolute;
-          content: "";
-          display: block;
-          top: 50%;
-          left: 0;
-          transform: translateY(-50%);
-          width: $size;
-          height: $size;
-          border-radius: 50%;
-        }
-
-        &.income::before {
-          background: $green-400;
-        }
-        &.expense::before {
-          background: $red-400;
-        }
       }
       & > .amount {
         grid-area: amount;
@@ -94,32 +93,10 @@
         align-items: center;
         gap: $spacing-2;
 
-        &.income svg {
-          color: $green-400;
-        }
-        &.expense svg {
-          color: $red-400;
-        }
-
         & svg {
           font-size: 14px;
         }
       }
-
-      &:not(:last-child)::after {
-        position: absolute;
-        content: "";
-        right: -1 * $spacing-8;
-        top: 50%;
-        transform: translateY(-50%);
-        display: block;
-        height: 90%;
-        width: 1px;
-        background: $gray-200;
-      }
     }
   }
-
-  /** @todo: Remove later */
-  margin-bottom: $spacing-4;
 }

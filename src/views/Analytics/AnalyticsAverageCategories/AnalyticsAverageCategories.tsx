@@ -2,7 +2,6 @@ import "./AnalyticsAverageCategories.scss";
 import React from "react";
 import { useAnalyticsAverageCategoriesController } from "./useAnalyticsAverageCategoriesController";
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
-import { Category as CategoriesIcon } from "@material-ui/icons"
 import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
@@ -18,7 +17,6 @@ export function AnalyticsAverageCategories(props: AnalyticsAverageCategoriesProp
 
 	return <AnalyticsBlock
 		header="Category averages"
-		headerIcon={<CategoriesIcon />}
 		headerContent={<div className="AnalyticsAverageCategories__headerContent">
 			<ButtonGroup size="small">
 				<Button

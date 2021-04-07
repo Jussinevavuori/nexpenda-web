@@ -5,9 +5,8 @@ import { useAnalyticsOverviewController } from "./useAnalyticsOverviewController
 import { TitleHighlightColumn } from "../../../components/TitleHighlightColumn/TitleHighlightColumn";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
-import { MoneyAmount } from "../../../classes/MoneyAmount";
-import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
 import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircle";
+import { ChangeIcon } from "../../../components/ChangeIcon/ChangeIcon";
 
 export type AnalyticsOverviewProps = {
 
@@ -28,40 +27,61 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 		<section className="total">
 
-			<Type className="label">
-				{"Total"}
+			<Type className="label" variant="boldcaps" color="gray-700" size="sm">
+				{"Total savings"}
 			</Type>
 
 			<MoneyType
 				className="total"
-				amount={new MoneyAmount(297000)}
+				amount={controller.analytics.selected.total.total}
 				color="gray-800"
 				size="xl"
 			/>
 
-			<div className="change">
-				<ArrowUpward />
-				<Type component="span" variant="bold" color="green-600">
-					{"7.8 %"}
-				</Type>
-				<Type component="span" color="gray-600">
-					{"vs last month"}
-				</Type>
-			</div>
+			{
+				!controller.isAll &&
+				<div className="change">
+					<ChangeIcon
+						change={controller.totalPercentageIncrease}
+						color={{
+							negative: "red-600",
+							positive: "green-600",
+							neutral: "gray-600"
+						}}
+					/>
+					<Type
+						component="span"
+						variant="bold"
+						color={
+							!controller.totalPercentageIncrease
+								? "gray-600"
+								: controller.totalPercentageIncrease > 0
+									? "green-600"
+									: "red-600"
+						}
+					>
+						{`${controller.totalPercentageIncrease.toFixed(1)} %`}
+					</Type>
+					<Type component="span" color="gray-600">
+						{`vs last ${controller.intervalLengthLabel}`}
+					</Type>
+				</div>
+			}
 
 			<div className="chart">
 				<PiechartCircle
+					stroke={6}
 					data={[
 						{
-							color: "blue-700",
-							amount: 100,
-							label: "Yup 1"
+							color: "green-500",
+							amount: Math.abs(controller.analytics.selected.total.incomes),
+							label: "Incomes"
 						},
 						{
-							color: "blue-600",
-							amount: 200,
-							label: "Yup 2"
-						}
+							color: "red-500",
+							amount: Math.abs(controller.analytics.selected.total.expenses),
+							label: "Expenses"
+						},
 					]}
 				/>
 			</div>
@@ -78,16 +98,37 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 				<MoneyType
 					className="amount income"
-					amount={new MoneyAmount(522040)}
+					amount={controller.analytics.selected.total.incomes}
 					color="green-600"
 				/>
 
-				<div className="change income">
-					<ArrowUpward />
-					<Type size="sm" component="span" variant="bold" color="green-600">
-						{"2.4 %"}
-					</Type>
-				</div>
+				{
+					!controller.isAll &&
+					<div className="change income">
+						<ChangeIcon
+							change={controller.incomePercentageIncrease}
+							color={{
+								negative: "red-600",
+								positive: "green-600",
+								neutral: "gray-600"
+							}}
+						/>
+						<Type
+							size="sm"
+							component="span"
+							variant="bold"
+							color={
+								!controller.incomePercentageIncrease
+									? "gray-600"
+									: controller.incomePercentageIncrease > 0
+										? "green-600"
+										: "red-600"
+							}
+						>
+							{`${controller.incomePercentageIncrease.toFixed(1)} %`}
+						</Type>
+					</div>
+				}
 
 			</div>
 
@@ -99,16 +140,38 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 				<MoneyType
 					className="amount expense"
-					amount={new MoneyAmount(-593205)}
+					amount={controller.analytics.selected.total.expenses}
 					color="red-600"
 				/>
 
-				<div className="change expense">
-					<ArrowDownward />
-					<Type size="sm" component="span" variant="bold" color="red-600">
-						{"-5.1 %"}
-					</Type>
-				</div>
+				{
+					!controller.isAll &&
+					<div className="change expense">
+						<ChangeIcon
+							change={controller.expensesPercentageIncrease}
+							color={{
+								negative: "green-600",
+								positive: "red-600",
+								neutral: "gray-600"
+							}}
+						/>
+						<Type
+							size="sm"
+							component="span"
+							variant="bold"
+
+							color={
+								!controller.expensesPercentageIncrease
+									? "gray-600"
+									: controller.incomePercentageIncrease > 0
+										? "green-600"
+										: "red-600"
+							}
+						>
+							{`${controller.expensesPercentageIncrease.toFixed(1)} %`}
+						</Type>
+					</div>
+				}
 
 			</div>
 

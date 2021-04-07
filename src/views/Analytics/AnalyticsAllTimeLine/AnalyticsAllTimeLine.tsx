@@ -2,7 +2,6 @@ import "./AnalyticsAllTimeLine.scss";
 import React from "react"
 import { useAnalyticsAllTimeLineController } from "./useAnalyticsAllTimeLineController"
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
-import { ShowChart as ChartIcon } from "@material-ui/icons"
 import { ResponsiveContainer, LineChart, YAxis, Tooltip, Line, CartesianGrid } from "recharts"
 import { theme } from "../../../styles/main";
 import { MoneyAmount } from "../../../classes/MoneyAmount";
@@ -19,7 +18,6 @@ export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 
 	return <AnalyticsBlock
 		header="All time"
-		headerIcon={<ChartIcon />}
 		headerContent={<div className="AnalyticsAllTimeLine__total">
 			<Type color="gray-700">
 				{`In total you have saved`}

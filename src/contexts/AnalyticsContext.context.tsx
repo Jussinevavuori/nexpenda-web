@@ -83,5 +83,21 @@ function getDefaultAnalyticsContextValue(): AnalyticsContextType {
 				total: 0,
 			}
 		},
+		previous: {
+			categories: {
+				incomes: {},
+				expenses: {},
+				max: {
+					incomes: 0,
+					expenses: 0,
+				}
+			},
+			total: {
+				expenses: 0,
+				incomes: 0,
+				transactions: 0,
+				total: 0,
+			}
+		}
 	}
 }

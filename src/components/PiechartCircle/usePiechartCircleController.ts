@@ -6,9 +6,7 @@ export function usePiechartCircleController(props: PiechartCircleProps) {
 
   // Get all segments and their absolute and cumulative percentages
   const segments = useMemo(() => {
-    const total = data.reduce((sum, item) => {
-      return item.amount + sum;
-    }, 0);
+    const total = data.reduce((s, i) => i.amount + s, 0);
 
     const getPercentage = (amount: number) => {
       if (total === 0) return 0;
@@ -19,13 +17,16 @@ export function usePiechartCircleController(props: PiechartCircleProps) {
 
     return data.map((item) => {
       const percentage = getPercentage(item.amount);
-      cumulativePercentage += percentage;
 
-      return {
+      const value = {
         ...item,
         percentage,
-        cumulativePercentage: cumulativePercentage - percentage,
+        cumulativePercentage: cumulativePercentage,
       };
+
+      cumulativePercentage += percentage;
+
+      return value;
     });
   }, [data]);
 
@@ -33,10 +34,14 @@ export function usePiechartCircleController(props: PiechartCircleProps) {
   const radius =
     0.5 * (Math.max(0, props.size ?? 0) || PiechartCircleDefaultSize);
 
+  const stroke = props.stroke ?? PiechartCircleDefaultStroke;
+
   return {
     radius,
+    stroke,
     segments,
   };
 }
 
 export const PiechartCircleDefaultSize = 52;
+export const PiechartCircleDefaultStroke = 4;

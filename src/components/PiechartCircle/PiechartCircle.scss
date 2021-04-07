@@ -4,10 +4,16 @@
 @each $name, $color in $colors {
   .PiechartCircle > path.segment.color-#{$name} {
     stroke: $color;
-    stroke-width: 4px;
     fill: transparent;
+    &:hover {
+      filter: drop-shadow(0 0 5px $color);
+    }
   }
 }
 
 .PiechartCircle {
+  overflow: visible;
+  & > path.segment {
+    stroke-linecap: round;
+  }
 }

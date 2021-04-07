@@ -5,6 +5,10 @@
   height: 100%;
   overflow: auto;
 
+  & > section > .masonry {
+    padding-bottom: $spacing-8;
+  }
+
   & > .headerContainer {
     position: sticky;
     top: calc(-1 * #{$mobile-header-height});
@@ -21,7 +25,7 @@
   }
 
   & .analyticsBlocksContainer {
-    padding: $spacing-8 $spacing-6;
+    padding: 0 $spacing-6;
     & > .AnalyticsBlock {
       margin-bottom: $spacing-4;
     }
@@ -29,7 +33,7 @@
       padding: $spacing-8 $spacing-16 $spacing-16;
     }
     & > h2 {
-      margin: $spacing-8 0 $spacing-4;
+      margin: $spacing-4 0;
     }
   }
 }

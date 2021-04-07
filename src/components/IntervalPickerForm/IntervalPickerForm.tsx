@@ -1,11 +1,11 @@
 import "./IntervalPickerForm.scss";
 import React from "react"
-import { IconButton, Button } from "@material-ui/core";
+import { IconButton, Button, Tooltip } from "@material-ui/core";
 import {
 	ArrowBack as PreviousIcon,
 	ArrowForward as NextIcon,
-	RadioButtonUnchecked as NowIcon,
-	Today as CalendarIcon
+	Today as NowIcon,
+	DateRange as CalendarIcon
 } from "@material-ui/icons";
 // import { DatePicker } from "@material-ui/pickers";
 import { Type } from "../Type/Type";
@@ -85,17 +85,17 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 
 			<div className="nextOrPreviousInterval">
 
+				<Tooltip title={"Today"}>
+					<IconButton onClick={controller.onNow}>
+						<NowIcon />
+					</IconButton>
+				</Tooltip>
+
 				<IconButton
 					disabled={controller.isAll}
 					onClick={controller.onPrevious}
 				>
 					<PreviousIcon />
-				</IconButton>
-
-				<IconButton
-					onClick={controller.onNow}
-				>
-					<NowIcon />
 				</IconButton>
 
 				<IconButton

@@ -2,7 +2,7 @@ import "./IntervalManager.scss";
 import React from "react"
 import { isMobile } from "react-device-detect"
 import { Button, Drawer, IconButton, Menu } from "@material-ui/core";
-import { ArrowBack, ArrowForward, DateRange, RadioButtonUnchecked as TodayIcon } from "@material-ui/icons"
+import { ArrowBack, ArrowForward, DateRange } from "@material-ui/icons"
 import { useSmMedia } from "../../hooks/utils/useMedia";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerForm";
 import { useIntervalManagerController } from "./useIntervalManagerController";
@@ -54,13 +54,13 @@ export function IntervalManager(props: IntervalManagerProps) {
 					<IconButton onClick={controller.handlePrevious}>
 						<ArrowBack />
 					</IconButton>
-					{
+					{/* {
 						props.hideNowControl
 							? null
 							: <IconButton onClick={controller.handleToday}>
 								<TodayIcon />
 							</IconButton>
-					}
+					} */}
 					<IconButton onClick={controller.handleNext}>
 						<ArrowForward />
 					</IconButton>

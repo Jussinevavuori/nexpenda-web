@@ -2,6 +2,9 @@ import "./PiechartCircle.scss";
 import React from "react";
 import cx from "classnames";
 import { usePiechartCircleController } from "./usePiechartCircleController";
+import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { Angle } from "../../utils/GeometryUtils/Angle";
+import { Tooltip } from "@material-ui/core";
 
 export type PiechartCircleProps = {
 	/**
@@ -18,6 +21,12 @@ export type PiechartCircleProps = {
 	 */
 	size?: number;
 
+	/**
+	 * Stroke width in px
+	 */
+	stroke?: number;
+
+
 };
 
 export function PiechartCircle(props: PiechartCircleProps) {
@@ -25,59 +34,33 @@ export function PiechartCircle(props: PiechartCircleProps) {
 	const controller = usePiechartCircleController(props)
 
 	return <svg
-		className={cx(
-			"PiechartCircle",
-		)}
-
+		className={cx("PiechartCircle")}
 		height={controller.radius * 2}
 		width={controller.radius * 2}
 	>
 		{
-			controller.segments.map(segment => (
-				<path
-					className={cx(
-						"segment",
-						`color-${segment.color}`
-					)}
-					d={getPathD(
-						controller.radius,
-						segment.percentage,
-						segment.cumulativePercentage,
-					)}
-				/>
+			controller.segments.map((segment, i) => (
+				<Tooltip
+					key={i}
+					title={`${segment.label} - ${segment.percentage.toFixed(1)} %`}
+				>
+					<path
+						className={cx("segment", `color-${segment.color}`)}
+						style={{ strokeWidth: controller.stroke }}
+						d={SvgPath.describePartialCircle({
+							radius: controller.radius,
+							strokeWidth: controller.stroke,
+							offsetAngle: new Angle(segment.cumulativePercentage, "percentages"),
+							sweepAngle: segment.percentage <= 0 || segment.percentage >= 100
+								? new Angle(segment.percentage, "percentages")
+								: Angle.add(
+									new Angle(segment.percentage, "percentages"),
+									new Angle(-22, "degrees")
+								),
+						})}
+					/>
+				</Tooltip>
 			))
 		}
 	</svg>
-}
-
-function getPathD(radius: number, percentage: number, cumulativePercentage: number) {
-
-	// Stroke S and half-stroke s
-	const S = 4
-	const s = S / 2
-
-	const TAU = 2 * Math.PI;
-	const x = Math.max(Math.min(percentage, 99.999), 0) / 100;
-
-	// If empty, simply don't render
-	if (x === 0) return ""
-
-	const rad = ((0.75 + x) * TAU) % TAU;
-	const quarter = Math.floor(rad / (0.25 * TAU));
-
-	return [
-		// Start path at top center of circle
-		`M${radius},${s}`,
-
-		// Start arc of same size as circle
-		`A${radius - s},${radius - s} 1 `,
-
-		// Handle arc flags such that the correct arc is rawn
-		["0,1 ", "1,1 ", "1,1 ", "0,1 "][quarter],
-
-		// Ending point of the arc on the circle based on the angle
-		`${s + (radius - s) * (1 + Math.cos(rad))},`,
-		`${s + (radius - s) * (1 + Math.sin(rad))}`,
-	].join("")
-
 }

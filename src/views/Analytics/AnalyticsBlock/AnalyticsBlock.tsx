@@ -2,10 +2,10 @@ import "./AnalyticsBlock.scss"
 import React from "react";
 import cx from "classnames"
 import { Type } from "../../../components/Type/Type";
+import { TitleHighlightColumn } from "../../../components/TitleHighlightColumn/TitleHighlightColumn";
 
 export type AnalyticsBlockProps = {
 	header?: string;
-	headerIcon?: React.ReactNode;
 	headerContent?: React.ReactNode;
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
@@ -15,7 +15,6 @@ export function AnalyticsBlock(props: AnalyticsBlockProps) {
 		className,
 		children,
 		header,
-		headerIcon,
 		headerContent,
 		...divProps
 	} = props
@@ -25,7 +24,7 @@ export function AnalyticsBlock(props: AnalyticsBlockProps) {
 		{...divProps}
 	>
 		<div className="header">
-			{headerIcon}
+			<TitleHighlightColumn color="primary-500" />
 			<Type variant="bold">
 				{header}
 			</Type>

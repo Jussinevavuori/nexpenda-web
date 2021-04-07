@@ -4,7 +4,6 @@ import cx from "classnames";
 import { useAnalyticsAverageTotalsController } from "./useAnalyticsAverageTotalsController";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
-import { Functions as TotalsIcon } from "@material-ui/icons"
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 
 export type AnalyticsAverageTotalsProps = {
@@ -15,10 +14,7 @@ export function AnalyticsAverageTotals(props: AnalyticsAverageTotalsProps) {
 
 	const controller = useAnalyticsAverageTotalsController(props)
 
-	return <AnalyticsBlock
-		header="Monthly average"
-		headerIcon={<TotalsIcon />}
-	>
+	return <AnalyticsBlock header="Monthly average">
 		<div className={cx("AnalyticsAverageTotals")}>
 			<div className="AnalyticsTotals">
 				<div className="header">

@@ -5,7 +5,6 @@ import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { format } from "date-fns";
 import { useAnalyticsAllTimeColumnsController } from "./useAnalyticsAllTimeColumnsController";
 import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
-import { BarChart as BarChartIcon } from "@material-ui/icons";
 import { Button, ButtonGroup } from "@material-ui/core";
 import { Bar, CartesianGrid, ResponsiveContainer, ComposedChart, YAxis, Tooltip, Line } from "recharts";
 import { theme } from "../../../styles/main";
@@ -62,7 +61,6 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 			process.env.NODE_ENV === "development" &&
 			<AnalyticsBlock
 				header="Monthly totals DEV"
-				headerIcon={<BarChartIcon />}
 				headerContent={<div className="AnalyticsAllTimeColumns__headerContent">
 					<ButtonGroup size="small">
 						<Button
@@ -122,6 +120,7 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 							controller.isShowingTotal &&
 							controller.data.map((point, i) => point.Total > 0
 								? <rect
+									key={i}
 									fill={theme.green_500}
 									x={SVG.getXOffsetPx(i)}
 									y={SVG.getYOffsetPx() - SVG.getHeightPx(point.Total, { abs: true })}
@@ -130,6 +129,7 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 									rx={SVG.rounding}
 								/>
 								: <rect
+									key={i}
 									fill={theme.red_400}
 									x={SVG.getXOffsetPx(i)}
 									y={SVG.getYOffsetPx()}
@@ -144,10 +144,7 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 			</AnalyticsBlock>
 
 		}
-		<AnalyticsBlock
-			header="Monthly totals"
-			headerIcon={<BarChartIcon />}
-		>
+		<AnalyticsBlock header="Monthly totals" >
 			<div className={cx("AnalyticsAllTimeColumns")}>
 				<div className="chart">
 					<ResponsiveContainer height={250} width="100%">

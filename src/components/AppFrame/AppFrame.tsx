@@ -10,6 +10,7 @@ import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
 import { BudgetCreatorDrawer } from "../BudgetCreatorDrawer/BudgetCreatorDrawer";
 import { FeedbackDialog } from "../FeedbackDialog/FeedbackDialog";
 import { FileUploaderDrawer } from "../FileUploaderDrawer/FileUploaderDrawer";
+import { AnimateSharedLayout } from "framer-motion";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -21,25 +22,27 @@ export function AppFrame(props: AppFrameProps) {
 
 	const isDesktopLayout = useMdMedia()
 
-	return <div className="AppFrame">
-		{
-			controller.initialized && <>
-				{isDesktopLayout ? null : <TransactionCreatorDrawer />}
-				{isDesktopLayout ? null : <TransactionEditorDrawer />}
-				<BudgetEditorDrawer />
-				<BudgetCreatorDrawer />
-				<FeedbackDialog />
-				<FileUploaderDrawer />
-			</>
-		}
-		<div className="header">
-			<Header />
+	return <AnimateSharedLayout>
+		<div className="AppFrame">
+			{
+				controller.initialized && <>
+					{isDesktopLayout ? null : <TransactionCreatorDrawer />}
+					{isDesktopLayout ? null : <TransactionEditorDrawer />}
+					<BudgetEditorDrawer />
+					<BudgetCreatorDrawer />
+					<FeedbackDialog />
+					<FileUploaderDrawer />
+				</>
+			}
+			<div className="header">
+				<Header />
+			</div>
+			<div className="sidebar">
+				<Sidebar />
+			</div>
+			<div className="main">
+				{props.children}
+			</div>
 		</div>
-		<div className="sidebar">
-			<Sidebar />
-		</div>
-		<div className="main">
-			{props.children}
-		</div>
-	</div>
+	</AnimateSharedLayout>
 }

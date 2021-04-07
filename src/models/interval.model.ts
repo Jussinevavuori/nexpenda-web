@@ -35,12 +35,12 @@ export type IntervalModel = {
   /**
    * Is the current date interval a signle day
    */
-  isDay: Computed<IntervalModel, boolean>;
+  // isDay: Computed<IntervalModel, boolean>;
 
   /**
    * Is the current date interval a single full week
    */
-  isWeek: Computed<IntervalModel, boolean>;
+  // isWeek: Computed<IntervalModel, boolean>;
 
   /**
    * Is the current date interval a single full month
@@ -97,17 +97,17 @@ export type IntervalModel = {
   /**
    * Action to manually specify the start date filter
    */
-  setStartDate: Action<IntervalModel, Date>;
+  // setStartDate: Action<IntervalModel, Date>;
 
   /**
    * Action to manually specify the end date filter
    */
-  setEndDate: Action<IntervalModel, Date>;
+  // setEndDate: Action<IntervalModel, Date>;
 
   /**
    * Action to manually specify start and end dates for interval simultaneously
    */
-  setInterval: Action<IntervalModel, { startDate: Date; endDate: Date }>;
+  // setInterval: Action<IntervalModel, { startDate: Date; endDate: Date }>;
 
   /**
    * Move interval forward
@@ -134,12 +134,12 @@ export type IntervalModel = {
   /**
    * Move interval to nearest day
    */
-  dayInterval: Action<IntervalModel, void>;
+  // dayInterval: Action<IntervalModel, void>;
 
   /**
    * Move interval to nearest week
    */
-  weekInterval: Action<IntervalModel, void>;
+  // weekInterval: Action<IntervalModel, void>;
 
   /**
    * Move interval to nearest month
@@ -203,17 +203,17 @@ export const intervalModel: IntervalModel = {
     );
   }),
 
-  isWeek: computed((state) => {
-    return (
-      datefns.isSameWeek(state.startDate, state.endDate, { weekStartsOn: 1 }) &&
-      datefns.getDay(state.startDate) === 1 &&
-      datefns.getDay(state.endDate) === 0
-    );
-  }),
+  // isWeek: computed((state) => {
+  //   return (
+  //     datefns.isSameWeek(state.startDate, state.endDate, { weekStartsOn: 1 }) &&
+  //     datefns.getDay(state.startDate) === 1 &&
+  //     datefns.getDay(state.endDate) === 0
+  //   );
+  // }),
 
-  isDay: computed((state) => {
-    return datefns.isSameDay(state.startDate, state.endDate);
-  }),
+  // isDay: computed((state) => {
+  //   return datefns.isSameDay(state.startDate, state.endDate);
+  // }),
 
   includesToday: computed((state) => {
     const today = new Date();
@@ -230,8 +230,8 @@ export const intervalModel: IntervalModel = {
       return datefns.format(state.startDate, "yyyy");
     } else if (state.isMonth) {
       return datefns.format(state.startDate, "MMMM, yyyy");
-    } else if (state.isDay) {
-      return datefns.format(state.startDate, "d.M.yyyy");
+      // } else if (state.isDay) {
+      //   return datefns.format(state.startDate, "d.M.yyyy");
     } else {
       return state.displayString;
     }
@@ -251,30 +251,30 @@ export const intervalModel: IntervalModel = {
   // ACTIONS
   //==============================================================//
 
-  setStartDate: action((state, date) => {
-    if (DateUtils.compareDate(date, ">", state.endDate)) {
-      throw new Error("Start date cannot be after end date");
-    } else {
-      state.startDate = date;
-    }
-  }),
+  // setStartDate: action((state, date) => {
+  //   if (DateUtils.compareDate(date, ">", state.endDate)) {
+  //     throw new Error("Start date cannot be after end date");
+  //   } else {
+  //     state.startDate = date;
+  //   }
+  // }),
 
-  setEndDate: action((state, date) => {
-    if (DateUtils.compareDate(date, "<", state.startDate)) {
-      throw new Error("End date cannot be before start date");
-    } else {
-      state.endDate = date;
-    }
-  }),
+  // setEndDate: action((state, date) => {
+  //   if (DateUtils.compareDate(date, "<", state.startDate)) {
+  //     throw new Error("End date cannot be before start date");
+  //   } else {
+  //     state.endDate = date;
+  //   }
+  // }),
 
-  setInterval: action((state, dates) => {
-    if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
-      throw new Error("End date cannot be before start date");
-    } else {
-      state.startDate = dates.startDate;
-      state.endDate = dates.endDate;
-    }
-  }),
+  // setInterval: action((state, dates) => {
+  //   if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
+  //     throw new Error("End date cannot be before start date");
+  //   } else {
+  //     state.startDate = dates.startDate;
+  //     state.endDate = dates.endDate;
+  //   }
+  // }),
 
   nextInterval: action((state) => {
     if (state.isAll) return;
@@ -283,8 +283,8 @@ export const intervalModel: IntervalModel = {
       state.endDate = datefns.endOfYear(newStartDate);
     } else if (state.isMonth) {
       state.endDate = datefns.endOfMonth(newStartDate);
-    } else if (state.isWeek) {
-      state.endDate = datefns.endOfWeek(newStartDate, { weekStartsOn: 1 });
+      // } else if (state.isWeek) {
+      //   state.endDate = datefns.endOfWeek(newStartDate, { weekStartsOn: 1 });
     } else {
       state.endDate = datefns.addDays(newStartDate, state.length);
     }
@@ -298,25 +298,25 @@ export const intervalModel: IntervalModel = {
       state.startDate = datefns.startOfYear(newEndDate);
     } else if (state.isMonth) {
       state.startDate = datefns.startOfMonth(newEndDate);
-    } else if (state.isWeek) {
-      state.startDate = datefns.startOfWeek(newEndDate, { weekStartsOn: 1 });
+      // } else if (state.isWeek) {
+      //   state.startDate = datefns.startOfWeek(newEndDate, { weekStartsOn: 1 });
     } else {
       state.startDate = datefns.subDays(newEndDate, state.length);
     }
     state.endDate = newEndDate;
   }),
 
-  dayInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfDay(date);
-    state.endDate = datefns.endOfDay(date);
-  }),
+  // dayInterval: action((state) => {
+  //   const date = state.isAll ? new Date() : state.startDate;
+  //   state.startDate = datefns.startOfDay(date);
+  //   state.endDate = datefns.endOfDay(date);
+  // }),
 
-  weekInterval: action((state) => {
-    const date = state.isAll ? new Date() : state.startDate;
-    state.startDate = datefns.startOfWeek(date, { weekStartsOn: 1 });
-    state.endDate = datefns.endOfWeek(date, { weekStartsOn: 1 });
-  }),
+  // weekInterval: action((state) => {
+  //   const date = state.isAll ? new Date() : state.startDate;
+  //   state.startDate = datefns.startOfWeek(date, { weekStartsOn: 1 });
+  //   state.endDate = datefns.endOfWeek(date, { weekStartsOn: 1 });
+  // }),
 
   monthInterval: action((state) => {
     const date = state.isAll ? new Date() : state.startDate;
@@ -345,12 +345,12 @@ export const intervalModel: IntervalModel = {
     } else if (state.isMonth) {
       state.startDate = datefns.startOfMonth(today);
       state.endDate = datefns.endOfMonth(today);
-    } else if (state.isWeek) {
-      state.startDate = datefns.startOfWeek(today, { weekStartsOn: 1 });
-      state.endDate = datefns.endOfWeek(today, { weekStartsOn: 1 });
-    } else if (state.isDay) {
-      state.startDate = datefns.startOfDay(today);
-      state.endDate = datefns.endOfDay(today);
+      // } else if (state.isWeek) {
+      //   state.startDate = datefns.startOfWeek(today, { weekStartsOn: 1 });
+      //   state.endDate = datefns.endOfWeek(today, { weekStartsOn: 1 });
+      // } else if (state.isDay) {
+      //   state.startDate = datefns.startOfDay(today);
+      //   state.endDate = datefns.endOfDay(today);
     } else {
       state.endDate = datefns.endOfDay(datefns.addDays(today, state.length));
       state.startDate = datefns.startOfDay(today);

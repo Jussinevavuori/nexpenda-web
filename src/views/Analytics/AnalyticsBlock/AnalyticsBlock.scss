@@ -1,9 +1,9 @@
 @import "main";
 
 .AnalyticsBlock {
-  padding: $spacing-4;
-  border-radius: $radius-md;
   border: $border;
+  border-radius: $radius-md;
+  padding: $spacing-8 $spacing-6;
   & > .header {
     display: flex;
     align-items: center;
