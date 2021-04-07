@@ -1,0 +1,18 @@
+@import "main";
+
+// Generate all color styles
+@each $name, $color in $colors {
+  .TitleHighlightColumn.color-#{$name} {
+    background: $color;
+  }
+}
+
+.TitleHighlightColumn {
+  $w: 4px;
+
+  display: inline-block;
+  width: $w;
+  height: 20px;
+  border-radius: 0.5 * $w;
+  margin-right: $spacing-3;
+}

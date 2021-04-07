@@ -1,0 +1,125 @@
+@import "main";
+
+.AnalyticsOverview {
+  border: $border;
+  border-radius: $radius-md;
+  padding: $spacing-4;
+
+  & > header {
+    display: flex;
+    align-items: center;
+  }
+
+  & > section {
+    padding-top: $spacing-8;
+  }
+
+  & > section.total {
+    display: grid;
+    grid-template: "label label" auto "total chart" auto "change chart" auto / 1fr auto;
+    gap: $spacing-1;
+
+    & > .label {
+      grid-area: label;
+    }
+
+    & > .total {
+      grid-area: total;
+    }
+
+    & > .change {
+      grid-area: change;
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+
+      & svg {
+        color: $green-600;
+        font-size: 20px;
+      }
+    }
+
+    & > .chart {
+      grid-area: chart;
+      align-self: center;
+    }
+  }
+
+  & > .subtotals {
+    display: flex;
+    gap: $spacing-16;
+
+    & > .subtotal {
+      display: grid;
+      grid-template: "label" auto "amount" auto "change" auto / 1fr;
+      gap: $spacing-1;
+      position: relative;
+
+      & > .label {
+        grid-area: label;
+        position: relative;
+        padding-left: $spacing-5;
+
+        &::before {
+          $size: 7px;
+
+          position: absolute;
+          content: "";
+          display: block;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          width: $size;
+          height: $size;
+          border-radius: 50%;
+        }
+
+        &.income::before {
+          background: $green-400;
+        }
+        &.expense::before {
+          background: $red-400;
+        }
+      }
+      & > .amount {
+        grid-area: amount;
+        display: block;
+        padding-left: $spacing-5;
+      }
+      & > .change {
+        grid-area: change;
+        padding-left: $spacing-5;
+        grid-area: change;
+        display: flex;
+        align-items: center;
+        gap: $spacing-2;
+
+        &.income svg {
+          color: $green-400;
+        }
+        &.expense svg {
+          color: $red-400;
+        }
+
+        & svg {
+          font-size: 14px;
+        }
+      }
+
+      &:not(:last-child)::after {
+        position: absolute;
+        content: "";
+        right: -1 * $spacing-8;
+        top: 50%;
+        transform: translateY(-50%);
+        display: block;
+        height: 90%;
+        width: 1px;
+        background: $gray-200;
+      }
+    }
+  }
+
+  /** @todo: Remove later */
+  margin-bottom: $spacing-4;
+}

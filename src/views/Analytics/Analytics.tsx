@@ -14,6 +14,7 @@ import { Type } from "../../components/Type/Type";
 import { AnalyticsAllTimeColumns } from "./AnalyticsAllTimeColumns/AnalyticsAllTimeColumns";
 import { AnalyticsAverageCategories } from "./AnalyticsAverageCategories/AnalyticsAverageCategories";
 import { AnalyticsAverageTotals } from "./AnalyticsAverageTotals/AnalyticsAverageTotals";
+import { AnalyticsOverview } from "./AnalyticsOverview/AnalyticsOverview";
 
 export type AnalyticsProps = {
 }
@@ -36,6 +37,10 @@ export function Analytics(props: AnalyticsProps) {
 
 
 			<section className="analyticsBlocksContainer">
+				{
+					process.env.NODE_ENV === "development" &&
+					<AnalyticsOverview />
+				}
 				<AnalyticsAllTimeLine />
 				<AnalyticsAllTimeColumns />
 				<Type
