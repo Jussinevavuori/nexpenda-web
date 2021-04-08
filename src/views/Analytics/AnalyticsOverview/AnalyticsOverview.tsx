@@ -163,9 +163,9 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 							color={
 								!controller.expensesPercentageIncrease
 									? "gray-600"
-									: controller.incomePercentageIncrease > 0
-										? "green-600"
-										: "red-600"
+									: controller.expensesPercentageIncrease > 0
+										? "red-600"
+										: "green-600"
 							}
 						>
 							{`${controller.expensesPercentageIncrease.toFixed(1)} %`}
