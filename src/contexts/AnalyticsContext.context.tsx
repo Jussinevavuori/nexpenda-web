@@ -68,6 +68,7 @@ function getDefaultAnalyticsContextValue(): AnalyticsContextType {
 			}
 		},
 		selected: {
+			transactions: [],
 			categories: {
 				incomes: {},
 				expenses: {},
@@ -84,6 +85,7 @@ function getDefaultAnalyticsContextValue(): AnalyticsContextType {
 			}
 		},
 		previous: {
+			transactions: [],
 			categories: {
 				incomes: {},
 				expenses: {},
@@ -98,6 +100,8 @@ function getDefaultAnalyticsContextValue(): AnalyticsContextType {
 				transactions: 0,
 				total: 0,
 			}
-		}
+		},
+		selectedInterval: { start: new Date(), end: new Date() },
+		previousInterval: { start: new Date(), end: new Date() },
 	}
 }

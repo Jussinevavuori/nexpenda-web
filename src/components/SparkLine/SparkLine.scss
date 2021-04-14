@@ -1,0 +1,20 @@
+@import "main";
+
+// Generate all color styles
+@each $name, $color in $colors {
+  .SparkLine > svg > path.color-#{$name} {
+    stroke: $color;
+  }
+}
+
+.SparkLine {
+  width: 100%;
+  height: 100%;
+
+  & svg {
+    & path {
+      fill: none;
+      stroke-linecap: round;
+    }
+  }
+}

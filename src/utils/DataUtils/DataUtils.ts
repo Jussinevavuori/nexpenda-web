@@ -136,7 +136,7 @@ export class DataUtils {
   /**
    * Creates an index array of `n` items.
    *
-   * @params n Amount of items in the created index array
+   * @param n Amount of items in the created index array
    *
    * @example
    * createIndexArray(3) // returns [0,1,2]
@@ -147,5 +147,54 @@ export class DataUtils {
       arr.push(i);
     }
     return arr;
+  }
+
+  /**
+   * Map a value from one range to another.
+   *
+   * @param value		Value to map
+   * @param oldMin	Minimum of value's original range
+   * @param oldMax	Maximum of value's original range
+   * @param newMin	Minimum of target range
+   * @param newMax	Maximum of target range
+   * @param options	Should the value be clamped
+   *
+   * @returns Mapped value
+   */
+  static mapValue(
+    value: number,
+    oldMin: number,
+    oldMax: number,
+    newMin: number,
+    newMax: number,
+    options: { clamp?: boolean } = {}
+  ) {
+    let v = value;
+
+    const oldRng = oldMax - oldMin; // Old range
+    const newRng = newMax - newMin; // New range
+
+    v -= oldMin; // Translate to start from 0
+    v /= oldRng; // Normalize to range between 0 and 1
+    v *= newRng; // Scale to new range
+    v += newMin; // Translate to new position
+
+    if (options.clamp) v = DataUtils.clamp(v, newMin, newMax); // Clamp
+
+    return v;
+  }
+
+  /**
+   *  Utility clamp function.
+   *
+   * @param value	Value to clamp
+   * @param min 	Min value
+   * @param max 	Max value
+   * @returns 		Clamped value
+   */
+  static clamp(value: number, min: number, max: number) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
   }
 }

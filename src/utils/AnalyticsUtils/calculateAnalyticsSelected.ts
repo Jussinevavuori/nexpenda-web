@@ -46,59 +46,60 @@ export function calculateAnalyticsSelected(args: CalculateAnalyticsArguments) {
     expenses: {},
   };
 
-  args.transactions
-    .filter((transaction) => {
-      return transaction.filter("", args.interval.start, args.interval.end);
-    })
-    .forEach((transaction) => {
-      // Count transaction and its total
-      total.total += transaction.amount.value;
-      total.transactions += 1;
+  // Filter transactions by selected interval (empty search string)
+  const transactions = args.transactions.filter((t) =>
+    t.filter("", args.interval.start, args.interval.end)
+  );
 
-      // Count income and income category
-      if (transaction.amount.value > 0) {
-        total.incomes += transaction.amount.value;
+  transactions.forEach((transaction) => {
+    // Count transaction and its total
+    total.total += transaction.amount.value;
+    total.transactions += 1;
 
-        // Initialize income category if it doesn't yet exist
-        if (!categories.incomes[transaction.category.id]) {
-          categories.incomes[transaction.category.id] = {
-            id: uuid(),
-            category: transaction.category,
-            total: 0,
-            transactions: 0,
-            percentageOfTotal: 0,
-            percentageOfMax: 0,
-          };
-        }
+    // Count income and income category
+    if (transaction.amount.value > 0) {
+      total.incomes += transaction.amount.value;
 
-        // Count towards category
-        const category = categories.incomes[transaction.category.id];
-        category.total += transaction.amount.value;
-        category.transactions += 1;
+      // Initialize income category if it doesn't yet exist
+      if (!categories.incomes[transaction.category.id]) {
+        categories.incomes[transaction.category.id] = {
+          id: uuid(),
+          category: transaction.category,
+          total: 0,
+          transactions: 0,
+          percentageOfTotal: 0,
+          percentageOfMax: 0,
+        };
       }
 
-      // Count expense and expense category
-      if (transaction.amount.value < 0) {
-        total.expenses += transaction.amount.value;
+      // Count towards category
+      const category = categories.incomes[transaction.category.id];
+      category.total += transaction.amount.value;
+      category.transactions += 1;
+    }
 
-        // Initialize expense category if it doesn't yet exist
-        if (!categories.expenses[transaction.category.id]) {
-          categories.expenses[transaction.category.id] = {
-            id: uuid(),
-            category: transaction.category,
-            total: 0,
-            transactions: 0,
-            percentageOfTotal: 0,
-            percentageOfMax: 0,
-          };
-        }
+    // Count expense and expense category
+    if (transaction.amount.value < 0) {
+      total.expenses += transaction.amount.value;
 
-        // Count towards category
-        const category = categories.expenses[transaction.category.id];
-        category.total += transaction.amount.value;
-        category.transactions += 1;
+      // Initialize expense category if it doesn't yet exist
+      if (!categories.expenses[transaction.category.id]) {
+        categories.expenses[transaction.category.id] = {
+          id: uuid(),
+          category: transaction.category,
+          total: 0,
+          transactions: 0,
+          percentageOfTotal: 0,
+          percentageOfMax: 0,
+        };
       }
-    });
+
+      // Count towards category
+      const category = categories.expenses[transaction.category.id];
+      category.total += transaction.amount.value;
+      category.transactions += 1;
+    }
+  });
 
   // Calculate max income and expense categories
   categories.max.incomes = Object.values(categories.incomes).reduce(
@@ -127,5 +128,6 @@ export function calculateAnalyticsSelected(args: CalculateAnalyticsArguments) {
   return {
     total,
     categories,
+    transactions,
   };
 }

@@ -1,9 +1,10 @@
 @import "main";
 
 .AnalyticsOverview {
-  border: $border;
   border-radius: $radius-md;
+  border: $border;
   padding: $spacing-8 $spacing-6;
+  // box-shadow: $shadow-sm;
 
   & > header {
     display: flex;
@@ -98,5 +99,9 @@
         }
       }
     }
+  }
+
+  & section.sparkLineContainer {
+    width: 100%;
   }
 }

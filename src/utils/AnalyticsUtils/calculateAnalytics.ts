@@ -30,5 +30,7 @@ export function calculateAnalytics(args: CalculateAnalyticsArguments) {
       ...args,
       interval: prevInterval,
     }),
+    selectedInterval: args.interval,
+    previousInterval: prevInterval,
   };
 }

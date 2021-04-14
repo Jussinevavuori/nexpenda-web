@@ -1,11 +1,14 @@
 @import "main";
 
 .SettingsSection {
+  position: relative;
   margin: $spacing-8 auto;
   width: calc(100vw - #{2 * $spacing-6});
-  max-width: calc(600px - #{2 * $spacing-6});
-  border-bottom: 1px solid $gray-300;
-  padding-bottom: $spacing-12;
+  max-width: calc(660px - #{2 * $spacing-6});
+  border-radius: $radius-md;
+  border: $border;
+  // box-shadow: $shadow-sm;
+  padding: $spacing-6 $spacing-6;
 
   & > .sectionTitle {
     display: block;

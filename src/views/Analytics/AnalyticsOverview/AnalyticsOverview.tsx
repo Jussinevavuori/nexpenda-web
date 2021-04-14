@@ -7,6 +7,7 @@ import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircle";
 import { ChangeIcon } from "../../../components/ChangeIcon/ChangeIcon";
+import { SparkLine } from "../../../components/SparkLine/SparkLine";
 
 export type AnalyticsOverviewProps = {
 
@@ -175,6 +176,21 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 			</div>
 
+		</section>
+
+		<section className="sparkLineSection">
+			<div
+				className="sparkLineContainer"
+				style={{
+					// clipPath: `inset(0 ${controller.sparkLine} 0 0)`
+				}}
+			>
+				<SparkLine
+					aspectRatio={3.7}
+					data={controller.sparkLine.data}
+					showZeroLine
+				/>
+			</div>
 		</section>
 
 	</div>
