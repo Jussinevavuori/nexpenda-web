@@ -16,16 +16,7 @@ export function useFileDownloaderController(props: FileDownloaderProps) {
 
 		setLoading(true)
 
-		const spreadsheet = new TransactionSpreadsheet()
-
-		spreadsheet.createFile(transactions.map(t => ({
-			category: t.category.value,
-			integerAmount: t.amount.value,
-			time: t.date.getTime(),
-			comment: t.comment,
-			categoryIcon: t.category.icon ?? "",
-		})))
-
+		const spreadsheet = new TransactionSpreadsheet(transactions)
 		spreadsheet.downloadFile()
 
 		setLoading(false)

@@ -7,9 +7,11 @@ import {
 	Delete as DeleteIcon,
 	Edit as EditIcon,
 	Add as CreateIcon,
-	Remove as RemoveIcon
+	Remove as RemoveIcon,
+	MoreVert,
+	GetApp as DownloadIcon
 } from "@material-ui/icons"
-import { Button, IconButton, } from "@material-ui/core";
+import { Button, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { useMdMedia, useSmMedia } from "../../../hooks/utils/useMedia";
 import { IntervalManager } from "../../../components/IntervalManager/IntervalManager";
 import { Type } from "../../../components/Type/Type";
@@ -97,6 +99,25 @@ export function ActionsPanel(props: ActionsPanelProps) {
 	 */
 	else {
 		return <>
+
+			<Menu
+				className="ActionsPanel__moreMenu"
+				open={controller.moreMenu.isMenuOpen}
+				anchorEl={controller.moreMenu.anchorEl}
+				onClose={controller.moreMenu.handleMenuClose}
+			>
+				<MenuItem
+					className="menuItem downloadMenuItem"
+					onClick={controller.handleDownload}
+					disabled={controller.selection.length === 0}
+				>
+					<DownloadIcon />
+					<Type variant="boldcaps" color="gray-800">
+						{"Download selected"}
+					</Type>
+				</MenuItem>
+			</Menu>
+
 			<div className="ActionsPanel desktop">
 				<div className="actionButtons">
 					<Button
@@ -132,6 +153,16 @@ export function ActionsPanel(props: ActionsPanelProps) {
 							>
 								<Type variant="boldcaps" >
 									{"Delete"}
+								</Type>
+							</Button>
+							<Button
+								variant="outlined"
+								className="button moreButton"
+								startIcon={<MoreVert />}
+								onClick={controller.moreMenu.handleMenuOpen}
+							>
+								<Type variant="boldcaps">
+									{"More"}
 								</Type>
 							</Button>
 						</>

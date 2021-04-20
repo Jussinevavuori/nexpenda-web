@@ -181,10 +181,8 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 		<section className="sparkLineSection">
 			<div className="sparkLineContainer">
 				<TimeseriesSparkLine
-					aspectRatio={6}
-					strokeWidth={0.5}
+					aspectRatio={100 / 20}
 					showZeroLine
-					zerolineStrokeWidth={1.25}
 					{...controller.timeseriesSparklineProps}
 					cumulative
 				/>

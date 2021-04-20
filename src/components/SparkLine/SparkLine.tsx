@@ -1,8 +1,7 @@
 import "./SparkLine.scss";
 import React from "react";
 import cx from "classnames";
-import { useSparkLineController } from "./useSparkLineController";
-import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { SparkLineDefaults, useSparkLineController } from "./useSparkLineController";
 
 export type SparkLineProps = {
 
@@ -15,6 +14,11 @@ export type SparkLineProps = {
 	 * Optional color of sparkline. Defaults to `primary-500`.
 	 */
 	color?: ThemeColor;
+
+	/**
+	 * Optional color of sparkline shadow. Defaults to `primary-200`.
+	 */
+	shadowColor?: ThemeColor;
 
 	/**
 	 * Optional height ratio. Defines viewbox size. Defaults to 2.00.
@@ -38,6 +42,16 @@ export type SparkLineProps = {
 	showZeroLine?: boolean;
 
 	/**
+	 * Hide shadow?
+	 */
+	hideShadow?: boolean;
+
+	/**
+	 * Amount of vertical padding in sparkline
+	 */
+	verticalPadding?: number;
+
+	/**
 	 * Zero line stroke width. Defaults to sparkline's stroke width
 	 */
 	zerolineStrokeWidth?: number;
@@ -46,6 +60,11 @@ export type SparkLineProps = {
 	 * Zero line color. Defaults to a gray color.
 	 */
 	zerolineColor?: ThemeColor;
+
+	/**
+	 * Shadow gradient opacity stops
+	 */
+	shadowOpacityStops?: typeof SparkLineDefaults["GradientStops"];
 };
 
 export function SparkLine(props: SparkLineProps) {
@@ -57,27 +76,42 @@ export function SparkLine(props: SparkLineProps) {
 			viewBox={`0 0 ${controller.viewBox.width} ${controller.viewBox.height}`}
 		>
 
+			<defs>
+				<linearGradient
+					id="SparkLine__gradient"
+					gradientTransform="rotate(90)"
+				>
+					{
+						(props.shadowOpacityStops ?? SparkLineDefaults.GradientStops).map(stop => (
+							<stop
+								offset={`${stop.percentage}%`}
+								className={props.shadowColor ?? "primary-200"}
+								stopOpacity={stop.opacity}
+							/>
+						))
+					}
+				</linearGradient>
+			</defs>
+
+			{
+				!props.hideShadow &&
+				<path
+					className={cx("sparkline-shadow")}
+					d={controller.svgPath.shadowPathD}
+					fill="url(#SparkLine__gradient) #ffffff"
+				/>
+			}
 			{
 				props.showZeroLine && <path
-					className={cx("zeroline", `color-${props.zerolineColor ?? "gray-300"}`)}
-					strokeWidth={props.zerolineStrokeWidth ?? controller.strokeWidth}
-					d={SvgPath.describeZeroLinePath({
-						data: controller.sortedData,
-						height: controller.viewBox.height,
-						width: controller.viewBox.width,
-						strokeWidth: props.zerolineStrokeWidth ?? controller.strokeWidth,
-					})}
+					className={cx("zeroline", `stroke-${props.zerolineColor ?? "gray-300"}`)}
+					strokeWidth={controller.zerolineStrokeWidth}
+					d={controller.svgPath.zeroLinePathD}
 				/>
 			}
 			<path
-				className={cx("sparkline", `color-${props.color ?? "primary-500"}`)}
+				className={cx("sparkline", `stroke-${props.color ?? "primary-500"}`)}
 				strokeWidth={controller.strokeWidth}
-				d={SvgPath.describeSparkLinePath({
-					data: controller.sortedData,
-					height: controller.viewBox.height,
-					width: controller.viewBox.width,
-					strokeWidth: controller.strokeWidth,
-				})}
+				d={controller.svgPath.mainPathD}
 			/>
 		</svg>
 	</div>

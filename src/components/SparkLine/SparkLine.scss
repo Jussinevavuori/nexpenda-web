@@ -2,8 +2,12 @@
 
 // Generate all color styles
 @each $name, $color in $colors {
-  .SparkLine > svg > path.color-#{$name} {
+  .SparkLine > svg > path.stroke-#{$name} {
+    fill: none;
     stroke: $color;
+  }
+  .SparkLine > svg > defs > linearGradient > stop.#{$name} {
+    stop-color: $color;
   }
 }
 
@@ -11,9 +15,8 @@
   width: 100%;
   height: 100%;
 
-  & svg {
-    & path {
-      fill: none;
+  & > svg {
+    & > path {
       stroke-linecap: round;
     }
   }

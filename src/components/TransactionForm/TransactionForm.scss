@@ -32,28 +32,12 @@
     display: flex;
   }
 
-  & .transactionAmount {
+  & .transaction-amount {
     grid-area: amount;
-    & .MuiButton-root {
-      flex: 0;
-    }
-    & .MuiInputBase-root {
-      flex: 1;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
   }
 
   & .transaction-category {
     grid-area: category;
-    & .MuiButton-root {
-      flex: 0;
-    }
-    & .MuiInputBase-root {
-      flex: 1;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
   }
 
   & .transaction-comment {
@@ -75,5 +59,25 @@
   @include md {
     gap: 1.5rem;
     width: 22rem;
+  }
+
+  & .buttonTextFieldGroup {
+    display: flex;
+    align-items: center;
+
+    & .MuiButtonGroup-root {
+      transform: scale(1.02);
+    }
+
+    & .MuiButton-root:last-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & .MuiInputBase-root {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left-color: transparent;
+    }
   }
 }

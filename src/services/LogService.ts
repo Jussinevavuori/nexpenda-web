@@ -1,5 +1,8 @@
+import * as z from "zod";
 import { Log } from "../classes/Log";
+import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
 import { Success } from "../result/Success";
+import { exposeToWindow } from "../utils/Utils/exposeToWindow";
 import { Service } from "./Service";
 
 type Loggable = {
@@ -10,6 +13,8 @@ type Loggable = {
 };
 
 export class LogService extends Service {
+  static PostResponseSchema = z.object({ id: z.string() });
+
   /**
    * Posts a log to the server.
    *
@@ -20,8 +25,10 @@ export class LogService extends Service {
 
     if (result.isFailure()) {
       return result;
-    } else {
+    } else if (LogService.PostResponseSchema.check(result.value.data)) {
       return new Success(result.value.data);
+    } else {
+      return new InvalidServerResponseFailure<void>(result.value, "logs/post");
     }
   }
 
@@ -120,3 +127,5 @@ export class LogService extends Service {
     });
   }
 }
+
+exposeToWindow({ LogService });

@@ -80,7 +80,7 @@ export function Sidebar(props: SidebarProps) {
 									className={cx("selection", { active: controller.isBudget })}
 								>
 									<BudgetIcon />
-									<Type variant="bold">{"Budget"}</Type>
+									<Type variant="bold">{"Budgets"}</Type>
 								</button>
 
 								<button

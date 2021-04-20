@@ -59,7 +59,7 @@ export function Settings(props: SettingsProps) {
 			</Type>
 			<Button
 				color="primary"
-				variant="outlined"
+				variant="contained"
 				endIcon={<UploadIcon />}
 				onClick={controller.handleOpenFileUploaderDrawer}
 				fullWidth

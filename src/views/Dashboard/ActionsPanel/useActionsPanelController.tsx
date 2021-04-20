@@ -1,12 +1,20 @@
-import { useCallback, useMemo } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { ActionsPanelProps } from "./ActionsPanel"
 import { useStoreState, useStoreActions } from "../../../store"
 import { DataUtils } from "../../../utils/DataUtils/DataUtils"
 import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController"
 import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState"
+import { TransactionSpreadsheet } from "../../../utils/FileIO/TransactionSpreadsheet"
+import { useMenuAnchorState } from "../../../hooks/state/useMenuAnchorState"
 
 export function useActionsPanelController(props: ActionsPanelProps) {
+
+	/**
+	 * More menu
+	 */
+	const moreMenu = useMenuAnchorState()
+	const closeMoreMenu = moreMenu.handleMenuClose
 
 	/**
 	 * Search open
@@ -60,6 +68,18 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	}, [deleteTransactions, selection, deselectAll])
 
 	/**
+	 * Downloading
+	 */
+	const [isDownloading, setIsDownloading] = useState(false)
+	const handleDownload = useCallback(async () => {
+		setIsDownloading(true)
+		const spreadsheet = new TransactionSpreadsheet(selection)
+		spreadsheet.downloadFile()
+		setIsDownloading(false)
+		closeMoreMenu()
+	}, [setIsDownloading, selection, closeMoreMenu])
+
+	/**
 	 * Editor drawer
 	 */
 	const [, setEditor] = useTransactionEditorDrawerVariableOpenState()
@@ -79,6 +99,7 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 	}, [createDrawerOpen, setCreateDrawerOpen])
 
 	return {
+		moreMenu,
 		selection,
 		allSelected,
 		isSelectionActive,
@@ -88,6 +109,8 @@ export function useActionsPanelController(props: ActionsPanelProps) {
 		handleEdit,
 		handleDelete,
 		handleCreate,
+		handleDownload,
+		isDownloading,
 		isSearchOpen
 	}
 }

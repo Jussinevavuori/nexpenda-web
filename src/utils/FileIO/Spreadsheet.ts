@@ -41,18 +41,6 @@ export abstract class Spreadsheet<T extends object> {
   protected _rowsCount: number = 0;
 
   /**
-   * Escpaes a filename: removes unwanted characters and slices to
-   * wanted length
-   */
-  static escapeFileName(name: string, filetype?: string) {
-    /* eslint-disable no-useless-escape */
-    return name
-      .replace(/[\:\\\/\?\*\[\]]/g, "")
-      .slice(0, 29 - (filetype?.length ?? 0))
-      .concat(filetype ? "." + filetype : "");
-  }
-
-  /**
    * The schema (must be implemented by implementing class)
    */
   public abstract schema: z.Schema<T>;
@@ -244,7 +232,7 @@ export abstract class Spreadsheet<T extends object> {
   /**
    * Generates a spreadsheet for downloading
    */
-  createFile(rows: T[]) {
+  loadRows(rows: T[]) {
     /**
      * Create new book
      */
@@ -291,6 +279,18 @@ export abstract class Spreadsheet<T extends object> {
     const filename = Spreadsheet.escapeFileName(this.getFileName(), type);
     XLSX.writeFile(this._workbook, filename, { bookType: type });
     return Success.Empty();
+  }
+
+  /**
+   * Escapes a filename: removes unwanted characters and slices to
+   * wanted length
+   */
+  static escapeFileName(name: string, filetype?: string) {
+    /* eslint-disable no-useless-escape */
+    return name
+      .replace(/[\:\\\/\?\*\[\]]/g, "")
+      .slice(0, 29 - (filetype?.length ?? 0))
+      .concat(filetype ? "." + filetype : "");
   }
 
   /**

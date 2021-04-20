@@ -7,6 +7,28 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
   public schema = TransactionSpreadsheet.schema;
 
   /**
+   * The constructor can be provided with a list of transactions
+   * as a shorthand for `loadTransactions`:
+   *
+   * @example
+   * ```
+   * // These are equal
+   * const spreadsheet = new TransactionSpreadsheet()
+   * spreadsheet.loadTransactions(transactions)
+   *
+   * const spreadsheet = new TransactionSpreadsheet(transactions)
+   * ```
+   *
+   * @param transactions List of transactions to load into spreadsheet.
+   */
+  constructor(transactions?: Transaction[]) {
+    super();
+    if (transactions) {
+      this.loadTransactions(transactions);
+    }
+  }
+
+  /**
    * The spreadsheet schema
    */
   public static schema = Transaction.InitializerSchema;
@@ -91,5 +113,21 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
    */
   sortRows(rows: JsonSpreadsheetTransaction[]): JsonSpreadsheetTransaction[] {
     return rows.sort((a, b) => a.time - b.time);
+  }
+
+  /**
+   * Wrapper for the `loadRows` function to enable directly loading
+   * transaction objects.
+   */
+  loadTransactions(transactions: Transaction[]) {
+    return this.loadRows(
+      transactions.map((t) => ({
+        category: t.category.value,
+        integerAmount: t.amount.value,
+        time: t.date.getTime(),
+        comment: t.comment,
+        categoryIcon: t.category.icon ?? "",
+      }))
+    );
   }
 }

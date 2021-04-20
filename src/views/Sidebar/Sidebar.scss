@@ -37,8 +37,7 @@
       flex-direction: column;
 
       & .selections {
-        padding: $spacing-6 $spacing-4;
-
+        padding: $spacing-6 $spacing-4 $spacing-6 0;
         border-bottom: $border;
 
         & .selections-title {
@@ -52,12 +51,12 @@
           align-items: center;
           justify-content: flex-start;
 
-          padding: $spacing-3 $spacing-4;
+          padding: $spacing-3 $spacing-4 $spacing-3 $spacing-8;
           margin-bottom: $spacing-2;
 
           border: none;
           background: none;
-          border-radius: $radius-lg;
+          border-radius: 0 $radius-lg $radius-lg 0;
 
           cursor: pointer;
 

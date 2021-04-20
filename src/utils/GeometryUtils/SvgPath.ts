@@ -2,25 +2,30 @@ import { DataUtils } from "../DataUtils/DataUtils";
 import { Angle } from "./Angle";
 import { GeometryUtils } from "./GeometryUtils";
 
+type SparkLineDataPoint = { x: number; y: number; hidden?: boolean };
+type SparkLineData = SparkLineDataPoint[];
+
 export class SvgPath {
-  /**
-   * Generates a SparkLine path. Assumes sorted data. Height and width define
-   * viewbox height and width.
-   */
-  static describeSparkLinePath(options: {
-    data: Array<{ x: number; y: number; hidden?: boolean }>;
+  static describeSparkLine(options: {
+    data: SparkLineData;
     height: number;
     width: number;
     strokeWidth: number;
+    verticalPadding: number;
   }) {
     // Empty data: empty path
-    if (options.data.length === 0) return "";
+    if (options.data.length === 0) {
+      return {
+        mainPathD: "",
+        shadowPathD: "",
+        zeroLinePathD: "",
+      };
+    }
 
     // Destructure options with shorthands
     const data = options.data;
     const w = options.width;
     const h = options.height;
-    const s = options.strokeWidth * 0.5; // Half stroke
 
     // Record minimum and maximum values from data
     let min_x = Number.POSITIVE_INFINITY;
@@ -40,64 +45,87 @@ export class SvgPath {
     const range_y = max_y - min_y;
 
     // Map datapoint (x,y pair) to a coordinate pair as string
-    // inside SVG viewbox. Offset from each edge by half stroke width.
-    function getPoint(datapoint: { x: number; y: number }) {
+    // inside SVG viewbox. Offset from each edge by half stroke width
+    // and from vertical edges by vertical padding.
+    function getPoint(datapoint: {
+      x: number;
+      y: number;
+      ignoreVerticalPadding?: boolean;
+    }) {
+      // Get vertical and horizontal padding.
+      // Vertical padding   = stroke / 2 + vertical padding from options unless
+      //                      explicitly ignored
+      // Horizontal padding = stroke / 2
+      const vp =
+        options.strokeWidth * 0.5 +
+        (datapoint.ignoreVerticalPadding ? 0 : options.verticalPadding);
+      const hp = options.strokeWidth * 0.5;
+
       const x = range_x
-        ? DataUtils.mapValue(datapoint.x, min_x, max_x, s, w - s)
+        ? DataUtils.mapValue(datapoint.x, min_x, max_x, hp, w - hp)
         : 0;
       const y = range_y
-        ? DataUtils.mapValue(datapoint.y, min_y, max_y, h - s, s)
+        ? DataUtils.mapValue(datapoint.y, min_y, max_y, h - vp, vp)
         : 0;
 
       return `${x.toFixed(2)} ${y.toFixed(2)}`;
     }
 
     // Start drawing with initial point
-    let d = `M ${getPoint(data[0])} `;
+    let mainPathD = `M ${getPoint(data[0])} `;
+    let shadowPathD = `M ${getPoint(data[0])} `;
+
+    let firstVisibleDatapoint: SparkLineDataPoint | undefined;
+    let lastVisibleDatapoint: SparkLineDataPoint | undefined;
 
     // Draw line to each point
     for (const datapoint of data) {
-      d += `${datapoint.hidden ? "M" : "L"} ${getPoint(datapoint)} `;
+      const nextPoint = `${datapoint.hidden ? "M" : "L"} ${getPoint(
+        datapoint
+      )} `;
+      mainPathD += nextPoint;
+      shadowPathD += nextPoint;
+
+      // Find first and last visible datapoints
+      if (!datapoint.hidden) {
+        firstVisibleDatapoint = firstVisibleDatapoint ?? datapoint;
+        lastVisibleDatapoint = datapoint;
+      }
     }
 
-    return d;
-  }
-
-  /**
-   * Generates a ZeroLine path. Draws a line across a viewbox representing where
-   * the given data is zero.
-   */
-  static describeZeroLinePath(options: {
-    data: Array<{ x: number; y: number; hidden?: boolean }>;
-    height: number;
-    width: number;
-    strokeWidth: number;
-  }) {
-    // Empty data: empty path
-    if (options.data.length === 0) return "";
-
-    // Destructure options with shorthands
-    const data = options.data;
-    const w = options.width;
-    const h = options.height;
-
-    // Record minimum and maximum values from data
-    let min_y = Number.POSITIVE_INFINITY;
-    let max_y = Number.NEGATIVE_INFINITY;
-
-    for (const datapoint of data) {
-      if (datapoint.y < min_y) min_y = datapoint.y;
-      if (datapoint.y > max_y) max_y = datapoint.y;
+    // Complete rectangle
+    if (firstVisibleDatapoint && lastVisibleDatapoint) {
+      shadowPathD += `M ${getPoint(lastVisibleDatapoint)}`;
+      shadowPathD += `L ${getPoint({
+        x: lastVisibleDatapoint.x,
+        y: min_y,
+        ignoreVerticalPadding: true,
+      })}`;
+      shadowPathD += `L ${getPoint({
+        x: firstVisibleDatapoint.x,
+        y: min_y,
+        ignoreVerticalPadding: true,
+      })}`;
+      shadowPathD += `L ${getPoint(firstVisibleDatapoint)}`;
     }
 
-    // Calculate range of y values
-    const range_y = max_y - min_y;
+    // Draw zero line
+    const zeroY = range_y
+      ? DataUtils.mapValue(
+          0,
+          min_y,
+          max_y,
+          h - options.verticalPadding,
+          options.verticalPadding
+        )
+      : h / 2;
+    const zeroLinePathD = `M 0 ${zeroY} L 0 ${zeroY} L ${w} ${zeroY}`;
 
-    // Get height of line
-    let y = range_y ? DataUtils.mapValue(0, min_y, max_y, h, 0) : h / 2;
-
-    // Draw line
-    return `M 0 ${y} L 0 ${y} L ${w} ${y}`;
+    return {
+      shadowPathD,
+      mainPathD,
+      zeroLinePathD,
+    };
   }
 
   /**

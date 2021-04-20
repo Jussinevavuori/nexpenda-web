@@ -3,7 +3,6 @@ import React from "react"
 import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawer";
 import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawer";
 import { Header } from "../Header/Header";
-import { useAppFrameController } from "./useAppFrameController";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
@@ -18,22 +17,17 @@ export type AppFrameProps = {
 
 export function AppFrame(props: AppFrameProps) {
 
-	const controller = useAppFrameController(props)
 
 	const isDesktopLayout = useMdMedia()
 
 	return <AnimateSharedLayout>
 		<div className="AppFrame">
-			{
-				controller.initialized && <>
-					{isDesktopLayout ? null : <TransactionCreatorDrawer />}
-					{isDesktopLayout ? null : <TransactionEditorDrawer />}
-					<BudgetEditorDrawer />
-					<BudgetCreatorDrawer />
-					<FeedbackDialog />
-					<FileUploaderDrawer />
-				</>
-			}
+			{isDesktopLayout ? null : <TransactionCreatorDrawer />}
+			{isDesktopLayout ? null : <TransactionEditorDrawer />}
+			<BudgetEditorDrawer />
+			<BudgetCreatorDrawer />
+			<FeedbackDialog />
+			<FileUploaderDrawer />
 			<div className="header">
 				<Header />
 			</div>

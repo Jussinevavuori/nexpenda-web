@@ -54,6 +54,7 @@ export function TransactionForm(props: TransactionFormProps) {
 		{
 			props.hideTitle ? null : <div className="title">
 				<Type
+					component="p"
 					variant="boldcaps"
 					color="gray-600"
 				>
@@ -63,38 +64,36 @@ export function TransactionForm(props: TransactionFormProps) {
 		}
 
 
-		<ButtonGroup
-			fullWidth
-			className="transactionAmount"
-		>
-			<Button
-				size="small"
-				color={controller.sign === "+" ? "primary" : undefined}
-				variant={controller.sign === "+" ? "contained" : "outlined"}
-				onClick={() => {
-					controller.onSignChange("+")
-					const amountInput = amountInputRef.current
-					if (amountInput) {
-						amountInput.focus()
-					}
-				}}
-			>
-				{"+"}
-			</Button>
-			<Button
-				size="small"
-				color={controller.sign === "-" ? "primary" : undefined}
-				variant={controller.sign === "-" ? "contained" : "outlined"}
-				onClick={() => {
-					controller.onSignChange("-")
-					const amountInput = amountInputRef.current
-					if (amountInput) {
-						amountInput.focus()
-					}
-				}}
-			>
-				{"-"}
-			</Button>
+		<div className="buttonTextFieldGroup transaction-amount">
+			<ButtonGroup>
+				<Button
+					color={controller.sign === "+" ? "primary" : undefined}
+					variant={controller.sign === "+" ? "contained" : "outlined"}
+					onClick={() => {
+						controller.onSignChange("+")
+						const amountInput = amountInputRef.current
+						if (amountInput) {
+							amountInput.focus()
+						}
+					}}
+				>
+					{"+"}
+				</Button>
+				<Button
+					color={controller.sign === "-" ? "primary" : undefined}
+					variant={controller.sign === "-" ? "contained" : "outlined"}
+					onClick={() => {
+						controller.onSignChange("-")
+						const amountInput = amountInputRef.current
+						if (amountInput) {
+							amountInput.focus()
+						}
+					}}
+				>
+					{"-"}
+				</Button>
+			</ButtonGroup>
+
 			<TextField
 				value={controller.amount}
 				onChange={e => controller.onAmountChange(e.target.value)}
@@ -131,7 +130,7 @@ export function TransactionForm(props: TransactionFormProps) {
 					</InputAdornment>
 				}}
 			/>
-		</ButtonGroup>
+		</div>
 
 		<Menu
 			anchorEl={controller.emojiPickerAnchor}
@@ -151,22 +150,24 @@ export function TransactionForm(props: TransactionFormProps) {
 			</div>
 		</Menu>
 
-		<ButtonGroup fullWidth className="transaction-category">
-			<Button
-				tabIndex={-1}
-				className="transaction-emoji"
-				variant="outlined"
-				onClick={(e) => {
-					controller.setEmojiPickerAnchor(e.currentTarget)
-					controller.setEmojiPickerOpen(true)
-				}}
-			>
-				{
-					controller.icon
-					|| controller.existingCategoryIcon
-					|| (controller.sign === "+" ? "💰" : "💸")
-				}
-			</Button>
+		<div className="buttonTextFieldGroup transaction-category">
+			<ButtonGroup>
+				<Button
+					tabIndex={-1}
+					className="transaction-emoji"
+					variant="outlined"
+					onClick={(e) => {
+						controller.setEmojiPickerAnchor(e.currentTarget)
+						controller.setEmojiPickerOpen(true)
+					}}
+				>
+					{
+						controller.icon
+						|| controller.existingCategoryIcon
+						|| (controller.sign === "+" ? "💰" : "💸")
+					}
+				</Button>
+			</ButtonGroup>
 			<Autocomplete
 				inputValue={controller.category}
 				onInputChange={(e, v) => controller.onCategoryChange(v)}
@@ -194,14 +195,14 @@ export function TransactionForm(props: TransactionFormProps) {
 					/>
 				)}
 			/>
-		</ButtonGroup>
+		</div>
 
 		<TextField
 			value={controller.comment}
 			onChange={e => controller.onCommentChange(e.target.value)}
 			id="transaction-comment"
 			className="transaction-comment"
-			variant="outlined"
+			variant="standard"
 			name="comment"
 			type="text"
 			label="Comment"
@@ -219,7 +220,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			id="transaction-time"
 			className="transaction-time"
 			variant={largerLayout ? "inline" : "dialog"}
-			inputVariant="outlined"
+			inputVariant="standard"
 			label="Date"
 			error={!!controller.errors.time}
 			helperText={controller.errors.time}
