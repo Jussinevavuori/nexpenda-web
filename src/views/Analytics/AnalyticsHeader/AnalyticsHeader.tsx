@@ -14,11 +14,11 @@ export function AnalyticsHeader() {
 	if (isDesktop) {
 		return <header className="AnalyticsHeader desktop">
 
-			<div className="title">
+			{/* <div className="title">
 				<Type component="h1" size="xl" color="gray-900" variant="bold">
 					{"Analytics"}
 				</Type>
-			</div>
+			</div> */}
 
 		</header>
 	}

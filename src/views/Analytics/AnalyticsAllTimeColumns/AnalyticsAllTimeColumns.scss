@@ -8,4 +8,13 @@
   & > .chart {
     margin-left: -26px;
   }
+
+  & path.recharts-curve.recharts-line-curve {
+    fill: transparent;
+    stroke: transparent;
+  }
+  & circle.recharts-dot.recharts-line-dot {
+    fill: transparent;
+    stroke: transparent;
+  }
 }

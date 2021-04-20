@@ -1,6 +1,6 @@
 @import "main";
 
-.AnalyticsOverview {
+.AnalyticsAllTimeOverview {
   border-radius: $radius-md;
   border: $border;
   padding: $spacing-8 $spacing-6;
@@ -26,17 +26,6 @@
 
     & > .total {
       grid-area: total;
-    }
-
-    & > .change {
-      grid-area: change;
-      display: flex;
-      align-items: center;
-      gap: $spacing-2;
-
-      & svg {
-        font-size: 20px;
-      }
     }
 
     & > .chart {
@@ -85,18 +74,6 @@
         grid-area: amount;
         display: block;
         padding-left: $spacing-5;
-      }
-      & > .change {
-        grid-area: change;
-        padding-left: $spacing-5;
-        grid-area: change;
-        display: flex;
-        align-items: center;
-        gap: $spacing-2;
-
-        & svg {
-          font-size: 14px;
-        }
       }
     }
   }

@@ -5,7 +5,6 @@ import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
-import { Button, ButtonGroup } from "@material-ui/core";
 
 export type AnalyticsCategoriesProps = {
 }
@@ -16,26 +15,26 @@ export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 
 	return <AnalyticsBlock
 		header="Categories"
-		headerContent={<div className="AnalyticsCategories__headerContent">
-			<ButtonGroup size="small">
-				<Button
-					color="primary"
-					size="small"
-					variant={controller.isShowingValues ? "contained" : "outlined"}
-					onClick={controller.showValues}
-				>
-					{"€"}
-				</Button>
-				<Button
-					color="primary"
-					size="small"
-					variant={controller.isShowingPercentages ? "contained" : "outlined"}
-					onClick={controller.showPercentages}
-				>
-					{"%"}
-				</Button>
-			</ButtonGroup>
-		</div>}
+	// headerContent={<div className="AnalyticsCategories__headerContent">
+	// 	<ButtonGroup size="small">
+	// 		<Button
+	// 			color="primary"
+	// 			size="small"
+	// 			variant={controller.isShowingValues ? "contained" : "outlined"}
+	// 			onClick={controller.showValues}
+	// 		>
+	// 			{"€"}
+	// 		</Button>
+	// 		<Button
+	// 			color="primary"
+	// 			size="small"
+	// 			variant={controller.isShowingPercentages ? "contained" : "outlined"}
+	// 			onClick={controller.showPercentages}
+	// 		>
+	// 			{"%"}
+	// 		</Button>
+	// 	</ButtonGroup>
+	// </div>}
 	>
 		<div className="AnalyticsCategories">
 			<AnimateSharedLayout>

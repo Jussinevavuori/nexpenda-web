@@ -6,7 +6,7 @@ import { theme } from "../../styles/main";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { AnalyticsPanel } from "./AnalyticsPanel/AnalyticsPanel";
 import { AnalyticsCategories } from "./AnalyticsCategories/AnalyticsCategories";
-import { AnalyticsAllTimeLine } from "./AnalyticsAllTimeLine/AnalyticsAllTimeLine";
+// import { AnalyticsAllTimeLine } from "./AnalyticsAllTimeLine/AnalyticsAllTimeLine";
 import { AnalyticsContextProvider } from "../../contexts/AnalyticsContext.context";
 import { useAnalyticsController } from "./useAnalyticsController";
 import { Type } from "../../components/Type/Type";
@@ -14,6 +14,7 @@ import { AnalyticsAllTimeColumns } from "./AnalyticsAllTimeColumns/AnalyticsAllT
 // import { AnalyticsAverageCategories } from "./AnalyticsAverageCategories/AnalyticsAverageCategories";
 // import { AnalyticsAverageTotals } from "./AnalyticsAverageTotals/AnalyticsAverageTotals";
 import { AnalyticsOverview } from "./AnalyticsOverview/AnalyticsOverview";
+import { AnalyticsAllTimeOverview } from "../../components/AnalyticsAllTimeOverview/AnalyticsAllTimeOverview";
 
 export type AnalyticsProps = {
 }
@@ -78,8 +79,16 @@ export function Analytics(props: AnalyticsProps) {
 				>
 					{"All time charts"}
 				</Type>
-				<AnalyticsAllTimeLine />
-				<AnalyticsAllTimeColumns />
+				<ResponsiveMasonry
+					className="masonry"
+					columnsCountBreakPoints={{ 350: 1, 700: 2 }}
+				>
+					<Masonry gutter={theme.spacing_4}>
+						<AnalyticsAllTimeOverview />
+						{/* <AnalyticsAllTimeLine /> */}
+						<AnalyticsAllTimeColumns />
+					</Masonry>
+				</ResponsiveMasonry>
 			</section>
 
 		</div>

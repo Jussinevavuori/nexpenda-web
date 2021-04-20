@@ -25,7 +25,7 @@ export function AnalyticsBlock(props: AnalyticsBlockProps) {
 	>
 		<div className="header">
 			<TitleHighlightColumn color="primary-500" />
-			<Type variant="bold">
+			<Type variant="boldcaps">
 				{header}
 			</Type>
 			<div className="header-content">

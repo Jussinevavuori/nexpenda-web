@@ -13,8 +13,12 @@ export function useTimeseriesSparkLineController(
     endDate,
     hideValuesAfter,
     hideValuesBefore,
+    maxPoints: propsMaxPoints,
     ...SparkLineProps
   } = props;
+
+  const maxPoints =
+    propsMaxPoints ?? TimeseriesSparkLinePropsDefaults.MaxPoints;
 
   // Calculate SparkLine's data from props per date.
   const SparkLineData = useMemo((): SparkLineProps["data"] => {
@@ -36,7 +40,7 @@ export function useTimeseriesSparkLineController(
 
     // Map each date to a value (cumulative if specified on props)
     // as the sum of all values for that date.
-    const values = DateUtils.mapEachDate(
+    let values = DateUtils.mapEachDate(
       startDate ?? dateRange.min,
       endDate ?? dateRange.max,
       (date) => {
@@ -64,6 +68,29 @@ export function useTimeseriesSparkLineController(
       }
     );
 
+    // Reduce number of points by averaging point values until
+    // there are few enough points
+    while (values.length > maxPoints) {
+      const newValues: typeof values = [];
+
+      for (let i = 0; i < values.length; i += 2) {
+        const a = values[i];
+        const b = values[i + 1];
+
+        if (a && b) {
+          newValues.push({
+            date: a.date,
+            value: (a.value + b.value) / 2,
+            hidden: a.hidden || b.hidden,
+          });
+        } else if (a) {
+          newValues.push(a);
+        }
+      }
+
+      values = newValues;
+    }
+
     return values.map((value) => {
       return {
         x: value.date.getTime(),
@@ -71,10 +98,22 @@ export function useTimeseriesSparkLineController(
         hidden: value.hidden,
       };
     });
-  }, [data, cumulative, startDate, endDate, hideValuesAfter, hideValuesBefore]);
+  }, [
+    data,
+    cumulative,
+    startDate,
+    endDate,
+    hideValuesAfter,
+    hideValuesBefore,
+    maxPoints,
+  ]);
 
   return {
     SparkLineData,
     SparkLineProps,
   };
 }
+
+export const TimeseriesSparkLinePropsDefaults = {
+  MaxPoints: 200,
+};

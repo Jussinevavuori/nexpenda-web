@@ -17,26 +17,26 @@ export function AnalyticsAverageCategories(props: AnalyticsAverageCategoriesProp
 
 	return <AnalyticsBlock
 		header="Category averages"
-		headerContent={<div className="AnalyticsAverageCategories__headerContent">
-			<ButtonGroup size="small">
-				<Button
-					color="primary"
-					size="small"
-					variant={controller.isShowingValues ? "contained" : "outlined"}
-					onClick={controller.showValues}
-				>
-					{"€"}
-				</Button>
-				<Button
-					color="primary"
-					size="small"
-					variant={controller.isShowingPercentages ? "contained" : "outlined"}
-					onClick={controller.showPercentages}
-				>
-					{"%"}
-				</Button>
-			</ButtonGroup>
-		</div>}
+	// headerContent={<div className="AnalyticsAverageCategories__headerContent">
+	// 	<ButtonGroup size="small">
+	// 		<Button
+	// 			color="primary"
+	// 			size="small"
+	// 			variant={controller.isShowingValues ? "contained" : "outlined"}
+	// 			onClick={controller.showValues}
+	// 		>
+	// 			{"€"}
+	// 		</Button>
+	// 		<Button
+	// 			color="primary"
+	// 			size="small"
+	// 			variant={controller.isShowingPercentages ? "contained" : "outlined"}
+	// 			onClick={controller.showPercentages}
+	// 		>
+	// 			{"%"}
+	// 		</Button>
+	// 	</ButtonGroup>
+	// </div>}
 	>
 		<div className="AnalyticsAverageCategories">
 			<AnimateSharedLayout>

@@ -39,6 +39,12 @@ export type TimeseriesSparkLineProps = {
 	 */
 	hideValuesAfter?: Date;
 
+	/**
+	 * Maximum number of points until points are halved by averaging.
+	 * Defaults to 200.
+	 */
+	maxPoints?: number;
+
 } & Omit<SparkLineProps, "data">;
 
 export function TimeseriesSparkLine(props: TimeseriesSparkLineProps) {

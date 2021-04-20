@@ -6,8 +6,6 @@ import { ResponsiveContainer, LineChart, YAxis, Tooltip, Line, CartesianGrid } f
 import { theme } from "../../../styles/main";
 import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { format } from "date-fns";
-import { Type } from "../../../components/Type/Type";
-import { MoneyType } from "../../../components/MoneyType/MoneyType";
 
 export type AnalyticsAllTimeLineProps = {
 }
@@ -18,16 +16,6 @@ export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 
 	return <AnalyticsBlock
 		header="All time"
-		headerContent={<div className="AnalyticsAllTimeLine__total">
-			<Type color="gray-700">
-				{`In total you have saved`}
-			</Type>
-			<MoneyType
-				amount={controller.total}
-				colorIfPositive="green-600"
-				colorIfNegative="red-600"
-			/>
-		</div>}
 	>
 		<div className="AnalyticsAllTimeLine">
 			<div className="chart">

@@ -48,8 +48,8 @@ export function useSparkLineController(props: SparkLineProps) {
 export const SparkLineDefaults = {
   ViewBoxWidth: 100,
   AspectRatio: 2.0,
-  StrokeWidth: 0.8,
-  ZeroLineStrokeWidth: 0.7,
+  StrokeWidth: 0.5,
+  ZeroLineStrokeWidth: 0.4,
   VerticalPadding: 2,
   GradientStops: [
     { percentage: 0, opacity: 1 },

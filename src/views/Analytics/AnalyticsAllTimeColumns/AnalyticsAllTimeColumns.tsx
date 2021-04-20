@@ -38,20 +38,22 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 								formatter={(value: any) => MoneyAmount.format(Number(value))}
 								labelFormatter={label => format(controller.deserializeMonth(Number(label) + controller.labelOffset), "MMMM, yyyy")}
 							/>
+							<Line
+								dataKey="Total"
+								stroke={theme.gray_800}
+								strokeWidth={4}
+							/>
 							<Bar
 								dataKey="Incomes"
-								fill={theme.green_300}
+								fill={theme.green_500}
 								stackId="stack"
+								radius={10}
 							/>
 							<Bar
 								dataKey="Expenses"
-								fill={theme.red_300}
+								fill={theme.red_500}
 								stackId="stack"
-							/>
-							<Line
-								dataKey="Total"
-								stroke={theme.blue_300}
-								strokeWidth={2}
+								radius={10}
 							/>
 						</ComposedChart>
 					</ResponsiveContainer>
