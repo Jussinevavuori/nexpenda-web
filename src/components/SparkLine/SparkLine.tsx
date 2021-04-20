@@ -59,13 +59,13 @@ export function SparkLine(props: SparkLineProps) {
 
 			{
 				props.showZeroLine && <path
-					className={cx("zeroline", `color-${props.color ?? "gray-300"}`)}
+					className={cx("zeroline", `color-${props.zerolineColor ?? "gray-300"}`)}
 					strokeWidth={props.zerolineStrokeWidth ?? controller.strokeWidth}
 					d={SvgPath.describeZeroLinePath({
 						data: controller.sortedData,
 						height: controller.viewBox.height,
 						width: controller.viewBox.width,
-						strokeWidth: controller.strokeWidth,
+						strokeWidth: props.zerolineStrokeWidth ?? controller.strokeWidth,
 					})}
 				/>
 			}

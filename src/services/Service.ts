@@ -61,7 +61,6 @@ export class Service {
       const tokenIsValid = Date.now() < expiresAt - expirationBuffer;
       return tokenIsValid;
     } catch (error) {
-      console.warn("Error occured while checking access token", error);
       return false;
     }
   }

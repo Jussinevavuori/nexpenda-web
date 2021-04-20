@@ -1,7 +1,8 @@
 import { useMemo } from "react";
+import { TimeseriesSparkLineProps } from "../../../components/TimeseriesSparkLine/TimeseriesSparkLine";
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context";
 import { useStoreState } from "../../../store";
-import { DataUtils } from "../../../utils/DataUtils/DataUtils";
+import { DateUtils } from "../../../utils/DateUtils/DateUtils";
 import { AnalyticsOverviewProps } from "./AnalyticsOverview";
 
 export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
@@ -32,67 +33,40 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
     analytics.selected.total.expenses
   );
 
-  // Calculate all properties for the sparkline component
-  const sparkLine = useMemo(() => {
+  // Calculate timeseries sparkline props: provide data, interval and hide
+  // required values.
+  const timeseriesSparklineProps = useMemo((): Pick<
+    TimeseriesSparkLineProps,
+    "data" | "startDate" | "endDate" | "hideValuesAfter" | "hideValuesBefore"
+  > => {
     const transactions = analytics.selected.transactions;
-    const start = analytics.selectedInterval.start;
-    const end = analytics.selectedInterval.end;
-    const now = new Date();
+    const startDate = analytics.selectedInterval.start;
+    const endDate = analytics.selectedInterval.end;
+    const currentDate = new Date();
 
-    const startMs = start.getTime();
-    const endMs = end.getTime();
-    const nowMs = now.getTime();
-
-    // Map current time to percentage between 0 % and 100 % representing
-    // how far the current date is within the range, where 0 % is
-    // at start or before and 100 % is at end or after.
-    const intervalProgressPercentage = DataUtils.mapValue(
-      nowMs,
-      startMs,
-      endMs,
-      0,
-      100,
-      { clamp: true }
-    );
-
-    // Construct data as cumulative chart per date
-    let y = 0;
-    let x = startMs;
-    let data = [{ x, y, hidden: false }];
-    /* eslint-disable no-loop-func */
-    for (const transaction of transactions.sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
-    )) {
-      x = transaction.date.getTime();
-      y += transaction.amount.decimalValue;
-      data = data.filter((_) => _.x !== x).concat({ x, y, hidden: false });
-    }
-
-    // If now is in interval, draw line to now unless later datapoints exist
-    if (nowMs > startMs && nowMs < endMs && nowMs > x) {
-      data.push({ x: nowMs, y, hidden: false });
-    }
-
-    // Final endpoint to stretch data
-    data.push({ x: endMs, y, hidden: endMs > nowMs });
-
-    // Final datapoint to stretch the last value until the end
-
-    console.log({ data, intervalProgressPercentage });
+    const isCurrentDateWithinInterval =
+      DateUtils.compareDate(currentDate, ">=", startDate) &&
+      DateUtils.compareDate(currentDate, "<", endDate);
 
     return {
-      data,
-      intervalProgressPercentage,
+      data: transactions.map((transaction) => ({
+        time: transaction.date,
+        value: transaction.amount.decimalValue,
+      })),
+      startDate,
+      endDate,
+      hideValuesBefore: undefined,
+      hideValuesAfter: isCurrentDateWithinInterval ? currentDate : undefined,
     };
   }, [analytics]);
 
   return {
-    sparkLine,
     analytics,
     intervalLengthLabel,
     totalPercentageIncrease,
     incomePercentageIncrease,
     expensesPercentageIncrease,
+    timeseriesSparklineProps,
     isMonth,
     isYear,
     isAll,

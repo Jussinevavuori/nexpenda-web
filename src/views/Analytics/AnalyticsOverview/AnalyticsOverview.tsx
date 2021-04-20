@@ -7,7 +7,7 @@ import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircle";
 import { ChangeIcon } from "../../../components/ChangeIcon/ChangeIcon";
-import { SparkLine } from "../../../components/SparkLine/SparkLine";
+import { TimeseriesSparkLine } from "../../../components/TimeseriesSparkLine/TimeseriesSparkLine";
 
 export type AnalyticsOverviewProps = {
 
@@ -179,16 +179,14 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 		</section>
 
 		<section className="sparkLineSection">
-			<div
-				className="sparkLineContainer"
-				style={{
-					// clipPath: `inset(0 ${controller.sparkLine} 0 0)`
-				}}
-			>
-				<SparkLine
-					aspectRatio={3.7}
-					data={controller.sparkLine.data}
+			<div className="sparkLineContainer">
+				<TimeseriesSparkLine
+					aspectRatio={6}
+					strokeWidth={0.5}
 					showZeroLine
+					zerolineStrokeWidth={1.25}
+					{...controller.timeseriesSparklineProps}
+					cumulative
 				/>
 			</div>
 		</section>

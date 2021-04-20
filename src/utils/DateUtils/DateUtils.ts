@@ -1,4 +1,5 @@
 import { DataUtils } from "../DataUtils/DataUtils";
+import { startOfDay, addDays, subDays, isSameDay, isBefore } from "date-fns";
 export type DateUtilsCompareOperator = ">" | ">=" | "==" | "<=" | "<";
 
 export class DateUtils {
@@ -13,7 +14,7 @@ export class DateUtils {
   static groupByDate<T>(
     items: T[],
     getDate: (t: T) => Date,
-    options?: { sort?: boolean }
+    options?: { sort?: boolean | "reverse" }
   ): { date: Date; items: T[] }[] {
     /**
      * Get all possible dates
@@ -38,9 +39,13 @@ export class DateUtils {
     /**
      * Optionally sort
      */
-    if (options?.sort) {
+    if (options?.sort === true) {
       result = result.sort((a, b) => {
         return b.date.getTime() - a.date.getTime();
+      });
+    } else if (options?.sort === "reverse") {
+      result = result.sort((a, b) => {
+        return a.date.getTime() - b.date.getTime();
       });
     }
 
@@ -151,5 +156,96 @@ export class DateUtils {
     const year = Math.floor(serial / 12);
     const month = Math.floor(serial % 12);
     return new Date(year, month);
+  }
+
+  /**
+   * Get date range from a list of dates
+   *
+   * @param dates
+   * @returns
+   */
+  static datesToDateRange(dates: Date[]) {
+    const values = dates.map((_) => _.valueOf()).filter(Boolean);
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+
+    return {
+      min: new Date(min),
+      max: new Date(max),
+    };
+  }
+
+  /**
+   * Maps a range of dates between `from` and `to` to values as specified by the
+   * callback function which maps a date to a value. If the order of `from` and
+   * `to` are swapped, the function will run the range in reverse.
+   *
+   * @param from			The earlier date. If this is later than the later date,
+   * 									the function will run the loop in the opposite direction.
+   *
+   * @param to 				The later date. If this is earlier than the earlier date,
+   * 									the function will run the loop in the opposite direction.
+   *
+   * @param callback	The callback function which is run once for each date
+   * 									within the range, in order (or reverse order if date
+   * 									orders are swapper.) Receives the date at the start of the
+   * 									day as an argument. Maps that date to a value which is
+   * 									returned in the array to the user.
+   *
+   * @returns 				All mapped values for each date in the interval, including
+   * 									the start and end days.
+   */
+  static mapEachDate<T>(from: Date, to: Date, callback: (date: Date) => T) {
+    const result: T[] = [];
+    DateUtils.forEachDate(from, to, (date) => result.push(callback(date)));
+    return result;
+  }
+
+  /**
+   * Run a callback function for each date between the dates defining
+   * the range, including those dates.
+   *
+   * @param from			The earlier date. If this is later than the later date,
+   * 									the function will run the loop in the opposite direction.
+   *
+   * @param to 				The later date. If this is earlier than the earlier date,
+   * 									the function will run the loop in the opposite direction.
+   *
+   * @param callback	The callback function which is run once for each date
+   * 									within the range, in order (or reverse order if date
+   * 									orders are swapper.) Receives the date at the start of the
+   * 									day as an argument.
+   */
+  static forEachDate(from: Date, to: Date, callback: (date: Date) => void) {
+    // If same day, run callback once
+    if (isSameDay(from, to)) {
+      callback(startOfDay(from));
+      return;
+    }
+
+    // Get smaller and larger date
+    const [earlier, later] = isBefore(from, to) ? [from, to] : [to, from];
+
+    // Define direction by using either the addDays or subDays function
+    // to move backwards or forwards.
+    const nextDay = DateUtils.compareDate(from, "<", to)
+      ? (date: Date) => startOfDay(addDays(date, 1))
+      : (date: Date) => startOfDay(subDays(date, 1));
+
+    // Check whether the current date is still within range
+    const isDateInRange = (date: Date) => {
+      return (
+        DateUtils.compareDate(earlier, "<=", date) &&
+        DateUtils.compareDate(date, "<=", later)
+      );
+    };
+
+    // Loop and run callback for each date
+    let date = startOfDay(from);
+    while (isDateInRange(date)) {
+      callback(date);
+      date = nextDay(date);
+    }
   }
 }

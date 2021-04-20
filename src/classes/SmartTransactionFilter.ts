@@ -3,6 +3,7 @@ import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { Category } from "./Category";
 import { Transaction } from "./Transaction";
 import { lightFormat } from "date-fns";
+import { LogService } from "../services/LogService";
 
 export class SmartTransactionFilter {
   public readonly search: string;
@@ -132,11 +133,11 @@ export class SmartTransactionFilter {
 
       // Extract values
       return match?.[0]?.split(prefixSep)?.[1]?.split(valueSep) ?? [];
-    } catch (e) {
-      console.warn(
-        `An error occured while extracting value from "${search}" with prefix ${prefix}:`,
-        e
-      );
+    } catch (error) {
+      LogService.warn({
+        message: `An error occured while extracting value from "${search}" with prefix ${prefix}:`,
+        data: { error },
+      });
       return [];
     }
   }

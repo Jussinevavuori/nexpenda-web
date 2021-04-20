@@ -5,6 +5,7 @@ import { useStoreActions } from "../../store";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LogService } from "../../services/LogService";
 
 export const forgotPasswordValidationSchema = z.object({
 	email: z.string().min(3).max(255).email(),
@@ -66,7 +67,10 @@ export function useForgotPasswordController() {
 							case "server/unavailable":
 								return "Could not contact server. Try again later."
 							default:
-								console.warn("Uncaught error code in login:", result)
+								LogService.warn({
+									message: "Uncaught error code in login:",
+									data: { result }
+								})
 								return "An error occured while logging in. Try again."
 						}
 				}
