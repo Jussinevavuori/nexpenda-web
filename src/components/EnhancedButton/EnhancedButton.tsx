@@ -1,29 +1,29 @@
 import "./EnhancedButton.scss";
-import React from "react"
+import React, { forwardRef } from "react"
 import cx from "classnames"
 import { Button, ButtonBaseProps, ButtonProps, CircularProgress } from "@material-ui/core";
 
-export type EnhancedButtonProps<C> = {
+export type EnhancedButtonProps = {
 	loading?: boolean;
-	component?: C;
+	component?: React.ElementType;
 } & ButtonProps & ButtonBaseProps
 
-export function EnhancedButton<C extends React.ElementType>(props: EnhancedButtonProps<C>) {
+export const EnhancedButton = forwardRef<HTMLButtonElement, EnhancedButtonProps>((props, ref) => {
 
 	const { loading, disabled, children, className, ...buttonProps } = props
 
 	return <Button
 		{...buttonProps}
+		ref={ref}
 		className={cx("EnhancedButton", className)}
 		disabled={disabled || loading}
 	>
 		{children}
 		{
-			loading ? <div className="enhancedButtonLoader">
-				<CircularProgress
-					size={28}
-				/>
-			</div> : null
+			loading &&
+			<div className="enhancedButtonLoader">
+				<CircularProgress size={28} />
+			</div>
 		}
 	</Button>
-}
+})

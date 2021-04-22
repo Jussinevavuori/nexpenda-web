@@ -9,6 +9,7 @@ import { ExampleSpreadsheet } from "../ExampleSpreadsheet/ExampleSpreadsheet";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 import { TransactionSpreadsheetReadSheetResult } from "../TransactionSpreadsheetReadSheetResult/TransactionSpreadsheetReadSheetResult";
 import { motion } from "framer-motion";
+import { UploadFileButton } from "../UploadFileButton/UploadFileButton";
 
 export type FileUploaderProps = {
 	onFinished?(): void;
@@ -53,24 +54,19 @@ export function FileUploader(props: FileUploaderProps) {
 						<ExampleSpreadsheet />
 					</div>
 
-					<EnhancedButton
-						component="label"
+					<UploadFileButton
 						color="primary"
 						variant="contained"
 						loading={controller.readFileState.isParsing}
 						startIcon={<UploadIcon />}
+						onChange={controller.handleFileUpload}
 					>
 						{
 							controller.readFileState.isParsing
 								? "Uploading file..."
 								: "Upload file"
 						}
-						<input
-							type="file"
-							style={{ display: "none" }}
-							onChange={controller.handleFileUpload}
-						/>
-					</EnhancedButton>
+					</UploadFileButton>
 
 					{
 						controller.readFileState.error &&
