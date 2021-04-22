@@ -15,10 +15,13 @@ export type LoginFormType = z.TypeOf<typeof loginValidationSchema>
 
 export function useLoginController() {
 	const redirect = useRedirect()
+
 	const user = useStoreState(_ => _.auth.user)
+
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 	const loginWithEmailPassword = useStoreActions(_ => _.auth.loginWithEmailPassword)
 	const requestConfirmationEmail = useStoreActions(_ => _.auth.requestConfirmationEmail)
+
 
 	/**
 	 * Submit error

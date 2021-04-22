@@ -258,7 +258,10 @@ export const authModel: AuthModel = {
   getProfile: thunk(async (actions, payload) => {
     const profile = await ProfileService.getProfile();
     if (profile.isSuccess()) {
+      StorageService.wasLoggedIn.setValue(true);
       actions.setAuthToState(profile.value);
+    } else {
+      StorageService.wasLoggedIn.setValue(false);
     }
     actions.setInitialized(true);
     return profile;
@@ -326,6 +329,7 @@ export const authModel: AuthModel = {
   logout: thunk(async (actions, payload) => {
     const result = await AuthService.logout();
     if (result.isSuccess()) {
+      StorageService.wasLoggedIn.setValue(false);
       actions.clearState();
     }
     return result;

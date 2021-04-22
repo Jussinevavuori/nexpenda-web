@@ -10,8 +10,12 @@ export function useLogoutController(props: LogoutProps) {
   const pushEvent = useStoreActions((_) => _.history.pushEvent);
   const redirect = useRedirect();
 
+  /**
+   * If the user had an access token (this means they had logged in but
+   * were logged out), we notify the user with a LoggedOutEvent.
+   */
   useEffect(() => {
-    const hadAccessToken = StorageService.components.hadAccessToken;
+    const hadAccessToken = StorageService.hadAccessToken;
     if (hadAccessToken.getValue()) {
       pushEvent(new LoggedOutEvent());
       hadAccessToken.clearValue();

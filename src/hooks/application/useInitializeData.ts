@@ -8,16 +8,27 @@ export function useInitializeData() {
     (_) => _.transactions.getTransactions
   );
 
-  // Initialize by fetching the user's profile and this month's transactions
-  // if any
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+  /**
+   * Initialize by fetching the user's profile and this month's transactions
+   * if any exist.
+   *
+   * @todo Remove timeout
+   */
+  useEffect(
+    function initializeAuth() {
+      setTimeout(getProfile, 2000);
+      // getProfile();
+    },
+    [getProfile]
+  );
 
-  useEffect(() => {
-    getTransactions({
-      before: endOfMonth(new Date()),
-      after: startOfMonth(new Date()),
-    });
-  }, [getTransactions]);
+  useEffect(
+    function initializeTransactions() {
+      getTransactions({
+        before: endOfMonth(new Date()),
+        after: startOfMonth(new Date()),
+      });
+    },
+    [getTransactions]
+  );
 }

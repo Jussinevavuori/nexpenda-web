@@ -106,7 +106,7 @@ export class Service {
    */
   protected static async redirectOnUnauthorized() {
     const accessToken = store.getState().auth.accessToken;
-    StorageService.components.hadAccessToken.setValue(!!accessToken);
+    StorageService.hadAccessToken.setValue(!!accessToken);
     if (window.location.pathname.match(/subscribe|app/)) {
       window.location.pathname = routes.logOut.path;
       window.location.search = "";

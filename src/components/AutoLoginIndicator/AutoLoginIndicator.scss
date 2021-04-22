@@ -1,0 +1,11 @@
+@import "main";
+
+.AutoLoginIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-4;
+  & .MuiLinearProgress-root {
+    width: 100%;
+  }
+}
