@@ -7,7 +7,7 @@
   display: grid;
   grid-template:
     "percentage details manage" auto
-    "categories categories categories" auto / auto 1fr;
+    "categories categories manage" auto / auto 1fr;
   gap: $spacing-3 $spacing-4;
 
   & > .percentage {
@@ -21,10 +21,6 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    & > .label {
-    }
-    & > .amount {
-    }
   }
   & > .categories {
     grid-area: categories;
@@ -36,12 +32,6 @@
   }
   & > .manage {
     grid-area: manage;
-    margin-top: -1 * $spacing-4;
-    margin-right: -1 * $spacing-4;
-    & > .MuiIconButton-root {
-      border-top-right-radius: $spacing-1;
-      border-top-left-radius: $spacing-1;
-      border-bottom-right-radius: $spacing-1;
-    }
+    align-self: center;
   }
 }

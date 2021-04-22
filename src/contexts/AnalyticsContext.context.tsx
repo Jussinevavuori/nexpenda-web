@@ -18,16 +18,17 @@ export function AnalyticsContextProvider(
 	const startDate = useStoreState(_ => _.interval.startDate)
 	const endDate = useStoreState(_ => _.interval.endDate)
 
-	const analytics = useMemo(() => {
-		return calculateAnalytics({
+	const analytics = useMemo(
+		() => calculateAnalytics({
 			transactions,
 			categories,
 			interval: {
 				start: startDate,
 				end: endDate,
 			}
-		})
-	}, [transactions, categories, startDate, endDate])
+		}),
+		[transactions, categories, startDate, endDate]
+	)
 
 	return <AnalyticsContext.Provider value={analytics}>
 		{props.children}

@@ -1,6 +1,6 @@
 import { createRef, useCallback, useEffect, useMemo, useState } from "react"
 import { List } from "react-virtualized"
-import { useLgMedia } from "../../hooks/utils/useMedia";
+import { useXlMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction"
 import { useStoreState } from "../../store"
 import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
@@ -9,7 +9,7 @@ import { TransactionTableProps } from "./TransactionTable"
 const virtualizedListRef = createRef<List>()
 
 export function useTransactionTableController(props: TransactionTableProps) {
-	const isLargeScreen = useLgMedia()
+	const isLargeScreen = useXlMedia()
 	const items = useStoreState(_ => _.transactions.filteredItems)
 	const sortingStrategy = useStoreState(_ => _.transactions.sortingStrategy)
 	const [isUpcomingOpen, setIsUpcomingOpen] = useState(false)

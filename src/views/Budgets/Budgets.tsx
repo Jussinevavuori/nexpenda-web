@@ -9,8 +9,9 @@ import { BudgetsContextProvider } from "../../contexts/BudgetsContext.context";
 import { Type } from "../../components/Type/Type";
 import { BudgetBlock } from "../../components/BudgetBlock/BudgetBlock";
 import { Button } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Add, Info } from "@material-ui/icons";
 import { BetaFeatureBanner } from "../../components/BetaFeatureBanner/BetaFeatureBanner";
+import { BudgetsOverview } from "../../components/BudgetsOverview/BudgetsOverview";
 
 export type BudgetsProps = {
 
@@ -23,7 +24,7 @@ export function Budgets(props: BudgetsProps) {
 	return <BudgetsContextProvider>
 		<div className={cx("Budgets")}>
 
-			<section className="headerContainer">
+			<section className="headerSection">
 				<BudgetsHeader />
 				{
 					!isDesktop && <div className="panelContainer">
@@ -32,10 +33,13 @@ export function Budgets(props: BudgetsProps) {
 				}
 			</section>
 
-			<section className="budgetsContainer">
 
+			<section className="overviewSection">
 				<BetaFeatureBanner feature="Budgets" />
+				<BudgetsOverview />
+			</section>
 
+			<section className="budgetsSection">
 				<div className="budgetsList incomes">
 					<div className="budgetsListHeader">
 						<Type component="h2" variant="bold" color="gray-600">
@@ -57,6 +61,10 @@ export function Budgets(props: BudgetsProps) {
 					{
 						controller.incomeBudgets.length === 0 &&
 						<div className="noBudgets income">
+							<Type color="primary-600" variant="bold" className="title">
+								<Info />
+								{"What are income budgets?"}
+							</Type>
 							<Type color="gray-700">
 								{"Income budgets are estimates of how much you earn on "}
 								{"average per month. You should add your stable sources of "}
@@ -94,6 +102,10 @@ export function Budgets(props: BudgetsProps) {
 					{
 						controller.expenseBudgets.length === 0 &&
 						<div className="noBudgets expense">
+							<Type color="primary-600" variant="bold" className="title">
+								<Info />
+								{"What are expense budgets?"}
+							</Type>
 							<Type color="gray-700">
 								{"Expense budgets are either estimates on how much you are "}
 								{"spending on a category or limits to how much you at most "}

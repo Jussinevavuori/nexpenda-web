@@ -84,6 +84,7 @@ export function SparkLine(props: SparkLineProps) {
 					{
 						(props.shadowOpacityStops ?? SparkLineDefaults.GradientStops).map(stop => (
 							<stop
+								key={stop.percentage}
 								offset={`${stop.percentage}%`}
 								className={props.shadowColor ?? "primary-200"}
 								stopOpacity={stop.opacity}

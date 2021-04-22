@@ -1,7 +1,19 @@
 @import "main";
 
+// Generate all color styles
+@each $name, $color in $colors {
+  .PercentageCircle > svg > circle.background.color-#{$name} {
+    fill: $color;
+  }
+  .PercentageCircle > svg > path.color-#{$name} {
+    stroke: $color;
+  }
+}
+
 .PercentageCircle {
   position: relative;
+  width: fit-content;
+  height: fit-content;
 
   & label {
     position: absolute;
@@ -11,28 +23,10 @@
   }
 
   & svg {
-    & circle.background {
-      fill: $primary-100;
-    }
     & path {
       fill: transparent;
       stroke-width: 4px;
       stroke-linecap: round;
-      &.inactive {
-        stroke: $primary-200;
-      }
-      &.active {
-        stroke: $primary-500;
-      }
-
-      &.isOverflow {
-        &.variant-expense {
-          color: $red-600;
-        }
-        &.variant-income {
-          color: $green-600;
-        }
-      }
     }
   }
 }

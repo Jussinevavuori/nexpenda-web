@@ -1,6 +1,7 @@
 import { Budget } from "../../classes/Budget";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { Transaction } from "../../classes/Transaction";
+import * as datefns from "date-fns";
 
 export type CalculateBudgetsArguments = {
   transactions: Transaction[];
@@ -16,6 +17,9 @@ export function calculateBudgets(args: CalculateBudgetsArguments) {
   const transactions = args.transactions.filter((transaction) => {
     return transaction.filter("", args.interval.start, args.interval.end);
   });
+
+  const lengthInMonths =
+    datefns.differenceInMonths(args.interval.start, args.interval.end) + 1;
 
   // Temp counter
   let _total = {
@@ -40,17 +44,17 @@ export function calculateBudgets(args: CalculateBudgetsArguments) {
     );
 
     // How many percentage is the progress of the budget limit?
-    const progressPercentage =
-      budget.amount.value === 0
-        ? 0
-        : (100 * progressAmount.value) / budget.amount.value;
+    const progressPercentage = percentage(
+      progressAmount.value,
+      budget.amount.value * lengthInMonths
+    );
 
     // Count progress and limit to temp variable
     if (budget.isExpense) {
-      _total.expenseEstimate += Math.abs(budget.amount.value);
+      _total.expenseEstimate += Math.abs(budget.amount.value * lengthInMonths);
       _total.expenseProgress += Math.abs(progressAmount.value);
     } else {
-      _total.incomeEstimate += Math.abs(budget.amount.value);
+      _total.incomeEstimate += Math.abs(budget.amount.value * lengthInMonths);
       _total.incomeProgress += Math.abs(progressAmount.value);
     }
 
@@ -65,19 +69,21 @@ export function calculateBudgets(args: CalculateBudgetsArguments) {
   const budgetTotals = {
     income: {
       estimate: new MoneyAmount(_total.incomeEstimate),
-      progress: new MoneyAmount(_total.incomeEstimate),
-      percentage:
-        _total.incomeEstimate === 0
-          ? 0
-          : (100 * _total.incomeProgress) / _total.incomeEstimate,
+      progress: new MoneyAmount(_total.incomeProgress),
+      percentage: percentage(_total.incomeProgress, _total.incomeEstimate),
     },
     expense: {
       estimate: new MoneyAmount(_total.expenseEstimate),
       progress: new MoneyAmount(_total.expenseProgress),
-      percentage:
-        _total.expenseEstimate === 0
-          ? 0
-          : (100 * _total.expenseProgress) / _total.expenseEstimate,
+      percentage: percentage(_total.expenseProgress, _total.expenseEstimate),
+    },
+    total: {
+      estimate: new MoneyAmount(_total.incomeEstimate - _total.expenseEstimate),
+      progress: new MoneyAmount(_total.incomeProgress - _total.expenseProgress),
+      percentage: percentage(
+        _total.incomeProgress + _total.expenseProgress,
+        _total.incomeEstimate + _total.expenseEstimate
+      ),
     },
   };
 
@@ -90,4 +96,11 @@ export function calculateBudgets(args: CalculateBudgetsArguments) {
       interval: args.interval,
     },
   };
+}
+
+/**
+ * Calculate percentage 100 * a / b or 0 of b === 0
+ */
+function percentage(a: number, b: number) {
+  return b === 0 ? 0 : 100 * (a / b);
 }

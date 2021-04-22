@@ -47,6 +47,11 @@ function getDefaultBudgetsContextValue(): BudgetsContextType {
 				estimate: new MoneyAmount(0),
 				progress: new MoneyAmount(0),
 				percentage: 0,
+			},
+			total: {
+				estimate: new MoneyAmount(0),
+				progress: new MoneyAmount(0),
+				percentage: 0,
 			}
 		},
 		extendedBudgets: [],

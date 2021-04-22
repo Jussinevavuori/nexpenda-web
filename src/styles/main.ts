@@ -82,6 +82,8 @@ export const theme = {
 	black: `#000000`,
 	border_color: `gray-300`,
 	border: `border-color 1px solid`,
+	border_color_light: `gray-200`,
+	border_light: `border-color-light 1px solid`,
 	roboto: `"Roboto", Helvetica, Arial, sans-serif`,
 	roboto_condensed: `"Roboto Condensed", Helvetica, Arial, sans-serif`,
 	poppins: `"Poppins", "Roboto", Helvetica, Arial, sans-serif`,
@@ -135,7 +137,7 @@ export const theme = {
 	text_xl: `1.5rem`,
 	text_lg: `1.25rem`,
 	text_md: `0.95rem`,
-	text_sm: `0.75rem`,
+	text_sm: `0.85rem`,
 	text_light: `300`,
 	text_bold: `700`,
 	text_regular: `400`,
@@ -147,4 +149,5 @@ export const theme = {
 	bp_sm: `600px`,
 	bp_md: `900px`,
 	bp_lg: `1200px`,
+	bp_xl: `1400px`,
 };

@@ -23,13 +23,15 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 
 	if (controller.isEditing) {
 		return <div className={cx("TransactionTableRow editing")}>
-			<TransactionForm
-				hideTitle
-				showCloseButton
-				editTransaction={props.transaction}
-				onClose={controller.onCloseEditing}
-				variant="horizontal"
-			/>
+			<div className="transactionFormContainer">
+				<TransactionForm
+					hideTitle
+					showCloseButton
+					editTransaction={props.transaction}
+					onClose={controller.onCloseEditing}
+					variant="horizontal"
+				/>
+			</div>
 		</div>
 	}
 

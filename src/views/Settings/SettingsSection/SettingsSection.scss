@@ -7,8 +7,15 @@
   max-width: calc(660px - #{2 * $spacing-6});
   border-radius: $radius-md;
   border: $border;
-  // box-shadow: $shadow-sm;
   padding: $spacing-6 $spacing-6;
+
+  // Adjust top margin of first SettingsSection on mobile
+  &:first-of-type {
+    margin-top: $spacing-16;
+    @include md {
+      margin-top: unset;
+    }
+  }
 
   & > .sectionTitle {
     display: block;

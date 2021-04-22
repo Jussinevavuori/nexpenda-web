@@ -1,21 +1,13 @@
-import { useVhFix } from './hooks/utils/useVhFix';
 import { Routes } from './Routes';
 import { Notification } from "./components/Notification/Notification"
-import { useHistoryNotifications } from './hooks/application/useHistoryNotifications';
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
-import { useApplicationShortcuts } from './hooks/shortcuts/useApplicationShortcuts';
-import { useGtagTracking } from './hooks/gtag/useGtagTracking';
 import { PremiumUserLockedOutDialog } from './components/PremiumUserLockedOutDialog/PremiumUserLockedOutDialog';
-import { useInitializeData } from './hooks/application/useInitializeData';
+import { HooksRoot } from './components/HooksRoot/HooksRoot';
 
 function App() {
-	useGtagTracking()
-	useVhFix()
-	useHistoryNotifications()
-	useApplicationShortcuts()
-	useInitializeData()
 
 	return <>
+		<HooksRoot />
 		<TransactionContextMenuProvider>
 			<PremiumUserLockedOutDialog />
 			<Notification />

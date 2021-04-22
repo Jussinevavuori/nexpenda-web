@@ -10,10 +10,14 @@
 
   &.editing {
     height: 110px;
-    @include lg {
+    display: flex;
+    background: white;
+    @include xl {
       height: 64px;
     }
-    background: white;
+    & > .transactionFormContainer {
+      width: 100%;
+    }
     &.selected {
       background: white;
     }

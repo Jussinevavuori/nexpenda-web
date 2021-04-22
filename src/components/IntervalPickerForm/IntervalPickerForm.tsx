@@ -12,9 +12,12 @@ import { Type } from "../Type/Type";
 // import { MAXIMUM_DATE, MINIMUM_DATE } from "../../constants";
 // import { DateUtils } from "../../utils/DateUtils/DateUtils";
 import { useIntervalPickerFormController } from "./useIntervalPickerFormController";
+import { ValidIntervalLengthType } from "../../models/interval.model";
 
 export type IntervalPickerFormProps = {
 	onConfirm?(): void;
+
+	disabledLengths?: ValidIntervalLengthType[];
 }
 
 export function IntervalPickerForm(props: IntervalPickerFormProps) {
@@ -22,7 +25,6 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 	const controller = useIntervalPickerFormController(props)
 
 	return <div className="IntervalPickerForm">
-
 
 		<section className="intervalLength">
 
@@ -47,6 +49,7 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 				className={controller.isMonth ? "active" : ""}
 				color={controller.isMonth ? "primary" : "default"}
 				onClick={controller.onMonth}
+				disabled={props.disabledLengths?.includes("month")}
 			>
 				{"Month"}
 			</Button>
@@ -56,6 +59,7 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 				className={controller.isYear ? "active" : ""}
 				color={controller.isYear ? "primary" : "default"}
 				onClick={controller.onYear}
+				disabled={props.disabledLengths?.includes("year")}
 			>
 				{"Year"}
 			</Button>
@@ -65,6 +69,7 @@ export function IntervalPickerForm(props: IntervalPickerFormProps) {
 				className={controller.isAll ? "active" : ""}
 				color={controller.isAll ? "primary" : "default"}
 				onClick={controller.onAll}
+				disabled={props.disabledLengths?.includes("all")}
 			>
 				{"All"}
 			</Button>

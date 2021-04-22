@@ -82,3 +82,13 @@ export function useLgMedia() {
   const query = `(min-width: 1200px)`;
   return useMedia(query);
 }
+
+/**
+ * Responsive media queries for app breakpoints
+ *
+ * XL breakpoint at 1400px
+ */
+export function useXlMedia() {
+  const query = `(min-width: 1400px)`;
+  return useMedia(query);
+}

@@ -3,6 +3,7 @@ import { useCreateTransactionShortcut } from "./useCreateTransactionShortcut";
 import { useDeleteTransactionsShortcut } from "./useDeleteTransactionsShortcut";
 import { useEditTransactionShortcut } from "./useEditTransactionShortcut";
 import { useSelectShortcuts } from "./useSelectShortcuts";
+import { useSelectTabShortcuts } from "./useSelectTabShortcuts";
 
 export function useApplicationShortcuts() {
   useCreateTransactionShortcut();
@@ -10,4 +11,5 @@ export function useApplicationShortcuts() {
   useCloseFormsShortcut();
   useDeleteTransactionsShortcut();
   useSelectShortcuts();
+  useSelectTabShortcuts();
 }

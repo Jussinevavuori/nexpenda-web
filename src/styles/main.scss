@@ -208,7 +208,7 @@ $text-xxl: 2.25rem;
 $text-xl: 1.5rem;
 $text-lg: 1.25rem;
 $text-md: 0.95rem;
-$text-sm: 0.75rem;
+$text-sm: 0.85rem;
 
 // Typography: Font weights
 
@@ -345,6 +345,7 @@ $vh: var(--vh, 1vh);
 $bp-sm: 600px;
 $bp-md: 900px;
 $bp-lg: 1200px;
+$bp-xl: 1400px;
 
 @mixin desktop {
   @media (min-width: $bp-md) {
@@ -372,6 +373,12 @@ $bp-lg: 1200px;
 
 @mixin lg {
   @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $bp-xl) {
     @content;
   }
 }

@@ -10,19 +10,37 @@
     "time time" auto
     "submit submit" auto / 1fr;
   align-items: center;
-  gap: $spacing-4;
+  gap: $spacing-2 $spacing-4;
+
+  @include md {
+    gap: $spacing-2 $spacing-6;
+  }
 
   &.horizontal {
     width: 100%;
-    grid-template: "title title title close" auto "amount amount category category" auto "comment comment time submit" auto / 1fr 1fr 1fr 1fr;
+    grid-template:
+      "title title title close" auto
+      "amount amount category category" auto
+      "comment comment time submit" auto
+      / 1fr 1fr 1fr 1fr;
     &.titleHidden {
-      grid-template: "amount amount category category category" auto "comment comment time submit close" auto / 1fr 1fr 1fr 1fr auto;
+      grid-template:
+        "amount amount amount category category category" auto
+        "comment comment time time submit close" auto
+        / 1fr 1fr 1fr 1fr 1fr auto;
     }
-    gap: $spacing-2;
-    @include lg {
-      grid-template: "title title title title close" auto "amount category comment time submit" auto/ 5fr 4.2fr 3.5fr 3.6fr auto;
+    gap: $spacing-2 $spacing-2;
+
+    // On larger screens, one row
+    @include xl {
+      grid-template:
+        "title title title title close" auto
+        "amount category comment time submit" auto
+        / 5fr 4.2fr 3.5fr 3.6fr auto;
       &.titleHidden {
-        grid-template: "amount category comment time submit close" auto/ 5fr 4.2fr 3.5fr 3.6fr auto auto;
+        grid-template:
+          "amount category comment time submit close" auto
+          / 5fr 4.2fr 3.5fr 3.6fr auto auto;
       }
     }
   }
@@ -54,11 +72,6 @@
 
   & .close {
     grid-area: close;
-  }
-
-  @include md {
-    gap: 1.5rem;
-    width: 22rem;
   }
 
   & .buttonTextFieldGroup {

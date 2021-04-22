@@ -1,4 +1,5 @@
 import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
+import { exposeToWindow } from "../utils/Utils/exposeToWindow";
 
 export enum StorageType {
   Local,
@@ -226,3 +227,5 @@ export class StorageService {
     });
   }
 }
+
+exposeToWindow({ StorageService, StorageType });

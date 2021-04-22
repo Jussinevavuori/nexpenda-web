@@ -5,7 +5,7 @@
   height: 100%;
   overflow: auto;
 
-  & > .headerContainer {
+  & > .headerSection {
     position: sticky;
     top: calc(-1 * #{$mobile-header-height});
     z-index: 2;
@@ -15,12 +15,23 @@
     }
   }
 
+  & > .overviewSection {
+    padding: $spacing-4 $spacing-6;
+    @include md {
+      padding: $spacing-8 $spacing-16 $spacing-8;
+    }
+
+    & .BetaFeatureBanner {
+      margin-bottom: $spacing-8;
+    }
+  }
+
   & > .panelContainer {
     position: sticky;
     top: -120px;
   }
 
-  & .budgetsContainer {
+  & .budgetsSection {
     padding: $spacing-4 $spacing-6;
     @include md {
       padding: $spacing-4 $spacing-16 $spacing-8;
@@ -45,13 +56,25 @@
     }
 
     & .noBudgets {
-      & p {
-        padding-bottom: $spacing-4;
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-4;
+      justify-content: center;
+      text-align: center;
+      & > .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-4;
+      }
+      & > svg {
+        color: $primary-500;
+        margin: 0 auto;
       }
       & .addFirstBudget {
-        width: 100%;
         border: $border;
-        margin-top: $spacing-4;
         // @include text-regular;
         color: $primary-600;
         transition: color $timing-theme;

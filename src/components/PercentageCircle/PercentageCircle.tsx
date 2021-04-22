@@ -3,6 +3,8 @@ import React from "react";
 import cx from "classnames";
 import { usePercentageCircleController } from "./usePercentageCircleController";
 import { Type, TypeProps } from "../Type/Type";
+import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { Angle } from "../../utils/GeometryUtils/Angle";
 
 export type PercentageCircleProps = {
 	/**
@@ -21,9 +23,26 @@ export type PercentageCircleProps = {
 	labelProps?: TypeProps;
 
 	/**
-	 * Variant
+	 * Class name
 	 */
-	variant?: "income" | "expense";
+	className?: string;
+
+	/**
+	 * Optional background color. Defaults to `white`
+	 */
+	backgroundColor?: ThemeColor;
+
+	/**
+	 * Optional inactive percentage color (color of unfilled part of circle).
+	 * Defaults to `primary-200`.
+	 */
+	unfilledColor?: ThemeColor;
+
+	/**
+	 * Optional active percentage color (color of filled part of circle).
+	 * Defaults to `primray-500`.
+	 */
+	filledColor?: ThemeColor;
 };
 
 export function PercentageCircle(props: PercentageCircleProps) {
@@ -31,8 +50,8 @@ export function PercentageCircle(props: PercentageCircleProps) {
 
 	return <div className={cx(
 		"PercentageCircle",
-		props.variant ? `variant-${props.variant}` : "",
-		{ isOverflow: controller.isOverflow }
+		{ isOverflow: controller.isOverflow },
+		props.className
 	)}>
 
 		<Type
@@ -51,8 +70,8 @@ export function PercentageCircle(props: PercentageCircleProps) {
 			<circle
 				className={cx(
 					"background",
-					props.variant ? `variant-${props.variant}` : "",
-					{ isOverflow: controller.isOverflow }
+					{ isOverflow: controller.isOverflow },
+					`color-${props.backgroundColor || "white"}`
 				)}
 				cx={controller.radius}
 				cy={controller.radius}
@@ -61,57 +80,31 @@ export function PercentageCircle(props: PercentageCircleProps) {
 			<path
 				className={cx(
 					"inactive",
-					props.variant ? `variant-${props.variant}` : "",
-					{ isOverflow: controller.isOverflow }
+					{ isOverflow: controller.isOverflow },
+					`color-${props.unfilledColor || "primary-200"}`
 				)}
-				d={getPathD(controller.radius, 100)}
+				d={SvgPath.describePartialCircle({
+					radius: controller.radius,
+					offsetAngle: new Angle(0, "percentages"),
+					sweepAngle: new Angle(100, "percentages"),
+					strokeWidth: 4,
+				})}
+
 			/>
 			<path
 				className={cx(
 					"active",
-					props.variant ? `variant-${props.variant}` : "",
-					{ isOverflow: controller.isOverflow }
+					{ isOverflow: controller.isOverflow },
+					`color-${props.filledColor || "primary-500"}`
 				)}
 				ref={controller.activeRef}
-				d={getPathD(controller.radius, controller.fillPercentage)}
+				d={SvgPath.describePartialCircle({
+					radius: controller.radius,
+					offsetAngle: new Angle(0, "percentages"),
+					sweepAngle: new Angle(controller.fillPercentage, "percentages"),
+					strokeWidth: 4,
+				})}
 			/>
 		</svg>
 	</div>
-}
-
-function getPathD(radius: number, percentage: number) {
-
-	// Stroke S and half-stroke s
-	const S = 4
-	const s = S / 2
-
-	const TAU = 2 * Math.PI;
-	const x = Math.max(Math.min(percentage, 99.999), 0) / 100;
-
-	// If empty, simply don't render
-	if (x === 0) return ""
-
-	const rad = ((0.75 + x) * TAU) % TAU;
-
-	// Quarter 0 : Bottom right
-	// Quarter 1 : Bottom left
-	// Quarter 2 : Top left
-	// Quarter 3 : Top right
-	const quarter = Math.floor(rad / (0.25 * TAU));
-
-	return [
-		// Start path at top center of circle
-		`M${radius},${s}`,
-
-		// Start arc of same size as circle
-		`A${radius - s},${radius - s} 1 `,
-
-		// Handle arc flags such that the correct arc is rawn
-		["0,1 ", "1,1 ", "1,1 ", "0,1 "][quarter],
-
-		// Ending point of the arc on the circle based on the angle
-		`${s + (radius - s) * (1 + Math.cos(rad))},`,
-		`${s + (radius - s) * (1 + Math.sin(rad))}`,
-	].join("")
-
 }

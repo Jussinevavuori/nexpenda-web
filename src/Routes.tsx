@@ -5,6 +5,7 @@ import { usePathTitle } from "./hooks/application/usePathTitle";
 import { AuthFrame } from "./components/AuthFrame/AuthFrame"
 import { AppFrame } from "./components/AppFrame/AppFrame"
 import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
+import { ValidIntervalLengthType } from "./models/interval.model";
 const Login = lazy(() => import("./views/Login/Login").then(_ => ({ default: _.Login })))
 const Register = lazy(() => import('./views/Register/Register').then(_ => ({ default: _.Register })))
 const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
@@ -22,6 +23,8 @@ export type RouteData = {
 	name: string,
 	path: string,
 	title: string,
+	forcedIntervalLength?: ValidIntervalLengthType;
+	disabledIntervalLengths?: ValidIntervalLengthType[];
 }
 
 export type VariableRouteData = (s: string) => RouteData
@@ -45,7 +48,8 @@ export const routes = {
 	budgets: {
 		name: "budgets",
 		path: "/app/budgets",
-		title: "Budgets"
+		title: "Budgets",
+		disabledIntervalLength: ["all"],
 	} as RouteData,
 	settings: {
 		name: "settings",

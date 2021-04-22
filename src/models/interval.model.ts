@@ -3,6 +3,22 @@ import * as datefns from "date-fns";
 import { MINIMUM_DATE, MAXIMUM_DATE } from "../constants";
 import { DateUtils } from "../utils/DateUtils/DateUtils";
 
+export type IntervalLengthType = "month" | "year" | "all" | "invalid";
+export type ValidIntervalLengthType = Exclude<IntervalLengthType, "invalid">;
+
+export const ALL_INTERVAL_LENGTH_TYPES = [
+  "month",
+  "year",
+  "all",
+  "invalid",
+] as IntervalLengthType[];
+
+export const ALL_VALID_INTERVAL_LENGTH_TYPES = [
+  "month",
+  "year",
+  "all",
+] as ValidIntervalLengthType[];
+
 export type IntervalModel = {
   //==============================================================//
   // PROPERTIES
@@ -61,6 +77,11 @@ export type IntervalModel = {
    * Interval length in days
    */
   length: Computed<IntervalModel, number>;
+
+  /**
+   * Interval length type (month, year, all, invalid)
+   */
+  lengthType: Computed<IntervalModel, IntervalLengthType>;
 
   /**
    * Does the current period include today
@@ -202,6 +223,16 @@ export const intervalModel: IntervalModel = {
       datefns.isLastDayOfMonth(state.endDate)
     );
   }),
+
+  lengthType: computed(
+    [(_) => _.isAll, (_) => _.isYear, (_) => _.isMonth],
+    (isAll, isYear, isMonth) => {
+      if (isAll) return "all";
+      if (isYear) return "year";
+      if (isMonth) return "month";
+      return "invalid";
+    }
+  ),
 
   // isWeek: computed((state) => {
   //   return (

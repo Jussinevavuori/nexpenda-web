@@ -3,13 +3,15 @@ import cx from "classnames"
 import { Drawer, DrawerProps, Menu, MenuProps } from "@material-ui/core";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 
+export type ResponsiveMenuRenderProps = { variant: "drawer" | "menu" }
+
 export type ResponsiveMenuProps = {
 	open: boolean,
 	onClose(event: {}, reason: "backdropClick" | "escapeKeyDown"): void;
 	className?: string;
 	MenuProps?: Omit<MenuProps, "children" | "onClose" | "open">,
 	DrawerProps?: Omit<DrawerProps, "children" | "onClose" | "open">,
-	children?: React.ReactNode
+	children?: React.ReactNode | ((renderProps: ResponsiveMenuRenderProps) => React.ReactNode);
 }
 
 export function ResponsiveMenu(props: ResponsiveMenuProps) {
@@ -23,12 +25,14 @@ export function ResponsiveMenu(props: ResponsiveMenuProps) {
 				props.MenuProps?.className,
 				"ResponsiveMenu ResponsiveMenu__Menu"
 			)}
+			children={
+				typeof props.children === "function"
+					? props.children({ variant: "menu" })
+					: props.children
+			}
 			open={props.open}
 			onClose={props.onClose}
-			children={props.children}
-			{...{
-				...props.MenuProps
-			}}
+			{...props.MenuProps}
 		/>
 	} else {
 		return <Drawer
@@ -37,13 +41,15 @@ export function ResponsiveMenu(props: ResponsiveMenuProps) {
 				props.DrawerProps?.className,
 				"ResponsiveMenu ResponsiveMenu__Drawer"
 			)}
+			children={
+				typeof props.children === "function"
+					? props.children({ variant: "drawer" })
+					: props.children
+			}
 			open={props.open}
 			onClose={props.onClose}
-			children={props.children}
-			{...{
-				anchor: "bottom",
-				...props.DrawerProps
-			}}
+			anchor="bottom"
+			{...props.DrawerProps}
 		/>
 	}
 

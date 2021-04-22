@@ -1,19 +1,18 @@
 import "./IntervalManager.scss";
 import React from "react"
-import { isMobile } from "react-device-detect"
-import { Button, Drawer, IconButton, Menu } from "@material-ui/core";
+import { Button, IconButton, } from "@material-ui/core";
 import { ArrowBack, ArrowForward, DateRange } from "@material-ui/icons"
-import { useSmMedia } from "../../hooks/utils/useMedia";
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerForm";
 import { useIntervalManagerController } from "./useIntervalManagerController";
 import { createClassnames } from "../../utils/Utils/createClassnames";
 import { motion } from "framer-motion"
+import { ResponsiveMenu } from "../ResponsiveMenu/ResponsiveMenu";
 
 export type IntervalManagerProps = {
 	hideControls?: boolean;
 	reverseControls?: boolean;
 	hideNowControl?: boolean;
-}
+};
 
 export function IntervalManager(props: IntervalManagerProps) {
 
@@ -24,9 +23,6 @@ export function IntervalManager(props: IntervalManagerProps) {
 	})
 
 	const controller = useIntervalManagerController(props)
-
-	const isDesktopLayout = useSmMedia()
-	const menuLayout = isDesktopLayout && !isMobile
 
 	const dateButton = <motion.div layout="position">
 		<Button
@@ -69,50 +65,37 @@ export function IntervalManager(props: IntervalManagerProps) {
 			{!props.reverseControls ? dateButton : null}
 		</motion.div>
 
-		{
-			/**
-			 * Render interval picker menu inside menu component
-			 * on larger screens and bottom drawer on smaller screens.
-			 */
-			menuLayout
-				? <Menu
-					open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
-					onClose={() => {
-						controller.setIntervalPickerMenuAnchor(undefined)
-						controller.setIntervalPickerOpen(false)
-					}}
-					anchorEl={controller.intervalPickerMenuAnchor}
-					anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-					transformOrigin={{ horizontal: "left", vertical: "top" }}
-					getContentAnchorEl={null}
-				>
-					<div className={cx("IntervalManager__Menu")}>
-						<IntervalPickerForm
-							onConfirm={() => {
-								controller.setIntervalPickerMenuAnchor(undefined)
-								controller.setIntervalPickerOpen(false)
-							}}
-						/>
-					</div>
-				</Menu>
-				: <Drawer
-					open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
-					onClose={() => {
-						controller.setIntervalPickerMenuAnchor(undefined)
-						controller.setIntervalPickerOpen(false)
-					}}
-					anchor={"bottom"}
-				>
-					<div className={cx("IntervalManager__Drawer")}>
-						<IntervalPickerForm
-							onConfirm={() => {
-								controller.setIntervalPickerMenuAnchor(undefined)
-								controller.setIntervalPickerOpen(false)
-							}}
-						/>
-					</div>
-				</Drawer>
-		}
-
+		<ResponsiveMenu
+			open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
+			onClose={() => {
+				controller.setIntervalPickerMenuAnchor(undefined)
+				controller.setIntervalPickerOpen(false)
+			}}
+			MenuProps={{
+				anchorEl: controller.intervalPickerMenuAnchor,
+				anchorOrigin: { horizontal: "left", vertical: "bottom" },
+				transformOrigin: { horizontal: "left", vertical: "top" },
+				getContentAnchorEl: null,
+			}}
+			DrawerProps={{
+				anchor: "bottom"
+			}}
+		>
+			{
+				(renderProps) => <div
+					className={cx(renderProps.variant === "menu"
+						? "IntervalManager__Menu"
+						: "IntervalManager__Drawer"
+					)}>
+					<IntervalPickerForm
+						onConfirm={() => {
+							controller.setIntervalPickerMenuAnchor(undefined)
+							controller.setIntervalPickerOpen(false)
+						}}
+						disabledLengths={controller.disabledIntervalLengthTypes}
+					/>
+				</div>
+			}
+		</ResponsiveMenu>
 	</>
 }

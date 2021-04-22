@@ -34,7 +34,16 @@ export function BudgetBlock(props: BudgetBlockProps) {
 			<div className={cx("percentage")}>
 				<PercentageCircle
 					percentage={controller.percentage}
-					variant={props.budget.isExpense ? "expense" : "income"}
+					backgroundColor={
+						props.budget.type === "expense"
+							? controller.percentage > 100 ? "red-200" : undefined
+							: controller.percentage > 100 ? "green-200" : undefined
+					}
+					filledColor={
+						props.budget.type === "expense"
+							? controller.percentage > 100 ? "red-500" : undefined
+							: controller.percentage > 100 ? "green-500" : undefined
+					}
 				/>
 			</div>
 			<div className={cx("details")}>

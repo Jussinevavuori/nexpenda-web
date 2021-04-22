@@ -138,8 +138,17 @@ export class SvgPath {
     sweepAngle: Angle;
     offsetAngle: Angle;
   }): string {
+    const offsetAngle = options.offsetAngle;
+
+    // Cap sweep angle at 359.999 degrees in order to avoid 360 degrees
+    // from looping back to 0 degrees
+    const sweepAngle = new Angle(
+      Math.min(359.999, options.sweepAngle.degrees),
+      "degrees"
+    );
+
     // Parse angles to radians
-    const sweep = options.sweepAngle.radians;
+    const sweep = sweepAngle.radians;
 
     // Shorthands to half-stroke (s) and radius (R)
     const s = options.strokeWidth / 2;
@@ -151,14 +160,14 @@ export class SvgPath {
     // Starting point
     const start = GeometryUtils.polarToCartesian({
       center: { x: R, y: R },
-      angle: Angle.add(options.offsetAngle, options.sweepAngle),
+      angle: Angle.add(offsetAngle, sweepAngle),
       radius: R - s,
     });
 
     // Ending point
     const end = GeometryUtils.polarToCartesian({
       center: { x: R, y: R },
-      angle: options.offsetAngle,
+      angle: offsetAngle,
       radius: R - s,
     });
 

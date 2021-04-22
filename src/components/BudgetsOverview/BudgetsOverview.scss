@@ -1,0 +1,79 @@
+@import "main";
+
+.BudgetsOverview {
+  display: grid;
+
+  grid-template:
+    "header header" auto
+    "percentage percentage" auto
+    "progress estimate" auto
+    "incomes incomes" auto
+    "expenses expenses" auto / 1fr 1fr;
+  @include sm {
+    grid-template:
+      "header header" auto
+      "percentage percentage" auto
+      "progress estimate" auto
+      "incomes expenses" auto / 1fr 1fr;
+  }
+
+  gap: $spacing-8 $spacing-10;
+
+  padding: $spacing-6;
+  border: $border;
+  border-radius: $radius-md;
+
+  & > header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+  }
+
+  & > .percentage {
+    grid-area: percentage;
+    justify-self: center;
+  }
+
+  & > .progress {
+    grid-area: progress;
+    text-align: right;
+  }
+
+  & > .estimate {
+    grid-area: estimate;
+  }
+
+  & > .subtotal {
+    justify-self: center;
+    &.incomes {
+      grid-area: incomes;
+      @include sm {
+        justify-self: flex-end;
+      }
+    }
+    &.expenses {
+      grid-area: expenses;
+      @include sm {
+        justify-self: flex-start;
+      }
+    }
+
+    display: grid;
+    height: fit-content;
+    grid-template:
+      "percentage title" 1fr
+      "percentage value" 1fr
+      / auto 1fr;
+    gap: 0 $spacing-6;
+
+    & > .percentage {
+      grid-area: percentage;
+    }
+    & > .title {
+      grid-area: title;
+    }
+    & > .value {
+      grid-area: value;
+    }
+  }
+}
