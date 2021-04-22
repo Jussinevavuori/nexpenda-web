@@ -21,9 +21,7 @@ export function FileUploaderDrawer(props: FileUploaderDrawerProps) {
 		onClose={controller.handleClose}
 	>
 		<div className="FileUploaderDrawer__content">
-			<FileUploader
-				onFinished={controller.handleClose}
-			/>
+			<FileUploader onFinished={controller.handleClose} />
 		</div>
 	</Drawer>
 }

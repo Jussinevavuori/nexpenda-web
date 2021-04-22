@@ -1,15 +1,19 @@
 @import "main";
 
 .FileUploader {
+  max-width: 100%;
+
   &__uploadFileStep {
     & .exampleSpreadsheetContainer {
       padding: $spacing-4 0;
+      overflow-x: scroll;
     }
   }
 
   &__reviewStep {
     & .reviewSpreadsheetContainer {
       padding: $spacing-4 0;
+      overflow-x: scroll;
     }
   }
 

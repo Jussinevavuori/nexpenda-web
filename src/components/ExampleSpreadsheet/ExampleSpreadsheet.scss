@@ -1,6 +1,8 @@
 @import "main";
 
 .ExampleSpreadsheet {
+  overflow-x: auto;
+
   & thead {
     & tr {
       & td {

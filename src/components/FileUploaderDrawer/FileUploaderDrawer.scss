@@ -2,6 +2,7 @@
 
 .FileUploaderDrawer {
   &__content {
+    max-width: 100%;
     padding: $spacing-4;
     @include md {
       width: 660px;

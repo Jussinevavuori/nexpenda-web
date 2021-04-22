@@ -202,7 +202,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			onChange={e => controller.onCommentChange(e.target.value)}
 			id="transaction-comment"
 			className="transaction-comment"
-			variant="standard"
+			variant="outlined"
 			name="comment"
 			type="text"
 			label="Comment"
@@ -220,7 +220,7 @@ export function TransactionForm(props: TransactionFormProps) {
 			id="transaction-time"
 			className="transaction-time"
 			variant={largerLayout ? "inline" : "dialog"}
-			inputVariant="standard"
+			inputVariant="outlined"
 			label="Date"
 			error={!!controller.errors.time}
 			helperText={controller.errors.time}
