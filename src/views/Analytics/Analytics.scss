@@ -33,7 +33,10 @@
       padding: $spacing-8 $spacing-16 $spacing-16;
     }
     & > h2 {
-      margin-bottom: $spacing-8;
+      margin: $spacing-6 0;
+      @include md {
+        margin-bottom: $spacing-8;
+      }
     }
   }
 }
