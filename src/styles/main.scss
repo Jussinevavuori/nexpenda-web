@@ -2,7 +2,7 @@
 
 $header-height: 5rem;
 $mobile-header-height: 160px;
-$sidebar-width: 290px;
+$sidebar-width: 300px;
 
 // Colors: Blue
 
@@ -132,6 +132,7 @@ $shadow-md: 0 3.5px 4px -4px rgba(0, 0, 0, 0.13),
 $roboto: "Roboto", Helvetica, Arial, sans-serif;
 $roboto-condensed: "Roboto Condensed", Helvetica, Arial, sans-serif;
 $poppins: "Poppins", "Roboto", Helvetica, Arial, sans-serif;
+$default-font: $poppins;
 
 // Spacing
 
@@ -213,32 +214,40 @@ $text-sm: 0.85rem;
 // Typography: Font weights
 
 $text-light: 300;
-$text-bold: 700;
+$text-bold: 600;
+$text-extrabold: 700;
 $text-regular: 400;
 
 // Typography: Text Spacing
 
 $text-regular-spacing: 0px;
 $text-bold-spacing: 0px;
+$text-extrabold-spacing: 0px;
 $text-boldcaps-spacing: 0.69px;
 
 // Typography: Font variants
 
 @mixin text-regular {
   font-weight: $text-regular;
-  font-family: $poppins;
+  font-family: $default-font;
   letter-spacing: $text-regular-spacing;
 }
 
 @mixin text-bold {
   font-weight: $text-bold;
-  font-family: $poppins;
+  font-family: $default-font;
   letter-spacing: $text-bold-spacing;
+}
+
+@mixin text-extrabold {
+  font-weight: $text-extrabold;
+  font-family: $default-font;
+  letter-spacing: $text-extrabold-spacing;
 }
 
 @mixin text-boldcaps {
   font-weight: $text-bold;
-  font-family: $poppins;
+  font-family: $default-font;
   text-transform: uppercase;
   letter-spacing: $text-boldcaps-spacing;
 }

@@ -1,11 +1,10 @@
 import "./AnalyticsAverageCategories.scss";
 import React from "react";
 import { useAnalyticsAverageCategoriesController } from "./useAnalyticsAverageCategoriesController";
-import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
-import { Button, ButtonGroup } from "@material-ui/core";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock"
 
 export type AnalyticsAverageCategoriesProps = {
 	showOnly?: "incomes" | "expenses";
@@ -15,29 +14,7 @@ export function AnalyticsAverageCategories(props: AnalyticsAverageCategoriesProp
 
 	const controller = useAnalyticsAverageCategoriesController(props)
 
-	return <AnalyticsBlock
-		header="Category averages"
-	// headerContent={<div className="AnalyticsAverageCategories__headerContent">
-	// 	<ButtonGroup size="small">
-	// 		<Button
-	// 			color="primary"
-	// 			size="small"
-	// 			variant={controller.isShowingValues ? "contained" : "outlined"}
-	// 			onClick={controller.showValues}
-	// 		>
-	// 			{"€"}
-	// 		</Button>
-	// 		<Button
-	// 			color="primary"
-	// 			size="small"
-	// 			variant={controller.isShowingPercentages ? "contained" : "outlined"}
-	// 			onClick={controller.showPercentages}
-	// 		>
-	// 			{"%"}
-	// 		</Button>
-	// 	</ButtonGroup>
-	// </div>}
-	>
+	return <ContainerBlock containerTitle="Category averages">
 		<div className="AnalyticsAverageCategories">
 			<AnimateSharedLayout>
 				{
@@ -102,5 +79,5 @@ export function AnalyticsAverageCategories(props: AnalyticsAverageCategoriesProp
 				}
 			</AnimateSharedLayout>
 		</div>
-	</AnalyticsBlock >
+	</ContainerBlock >
 }

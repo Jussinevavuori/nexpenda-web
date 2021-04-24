@@ -1,11 +1,11 @@
 import "./AnalyticsAllTimeLine.scss";
 import React from "react"
 import { useAnalyticsAllTimeLineController } from "./useAnalyticsAllTimeLineController"
-import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { ResponsiveContainer, LineChart, YAxis, Tooltip, Line, CartesianGrid } from "recharts"
 import { theme } from "../../../styles/main";
 import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { format } from "date-fns";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock";
 
 export type AnalyticsAllTimeLineProps = {
 }
@@ -14,9 +14,7 @@ export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 
 	const controller = useAnalyticsAllTimeLineController(props)
 
-	return <AnalyticsBlock
-		header="All time"
-	>
+	return <ContainerBlock containerTitle="All time">
 		<div className="AnalyticsAllTimeLine">
 			<div className="chart">
 				<ResponsiveContainer height={200} width="100%">
@@ -47,5 +45,5 @@ export function AnalyticsAllTimeLine(props: AnalyticsAllTimeLineProps) {
 
 			</div>
 		</div>
-	</AnalyticsBlock>
+	</ContainerBlock>
 }

@@ -4,7 +4,7 @@ import cx from "classnames";
 import { useAnalyticsAverageTotalsController } from "./useAnalyticsAverageTotalsController";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
-import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock";
 
 export type AnalyticsAverageTotalsProps = {
 
@@ -14,7 +14,7 @@ export function AnalyticsAverageTotals(props: AnalyticsAverageTotalsProps) {
 
 	const controller = useAnalyticsAverageTotalsController(props)
 
-	return <AnalyticsBlock header="Monthly average">
+	return <ContainerBlock containerTitle="Monthly average">
 		<div className={cx("AnalyticsAverageTotals")}>
 			<div className="AnalyticsTotals">
 				<div className="header">
@@ -55,5 +55,5 @@ export function AnalyticsAverageTotals(props: AnalyticsAverageTotalsProps) {
 				</div>
 			</div >
 		</div>
-	</AnalyticsBlock>
+	</ContainerBlock>
 }

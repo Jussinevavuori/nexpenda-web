@@ -1,0 +1,28 @@
+@import "main";
+
+.ContainerBlock {
+  position: relative;
+  width: 100%;
+  border-radius: $radius-md;
+  padding: $spacing-6 $spacing-6;
+  border: $border-light;
+  background: white;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    box-shadow: $shadow-sm;
+    z-index: -1;
+  }
+
+  & > .header {
+    padding-bottom: $spacing-6;
+    display: flex;
+    align-items: center;
+  }
+}

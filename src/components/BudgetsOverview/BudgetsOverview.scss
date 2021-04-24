@@ -1,15 +1,6 @@
 @import "main";
 
 .BudgetsOverview {
-  padding: $spacing-6;
-  border: $border;
-  border-radius: $radius-md;
-
-  & > header {
-    display: flex;
-    align-items: center;
-    padding-bottom: $spacing-4;
-  }
   & > footer {
     padding-top: $spacing-8;
     display: flex;

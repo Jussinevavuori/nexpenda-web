@@ -37,6 +37,9 @@
   &.Type-variant-bold {
     @include text-bold;
   }
+  &.Type-variant-extrabold {
+    @include text-extrabold;
+  }
   &.Type-variant-boldcaps {
     @include text-boldcaps;
   }

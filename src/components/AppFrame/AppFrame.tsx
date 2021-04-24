@@ -5,8 +5,8 @@ import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/Transactio
 import { Header } from "../Header/Header";
 import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/utils/useMedia";
-import { BudgetEditorDrawer } from "../BudgetEditorDrawer/BudgetEditorDrawer";
-import { BudgetCreatorDrawer } from "../BudgetCreatorDrawer/BudgetCreatorDrawer";
+import { BudgetEditorDialog } from "../BudgetEditorDialog/BudgetEditorDialog";
+import { BudgetCreatorDialog } from "../BudgetCreatorDialog/BudgetCreatorDialog";
 import { FeedbackDialog } from "../FeedbackDialog/FeedbackDialog";
 import { FileUploaderDrawer } from "../FileUploaderDrawer/FileUploaderDrawer";
 import { AnimateSharedLayout } from "framer-motion";
@@ -22,20 +22,26 @@ export function AppFrame(props: AppFrameProps) {
 
 	return <AnimateSharedLayout>
 		<div className="AppFrame">
-			{isDesktopLayout ? null : <TransactionCreatorDrawer />}
-			{isDesktopLayout ? null : <TransactionEditorDrawer />}
-			<BudgetEditorDrawer />
-			<BudgetCreatorDrawer />
+
+			{/* Rendered inline on desktop layout */}
+			{!isDesktopLayout && <TransactionCreatorDrawer />}
+			{!isDesktopLayout && <TransactionEditorDrawer />}
+
+			{/* Always rendered in dialog / drawer */}
+			<BudgetEditorDialog />
+			<BudgetCreatorDialog />
 			<FeedbackDialog />
 			<FileUploaderDrawer />
+
+			{/* Static elements */}
 			<div className="header">
 				<Header />
 			</div>
-			<div className="sidebar">
-				<Sidebar />
-			</div>
 			<div className="main">
 				{props.children}
+			</div>
+			<div className="sidebar">
+				<Sidebar />
 			</div>
 		</div>
 	</AnimateSharedLayout>

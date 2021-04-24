@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import { useQueryState } from "../../hooks/state/useQueryState";
-import { BudgetCreatorDrawerProps } from "./BudgetCreatorDrawer";
+import { BudgetCreatorDialogProps } from "./BudgetCreatorDialog";
 
-export const BudgetCreatorDrawerOpenHash = "create-budget";
+export const BudgetCreatorDialogOpenHash = "create-budget";
 
-export function useBudgetCreatorDrawerVariableOpenState() {
+export function useBudgetCreatorDialogVariableOpenState() {
   return useQueryState<"income" | "expense" | undefined>({
-    key: BudgetCreatorDrawerOpenHash,
+    key: BudgetCreatorDialogOpenHash,
     method: "push",
     encode(val) {
       switch (val) {
@@ -31,10 +31,10 @@ export function useBudgetCreatorDrawerVariableOpenState() {
   });
 }
 
-export function useBudgetCreatorDrawerController(
-  props: BudgetCreatorDrawerProps
+export function useBudgetCreatorDialogController(
+  props: BudgetCreatorDialogProps
 ) {
-  const [state, setState] = useBudgetCreatorDrawerVariableOpenState();
+  const [state, setState] = useBudgetCreatorDialogVariableOpenState();
 
   const handleClose = useCallback(() => {
     setState(undefined);

@@ -1,13 +1,13 @@
-import { BudgetEditorDrawerProps } from "./BudgetEditorDrawer";
+import { BudgetEditorDialogProps } from "./BudgetEditorDialog";
 import { useCallback, useMemo } from "react";
 import { useQueryState } from "../../hooks/state/useQueryState";
 import { useStoreState } from "../../store";
 
-export const BudgetEditorDrawerOpenHash = "edit-budget";
+export const BudgetEditorDialogOpenHash = "edit-budget";
 
-export function useBudgetEditorDrawerVariableOpenState() {
+export function useBudgetEditorDialogVariableOpenState() {
   return useQueryState<null | string>({
-    key: BudgetEditorDrawerOpenHash,
+    key: BudgetEditorDialogOpenHash,
     method: "push",
     decode(encodedId) {
       return !!encodedId && typeof encodedId === "string" ? encodedId : null;
@@ -18,10 +18,10 @@ export function useBudgetEditorDrawerVariableOpenState() {
   });
 }
 
-export function useBudgetEditorDrawerController(
-  props: BudgetEditorDrawerProps
+export function useBudgetEditorDialogController(
+  props: BudgetEditorDialogProps
 ) {
-  const [editingId, setEditingId] = useBudgetEditorDrawerVariableOpenState();
+  const [editingId, setEditingId] = useBudgetEditorDialogVariableOpenState();
 
   const budgets = useStoreState((_) => _.budgets.items);
 

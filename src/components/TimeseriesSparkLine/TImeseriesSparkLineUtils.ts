@@ -48,13 +48,10 @@ export class TimeseriesSparkLineUtils {
      * Map each date to a value (cumulative if specified on props)
      * as the sum of all values for that date.
      */
-    console.group("values = DateUtils.mapEachDate");
     let values = DateUtils.mapEachDate(
       options.startDate ?? dateRange.min,
       options.endDate ?? dateRange.max,
       (date, i) => {
-        console.log(date, i);
-
         // Get all data points for the date and sum of their values
         const dateData = groupedData[DateSerializer.serializeDate(date)] ?? [];
         const dateValue = dateData.reduce((sum, item) => sum + item.value, 0);
@@ -79,7 +76,6 @@ export class TimeseriesSparkLineUtils {
         };
       }
     );
-    console.groupEnd();
 
     /**
      * Reduce number of points by averaging two consecutive points to a single

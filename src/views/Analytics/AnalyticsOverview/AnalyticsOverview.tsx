@@ -2,12 +2,12 @@ import "./AnalyticsOverview.scss";
 import React from "react";
 import cx from "classnames";
 import { useAnalyticsOverviewController } from "./useAnalyticsOverviewController";
-import { TitleHighlightColumn } from "../../../components/TitleHighlightColumn/TitleHighlightColumn";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircle";
 import { ChangeIcon } from "../../../components/ChangeIcon/ChangeIcon";
 import { TimeseriesSparkLine } from "../../../components/TimeseriesSparkLine/TimeseriesSparkLine";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock";
 
 export type AnalyticsOverviewProps = {
 
@@ -17,97 +17,31 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 	const controller = useAnalyticsOverviewController(props)
 
-	return <div className={cx("AnalyticsOverview")}>
+	return <ContainerBlock
+		className={cx("AnalyticsOverview")}
+		containerTitle="Overview"
+	>
 
-		<header>
-			<TitleHighlightColumn color="primary-500" />
-			<Type variant="boldcaps" size="md" color="gray-800">
-				{"Overview"}
-			</Type>
-		</header>
+		<div className="content">
 
-		<section className="total">
+			<section className="total">
 
-			<Type className="label" variant="boldcaps" color="gray-700" size="sm">
-				{"Total savings"}
-			</Type>
-
-			<MoneyType
-				className="total"
-				amount={controller.analytics.selected.total.total}
-				color="gray-800"
-				size="xl"
-			/>
-
-			{
-				!controller.isAll &&
-				<div className="change">
-					<ChangeIcon
-						change={controller.totalPercentageIncrease}
-						color={{
-							negative: "red-600",
-							positive: "green-600",
-							neutral: "gray-600"
-						}}
-					/>
-					<Type
-						component="span"
-						variant="bold"
-						color={
-							!controller.totalPercentageIncrease
-								? "gray-600"
-								: controller.totalPercentageIncrease > 0
-									? "green-600"
-									: "red-600"
-						}
-					>
-						{`${controller.totalPercentageIncrease.toFixed(1)} %`}
-					</Type>
-					<Type component="span" color="gray-600">
-						{`vs last ${controller.intervalLengthLabel}`}
-					</Type>
-				</div>
-			}
-
-			<div className="chart">
-				<PiechartCircle
-					stroke={6}
-					data={[
-						{
-							color: "green-500",
-							amount: Math.abs(controller.analytics.selected.total.incomes),
-							label: "Incomes"
-						},
-						{
-							color: "red-500",
-							amount: Math.abs(controller.analytics.selected.total.expenses),
-							label: "Expenses"
-						},
-					]}
-				/>
-			</div>
-
-		</section>
-
-		<section className="subtotals">
-
-			<div className="subtotal income">
-
-				<Type className="label income">
-					{"Incomes"}
+				<Type className="label" variant="boldcaps" color="gray-700" size="sm">
+					{"Total savings"}
 				</Type>
 
 				<MoneyType
-					className="amount income"
-					amount={controller.analytics.selected.total.incomes}
-					color="green-600"
+					className="total"
+					amount={controller.analytics.selected.total.total}
+					color="gray-800"
+					size="xl"
 				/>
 
 				{
 					!controller.isAll &&
-					<div className="change income">
+					<div className="change">
 						<ChangeIcon
-							change={controller.incomePercentageIncrease}
+							change={controller.totalPercentageIncrease}
 							color={{
 								negative: "red-600",
 								positive: "green-600",
@@ -115,80 +49,144 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 							}}
 						/>
 						<Type
-							size="sm"
 							component="span"
 							variant="bold"
 							color={
-								!controller.incomePercentageIncrease
+								!controller.totalPercentageIncrease
 									? "gray-600"
-									: controller.incomePercentageIncrease > 0
+									: controller.totalPercentageIncrease > 0
 										? "green-600"
 										: "red-600"
 							}
 						>
-							{`${controller.incomePercentageIncrease.toFixed(1)} %`}
+							{`${controller.totalPercentageIncrease.toFixed(1)} %`}
+						</Type>
+						<Type component="span" color="gray-600">
+							{`vs last ${controller.intervalLengthLabel}`}
 						</Type>
 					</div>
 				}
 
-			</div>
+				<div className="chart">
+					<PiechartCircle
+						stroke={6}
+						data={[
+							{
+								color: "green-500",
+								amount: Math.abs(controller.analytics.selected.total.incomes),
+								label: "Incomes"
+							},
+							{
+								color: "red-500",
+								amount: Math.abs(controller.analytics.selected.total.expenses),
+								label: "Expenses"
+							},
+						]}
+					/>
+				</div>
 
-			<div className="subtotal expense">
+			</section>
 
-				<Type className="label expense">
-					{"Expenses"}
-				</Type>
+			<section className="subtotals">
 
-				<MoneyType
-					className="amount expense"
-					amount={controller.analytics.selected.total.expenses}
-					color="red-600"
-				/>
+				<div className="subtotal income">
 
-				{
-					!controller.isAll &&
-					<div className="change expense">
-						<ChangeIcon
-							change={controller.expensesPercentageIncrease}
-							color={{
-								negative: "green-600",
-								positive: "red-600",
-								neutral: "gray-600"
-							}}
-						/>
-						<Type
-							size="sm"
-							component="span"
-							variant="bold"
+					<Type className="label income">
+						{"Incomes"}
+					</Type>
 
-							color={
-								!controller.expensesPercentageIncrease
-									? "gray-600"
-									: controller.expensesPercentageIncrease > 0
-										? "red-600"
-										: "green-600"
-							}
-						>
-							{`${controller.expensesPercentageIncrease.toFixed(1)} %`}
-						</Type>
-					</div>
-				}
+					<MoneyType
+						className="amount income"
+						amount={controller.analytics.selected.total.incomes}
+						color="green-600"
+					/>
 
-			</div>
+					{
+						!controller.isAll &&
+						<div className="change income">
+							<ChangeIcon
+								change={controller.incomePercentageIncrease}
+								color={{
+									negative: "red-600",
+									positive: "green-600",
+									neutral: "gray-600"
+								}}
+							/>
+							<Type
+								size="sm"
+								component="span"
+								variant="bold"
+								color={
+									!controller.incomePercentageIncrease
+										? "gray-600"
+										: controller.incomePercentageIncrease > 0
+											? "green-600"
+											: "red-600"
+								}
+							>
+								{`${controller.incomePercentageIncrease.toFixed(1)} %`}
+							</Type>
+						</div>
+					}
 
-		</section>
+				</div>
 
-		<section className="sparkLineSection">
-			<div className="sparkLineContainer">
-				<TimeseriesSparkLine
-					aspectRatio={100 / 23}
-					verticalPadding={5}
-					showZeroLine
-					{...controller.timeseriesSparklineProps}
-					cumulative
-				/>
-			</div>
-		</section>
+				<div className="subtotal expense">
 
-	</div>
+					<Type className="label expense">
+						{"Expenses"}
+					</Type>
+
+					<MoneyType
+						className="amount expense"
+						amount={controller.analytics.selected.total.expenses}
+						color="red-600"
+					/>
+
+					{
+						!controller.isAll &&
+						<div className="change expense">
+							<ChangeIcon
+								change={controller.expensesPercentageIncrease}
+								color={{
+									negative: "green-600",
+									positive: "red-600",
+									neutral: "gray-600"
+								}}
+							/>
+							<Type
+								size="sm"
+								component="span"
+								variant="bold"
+
+								color={
+									!controller.expensesPercentageIncrease
+										? "gray-600"
+										: controller.expensesPercentageIncrease > 0
+											? "red-600"
+											: "green-600"
+								}
+							>
+								{`${controller.expensesPercentageIncrease.toFixed(1)} %`}
+							</Type>
+						</div>
+					}
+
+				</div>
+
+			</section>
+
+			<section className="sparkLineSection">
+				<div className="sparkLineContainer">
+					<TimeseriesSparkLine
+						aspectRatio={100 / 23}
+						verticalPadding={5}
+						showZeroLine
+						{...controller.timeseriesSparklineProps}
+						cumulative
+					/>
+				</div>
+			</section>
+		</div>
+	</ContainerBlock>
 }

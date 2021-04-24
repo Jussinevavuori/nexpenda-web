@@ -35,7 +35,7 @@
     & > h2 {
       margin: $spacing-6 0;
       @include md {
-        margin-bottom: $spacing-8;
+        margin: 0 0 $spacing-8 0;
       }
     }
   }

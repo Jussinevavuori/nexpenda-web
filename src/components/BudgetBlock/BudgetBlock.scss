@@ -1,9 +1,9 @@
 @import "main";
 
 .BudgetBlock {
-  padding: $spacing-4;
-  border: 1px solid $gray-300;
-  border-radius: $spacing-1;
+  // padding: $spacing-4;
+  // border: 1px solid $gray-300;
+  // border-radius: $spacing-1;
   display: grid;
   grid-template:
     "percentage details manage" auto

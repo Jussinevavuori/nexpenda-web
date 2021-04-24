@@ -12,6 +12,7 @@ import { Button } from "@material-ui/core";
 import { Add, Info } from "@material-ui/icons";
 import { BetaFeatureBanner } from "../../components/BetaFeatureBanner/BetaFeatureBanner";
 import { BudgetsOverview } from "../../components/BudgetsOverview/BudgetsOverview";
+import { ContainerBlock } from "../../components/Container/ContainerBlock";
 
 export type BudgetsProps = {
 
@@ -34,21 +35,14 @@ export function Budgets(props: BudgetsProps) {
 			</section>
 
 
-			<section className="overviewSection">
+			<section className="budgetsSection">
 				<BetaFeatureBanner feature="Budgets" />
 				<BudgetsOverview />
-			</section>
 
-			<section className="budgetsSection">
-				<div className="budgetsList incomes">
-					<div className="budgetsListHeader">
-						<Type component="h2" variant="bold" color="gray-600">
-							{"Incomes"}
-						</Type>
-						<Button startIcon={<Add />} onClick={controller.onCreateNewIncomeBudget}>
-							{"Add"}
-						</Button>
-					</div>
+				<ContainerBlock
+					className="budgetsList incomes"
+					containerTitle="Incomes"
+				>
 					<ul>
 						{
 							controller.incomeBudgets.map(budget => {
@@ -71,25 +65,22 @@ export function Budgets(props: BudgetsProps) {
 								{"income here to help you determine how much you can spend "}
 								{"per month."}
 							</Type>
-							<Button
-								className="addFirstBudget income"
-								startIcon={<Add />}
-								onClick={controller.onCreateNewIncomeBudget}
-							>
-								{"Add your first income budget"}
-							</Button>
 						</div>
 					}
-				</div>
-				<div className="budgetsList expenses">
-					<div className="budgetsListHeader">
-						<Type component="h2" variant="bold" color="gray-600">
-							{"Expenses"}
-						</Type>
-						<Button startIcon={<Add />} onClick={controller.onCreateNewExpenseBudget}>
-							{"Add"}
-						</Button>
-					</div>
+					<Button
+						className="addBudget income"
+						startIcon={<Add />}
+						variant="outlined"
+						color="primary"
+						onClick={controller.onCreateNewIncomeBudget}
+					>
+						{"Add an income budget"}
+					</Button>
+				</ContainerBlock>
+				<ContainerBlock
+					className="budgetsList expenses"
+					containerTitle="Expenses"
+				>
 					<ul>
 						{
 							controller.expenseBudgets.map(budget => {
@@ -111,16 +102,18 @@ export function Budgets(props: BudgetsProps) {
 								{"spending on a category or limits to how much you at most "}
 								{"want to spend on a category."}
 							</Type>
-							<Button
-								className="addFirstBudget expense"
-								startIcon={<Add />}
-								onClick={controller.onCreateNewExpenseBudget}
-							>
-								{"Add your first expense budget"}
-							</Button>
 						</div>
 					}
-				</div>
+					<Button
+						className="addBudget expense"
+						startIcon={<Add />}
+						variant="outlined"
+						color="primary"
+						onClick={controller.onCreateNewExpenseBudget}
+					>
+						{"Add an expense budget"}
+					</Button>
+				</ContainerBlock>
 			</section>
 		</div>
 	</BudgetsContextProvider>

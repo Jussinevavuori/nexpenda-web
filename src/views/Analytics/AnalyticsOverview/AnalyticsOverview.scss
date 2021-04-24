@@ -1,107 +1,99 @@
 @import "main";
 
 .AnalyticsOverview {
-  border-radius: $radius-md;
-  border: $border;
-  padding: $spacing-8 $spacing-6;
-  // box-shadow: $shadow-sm;
-
-  & > header {
+  & .content {
     display: flex;
-    align-items: center;
-  }
+    flex-direction: column;
+    gap: $spacing-10;
 
-  & > section {
-    padding-top: $spacing-10;
-  }
-
-  & > section.total {
-    display: grid;
-    grid-template: "label chart" auto "total chart" auto "change chart" auto / 1fr auto;
-    gap: $spacing-1;
-
-    & > .label {
-      grid-area: label;
-    }
-
-    & > .total {
-      grid-area: total;
-    }
-
-    & > .change {
-      grid-area: change;
-      display: flex;
-      align-items: center;
-      gap: $spacing-2;
-
-      & svg {
-        font-size: 20px;
-      }
-    }
-
-    & > .chart {
-      grid-area: chart;
-      align-self: center;
-    }
-  }
-
-  & > .subtotals {
-    display: flex;
-    gap: $spacing-12;
-
-    & > .subtotal {
+    & > section.total {
       display: grid;
-      grid-template: "label" auto "amount" auto "change" auto / 1fr;
+      grid-template: "label chart" auto "total chart" auto "change chart" auto / 1fr auto;
       gap: $spacing-1;
-      position: relative;
-
-      &::before {
-        $size: 1.5px;
-
-        position: absolute;
-        content: "";
-        display: block;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        width: $size;
-        height: 90%;
-        border-radius: 0.5 * $size;
-      }
-
-      &.income::before {
-        background: $green-500;
-      }
-      &.expense::before {
-        background: $red-400;
-      }
 
       & > .label {
         grid-area: label;
-        position: relative;
-        padding-left: $spacing-5;
       }
-      & > .amount {
-        grid-area: amount;
-        display: block;
-        padding-left: $spacing-5;
+
+      & > .total {
+        grid-area: total;
       }
+
       & > .change {
-        grid-area: change;
-        padding-left: $spacing-5;
         grid-area: change;
         display: flex;
         align-items: center;
         gap: $spacing-2;
 
         & svg {
-          font-size: 14px;
+          font-size: 20px;
+        }
+      }
+
+      & > .chart {
+        grid-area: chart;
+        align-self: center;
+      }
+    }
+
+    & > .subtotals {
+      display: flex;
+      gap: $spacing-12;
+
+      & > .subtotal {
+        display: grid;
+        grid-template: "label" auto "amount" auto "change" auto / 1fr;
+        gap: $spacing-1;
+        position: relative;
+
+        &::before {
+          $size: 1.5px;
+
+          position: absolute;
+          content: "";
+          display: block;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          width: $size;
+          height: 90%;
+          border-radius: 0.5 * $size;
+        }
+
+        &.income::before {
+          background: $green-500;
+        }
+        &.expense::before {
+          background: $red-400;
+        }
+
+        & > .label {
+          grid-area: label;
+          position: relative;
+          padding-left: $spacing-5;
+        }
+        & > .amount {
+          grid-area: amount;
+          display: block;
+          padding-left: $spacing-5;
+        }
+        & > .change {
+          grid-area: change;
+          padding-left: $spacing-5;
+          grid-area: change;
+          display: flex;
+          align-items: center;
+          gap: $spacing-2;
+
+          & svg {
+            font-size: 14px;
+          }
         }
       }
     }
-  }
 
-  & section.sparkLineSection {
-    width: 100%;
+    & section.sparkLineSection {
+      width: 100%;
+    }
   }
 }

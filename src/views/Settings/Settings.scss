@@ -4,26 +4,36 @@
   width: 100%;
   height: 100%;
   overflow: auto;
+
+  & > section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-8;
+    padding: $spacing-10 $spacing-6 0;
+    @include md {
+      padding: 0;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+  }
+
   @include md {
     padding: $spacing-8 $spacing-16 0;
   }
 
-  & > .profilePanel {
+  & .profilePanel {
     & > .content > button {
       margin-top: $spacing-8;
     }
   }
 
-  & > .fileHandlers {
-    & > .content > * {
-      &:first-child {
-        margin-top: 0;
-      }
+  & .fileHandlers {
+    & > *:not(.header) {
       margin-top: $spacing-4;
     }
   }
 
-  & > .feedbackSection {
+  & .feedbackSection {
     & label {
       display: block;
       padding-bottom: $spacing-4;

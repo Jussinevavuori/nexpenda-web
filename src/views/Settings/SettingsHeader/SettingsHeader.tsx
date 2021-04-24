@@ -20,9 +20,7 @@ export function SettingsHeader(props: SettingsHeaderProps) {
 	 * Desktop view
 	 */
 	if (isDesktop) {
-		return <div className={cx("SettingsHeader desktop")}>
-
-		</div>
+		return <div className={cx("SettingsHeader desktop")} />
 	}
 
 	/**

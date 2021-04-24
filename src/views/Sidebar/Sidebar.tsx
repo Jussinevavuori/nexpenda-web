@@ -47,11 +47,10 @@ export function Sidebar(props: SidebarProps) {
 						</div>
 
 						<div className="body">
-
-							<div className="selections">
+							<div className="container">
 
 								<Type
-									className="selections-title"
+									className="title"
 									variant="boldcaps"
 									color="gray-800"
 									size="sm"

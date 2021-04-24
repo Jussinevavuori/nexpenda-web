@@ -8,6 +8,7 @@ import { useTransactionTableController } from "./useTransactionTableController";
 import { AnimatePresence, motion } from "framer-motion";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
 import { Button } from "@material-ui/core";
+import { ContainerBlock } from "../Container/ContainerBlock";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
@@ -20,7 +21,7 @@ export function TransactionTable(props: TransactionTableProps) {
 
 	if (controller.showSkeletons) {
 
-		return <div className="TransactionTable">
+		return <ContainerBlock className="TransactionTable">
 			<TransactionTableHeader />
 			<div className="listContainer">
 				{
@@ -29,10 +30,10 @@ export function TransactionTable(props: TransactionTableProps) {
 					})
 				}
 			</div>
-		</div >
+		</ContainerBlock >
 	}
 
-	return <div className="TransactionTable">
+	return <ContainerBlock className="TransactionTable">
 		<TransactionTableHeader />
 		<motion.div layout="position" className="listContainer">
 			<AutoSizer className="autoSizer">
@@ -117,5 +118,5 @@ export function TransactionTable(props: TransactionTableProps) {
 				}
 			</AutoSizer>
 		</motion.div>
-	</div>
+	</ContainerBlock>
 }

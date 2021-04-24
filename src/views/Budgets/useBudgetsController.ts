@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Budget } from "../../classes/Budget";
-import { useBudgetCreatorDrawerVariableOpenState } from "../../components/BudgetCreatorDrawer/useBudgetCreatorDrawerController";
+import { useBudgetCreatorDialogVariableOpenState } from "../../components/BudgetCreatorDialog/useBudgetCreatorDialogController";
 import { useStoreState } from "../../store";
 import { BudgetsProps } from "./Budgets";
 
 export function useBudgetsController(props: BudgetsProps) {
   const budgets = useStoreState((_) => _.budgets.items);
 
-  const { 1: openBudgetCreator } = useBudgetCreatorDrawerVariableOpenState();
+  const { 1: openBudgetCreator } = useBudgetCreatorDialogVariableOpenState();
 
   function onCreateNewBudget(variant: "expense" | "income") {
     openBudgetCreator(variant);

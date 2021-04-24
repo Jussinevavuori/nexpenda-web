@@ -6,8 +6,8 @@ import { Typography, TypographyProps } from "@material-ui/core";
 export type TypeProps = Omit<TypographyProps, "color" | "variant"> & {
 	component?: ElementType;
 	color?: ThemeColor;
-	variant?: "regular" | "bold" | "boldcaps";
-	size?: "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
+	variant?: ThemeTextVariant;
+	size?: ThemeTextSize;
 	center?: boolean;
 	disablePointerEvents?: boolean;
 }

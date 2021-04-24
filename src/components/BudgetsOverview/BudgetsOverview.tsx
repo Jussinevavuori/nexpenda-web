@@ -7,6 +7,7 @@ import { Type } from "../Type/Type";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { TitleHighlightColumn } from "../TitleHighlightColumn/TitleHighlightColumn";
 import { Button } from "@material-ui/core";
+import { ContainerBlock } from "../Container/ContainerBlock";
 
 export type BudgetsOverviewProps = {
 	variant?: "narrow" | "default";
@@ -16,19 +17,13 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 
 	const controller = useBudgetsOverviewController(props)
 
-	return <div
+	return <ContainerBlock
+		containerTitle="Budgets overview"
 		className={cx(
 			"BudgetsOverview",
 			`variant-${props.variant ?? "default"}`
 		)}
 	>
-
-		<header>
-			<TitleHighlightColumn color="primary-500" />
-			<Type variant="boldcaps" size="md" color="gray-800">
-				{"Budgets overview"}
-			</Type>
-		</header>
 
 		<div
 			className={cx(
@@ -172,5 +167,5 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 			</footer>
 		}
 
-	</div >
+	</ContainerBlock >
 }

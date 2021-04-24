@@ -31,7 +31,9 @@
       top: 100%;
       left: 50%;
       transform: translate(-50%, -50%);
+      z-index: 100;
       & .UserAvatar {
+        box-shadow: $shadow-md;
         $size: 100px;
         width: $size;
         height: $size;

@@ -1,9 +1,9 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Category } from "../../classes/Category";
-import { useStoreActions, useStoreState } from "../../store";
+import { useStoreActions } from "../../store";
 import { BudgetFormProps } from "./BudgetForm";
 
 function getIntegerAmount(value: string | number) {
@@ -36,40 +36,13 @@ export const budgetValidationSchema = z.object({
 export type BudgetFormType = z.TypeOf<typeof budgetValidationSchema>;
 
 export function useBudgetFormController(props: BudgetFormProps) {
-  const categories = useStoreState((_) => _.transactions.categories);
   const postBudget = useStoreActions((_) => _.budgets.postBudget);
   const putBudget = useStoreActions((_) => _.budgets.putBudget);
 
-  const [categoryIds, setCategoryIds] = useState<string[]>([]);
-  const [isSelectingCategory, setIsSelectingCategory] = useState(false);
+  // All selected categories
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  function handleSelectCategory() {
-    setIsSelectingCategory(true);
-  }
-
-  function handleCancelSelectCategory() {
-    setIsSelectingCategory(false);
-  }
-
-  function onCategorySelected(category: Category) {
-    setCategoryIds((_) => _.concat(category.id));
-    setIsSelectingCategory(false);
-  }
-
-  function handleRemoveCategory(category: Category) {
-    setCategoryIds((_) => _.filter((_) => _ !== category.id));
-  }
-
-  const selectedCategories = useMemo(() => {
-    const _categories: Category[] = [];
-    categories.forEach((category) => {
-      if (categoryIds.includes(category.id)) {
-        _categories.push(category);
-      }
-    });
-    return _categories;
-  }, [categoryIds, categories]);
-
+  // Is the form an expense or income budget?
   const variant = props.variant.edit
     ? props.variant.edit.budget.isExpense
       ? "expense"
@@ -88,7 +61,7 @@ export function useBudgetFormController(props: BudgetFormProps) {
   async function submitHandler(values: BudgetFormType) {
     setError(undefined);
 
-    if (categoryIds.length === 0) {
+    if (categories.length === 0) {
       setError("You haven't selected any categories");
       return;
     }
@@ -100,13 +73,13 @@ export function useBudgetFormController(props: BudgetFormProps) {
       ? putBudget({
           integerAmount: getIntegerAmount(values.amount) * sign,
           label: values.label,
-          categoryIds,
+          categoryIds: categories.map((_) => _.id),
           id: props.variant.edit.budget.id,
         })
       : postBudget({
           integerAmount: getIntegerAmount(values.amount) * sign,
           label: values.label,
-          categoryIds,
+          categoryIds: categories.map((_) => _.id),
         }));
 
     /**
@@ -154,11 +127,9 @@ export function useBudgetFormController(props: BudgetFormProps) {
     variant,
     isEditing: !!props.variant.edit,
 
-    selectedCategories,
-    handleCancelSelectCategory,
-    handleRemoveCategory,
-    onCategorySelected,
-    handleSelectCategory,
-    isSelectingCategory,
+    categories,
+    onCategoriesChange(newCategories: Category[]) {
+      setCategories(newCategories);
+    },
   };
 }

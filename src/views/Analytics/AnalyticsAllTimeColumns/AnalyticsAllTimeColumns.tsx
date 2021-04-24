@@ -4,9 +4,9 @@ import cx from "classnames";
 import { MoneyAmount } from "../../../classes/MoneyAmount";
 import { format } from "date-fns";
 import { useAnalyticsAllTimeColumnsController } from "./useAnalyticsAllTimeColumnsController";
-import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { Bar, CartesianGrid, ResponsiveContainer, ComposedChart, YAxis, Tooltip, Line } from "recharts";
 import { theme } from "../../../styles/main";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock";
 
 export type AnalyticsAllTimeColumnsProps = {
 
@@ -18,7 +18,7 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 	const controller = useAnalyticsAllTimeColumnsController(props)
 
 	return <>
-		<AnalyticsBlock header="Monthly totals" >
+		<ContainerBlock containerTitle="Monthly totals" >
 			<div className={cx("AnalyticsAllTimeColumns")}>
 				<div className="chart">
 					<ResponsiveContainer height={250} width="100%">
@@ -59,6 +59,6 @@ export function AnalyticsAllTimeColumns(props: AnalyticsAllTimeColumnsProps) {
 					</ResponsiveContainer>
 				</div>
 			</div>
-		</AnalyticsBlock>
+		</ContainerBlock>
 	</>
 }

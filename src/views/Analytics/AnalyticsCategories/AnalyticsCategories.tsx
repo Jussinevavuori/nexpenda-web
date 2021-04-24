@@ -1,10 +1,10 @@
 import "./AnalyticsCategories.scss";
 import React from "react"
 import { useAnalyticsCategoriesController } from "./useAnalyticsCategoriesController"
-import { AnalyticsBlock } from "../AnalyticsBlock/AnalyticsBlock";
 import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
+import { ContainerBlock } from "../../../components/Container/ContainerBlock";
 
 export type AnalyticsCategoriesProps = {
 }
@@ -13,29 +13,7 @@ export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 
 	const controller = useAnalyticsCategoriesController(props)
 
-	return <AnalyticsBlock
-		header="Categories"
-	// headerContent={<div className="AnalyticsCategories__headerContent">
-	// 	<ButtonGroup size="small">
-	// 		<Button
-	// 			color="primary"
-	// 			size="small"
-	// 			variant={controller.isShowingValues ? "contained" : "outlined"}
-	// 			onClick={controller.showValues}
-	// 		>
-	// 			{"€"}
-	// 		</Button>
-	// 		<Button
-	// 			color="primary"
-	// 			size="small"
-	// 			variant={controller.isShowingPercentages ? "contained" : "outlined"}
-	// 			onClick={controller.showPercentages}
-	// 		>
-	// 			{"%"}
-	// 		</Button>
-	// 	</ButtonGroup>
-	// </div>}
-	>
+	return <ContainerBlock containerTitle="Categories">
 		<div className="AnalyticsCategories">
 			<AnimateSharedLayout>
 				<motion.div layout className="incomes">
@@ -94,6 +72,5 @@ export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 				</motion.div>
 			</AnimateSharedLayout>
 		</div>
-	</AnalyticsBlock>
-
+	</ContainerBlock>
 }

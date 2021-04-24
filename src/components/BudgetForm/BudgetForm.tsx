@@ -3,11 +3,9 @@ import React from "react";
 import cx from "classnames";
 import { useBudgetFormController } from "./useBudgetFormController";
 import { Type } from "../Type/Type";
-import { Add as AddIcon, Clear } from "@material-ui/icons";
-import { Button, IconButton, InputAdornment, TextField } from "@material-ui/core";
+import { Button, InputAdornment, TextField } from "@material-ui/core";
 import { Budget } from "../../classes/Budget";
-import { Category } from "../../classes/Category";
-import { CategorySelectorDialog } from "../CategorySelectorDialog/CategorySelectorDialog";
+import { MultiCategorySelector } from "../MultiCategorySelector/MultiCategorySelector";
 
 export type BudgetFormPropsVariant = {
 	create?: undefined;
@@ -32,23 +30,13 @@ export function BudgetForm(props: BudgetFormProps) {
 
 	return <>
 
-		<CategorySelectorDialog
-			open={controller.isSelectingCategory}
-			onClose={controller.handleCancelSelectCategory}
-			onCategorySelected={controller.onCategorySelected}
-			variant={controller.variant}
-		/>
-
 		<form
 			className={cx("BudgetForm")}
 			onSubmit={controller.handleSubmit}
 		>
 
 			<div className="title">
-				<Type
-					variant="boldcaps"
-					color="gray-600"
-				>
+				<Type variant="bold">
 					{
 						controller.isEditing
 							? `Edit ${controller.variant} budget`
@@ -57,46 +45,13 @@ export function BudgetForm(props: BudgetFormProps) {
 				</Type>
 			</div>
 
-			<div className="categories">
-				<ul>
-					{
-						controller.selectedCategories.map(category => {
-							return <li
-								key={category.id}
-								className="category"
-							>
-								<span className="icon">
-									{
-										category.icon || (controller.variant === "expense"
-											? Category.defaultExpenseIcon
-											: Category.defaultIncomeIcon)
-									}
-								</span>
-								<Type component="span" variant="bold" className="name">
-									{category.name}
-								</Type>
-								<IconButton
-									size="small"
-									onClick={() => controller.handleRemoveCategory(category)}
-								>
-									<Clear />
-								</IconButton>
-							</li>
-
-						})
-					}
-
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={controller.handleSelectCategory}
-						startIcon={<AddIcon />}
-					>
-						{"Add category"}
-					</Button>
-				</ul>
-
-			</div>
+			<MultiCategorySelector
+				value={controller.categories}
+				onChange={controller.onCategoriesChange}
+				TextFieldProps={{
+					helperText: `Pick all categories you want to track under this budget.`
+				}}
+			/>
 
 			<TextField
 				variant="outlined"

@@ -24,7 +24,7 @@ export function Logo(props: LogoProps) {
 				return {
 					component: "span",
 					size: "xl",
-					variant: "bold",
+					variant: "extrabold",
 					color: "black",
 					...typeProps,
 					...defaultLetterProps,
@@ -38,7 +38,7 @@ export function Logo(props: LogoProps) {
 				return {
 					component: "span",
 					size: "xl",
-					variant: "bold",
+					variant: "extrabold",
 					color: "primary-500",
 					...typeProps,
 					...highlightLetterProps,

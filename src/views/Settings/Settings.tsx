@@ -6,12 +6,12 @@ import { Type } from "../../components/Type/Type";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
 import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
-import { SettingsSection } from "./SettingsSection/SettingsSection";
 import { ThemePicker } from "../../components/ThemePicker/ThemePicker";
 import { SettingsHeader } from "./SettingsHeader/SettingsHeader";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { SettingsSubscriptionManager } from "../../components/SettingsPremiumSubscription/SettingsSubscriptionManager";
 import { SubscribeBanner } from "../../components/SubscribeBanner/SubscribeBanner";
+import { ContainerBlock } from "../../components/Container/ContainerBlock";
 
 export type SettingsProps = {
 }
@@ -35,68 +35,69 @@ export function Settings(props: SettingsProps) {
 
 		<SettingsHeader />
 
-		<SettingsSection className="profilePanel" sectionTitle="Profile">
-			<SettingsProfilePanel disableAvatar={!isDesktop} />
-		</SettingsSection>
+		<section>
 
-		{
-			(process.env.NODE_ENV === "development" || controller.user.isAdmin) &&
-			!controller.user.isPremium &&
-			<SettingsSection>
-				<SubscribeBanner />
-			</SettingsSection>
-		}
+			<ContainerBlock className="profilePanel" containerTitle="Profile">
+				<SettingsProfilePanel disableAvatar={!isDesktop} />
+			</ContainerBlock>
+
+			{
+				(process.env.NODE_ENV === "development" || controller.user.isAdmin) &&
+				!controller.user.isPremium &&
+				<ContainerBlock>
+					<SubscribeBanner />
+				</ContainerBlock>
+			}
 
 
-		<SettingsSection className="customization" sectionTitle="Customize">
-			<ThemePicker />
-		</SettingsSection>
+			<ContainerBlock className="customization" containerTitle="Customize">
+				<ThemePicker />
+			</ContainerBlock>
 
-		<SettingsSection className="fileHandlers" sectionTitle="Import and export">
-			<Type>
-				{"Import existing transactions from your own spreadsheets "}
-				{"or export all your transactions into a .xlsx spreadsheet."}
-			</Type>
-			<Button
-				color="primary"
-				variant="contained"
-				endIcon={<UploadIcon />}
-				onClick={controller.handleOpenFileUploaderDrawer}
-				fullWidth
+			<ContainerBlock className="fileHandlers" containerTitle="Import and export">
+				<Type>
+					{"Import existing transactions from your own spreadsheets "}
+					{"or export all your transactions into a .xlsx spreadsheet."}
+				</Type>
+				<Button
+					color="primary"
+					variant="contained"
+					endIcon={<UploadIcon />}
+					onClick={controller.handleOpenFileUploaderDrawer}
+					fullWidth
+				>
+					{"Import transactions"}
+				</Button>
+				<FileDownloader />
+			</ContainerBlock>
+
+			{
+				controller.canManageBilling &&
+				<ContainerBlock containerTitle="Manage your subscription">
+					<SettingsSubscriptionManager />
+				</ContainerBlock>
+			}
+
+
+			<ContainerBlock
+				containerTitle="Send feedback"
+				className="feedbackSection"
 			>
-				{"Import transactions"}
-			</Button>
-			<FileDownloader />
-		</SettingsSection>
-
-		{
-			controller.canManageBilling &&
-			<SettingsSection sectionTitle="Manage your subscription">
-				<SettingsSubscriptionManager />
-			</SettingsSection>
-		}
-
-
-		<SettingsSection
-			sectionTitle="Send feedback"
-			className="feedbackSection"
-		>
-			<Type color="gray-800" component="label">
-				{"Send honest feedback, report bugs or tell us what you love "}
-				{"about Nexpenda below!"}
-			</Type>
-			<Button
-				variant="outlined"
-				onClick={controller.handleOpenFeedbackDialog}
-				startIcon={<FeedbackIcon />}
-				fullWidth
-			>
-				{"Send feedback"}
-			</Button>
-		</SettingsSection>
+				<Type color="gray-800" component="label">
+					{"Send honest feedback, report bugs or tell us what you love "}
+					{"about Nexpenda below!"}
+				</Type>
+				<Button
+					variant="outlined"
+					onClick={controller.handleOpenFeedbackDialog}
+					startIcon={<FeedbackIcon />}
+					fullWidth
+				>
+					{"Send feedback"}
+				</Button>
+			</ContainerBlock>
 
 
-		<SettingsSection sectionTitle="Log out">
 			<Button
 				color="primary"
 				variant="contained"
@@ -106,19 +107,20 @@ export function Settings(props: SettingsProps) {
 			>
 				{"Log out"}
 			</Button>
-		</SettingsSection>
 
 
-		<div className="version">
-			<Type component="span" size="sm" color="gray-600">
-				{"Version"}
-			</Type>
-			<Type component="span" variant="bold" size="sm" color="gray-700" >
-				{"0.1.1"}
-			</Type>
-			<Type component="span" variant="bold" size="sm" color="gray-600">
-				{"Alpha"}
-			</Type>
-		</div>
+			<div className="version">
+				<Type component="span" size="sm" color="gray-600">
+					{"Version"}
+				</Type>
+				<Type component="span" variant="bold" size="sm" color="gray-700" >
+					{"0.1.1"}
+				</Type>
+				<Type component="span" variant="bold" size="sm" color="gray-600">
+					{"Alpha"}
+				</Type>
+			</div>
+
+		</section>
 	</div >
 }

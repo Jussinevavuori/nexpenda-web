@@ -7,8 +7,6 @@
   max-width: 100vw;
   max-height: $fullvh;
 
-  background: white;
-
   display: grid;
 
   grid-template:
@@ -24,7 +22,9 @@
   & > .header {
     grid-area: header;
     display: none;
+    z-index: 2;
     @include md {
+      box-shadow: $shadow-sm;
       display: unset;
     }
   }
@@ -32,9 +32,15 @@
   & > .main {
     grid-area: main;
     overflow: hidden;
+    background: $gray-100;
+    @include md {
+      box-shadow: $shadow-md;
+      z-index: 2;
+    }
   }
 
   & > .sidebar {
     grid-area: sidebar;
+    z-index: 1;
   }
 }

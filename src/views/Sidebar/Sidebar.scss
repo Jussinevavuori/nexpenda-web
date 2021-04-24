@@ -9,11 +9,11 @@
   @include md {
     height: 100%;
     min-width: fit-content;
-    width: 20vw;
+    width: 23vw;
     max-width: $sidebar-width;
 
-    background: $gray-100;
-    border-right: $border;
+    background: $gray-200;
+    // border-right: $border;
   }
 
   /** Desktop layout */
@@ -22,11 +22,8 @@
 
     & .header {
       height: $header-height;
-
-      padding: 0 $spacing-8;
-
-      border-bottom: $border;
-
+      padding: 0 $spacing-6 + $spacing-4;
+      // border-bottom: $border;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -36,13 +33,23 @@
       display: flex;
       flex-direction: column;
 
-      & .selections {
-        padding: $spacing-6 $spacing-4 $spacing-6 0;
-        border-bottom: $border;
+      & .container {
+        padding: $spacing-4 $spacing-6;
+        position: relative;
 
-        & .selections-title {
-          margin-bottom: $spacing-4;
-          margin-left: $spacing-4;
+        & .title {
+          margin: 0 $spacing-4 $spacing-4;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: calc(100% - #{2 * $spacing-6});
+          height: 1px;
+          background: $gray-300;
+          margin: 0 $spacing-6;
         }
 
         & .selection {
@@ -51,19 +58,19 @@
           align-items: center;
           justify-content: flex-start;
 
-          padding: $spacing-3 $spacing-4 $spacing-3 $spacing-8;
+          padding: $spacing-3 $spacing-4;
           margin-bottom: $spacing-2;
 
           border: none;
           background: none;
-          border-radius: 0 $radius-lg $radius-lg 0;
+          border-radius: $radius-sm;
 
           cursor: pointer;
 
           &:focus,
           &:hover {
             outline: none;
-            background: $gray-200;
+            background: $gray-300;
             &.active {
               background: $primary-600;
               transition: background-color $timing-theme;
@@ -71,7 +78,7 @@
           }
 
           &:active {
-            background: $gray-300;
+            background: $gray-100;
             &.active {
               background: $primary-700;
               transition: background-color $timing-theme;
@@ -82,12 +89,12 @@
             margin-right: $spacing-4;
             transform: scale(0.9);
             transform-origin: left;
-            color: $gray-700;
+            color: $primary-400;
             stroke-width: 2.5px;
           }
 
           & .Type {
-            color: $gray-700;
+            color: $gray-800;
           }
 
           &.active {
