@@ -5,7 +5,6 @@ import { useBudgetsOverviewController } from "./useBudgetsOverviewController";
 import { PercentageCircle } from "../PercentageCircle/PercentageCircle";
 import { Type } from "../Type/Type";
 import { MoneyType } from "../MoneyType/MoneyType";
-import { TitleHighlightColumn } from "../TitleHighlightColumn/TitleHighlightColumn";
 import { Button } from "@material-ui/core";
 import { ContainerBlock } from "../Container/ContainerBlock";
 
