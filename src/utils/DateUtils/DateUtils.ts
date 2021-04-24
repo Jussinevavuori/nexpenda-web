@@ -1,5 +1,6 @@
 import { DataUtils } from "../DataUtils/DataUtils";
-import { startOfDay } from "date-fns";
+import { startOfDay, addDays } from "date-fns";
+import { DateSerializer } from "./DateSerializer";
 export type DateUtilsCompareOperator = ">" | ">=" | "==" | "<=" | "<";
 
 export class DateUtils {
@@ -20,7 +21,7 @@ export class DateUtils {
      * Get all possible dates
      */
     const dates = items.map(getDate);
-    const serializedDates = dates.map(DateUtils.serializeDate);
+    const serializedDates = dates.map(DateSerializer.serializeDate);
     const keys = DataUtils.unique(serializedDates);
 
     /**
@@ -28,7 +29,7 @@ export class DateUtils {
      */
     let result: { date: Date; items: T[] }[] = [];
     keys.forEach((serial) => {
-      const date = DateUtils.deserializeDate(serial);
+      const date = DateSerializer.deserializeDate(serial);
       const itemsOnDate = items.filter((item) => {
         const itemdate = getDate(item);
         return DateUtils.compareDate(date, "==", itemdate);
@@ -65,7 +66,7 @@ export class DateUtils {
   ): { [dateSerial: number]: T[] } {
     return items.reduce((res, item) => {
       const date = getDate(item);
-      const serial = DateUtils.serializeDate(date);
+      const serial = DateSerializer.serializeDate(date);
 
       const group = res[serial] ?? [];
 
@@ -93,90 +94,28 @@ export class DateUtils {
     const op = args.length === 3 ? args[1] : undefined;
 
     // Serialize dates for easy comparison
-    const _a = DateUtils.serializeDate(a);
-    const _b = DateUtils.serializeDate(b);
+    const _a = DateSerializer.serializeDate(a);
+    const _b = DateSerializer.serializeDate(b);
 
-    if (op) {
-      switch (op) {
-        case "<":
-          return _a < _b;
-        case "<=":
-          return _a <= _b;
-        case "==":
-          return _a === _b;
-        case ">=":
-          return _a >= _b;
-        case ">":
-          return _a > _b;
-      }
-    } else {
+    // If no operator given, return number which has sign corresponding to the
+    // difference of those dates.
+    if (!op) {
       return _a - _b;
     }
-  }
 
-  /**
-   * Serializer options
-   */
-  static DateSerializer = {
-    yearFactor: 10000,
-    monthFactor: 100,
-    dateFactor: 1,
-  };
-
-  /**
-   * Deserializes a date serialized with the `DateUtils.serializeDate`
-   * function to the original date.
-   *
-   * @param serial Serialized number
-   */
-  static deserializeDate(serial: number) {
-    let remainder = serial;
-    const year = Math.floor(remainder / DateUtils.DateSerializer.yearFactor);
-    remainder = remainder % DateUtils.DateSerializer.yearFactor;
-    const month = Math.floor(remainder / DateUtils.DateSerializer.monthFactor);
-    remainder = remainder % DateUtils.DateSerializer.monthFactor;
-    const date = Math.floor(remainder / DateUtils.DateSerializer.dateFactor);
-    remainder = remainder % DateUtils.DateSerializer.dateFactor;
-
-    const yyyy = year.toString().padStart(4, "0");
-    const mm = month.toString().padStart(2, "0");
-    const dd = date.toString().padStart(2, "0");
-
-    return new Date(`${yyyy}-${mm}-${dd}`);
-  }
-
-  /**
-   * Serialize a date to a number, where each date (year,month,date)
-   * is mapped to a different number.
-   *
-   * @param date Date to serialize
-   */
-  static serializeDate(date: Date) {
-    return (
-      date.getFullYear() * DateUtils.DateSerializer.yearFactor +
-      (date.getMonth() + 1) * DateUtils.DateSerializer.monthFactor +
-      date.getDate() * DateUtils.DateSerializer.dateFactor
-    );
-  }
-
-  /**
-   * Serializes a month to a number
-   *
-   * @param date
-   */
-  static serializeMonth(date: Date): number {
-    return date.getFullYear() * 12 + date.getMonth();
-  }
-
-  /**
-   * Deserializes a number to a month
-   *
-   * @param date
-   */
-  static deserializeMonth(serial: number) {
-    const year = Math.floor(serial / 12);
-    const month = Math.floor(serial % 12);
-    return new Date(year, month);
+    // Else return boolean corresponding to result of comparison by operator.
+    switch (op) {
+      case "<":
+        return _a < _b;
+      case "<=":
+        return _a <= _b;
+      case "==":
+        return _a === _b;
+      case ">=":
+        return _a >= _b;
+      case ">":
+        return _a > _b;
+    }
   }
 
   /**
@@ -249,24 +188,22 @@ export class DateUtils {
     to: Date,
     callback: (date: Date, i: number) => void
   ) {
-    // Serialize to and from
-    const fromSerial = DateUtils.serializeDate(from);
-    const toSerial = DateUtils.serializeDate(to);
+    // Get number of days to increment on each loop (1 or -1)
+    const daysIncrement = DateUtils.compareDate(from, "<=", to) ? 1 : -1;
 
-    // Get min and max serial
-    const minSerial = Math.min(fromSerial, toSerial);
-    const maxSerial = Math.max(fromSerial, toSerial);
-
-    // Get the increment to adjust the current serial by each step
-    const increment = toSerial < fromSerial ? -1 : 1;
+    // Get min and max dates
+    const min = DateUtils.compareDate(from, "<=", to) ? from : to;
+    const max = DateUtils.compareDate(from, "<=", to) ? to : from;
 
     // Loop and run callback for each date
-    let currentSerial = fromSerial;
+    let date = from;
     let i = 0;
-    while (minSerial <= currentSerial && currentSerial <= maxSerial) {
-      const date = startOfDay(DateUtils.deserializeDate(currentSerial));
+    while (
+      DateUtils.compareDate(min, "<=", date) &&
+      DateUtils.compareDate(date, "<=", max)
+    ) {
       callback(date, i);
-      currentSerial += increment;
+      date = startOfDay(addDays(date, daysIncrement));
       i++;
     }
   }

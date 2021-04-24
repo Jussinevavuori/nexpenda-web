@@ -40,4 +40,40 @@ describe("forEachDate function", () => {
     );
     expect(runs).toBe(1);
   });
+
+  it("Works across month borders", () => {
+    let runs = 0;
+
+    const dates = [
+      new Date("2021-01-30"),
+      new Date("2021-01-31"),
+      new Date("2021-02-01"),
+      new Date("2021-02-02"),
+    ];
+
+    DateUtils.forEachDate(dates[0], dates[dates.length - 1], (date, i) => {
+      expect(isSameDay(date, dates[i])).toBeTruthy();
+      runs++;
+    });
+
+    expect(runs).toBe(dates.length);
+  });
+
+  it("Works across year borders", () => {
+    let runs = 0;
+
+    const dates = [
+      new Date("2020-12-30"),
+      new Date("2020-12-31"),
+      new Date("2021-01-01"),
+      new Date("2021-01-02"),
+    ];
+
+    DateUtils.forEachDate(dates[0], dates[dates.length - 1], (date, i) => {
+      expect(isSameDay(date, dates[i])).toBeTruthy();
+      runs++;
+    });
+
+    expect(runs).toBe(dates.length);
+  });
 });

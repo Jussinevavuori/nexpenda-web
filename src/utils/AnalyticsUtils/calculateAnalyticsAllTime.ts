@@ -1,4 +1,4 @@
-import { DateUtils } from "../DateUtils/DateUtils";
+import { DateSerializer } from "../DateUtils/DateSerializer";
 import { CalculateAnalyticsArguments } from "./calculateAnalytics";
 
 export function calculateAnalyticsAllTime(args: CalculateAnalyticsArguments) {
@@ -25,7 +25,7 @@ export function calculateAnalyticsAllTime(args: CalculateAnalyticsArguments) {
   // Go through each transaction and count them towards their month
   args.transactions.forEach((transaction) => {
     // Get month key
-    const key = DateUtils.serializeMonth(transaction.date);
+    const key = DateSerializer.serializeMonth(transaction.date);
 
     // Initialize missing months
     if (!months[key]) {

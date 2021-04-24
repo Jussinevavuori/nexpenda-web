@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context";
-import { DateUtils } from "../../../utils/DateUtils/DateUtils";
+import { DateSerializer } from "../../../utils/DateUtils/DateSerializer";
 import { AnalyticsAllTimeColumnsProps } from "./AnalyticsAllTimeColumns";
 
 export function useAnalyticsAllTimeColumnsController(
@@ -36,7 +36,7 @@ export function useAnalyticsAllTimeColumnsController(
     labelOffset,
     isShowingTotal,
     setIsShowingTotal,
-    serializeMonth: DateUtils.serializeMonth,
-    deserializeMonth: DateUtils.deserializeMonth,
+    serializeMonth: DateSerializer.serializeMonth,
+    deserializeMonth: DateSerializer.deserializeMonth,
   };
 }

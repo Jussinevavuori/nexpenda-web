@@ -1,5 +1,5 @@
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context";
-import { DateUtils } from "../../../utils/DateUtils/DateUtils";
+import { DateSerializer } from "../../../utils/DateUtils/DateSerializer";
 import { AnalyticsAllTimeLineProps } from "./AnalyticsAllTimeLine"
 
 export function useAnalyticsAllTimeLineController(props: AnalyticsAllTimeLineProps) {
@@ -20,7 +20,7 @@ export function useAnalyticsAllTimeLineController(props: AnalyticsAllTimeLinePro
 		data,
 		labelOffset,
 		total,
-		serializeMonth: DateUtils.serializeMonth,
-		deserializeMonth: DateUtils.deserializeMonth,
+		serializeMonth: DateSerializer.serializeMonth,
+		deserializeMonth: DateSerializer.deserializeMonth,
 	}
 }
