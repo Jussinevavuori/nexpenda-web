@@ -9,9 +9,9 @@
  */
 export class DateSerializer {
   // Configuration for serializing dates
-  private static readonly yearFactor: 10000;
-  private static readonly monthFactor: 100;
-  private static readonly dateFactor: 1;
+  private static readonly yearFactor = 10000;
+  private static readonly monthFactor = 100;
+  private static readonly dateFactor = 1;
 
   /**
    * Serialize a date to a number, where each date (year,month,date)
@@ -20,7 +20,7 @@ export class DateSerializer {
    * @param date Date to serialize
    * @returns    Serial number for date
    */
-  static serializeDate(date: Date) {
+  static serializeDate(date: Date): number {
     return (
       date.getFullYear() * DateSerializer.yearFactor +
       (date.getMonth() + 1) * DateSerializer.monthFactor +
