@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { SvgPath } from "../../utils/SvgUtils/SvgPath";
 import { SparkLineProps } from "./SparkLine";
 
 export function useSparkLineController(props: SparkLineProps) {
@@ -32,7 +32,7 @@ export function useSparkLineController(props: SparkLineProps) {
 
   const svgPath = useMemo(
     () =>
-      SvgPath.describeSparkLine({
+      SvgPath.describeSparkLinePath({
         data: sortedData,
         height: viewBox.height,
         width: viewBox.width,

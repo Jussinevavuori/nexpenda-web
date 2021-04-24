@@ -3,7 +3,7 @@ import React from "react";
 import cx from "classnames";
 import { usePercentageCircleController } from "./usePercentageCircleController";
 import { Type, TypeProps } from "../Type/Type";
-import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { SvgPath } from "../../utils/SvgUtils/SvgPath";
 import { Angle } from "../../utils/GeometryUtils/Angle";
 
 export type PercentageCircleProps = {
@@ -83,7 +83,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 					{ isOverflow: controller.isOverflow },
 					`color-${props.unfilledColor || "primary-200"}`
 				)}
-				d={SvgPath.describePartialCircle({
+				d={SvgPath.describePartialCirclePath({
 					radius: controller.radius,
 					offsetAngle: new Angle(0, "percentages"),
 					sweepAngle: new Angle(100, "percentages"),
@@ -98,7 +98,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 					`color-${props.filledColor || "primary-500"}`
 				)}
 				ref={controller.activeRef}
-				d={SvgPath.describePartialCircle({
+				d={SvgPath.describePartialCirclePath({
 					radius: controller.radius,
 					offsetAngle: new Angle(0, "percentages"),
 					sweepAngle: new Angle(controller.fillPercentage, "percentages"),

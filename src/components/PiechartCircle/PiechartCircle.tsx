@@ -2,7 +2,7 @@ import "./PiechartCircle.scss";
 import React from "react";
 import cx from "classnames";
 import { usePiechartCircleController } from "./usePiechartCircleController";
-import { SvgPath } from "../../utils/GeometryUtils/SvgPath";
+import { SvgPath } from "../../utils/SvgUtils/SvgPath";
 import { Angle } from "../../utils/GeometryUtils/Angle";
 import { Tooltip } from "@material-ui/core";
 
@@ -47,7 +47,7 @@ export function PiechartCircle(props: PiechartCircleProps) {
 					<path
 						className={cx("segment", `color-${segment.color}`)}
 						style={{ strokeWidth: controller.stroke }}
-						d={SvgPath.describePartialCircle({
+						d={SvgPath.describePartialCirclePath({
 							radius: controller.radius,
 							strokeWidth: controller.stroke,
 							offsetAngle: new Angle(segment.cumulativePercentage, "percentages"),
