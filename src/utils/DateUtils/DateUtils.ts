@@ -1,5 +1,5 @@
 import { DataUtils } from "../DataUtils/DataUtils";
-import { startOfDay, addDays, subDays, isSameDay, isBefore } from "date-fns";
+import { startOfDay } from "date-fns";
 export type DateUtilsCompareOperator = ">" | ">=" | "==" | "<=" | "<";
 
 export class DateUtils {
@@ -50,6 +50,27 @@ export class DateUtils {
     }
 
     return result;
+  }
+
+  /**
+   * Groups items by their dates into map, where the key is the date serial
+   * for that date.
+   *
+   * @param items 	List of all items
+   * @param getDate Function to extract the date from an item
+   */
+  static groupByDateSerialToMap<T>(
+    items: T[],
+    getDate: (t: T) => Date
+  ): { [dateSerial: number]: T[] } {
+    return items.reduce((res, item) => {
+      const date = getDate(item);
+      const serial = DateUtils.serializeDate(date);
+
+      const group = res[serial] ?? [];
+
+      return { ...res, [serial]: [...group, item] };
+    }, {} as { [dateSerial: number]: T[] });
   }
 
   /**
@@ -196,9 +217,15 @@ export class DateUtils {
    * @returns 				All mapped values for each date in the interval, including
    * 									the start and end days.
    */
-  static mapEachDate<T>(from: Date, to: Date, callback: (date: Date) => T) {
+  static mapEachDate<T>(
+    from: Date,
+    to: Date,
+    callback: (date: Date, i: number) => T
+  ) {
     const result: T[] = [];
-    DateUtils.forEachDate(from, to, (date) => result.push(callback(date)));
+    DateUtils.forEachDate(from, to, (date, i) =>
+      result.push(callback(date, i))
+    );
     return result;
   }
 
@@ -217,35 +244,30 @@ export class DateUtils {
    * 									orders are swapper.) Receives the date at the start of the
    * 									day as an argument.
    */
-  static forEachDate(from: Date, to: Date, callback: (date: Date) => void) {
-    // If same day, run callback once
-    if (isSameDay(from, to)) {
-      callback(startOfDay(from));
-      return;
-    }
+  static forEachDate(
+    from: Date,
+    to: Date,
+    callback: (date: Date, i: number) => void
+  ) {
+    // Serialize to and from
+    const fromSerial = DateUtils.serializeDate(from);
+    const toSerial = DateUtils.serializeDate(to);
 
-    // Get smaller and larger date
-    const [earlier, later] = isBefore(from, to) ? [from, to] : [to, from];
+    // Get min and max serial
+    const minSerial = Math.min(fromSerial, toSerial);
+    const maxSerial = Math.max(fromSerial, toSerial);
 
-    // Define direction by using either the addDays or subDays function
-    // to move backwards or forwards.
-    const nextDay = DateUtils.compareDate(from, "<", to)
-      ? (date: Date) => startOfDay(addDays(date, 1))
-      : (date: Date) => startOfDay(subDays(date, 1));
-
-    // Check whether the current date is still within range
-    const isDateInRange = (date: Date) => {
-      return (
-        DateUtils.compareDate(earlier, "<=", date) &&
-        DateUtils.compareDate(date, "<=", later)
-      );
-    };
+    // Get the increment to adjust the current serial by each step
+    const increment = toSerial < fromSerial ? -1 : 1;
 
     // Loop and run callback for each date
-    let date = startOfDay(from);
-    while (isDateInRange(date)) {
-      callback(date);
-      date = nextDay(date);
+    let currentSerial = fromSerial;
+    let i = 0;
+    while (minSerial <= currentSerial && currentSerial <= maxSerial) {
+      const date = startOfDay(DateUtils.deserializeDate(currentSerial));
+      callback(date, i);
+      currentSerial += increment;
+      i++;
     }
   }
 }

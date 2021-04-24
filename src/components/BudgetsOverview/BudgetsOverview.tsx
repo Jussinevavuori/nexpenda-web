@@ -30,7 +30,12 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 			</Type>
 		</header>
 
-		<div className="content">
+		<div
+			className={cx(
+				"content",
+				`variant-${props.variant ?? "default"}`
+			)}
+		>
 
 			<div className="percentage">
 				<PercentageCircle

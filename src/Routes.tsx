@@ -1,11 +1,10 @@
 import { lazy, Suspense } from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
-import { usePathTitle } from "./hooks/application/usePathTitle";
 import { AuthFrame } from "./components/AuthFrame/AuthFrame"
 import { AppFrame } from "./components/AppFrame/AppFrame"
 import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
-import { ValidIntervalLengthType } from "./models/interval.model";
+import { RouteData } from "./classes/RouteData";
 const Login = lazy(() => import("./views/Login/Login").then(_ => ({ default: _.Login })))
 const Register = lazy(() => import('./views/Register/Register').then(_ => ({ default: _.Register })))
 const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
@@ -19,92 +18,83 @@ const Logout = lazy(() => import("./views/Logout/Logout").then(_ => ({ default: 
 const Subscribe = lazy(() => import("./views/Subscribe/Subscribe").then(_ => ({ default: _.Subscribe })))
 const SubscribeSuccess = lazy(() => import("./views/SubscribeSuccess/SubscribeSuccess").then(_ => ({ default: _.SubscribeSuccess })))
 
-export type RouteData = {
-	name: string,
-	path: string,
-	title: string,
-	forcedIntervalLength?: ValidIntervalLengthType;
-	disabledIntervalLengths?: ValidIntervalLengthType[];
-}
-
 export type VariableRouteData = (s: string) => RouteData
 
 export const routes = {
-	approot: {
+	approot: new RouteData({
 		name: "approot",
 		path: "/app",
 		title: ""
-	} as RouteData,
-	dashboard: {
+	}),
+	dashboard: new RouteData({
 		name: "dashboard",
 		path: "/app/dashboard",
 		title: "Dashboard"
-	} as RouteData,
-	analytics: {
+	}),
+	analytics: new RouteData({
 		name: "analytics",
 		path: "/app/analytics",
-		title: "Analytics"
-	} as RouteData,
-	budgets: {
+		title: "Analytics",
+		// disabledIntervalLengths: ["all"],
+	}),
+	budgets: new RouteData({
 		name: "budgets",
 		path: "/app/budgets",
 		title: "Budgets",
-		disabledIntervalLength: ["all"],
-	} as RouteData,
-	settings: {
+		disabledIntervalLengths: ["all"],
+	}),
+	settings: new RouteData({
 		name: "settings",
 		path: "/app/settings",
 		title: "Settings"
-	} as RouteData,
-	login: {
+	}),
+	login: new RouteData({
 		name: "login",
 		path: "/",
 		title: "Login"
-	} as RouteData,
-	forgotPassword: {
+	}),
+	forgotPassword: new RouteData({
 		name: "forgotPassword",
 		path: "/forgotPassword",
 		title: "Forgot Password"
-	} as RouteData,
-	register: {
+	}),
+	register: new RouteData({
 		name: "register",
 		path: "/register",
 		title: "Register"
-	} as RouteData,
-	logOut: {
+	}),
+	logOut: new RouteData({
 		name: "logOut",
 		path: "/logout",
 		title: "Log out"
-	} as RouteData,
-	subscribe: {
+	}),
+	subscribe: new RouteData({
 		name: "subscribe",
 		path: "/subscribe",
 		title: "Subscribe"
-	},
-	subscribeSuccess: {
+	}),
+	subscribeSuccess: new RouteData({
 		name: "subscribeSuccess",
 		path: "/subscribe/success",
 		title: "Succesfully subscribed"
-	},
+	}),
 	changePassword(token: string): RouteData {
-		return {
+		return new RouteData({
 			name: "changePassword",
 			path: `/changePassword/${token}`,
 			title: "Change Password"
-		}
+		})
 	},
 	confirmEmail(token: string): RouteData {
-		return {
+		return new RouteData({
 			name: "confirmEmail",
 			path: `/confirmEmail/${token}`,
 			title: "Confirm Email"
-		}
+		})
 	}
 } as const;
 
 export function Routes() {
-
-	usePathTitle()
 
 	return <Switch>
 

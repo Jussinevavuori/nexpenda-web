@@ -7,17 +7,8 @@ import { AnalyticsOverviewProps } from "./AnalyticsOverview";
 
 export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
   const analytics = useAnalyticsContext();
-  const isMonth = useStoreState((_) => _.interval.isMonth);
-  const isYear = useStoreState((_) => _.interval.isYear);
   const isAll = useStoreState((_) => _.interval.isAll);
-
-  // Label the interval as either month, year or all. We assume no other
-  // options are possible (enforced by other parts of the application.)
-  const intervalLengthLabel = useMemo(() => {
-    if (isMonth) return "month";
-    if (isYear) return "year";
-    else return "all";
-  }, [isMonth, isYear]);
+  const intervalLengthLabel = useStoreState((_) => _.interval.lengthType);
 
   // Calculat all percentage increases
   const totalPercentageIncrease = getPercentageIncrease(
@@ -40,6 +31,17 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
     "data" | "startDate" | "endDate" | "hideValuesAfter" | "hideValuesBefore"
   > => {
     const transactions = analytics.selected.transactions;
+
+    // Fix performance issues
+    if (isAll) {
+      return {
+        data: transactions.map((transaction) => ({
+          time: transaction.date,
+          value: transaction.amount.decimalValue,
+        })),
+      };
+    }
+
     const startDate = analytics.selectedInterval.start;
     const endDate = analytics.selectedInterval.end;
     const currentDate = new Date();
@@ -58,7 +60,7 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
       hideValuesBefore: undefined,
       hideValuesAfter: isCurrentDateWithinInterval ? currentDate : undefined,
     };
-  }, [analytics]);
+  }, [analytics, isAll]);
 
   return {
     analytics,
@@ -67,8 +69,6 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
     incomePercentageIncrease,
     expensesPercentageIncrease,
     timeseriesSparklineProps,
-    isMonth,
-    isYear,
     isAll,
   };
 }

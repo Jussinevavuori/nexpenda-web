@@ -92,7 +92,6 @@ export function IntervalManager(props: IntervalManagerProps) {
 							controller.setIntervalPickerMenuAnchor(undefined)
 							controller.setIntervalPickerOpen(false)
 						}}
-						disabledLengths={controller.disabledIntervalLengthTypes}
 					/>
 				</div>
 			}

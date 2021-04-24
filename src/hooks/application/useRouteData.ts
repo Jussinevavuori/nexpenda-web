@@ -1,18 +1,19 @@
+import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { RouteData, routes, VariableRouteData } from "../../Routes";
+import { RouteData } from "../../classes/RouteData";
+import { routes } from "../../Routes";
 
 export function useRouteData(): RouteData | undefined {
   const location = useLocation();
+  const pathname = location.pathname;
 
-  const current = Object.entries(routes)
-    .map((entry) => {
-      const [, value] = entry as [string, RouteData | VariableRouteData];
-      return typeof value === "function" ? value(".*") : value;
-    })
-    .find((route) => {
-      const routeRegexp = new RegExp(route.path + "$");
-      return !!location.pathname.match(routeRegexp);
-    });
-
-  return current;
+  /**
+   * Get all routes. Apply the ".*" parameter for all variable routes.
+   * Find one route data that matches the current pathname.
+   */
+  return useMemo(() => {
+    return Object.values(routes)
+      .map((route) => (typeof route === "function" ? route(".*") : route))
+      .find((route) => route.matchesPathname(pathname));
+  }, [pathname]);
 }

@@ -23,7 +23,7 @@ export function useHashOpenState(
         }
       } else {
         if (open) {
-          history.goBack();
+          history.replace({ hash: undefined, search: location.search });
         }
       }
     },

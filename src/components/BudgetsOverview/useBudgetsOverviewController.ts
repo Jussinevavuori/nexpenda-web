@@ -2,7 +2,6 @@ import { useBudgetsContext } from "../../contexts/BudgetsContext.context";
 import { useRouteData } from "../../hooks/application/useRouteData";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { routes } from "../../Routes";
-import { useStoreState } from "../../store";
 import { BudgetsOverviewProps } from "./BudgetsOverview";
 
 export function useBudgetsOverviewController(props: BudgetsOverviewProps) {
