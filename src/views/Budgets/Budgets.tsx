@@ -2,9 +2,6 @@ import "./Budgets.scss";
 import React from "react";
 import cx from "classnames";
 import { useBudgetsController } from "./useBudgetsController";
-import { useMdMedia } from "../../hooks/utils/useMedia";
-import { BudgetsHeader } from "./BudgetsHeader/BudgetsHeader";
-import { BudgetsPanel } from "./BudgetsPanel/BudgetsPanel";
 import { BudgetsContextProvider } from "../../contexts/BudgetsContext.context";
 import { Type } from "../../components/Type/Type";
 import { BudgetBlock } from "../../components/BudgetBlock/BudgetBlock";
@@ -13,6 +10,9 @@ import { Add, Info } from "@material-ui/icons";
 import { BetaFeatureBanner } from "../../components/BetaFeatureBanner/BetaFeatureBanner";
 import { BudgetsOverview } from "../../components/BudgetsOverview/BudgetsOverview";
 import { ContainerBlock } from "../../components/Container/ContainerBlock";
+import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
+import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
+import { DefaultViewPanel } from "../../components/DefaultViewPanel/DefaultViewPanel";
 
 export type BudgetsProps = {
 
@@ -20,22 +20,23 @@ export type BudgetsProps = {
 
 export function Budgets(props: BudgetsProps) {
 	const controller = useBudgetsController(props)
-	const isDesktop = useMdMedia()
 
 	return <BudgetsContextProvider>
-		<div className={cx("Budgets")}>
+		<ViewContainer
+			scrollable
+			viewHeader={<ViewHeader>{"Budgets"}</ViewHeader>}
+			viewPanel={<DefaultViewPanel />}
+		>
+			<div className={cx("Budgets")}>
+				<Type
+					component="h2"
+					variant="bold"
+					size="xl"
+					color="gray-900"
+				>
+					{`Budgets`}
+				</Type>
 
-			<section className="headerSection">
-				<BudgetsHeader />
-				{
-					!isDesktop && <div className="panelContainer">
-						<BudgetsPanel />
-					</div>
-				}
-			</section>
-
-
-			<section className="budgetsSection">
 				<BetaFeatureBanner feature="Budgets" />
 				<BudgetsOverview />
 
@@ -114,7 +115,7 @@ export function Budgets(props: BudgetsProps) {
 						{"Add an expense budget"}
 					</Button>
 				</ContainerBlock>
-			</section>
-		</div>
+			</div>
+		</ViewContainer>
 	</BudgetsContextProvider>
 }

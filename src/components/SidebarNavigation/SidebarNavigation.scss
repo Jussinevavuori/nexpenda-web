@@ -1,0 +1,139 @@
+@import "main";
+
+.SidebarNavigation {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: $sidebar-width;
+  background: white;
+  display: flex;
+  flex-direction: column;
+
+  &.open {
+    min-width: 246px;
+  }
+
+  & .header {
+    height: $header-height;
+    position: relative;
+
+    & .logoContainer {
+      padding: 0 $spacing-6 + $spacing-4;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      & .logo {
+        width: 100%;
+      }
+    }
+  }
+
+  & .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & .links {
+      padding: $spacing-4 $spacing-6;
+      position: relative;
+
+      & .link {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        padding: $spacing-3 $spacing-4;
+        margin-bottom: $spacing-2;
+
+        border: none;
+        background: none;
+        border-radius: $radius-sm;
+
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+          outline: none;
+          background: $gray-300;
+          &.active {
+            background: $primary-600;
+            transition: background-color $timing-theme;
+          }
+        }
+
+        &:active {
+          background: $gray-100;
+          &.active {
+            background: $primary-700;
+            transition: background-color $timing-theme;
+          }
+        }
+
+        & svg {
+          margin-right: $spacing-4;
+          transform: scale(0.9);
+          transform-origin: left;
+          color: $primary-400;
+          stroke-width: 2.5px;
+        }
+
+        & .Type {
+          color: $gray-800;
+        }
+
+        &.active {
+          background: $primary-500;
+          transition: background-color $timing-theme;
+          color: white;
+          & .Type,
+          & svg {
+            color: white;
+            stroke-width: 1.5px;
+          }
+        }
+
+        &.closed {
+          & .Type {
+            display: none;
+          }
+          & svg {
+            margin-right: 0px;
+          }
+        }
+      }
+    }
+
+    & .actions {
+      padding: $spacing-4 $spacing-6;
+      position: relative;
+
+      & .toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: $spacing-3 $spacing-4;
+
+        border: none;
+        background: none;
+        cursor: pointer;
+
+        & > span {
+          height: 24px;
+        }
+      }
+    }
+  }
+
+  &__linkTooltip {
+    display: flex;
+    gap: $spacing-2;
+  }
+}

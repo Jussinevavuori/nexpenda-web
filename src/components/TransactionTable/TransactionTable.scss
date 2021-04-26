@@ -5,9 +5,12 @@
   flex-direction: column;
   align-items: stretch;
   height: 100%;
-  padding: 0;
   overflow: hidden;
   box-shadow: $shadow-sm;
+
+  &.ContainerBlock {
+    padding: 0;
+  }
 
   & .listContainer {
     flex: 1;

@@ -3,13 +3,14 @@ import React from "react"
 import { TransactionEditorDrawer } from "../TransactionEditorDrawer/TransactionEditorDrawer";
 import { TransactionCreatorDrawer } from "../TransactionCreatorDrawer/TransactionCreatorDrawer";
 import { Header } from "../Header/Header";
-import { Sidebar } from "../../views/Sidebar/Sidebar";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { BudgetEditorDialog } from "../BudgetEditorDialog/BudgetEditorDialog";
 import { BudgetCreatorDialog } from "../BudgetCreatorDialog/BudgetCreatorDialog";
 import { FeedbackDialog } from "../FeedbackDialog/FeedbackDialog";
 import { FileUploaderDrawer } from "../FileUploaderDrawer/FileUploaderDrawer";
 import { AnimateSharedLayout } from "framer-motion";
+import { SidebarNavigation } from "../SidebarNavigation/SidebarNavigation";
+import { TabNavigation } from "../TabNavigation/TabNavigation";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -34,15 +35,17 @@ export function AppFrame(props: AppFrameProps) {
 			<FileUploaderDrawer />
 
 			{/* Static elements */}
-			<div className="header">
+			<header>
 				<Header />
-			</div>
-			<div className="main">
+			</header>
+			<main >
 				{props.children}
-			</div>
-			<div className="sidebar">
-				<Sidebar />
-			</div>
+			</main>
+			<nav>
+				{
+					isDesktopLayout ? <SidebarNavigation /> : <TabNavigation />
+				}
+			</nav>
 		</div>
 	</AnimateSharedLayout>
 }

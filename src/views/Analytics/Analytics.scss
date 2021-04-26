@@ -1,42 +1,21 @@
 @import "main";
 
 .Analytics {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-
   & > section > .masonry {
     padding-bottom: $spacing-12;
   }
 
-  & > .headerContainer {
-    position: sticky;
-    top: calc(-1 * #{$mobile-header-height});
-    z-index: 2;
-    @include md {
-      top: unset;
-      position: unset;
-    }
+  padding: 0 $spacing-6;
+  & > .AnalyticsBlock {
+    margin-bottom: $spacing-6;
   }
-
-  & > .panelContainer {
-    position: sticky;
-    top: -120px;
+  @include md {
+    padding: $spacing-8 $spacing-16 $spacing-16;
   }
-
-  & .analyticsBlocksContainer {
-    padding: 0 $spacing-6;
-    & > .AnalyticsBlock {
-      margin-bottom: $spacing-6;
-    }
+  & > h2 {
+    margin: $spacing-6 0;
     @include md {
-      padding: $spacing-8 $spacing-16 $spacing-16;
-    }
-    & > h2 {
-      margin: $spacing-6 0;
-      @include md {
-        margin: 0 0 $spacing-8 0;
-      }
+      margin: 0 0 $spacing-8 0;
     }
   }
 }

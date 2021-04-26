@@ -5,13 +5,15 @@ import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIco
 import { Type } from "../../components/Type/Type";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
-import { SettingsProfilePanel } from "./SettingsProfilePanel/SettingsProfilePanel";
 import { ThemePicker } from "../../components/ThemePicker/ThemePicker";
-import { SettingsHeader } from "./SettingsHeader/SettingsHeader";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { SettingsSubscriptionManager } from "../../components/SettingsPremiumSubscription/SettingsSubscriptionManager";
 import { SubscribeBanner } from "../../components/SubscribeBanner/SubscribeBanner";
 import { ContainerBlock } from "../../components/Container/ContainerBlock";
+import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
+import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
+import { UserAvatar } from "../../components/UserAvatar/UserAvatar";
+import { ProfilePanel } from "../../components/ProfilePanel/ProfilePanel";
 
 export type SettingsProps = {
 }
@@ -31,14 +33,28 @@ export function Settings(props: SettingsProps) {
 		</div>
 	}
 
-	return <div className="Settings">
+	return <ViewContainer
+		scrollable
+		viewHeader={<ViewHeader>
+			<div className="Settings__headerContent">
+				<UserAvatar />
+			</div>
+		</ViewHeader>}
+	>
 
-		<SettingsHeader />
+		<div className="Settings">
 
-		<section>
+			<Type
+				component="h2"
+				variant="bold"
+				size="xl"
+				color="gray-900"
+			>
+				{`Settings`}
+			</Type>
 
 			<ContainerBlock className="profilePanel" containerTitle="Profile">
-				<SettingsProfilePanel disableAvatar={!isDesktop} />
+				<ProfilePanel disableAvatar={!isDesktop} />
 			</ContainerBlock>
 
 			{
@@ -121,6 +137,6 @@ export function Settings(props: SettingsProps) {
 				</Type>
 			</div>
 
-		</section>
-	</div >
+		</div >
+	</ViewContainer>
 }

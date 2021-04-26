@@ -1,0 +1,54 @@
+@import "main";
+
+.TabNavigation {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-auto-flow: column;
+
+  & .tabContainer {
+    display: grid;
+    place-items: center;
+
+    & .tab {
+      position: relative;
+      padding: 1rem;
+      border-radius: 0;
+      width: 100%;
+
+      &.add {
+        & svg {
+          transform: scale(1.2);
+          color: $primary-500;
+          transition: color $timing-theme;
+        }
+      }
+
+      &.active svg {
+        color: $primary-500;
+        transition: color $timing-theme;
+      }
+
+      &::after {
+        $size: 6px;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: $size;
+        border-radius: $size $size 0 0;
+        background: $primary-500;
+        transform: translateY(100%) scale(0);
+        transition: transform $timing-3 $animate-snap-back,
+          background-color $timing-theme;
+      }
+
+      &.active::after {
+        transform: translateY(0) scale(1);
+      }
+    }
+  }
+}

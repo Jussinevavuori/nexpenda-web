@@ -11,36 +11,38 @@
 
   grid-template:
     "main" 1fr
-    "sidebar" auto / 1fr;
+    "nav" auto / 1fr;
 
   @include md {
     grid-template:
-      "sidebar header" auto
-      "sidebar main" 1fr / auto 1fr;
+      "nav header" auto
+      "nav main" 1fr / auto 1fr;
   }
 
-  & > .header {
+  & > header {
     grid-area: header;
     display: none;
     z-index: 2;
     @include md {
-      box-shadow: $shadow-sm;
       display: unset;
+      box-shadow: $shadow-sm;
     }
   }
 
-  & > .main {
+  & > main {
     grid-area: main;
     overflow: hidden;
-    background: $gray-100;
+    // background: $gray-100;
     @include md {
-      box-shadow: $shadow-md;
-      z-index: 2;
+      z-index: 1;
     }
   }
 
-  & > .sidebar {
-    grid-area: sidebar;
-    z-index: 1;
+  & > nav {
+    grid-area: nav;
+    @include md {
+      box-shadow: $shadow-sm;
+      z-index: 3;
+    }
   }
 }

@@ -1,50 +1,61 @@
 @import "main";
 
 .Logo {
-  /** General styles */
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-3;
 
-  cursor: pointer;
-
-  & span {
-    color: $black;
-    font-weight: $text-bold;
-    font-size: $text-xl;
+  & > .icon {
+    width: 24px;
+    height: 24px;
   }
 
-  /** Letter specific styles */
+  & > .text {
+    /** General styles */
 
-  & span.letter-2 {
-    color: $primary-500;
-    transition: color $timing-theme;
-  }
+    cursor: pointer;
 
-  /** Sizes */
+    & span {
+      color: $black;
+      font-weight: $text-bold;
+      font-size: $text-xl;
+    }
 
-  &.size-sm * {
-    font-size: $text-sm;
-  }
+    /** Letter specific styles */
 
-  &.size-md * {
-    font-size: $text-md;
-  }
+    & span.letter-2 {
+      color: $primary-500;
+      transition: color $timing-theme;
+    }
 
-  &.size-lg * {
-    font-size: $text-lg;
-  }
+    /** Sizes */
 
-  &.size-xl * {
-    font-size: $text-xl;
-  }
+    &.size-sm * {
+      font-size: $text-sm;
+    }
 
-  &.size-xxl * {
-    font-size: $text-xxl;
-  }
+    &.size-md * {
+      font-size: $text-md;
+    }
 
-  &.size-xxxl * {
-    font-size: $text-xxxl;
-  }
+    &.size-lg * {
+      font-size: $text-lg;
+    }
 
-  & .premiumLetter:nth-child(9) {
-    margin-left: $spacing-2;
+    &.size-xl * {
+      font-size: $text-xl;
+    }
+
+    &.size-xxl * {
+      font-size: $text-xxl;
+    }
+
+    &.size-xxxl * {
+      font-size: $text-xxxl;
+    }
+
+    & .premiumLetter:nth-child(9) {
+      margin-left: $spacing-2;
+    }
   }
 }

@@ -1,20 +1,14 @@
 @import "main";
 
 .Settings {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-
-  & > section {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-8;
-    padding: $spacing-10 $spacing-6 0;
-    @include md {
-      padding: 0;
-      max-width: 660px;
-      margin: 0 auto;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  padding: $spacing-10 $spacing-6 0;
+  @include md {
+    padding: 0;
+    max-width: 660px;
+    margin: 0 auto;
   }
 
   @include md {
@@ -56,5 +50,19 @@
     align-items: center;
     justify-content: center;
     gap: $spacing-2;
+  }
+
+  &__headerContent {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    z-index: 100;
+    & .UserAvatar {
+      box-shadow: $shadow-md;
+      $size: 100px;
+      width: $size;
+      height: $size;
+    }
   }
 }

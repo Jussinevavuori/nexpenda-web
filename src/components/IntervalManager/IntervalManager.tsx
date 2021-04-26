@@ -11,7 +11,6 @@ import { ResponsiveMenu } from "../ResponsiveMenu/ResponsiveMenu";
 export type IntervalManagerProps = {
 	hideControls?: boolean;
 	reverseControls?: boolean;
-	hideNowControl?: boolean;
 };
 
 export function IntervalManager(props: IntervalManagerProps) {
@@ -50,13 +49,6 @@ export function IntervalManager(props: IntervalManagerProps) {
 					<IconButton onClick={controller.handlePrevious}>
 						<ArrowBack />
 					</IconButton>
-					{/* {
-						props.hideNowControl
-							? null
-							: <IconButton onClick={controller.handleToday}>
-								<TodayIcon />
-							</IconButton>
-					} */}
 					<IconButton onClick={controller.handleNext}>
 						<ArrowForward />
 					</IconButton>

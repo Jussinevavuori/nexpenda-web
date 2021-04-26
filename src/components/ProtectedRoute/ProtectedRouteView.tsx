@@ -1,5 +1,4 @@
 import "./ProtectedRouteView.scss";
-import textureImg from "../../images/pexels-johannes-plenio-1103970.jpg"
 import React, { useCallback, useState } from "react"
 import { Type } from "../Type/Type";
 import { CircularProgress } from "@material-ui/core";
@@ -23,8 +22,6 @@ export function ProtectedRouteView(props: ProtectedRouteViewProps) {
 	useInterval(intervalHandler, 1000)
 
 	return <div className="ProtectedRouteView">
-
-		<img src={textureImg} alt="" className="texture" />
 
 		<div className="content">
 
@@ -53,4 +50,4 @@ const messages = {
 	5: "This may take some time...",
 	10: "Waiting for server...",
 	15: "The server is starting up..."
-} 
+}

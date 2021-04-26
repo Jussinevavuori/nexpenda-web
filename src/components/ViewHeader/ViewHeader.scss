@@ -1,0 +1,62 @@
+@import "main";
+
+.ViewHeader {
+  position: relative;
+  height: $mobile-header-height;
+
+  @include md {
+    display: none;
+  }
+
+  &.scrollable {
+    position: sticky;
+    top: calc(-1 * #{$mobile-header-height});
+    z-index: 2;
+  }
+  & > section {
+    position: relative;
+    height: $mobile-header-height;
+    background: $primary-500;
+    transition: background-color $timing-theme;
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
+
+    &:not(.scrollable) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    & > .content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      & > .title {
+        position: relative;
+      }
+    }
+
+    & > .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: $mobile-header-height;
+      width: 100%;
+      height: 100%;
+      background: $primary-500;
+      transition: background-color $timing-theme;
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+        mix-blend-mode: multiply;
+      }
+    }
+  }
+}

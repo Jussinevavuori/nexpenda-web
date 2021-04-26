@@ -1,72 +1,51 @@
 @import "main";
 
 .Budgets {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-
-  & > .headerSection {
-    position: sticky;
-    top: calc(-1 * #{$mobile-header-height});
-    z-index: 2;
-    @include md {
-      top: unset;
-      position: unset;
-    }
+  padding: $spacing-4 $spacing-6;
+  @include md {
+    padding: $spacing-8 $spacing-16;
   }
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: $spacing-8;
 
-  & > .panelContainer {
-    position: sticky;
-    top: -120px;
-  }
-
-  & .budgetsSection {
-    padding: $spacing-4 $spacing-6;
-    @include md {
-      padding: $spacing-8 $spacing-16;
-    }
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: $spacing-8;
-
-    & .budgetsList {
-      & ul {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: $spacing-8;
-      }
-    }
-
-    & .addBudget {
-      display: flex;
-      margin: $spacing-8 auto 0;
-    }
-
-    & .noBudgets {
-      max-width: 400px;
-      margin: 0 auto;
+  & .budgetsList {
+    & ul {
       display: flex;
       flex-direction: column;
-      gap: $spacing-4;
+      align-items: stretch;
+      gap: $spacing-8;
+    }
+  }
+
+  & .addBudget {
+    display: flex;
+    margin: $spacing-8 auto 0;
+  }
+
+  & .noBudgets {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+    justify-content: center;
+    text-align: center;
+
+    & > .title {
+      display: flex;
+      align-items: center;
       justify-content: center;
-      text-align: center;
-
-      & > .title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: $spacing-4;
-      }
-
-      & > svg {
-        color: $primary-500;
-        margin: 0 auto;
-      }
+      gap: $spacing-4;
     }
-    & .BetaFeatureBanner {
-      margin-bottom: $spacing-8;
+
+    & > svg {
+      color: $primary-500;
+      margin: 0 auto;
     }
+  }
+  & .BetaFeatureBanner {
+    margin-bottom: $spacing-8;
   }
 }

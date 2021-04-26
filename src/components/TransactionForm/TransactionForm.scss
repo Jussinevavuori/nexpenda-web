@@ -74,6 +74,11 @@
     grid-area: close;
   }
 
+  & .MuiButton-root:not(.MuiButton-contained),
+  & .MuiTextField-root {
+    background: white;
+  }
+
   & .buttonTextFieldGroup {
     display: flex;
     align-items: center;

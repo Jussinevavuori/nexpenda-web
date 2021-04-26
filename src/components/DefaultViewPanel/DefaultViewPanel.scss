@@ -1,0 +1,13 @@
+@import "main";
+
+.DefaultViewPanel.ViewPanel {
+  // Adjust padding
+  padding: adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, $spacing-button-horizontal)
+    adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, 0px);
+
+  & > .IntervalManager {
+    justify-content: space-between;
+  }
+}

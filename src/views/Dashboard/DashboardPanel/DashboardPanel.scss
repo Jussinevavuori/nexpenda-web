@@ -1,0 +1,52 @@
+@import "main";
+
+.DashboardPanel.ViewPanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & .intervalManager {
+    flex: 1;
+    & .IntervalManager {
+      justify-content: space-between;
+    }
+  }
+  padding: adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, 20px)
+    adjust-spacing($spacing-4, $spacing-icon-button)
+    adjust-spacing($spacing-6, $spacing-button-horizontal);
+
+  &.searchIsOpen {
+    padding-right: adjust-spacing($spacing-6, 12px);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-right: adjust-spacing($spacing-6, 12px);
+  }
+
+  &.selection {
+    // padding: adjust-spacing($spacing-4, $spacing-icon-button);
+    & .selection-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      margin-left: calc(-1 * #{$spacing-icon-button});
+      & .selection-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+      & .selection-actions {
+        & .MuiIconButton-root {
+          color: $gray-800;
+
+          &.deleteButton {
+            color: $red-600;
+          }
+          &:disabled {
+            color: $gray-500;
+          }
+        }
+      }
+    }
+  }
+}

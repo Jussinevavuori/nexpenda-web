@@ -1,0 +1,32 @@
+@import "main";
+
+.DashboardOverview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > .right {
+    & > .total {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    & > .subtotals {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        &:first-child {
+          margin-right: $spacing-6;
+        }
+        & > svg {
+          color: $gray-600;
+          margin-right: $spacing-2;
+        }
+      }
+    }
+  }
+}

@@ -183,6 +183,17 @@ export class StorageService {
   /**
    * StorageService component:
    *
+   * Represents a boolean value for whether the sidebar is closed in order to
+   * memorize the state over page reloads.
+   */
+  static isSidebarClosed = StorageService.createBooleanComponent({
+    key: "@nexpenda/isSidebarClosed",
+    options: { storage: StorageType.Local },
+  });
+
+  /**
+   * StorageService component:
+   *
    * Represents the memorized latest selected theme. When a theme is selected,
    * it is stored here for quicker access and initialization of the application
    * theme. Validates the theme.

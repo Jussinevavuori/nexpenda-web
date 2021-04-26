@@ -4,6 +4,7 @@ import { useDeleteTransactionsShortcut } from "./useDeleteTransactionsShortcut";
 import { useEditTransactionShortcut } from "./useEditTransactionShortcut";
 import { useSelectShortcuts } from "./useSelectShortcuts";
 import { useSelectTabShortcuts } from "./useSelectTabShortcuts";
+import { useToggleSidebarShortcut } from "./useToggleSidebarShortcut";
 
 export function useApplicationShortcuts() {
   useCreateTransactionShortcut();
@@ -12,4 +13,5 @@ export function useApplicationShortcuts() {
   useDeleteTransactionsShortcut();
   useSelectShortcuts();
   useSelectTabShortcuts();
+  useToggleSidebarShortcut();
 }

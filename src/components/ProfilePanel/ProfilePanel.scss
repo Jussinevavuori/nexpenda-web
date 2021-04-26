@@ -1,0 +1,83 @@
+@import "main";
+
+.ProfilePanel {
+  display: grid;
+  grid-template:
+    "avatar name" auto
+    "avatar email" auto
+    ". account" auto / auto 1fr;
+  &.avatarDisabled {
+    grid-template:
+      "name" auto
+      "email" auto
+      "account" auto / 1fr;
+  }
+  gap: $spacing-2 $spacing-6;
+  place-items: center left;
+
+  & > .avatarContainer {
+    grid-area: avatar;
+    & > .MuiAvatar-root {
+      $size: 80px;
+      width: $size;
+      height: $size;
+      & img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  & > .nameContainer {
+    grid-area: name;
+    width: 100%;
+    & > .editNameContainer {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      & > .MuiFormControl-root {
+        flex: 1;
+      }
+      & svg.check {
+        color: $green-600;
+      }
+    }
+
+    & > .editableContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      &:hover {
+        & > .MuiIconButton-root {
+          opacity: 1;
+        }
+      }
+      & > .MuiIconButton-root {
+        opacity: 0.5;
+        transition: opacity 100ms;
+      }
+    }
+  }
+  & > .emailContainer {
+    grid-area: email;
+    width: 100%;
+  }
+  & > .accountTypeContainer {
+    grid-area: account;
+    width: 100%;
+
+    & > .account {
+      display: flex;
+      align-items: center;
+      & a,
+      & button {
+        margin-left: auto;
+      }
+    }
+  }
+
+  & > .container {
+    height: 48px;
+  }
+}

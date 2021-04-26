@@ -9,7 +9,7 @@
 
   grid-template:
     "header" auto
-    "panel" auto
+    "actions" auto
     "transactionForm" auto
     "transactionsList" 1fr / 100%;
 
@@ -40,10 +40,22 @@
     }
   }
 
-  & .panel {
-    grid-area: panel;
+  & .actions {
+    grid-area: actions;
     @include md {
       padding: $spacing-6 $spacing-16;
+    }
+  }
+
+  &__headerContent {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+    & > p > span {
+      margin-right: $spacing-2;
     }
   }
 }

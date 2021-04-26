@@ -1,0 +1,39 @@
+@import "main";
+
+.ViewContainer {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+
+  overflow: hidden;
+  &.scrollable {
+    overflow: auto;
+  }
+
+  & > .viewHeader {
+    z-index: 2;
+    @include md {
+      display: none;
+    }
+  }
+  & > .viewPanel {
+    z-index: 3;
+    @include md {
+      display: none;
+    }
+
+    &.scrollable {
+      top: 0px;
+      position: sticky;
+    }
+  }
+  & > .children {
+    flex: 1;
+    z-index: 1;
+    &:not(.scrollable) {
+      overflow: auto;
+    }
+  }
+}
