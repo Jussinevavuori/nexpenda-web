@@ -25,14 +25,13 @@
     z-index: 2;
     @include md {
       display: unset;
-      box-shadow: $shadow-sm;
     }
   }
 
   & > main {
     grid-area: main;
     overflow: hidden;
-    // background: $gray-100;
+    background: $primary-100;
     @include md {
       z-index: 1;
     }
@@ -41,7 +40,6 @@
   & > nav {
     grid-area: nav;
     @include md {
-      box-shadow: $shadow-sm;
       z-index: 3;
     }
   }

@@ -6,13 +6,32 @@ import { useShortcut } from "./useShortcut";
 export function useCreateTransactionShortcut() {
   const isApplicationActive = useIsApplicationActive();
 
-  const [isOpen, setIsOpen] = useTransactionCreatorDrawerOpenState();
+  const [, setIsOpen] = useTransactionCreatorDrawerOpenState();
 
-  const handler = useCallback(() => {
-    if (isApplicationActive) {
-      setIsOpen(!isOpen);
-    }
-  }, [isApplicationActive, isOpen, setIsOpen]);
+  const openCreateHandler = useCallback(() => {
+    if (!isApplicationActive) return;
+    setIsOpen(true);
+  }, [isApplicationActive, setIsOpen]);
 
-  useShortcut({ key: "N", shift: true }, handler);
+  const hideCreateHandler = useCallback(() => {
+    if (!isApplicationActive) return;
+    setIsOpen(false);
+  }, [isApplicationActive, setIsOpen]);
+
+  useShortcut(
+    {
+      key: "N",
+      shift: true,
+    },
+    openCreateHandler
+  );
+  useShortcut(
+    {
+      key: "N",
+      shift: true,
+      alt: true,
+      enableForInputs: true,
+    },
+    hideCreateHandler
+  );
 }

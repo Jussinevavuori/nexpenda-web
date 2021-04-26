@@ -1,6 +1,6 @@
 // Layout constants
 
-$header-height: 4.5rem;
+$header-height: 3.5rem;
 $mobile-header-height: 160px;
 $sidebar-width: 300px;
 
@@ -348,6 +348,23 @@ $text-boldcaps-spacing: 0.69px;
 
 $fullvh: var(--full-vh, 100vh);
 $vh: var(--vh, 1vh);
+
+// Utilities
+
+@mixin background-shadow-sm {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: $shadow-sm;
+    display: block;
+    z-index: -1;
+  }
+}
 
 // Breakpoints and breakpoint mixins
 

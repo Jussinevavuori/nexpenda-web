@@ -6,6 +6,7 @@
   justify-content: space-between;
   height: $header-height;
   padding: 0 $spacing-16 0 adjust-spacing($spacing-16, $spacing-icon-button);
-  // border-bottom: $border;
-  background: white;
+  background: $white;
+
+  @include background-shadow-sm;
 }

@@ -28,6 +28,10 @@
       left: 50%;
       transform: translate(-50%, -50%);
       & .logo {
+        // Visual correction
+        & > .Logo {
+          transform: translateY(4px);
+        }
         width: 100%;
       }
     }
@@ -38,6 +42,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @include background-shadow-sm;
 
     & .links {
       padding: $spacing-4 $spacing-6;
@@ -130,6 +135,20 @@
         }
       }
     }
+  }
+
+  & > svg.cornerPiece {
+    display: block;
+    position: absolute;
+    top: $header-height;
+    left: 100%;
+    width: 20px;
+    height: 20px;
+
+    & path {
+      fill: white;
+    }
+    clip-path: generateClipPath();
   }
 
   &__linkTooltip {
