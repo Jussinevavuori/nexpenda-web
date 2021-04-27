@@ -10,6 +10,7 @@ import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 import { TransactionSpreadsheetReadSheetResult } from "../TransactionSpreadsheetReadSheetResult/TransactionSpreadsheetReadSheetResult";
 import { motion } from "framer-motion";
 import { UploadFileButton } from "../UploadFileButton/UploadFileButton";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type FileUploaderProps = {
 	onFinished?(): void;
@@ -18,6 +19,7 @@ export type FileUploaderProps = {
 export function FileUploader(props: FileUploaderProps) {
 
 	const controller = useFileUploaderController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className={cx("FileUploader")}>
 
@@ -34,8 +36,8 @@ export function FileUploader(props: FileUploaderProps) {
 						variant="boldcaps"
 						color={
 							controller.activeStep === controller.steps.upload
-								? "primary-600"
-								: "gray-600"
+								? (isDarkTheme ? "primary-400" : "primary-600")
+								: (isDarkTheme ? "gray-400" : "gray-600")
 						}
 					>
 						{"Upload file"}
@@ -72,7 +74,7 @@ export function FileUploader(props: FileUploaderProps) {
 						controller.readFileState.error &&
 						<div className="iconTypeContainer error">
 							<Error />
-							<Type color="red-800">
+							<Type color={isDarkTheme ? "red-300" : "red-800"}>
 								{controller.readFileState.error}
 							</Type>
 						</div>
@@ -80,7 +82,7 @@ export function FileUploader(props: FileUploaderProps) {
 
 					<div className="iconTypeContainer">
 						<Info />
-						<Type color="gray-700">
+						<Type color={isDarkTheme ? "gray-400" : "gray-700"}>
 							{"The column names MUST be on the first row! "}
 							{"The case of the column titles does not matter. "}
 							{"The column titles have to be on the first row. "}
@@ -99,8 +101,8 @@ export function FileUploader(props: FileUploaderProps) {
 						variant="boldcaps"
 						color={
 							controller.activeStep === controller.steps.review
-								? "primary-600"
-								: "gray-600"
+								? (isDarkTheme ? "primary-400" : "primary-600")
+								: (isDarkTheme ? "gray-400" : "gray-600")
 						}
 					>
 						{"Review"}

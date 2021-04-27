@@ -11,6 +11,10 @@ export type SubscribeBannerProps = {
 
 };
 
+/**
+ * @todo Darkmode
+ */
+
 export function SubscribeBanner(props: SubscribeBannerProps) {
 
 	// const controller = useSubscribeBannerController(props)

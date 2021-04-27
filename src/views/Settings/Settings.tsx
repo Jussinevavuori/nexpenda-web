@@ -14,6 +14,8 @@ import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
 import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
 import { UserAvatar } from "../../components/UserAvatar/UserAvatar";
 import { ProfilePanel } from "../../components/ProfilePanel/ProfilePanel";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { Config } from "../../config";
 
 export type SettingsProps = {
 }
@@ -22,6 +24,7 @@ export function Settings(props: SettingsProps) {
 
 	const isDesktop = useMdMedia()
 	const controller = useSettingsController()
+	const isDarkTheme = useIsDarkTheme()
 
 	// Loading
 	if (!controller.user) {
@@ -48,7 +51,7 @@ export function Settings(props: SettingsProps) {
 				component="h2"
 				variant="bold"
 				size="xl"
-				color="gray-900"
+				color={isDarkTheme ? "gray-100" : "gray-900"}
 			>
 				{`Settings`}
 			</Type>
@@ -58,11 +61,8 @@ export function Settings(props: SettingsProps) {
 			</ContainerBlock>
 
 			{
-				(process.env.NODE_ENV === "development" || controller.user.isAdmin) &&
 				!controller.user.isPremium &&
-				<ContainerBlock>
-					<SubscribeBanner />
-				</ContainerBlock>
+				<SubscribeBanner />
 			}
 
 
@@ -71,7 +71,9 @@ export function Settings(props: SettingsProps) {
 			</ContainerBlock>
 
 			<ContainerBlock className="fileHandlers" containerTitle="Import and export">
-				<Type>
+				<Type
+					color={isDarkTheme ? "gray-400" : "gray-800"}
+				>
 					{"Import existing transactions from your own spreadsheets "}
 					{"or export all your transactions into a .xlsx spreadsheet."}
 				</Type>
@@ -99,7 +101,10 @@ export function Settings(props: SettingsProps) {
 				containerTitle="Send feedback"
 				className="feedbackSection"
 			>
-				<Type color="gray-800" component="label">
+				<Type
+					color={isDarkTheme ? "gray-400" : "gray-800"}
+					component="label"
+				>
 					{"Send honest feedback, report bugs or tell us what you love "}
 					{"about Nexpenda below!"}
 				</Type>
@@ -130,7 +135,7 @@ export function Settings(props: SettingsProps) {
 					{"Version"}
 				</Type>
 				<Type component="span" variant="bold" size="sm" color="gray-700" >
-					{"0.1.1"}
+					{Config.VERSION}
 				</Type>
 				<Type component="span" variant="bold" size="sm" color="gray-600">
 					{"Alpha"}

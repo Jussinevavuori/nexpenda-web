@@ -50,3 +50,18 @@
     place-items: center;
   }
 }
+
+@include darkmode {
+  .TransactionTable {
+    & .upcomingTransactions {
+      & .upcomingTransactionsHandle {
+        & button {
+          & span.MuiButton-label {
+            color: $gray-500;
+            @include text-bold;
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,6 +11,11 @@ export type PremiumUserLockProps = {
 	disableLockedOutDialog?: boolean;
 };
 
+/**
+ * @todo Darkmode
+ */
+
+
 export function PremiumUserLock(props: PremiumUserLockProps) {
 
 	const controller = usePremiumUserLockController(props)

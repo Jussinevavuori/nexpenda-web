@@ -17,7 +17,14 @@
       color: $gray-900;
     }
   }
-  // &.isLocked > .content {
-  //   // filter: saturate(0);
-  // }
+}
+
+@include darkmode {
+  .PremiumUserLock {
+    & > .lock {
+      & svg {
+        color: $gray-200;
+      }
+    }
+  }
 }

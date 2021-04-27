@@ -2,6 +2,7 @@ import "./SparkLine.scss";
 import React from "react";
 import cx from "classnames";
 import { SparkLineDefaults, useSparkLineController } from "./useSparkLineController";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type SparkLineProps = {
 
@@ -11,12 +12,12 @@ export type SparkLineProps = {
 	data: Array<{ x: number; y: number; hidden?: boolean; }>;
 
 	/**
-	 * Optional color of sparkline. Defaults to `primary-500`.
+	 * Optional color of sparkline.
 	 */
 	color?: Color;
 
 	/**
-	 * Optional color of sparkline shadow. Defaults to `primary-200`.
+	 * Optional color of sparkline shadow.
 	 */
 	shadowColor?: Color;
 
@@ -57,7 +58,7 @@ export type SparkLineProps = {
 	zerolineStrokeWidth?: number;
 
 	/**
-	 * Zero line color. Defaults to a gray color.
+	 * Zero line color.
 	 */
 	zerolineColor?: Color;
 
@@ -70,6 +71,7 @@ export type SparkLineProps = {
 export function SparkLine(props: SparkLineProps) {
 
 	const controller = useSparkLineController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className={cx("SparkLine")}>
 		<svg
@@ -82,14 +84,13 @@ export function SparkLine(props: SparkLineProps) {
 					gradientTransform="rotate(90)"
 				>
 					{
-						(props.shadowOpacityStops ?? SparkLineDefaults.GradientStops).map(stop => (
-							<stop
+						(props.shadowOpacityStops ?? SparkLineDefaults.GradientStops)
+							.map(stop => <stop
 								key={stop.percentage}
 								offset={`${stop.percentage}%`}
-								className={props.shadowColor ?? "primary-200"}
+								className={props.shadowColor ?? (isDarkTheme ? "primary-600" : "primary-200")}
 								stopOpacity={stop.opacity}
-							/>
-						))
+							/>)
 					}
 				</linearGradient>
 			</defs>
@@ -104,13 +105,19 @@ export function SparkLine(props: SparkLineProps) {
 			}
 			{
 				props.showZeroLine && <path
-					className={cx("zeroline", `stroke-${props.zerolineColor ?? "gray-300"}`)}
+					className={cx(
+						"zeroline",
+						`stroke-${props.zerolineColor ?? (isDarkTheme ? "gray-800" : "gray-300")}`
+					)}
 					strokeWidth={controller.zerolineStrokeWidth}
 					d={controller.svgPath.zeroLinePathD}
 				/>
 			}
 			<path
-				className={cx("sparkline", `stroke-${props.color ?? "primary-500"}`)}
+				className={cx(
+					"sparkline",
+					`stroke-${props.color ?? (isDarkTheme ? "primary-400" : "primary-500")}`
+				)}
 				strokeWidth={controller.strokeWidth}
 				d={controller.svgPath.mainPathD}
 			/>

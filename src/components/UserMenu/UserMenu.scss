@@ -4,19 +4,31 @@
   &__content {
     outline: none;
     & > section.profile {
-      padding: $spacing-4;
-      & > h2,
-      & > p {
-        text-align: center;
-      }
+      padding: $spacing-2 $spacing-4 $spacing-4;
     }
     & > section.actions {
       border-top: $border;
+      padding-top: $spacing-2;
       & .MuiMenuItem-root {
         & svg {
           color: $primary-500;
           transition: color $timing-theme;
           margin-right: $spacing-3;
+        }
+      }
+    }
+  }
+}
+
+@include darkmode {
+  .UserMenu {
+    &__content {
+      & > section.actions {
+        border-top-color: $gray-700;
+        & .MuiMenuItem-root {
+          & svg {
+            color: $primary-400;
+          }
         }
       }
     }

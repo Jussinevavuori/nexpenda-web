@@ -73,3 +73,38 @@
     grid-area: date;
   }
 }
+
+@include darkmode {
+  .TransactionTableHeader {
+    border-color: $gray-800;
+
+    & .action {
+      & .checkbox {
+        color: $gray-600;
+        &.allselected {
+          color: $primary-400;
+        }
+        &.someselected {
+          color: $primary-400;
+        }
+      }
+
+      &:hover {
+        background: $gray-800;
+      }
+    }
+
+    & .sortbutton {
+      color: $primary-500;
+    }
+
+    & .amount,
+    & .category,
+    & .comment,
+    & .date {
+      &:hover {
+        background: $gray-800;
+      }
+    }
+  }
+}

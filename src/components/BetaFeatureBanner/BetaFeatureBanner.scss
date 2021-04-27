@@ -10,3 +10,10 @@
     padding-bottom: $spacing-3;
   }
 }
+
+@include darkmode {
+  .BetaFeatureBanner {
+    background: $gray-810;
+    border-color: $gray-800;
+  }
+}

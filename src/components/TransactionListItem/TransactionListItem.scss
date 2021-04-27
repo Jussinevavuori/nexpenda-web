@@ -15,9 +15,6 @@
   grid-gap: 0 $spacing-4;
   place-items: center left;
 
-  &.upcoming {
-  }
-
   &.pressed {
     background: $primary-100;
     transition: background-color $timing-theme;
@@ -73,5 +70,19 @@
     grid-area: amount;
     display: flex;
     align-items: center;
+  }
+}
+
+@include darkmode {
+  .TransactionListItem {
+    &.pressed {
+      background: $gray-810;
+    }
+
+    & .icon {
+      & .iconContainer {
+        background: $gray-800;
+      }
+    }
   }
 }

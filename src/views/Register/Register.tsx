@@ -9,6 +9,7 @@ import {
 } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
 import { useRegisterController } from "./useRegisterController";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 
 export type RegisterProps = {
@@ -17,13 +18,14 @@ export type RegisterProps = {
 export function Register() {
 
 	const controller = useRegisterController()
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className="Register">
 
 		<Type
 			component="h1"
 			variant="bold"
-			color="black"
+			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
 			{"Welcome!"}

@@ -7,18 +7,20 @@ import {
 	Visibility as PasswordVisibleIcon,
 	VisibilityOff as PasswordInvisibleIcon,
 } from "@material-ui/icons";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 
 export function ChangePassword() {
 
 	const controller = useChangePasswordController()
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className="ChangePassword">
 
 		<Type
 			component="h1"
 			variant="bold"
-			color="black"
+			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
 			{"Change your password"}
@@ -35,7 +37,7 @@ export function ChangePassword() {
 
 					return <>
 
-						<Type color="red-600">
+						<Type color={isDarkTheme ? "red-400" : "red-600"}>
 							{controller.error ?? "Invalid password change link"}
 						</Type>
 
@@ -56,7 +58,10 @@ export function ChangePassword() {
 
 					return <>
 
-						<Type color="green-600" variant="bold">
+						<Type
+							color={isDarkTheme ? "green-400" : "green-600"}
+							variant="bold"
+						>
 							{"Password changed for " + controller.validTokenEmail}
 						</Type>
 

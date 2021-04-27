@@ -31,3 +31,11 @@
     padding: $spacing-6;
   }
 }
+
+@include darkmode {
+  .IntervalManager {
+    & * {
+      color: $gray-200;
+    }
+  }
+}

@@ -74,6 +74,7 @@ export const themeModel: ThemeModel = {
     ThemeUtils.freeDefaultThemeColor,
 
   themeMode: StorageService.latestSelectedThemeMode.getValue() ?? "light", // ThemeUtils.getBrowserPreferredThemeMode(),
+  // themeMode: "dark",
 
   //==============================================================//
   // ACTIONS

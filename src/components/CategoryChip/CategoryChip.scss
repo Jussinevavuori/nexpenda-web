@@ -9,3 +9,9 @@
   align-items: center;
   gap: $spacing-1;
 }
+
+@include darkmode {
+  .CategoryChip {
+    background: $primary-900;
+  }
+}

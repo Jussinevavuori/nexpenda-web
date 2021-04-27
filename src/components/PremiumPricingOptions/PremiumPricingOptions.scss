@@ -93,3 +93,53 @@
     justify-content: center;
   }
 }
+
+@include darkmode {
+  .PremiumPricingOptions {
+    & li.pricingOption {
+      &.yearly {
+        background: $primary-600;
+        border-color: $primary-600;
+        & * {
+          color: white;
+        }
+      }
+
+      &.monthly {
+        background: $gray-810;
+        border-color: $primary-500;
+      }
+
+      & .dealBadge {
+        background: $yellow-500;
+      }
+
+      & button {
+        &.yearly {
+          background: $white;
+          color: $primary-700;
+          &:hover,
+          &:focus {
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+          }
+          &:active {
+            box-shadow: 0 0 7px rgba(255, 255, 255, 1);
+          }
+        }
+
+        &.monthly {
+          background: $primary-500;
+          color: $white;
+
+          &:hover,
+          &:focus {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+          }
+          &:active {
+            box-shadow: 0 0 7px rgba(0, 0, 0, 0.7);
+          }
+        }
+      }
+    }
+  }
+}

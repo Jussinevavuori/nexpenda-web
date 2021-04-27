@@ -22,3 +22,15 @@
     }
   }
 }
+@include darkmode {
+  .TransactionContextMenu {
+    & .MuiMenuItem-root {
+      &.editItem svg {
+        color: $primary-400;
+      }
+      &.deleteItem svg {
+        color: $red-400;
+      }
+    }
+  }
+}

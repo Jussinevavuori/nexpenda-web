@@ -65,3 +65,19 @@
     }
   }
 }
+
+@include darkmode {
+  .SubscriptionFrame {
+    background: $gray-830;
+    & > header {
+      background: $primary-700;
+      transition: background-color $timing-theme;
+    }
+
+    & header h2 {
+      &::before {
+        background: white;
+      }
+    }
+  }
+}

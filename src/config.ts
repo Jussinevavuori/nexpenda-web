@@ -2,6 +2,11 @@ import { StorageService } from "./services/StorageService";
 
 export class Config {
   /**
+   * Current application version number
+   */
+  static VERSION = "0.1.2";
+
+  /**
    * Get the correct API URL. While in development or testing, use localhost
    * with the correct port. In production use the official API URL
    * https://api.nexpenda.com. Allow overriding the URL any time with an API

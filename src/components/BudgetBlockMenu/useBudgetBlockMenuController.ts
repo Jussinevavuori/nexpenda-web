@@ -13,6 +13,7 @@ export function useBudgetBlockMenuController(props: BudgetBlockMenuProps) {
   const deleteBudget = useStoreActions((_) => _.budgets.deleteBudget);
   function handleDelete() {
     deleteBudget(props.budget.id);
+    props.onClose({}, "backdropClick");
   }
 
   return {

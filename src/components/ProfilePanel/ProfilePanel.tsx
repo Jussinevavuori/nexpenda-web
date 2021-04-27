@@ -8,14 +8,15 @@ import { Clear as ClearIcon, Check as CheckIcon, Edit as EditIcon } from "@mater
 import { UserAvatar } from "../UserAvatar/UserAvatar";
 import { Link } from "react-router-dom";
 import { routes } from "../../Routes";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type ProfilePanelProps = {
 	disableAvatar?: boolean;
 }
 
 export function ProfilePanel(props: ProfilePanelProps) {
-
 	const controller = useProfilePanelController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	if (!controller.user) return null
 
@@ -74,7 +75,12 @@ export function ProfilePanel(props: ProfilePanelProps) {
 					</div>
 					: <div className="editableContainer">
 						<div>
-							<Type component="label" size="sm" variant="boldcaps" color="gray-700">
+							<Type
+								component="label"
+								size="sm"
+								variant="boldcaps"
+								color={isDarkTheme ? "gray-600" : "gray-700"}
+							>
 								{"Name"}
 							</Type>
 							<Type>
@@ -92,7 +98,12 @@ export function ProfilePanel(props: ProfilePanelProps) {
 		</div>
 
 		<div className="container emailContainer">
-			<Type component="label" size="sm" variant="boldcaps" color="gray-700">
+			<Type
+				component="label"
+				size="sm"
+				variant="boldcaps"
+				color={isDarkTheme ? "gray-600" : "gray-700"}
+			>
 				{"Email"}
 			</Type>
 			<Type>
@@ -101,7 +112,12 @@ export function ProfilePanel(props: ProfilePanelProps) {
 		</div>
 
 		<div className="container accountTypeContainer">
-			<Type component="label" size="sm" variant="boldcaps" color="gray-700">
+			<Type
+				component="label"
+				size="sm"
+				variant="boldcaps"
+				color={isDarkTheme ? "gray-600" : "gray-700"}
+			>
 				{"Account type"}
 			</Type>
 			{

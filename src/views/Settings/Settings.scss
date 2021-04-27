@@ -22,7 +22,7 @@
   }
 
   & .fileHandlers {
-    & > *:not(.header) {
+    & > *:not(.header):not(p) {
       margin-top: $spacing-4;
     }
   }

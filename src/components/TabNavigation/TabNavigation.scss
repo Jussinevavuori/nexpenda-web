@@ -52,3 +52,25 @@
     }
   }
 }
+
+@include darkmode {
+  .TabNavigation {
+    background: $gray-820;
+    border-top: 1px solid $gray-810;
+    & .tabContainer {
+      & .tab {
+        &.add {
+          & svg {
+            color: $primary-400;
+          }
+        }
+        &.active svg {
+          color: $primary-400;
+        }
+        &::after {
+          background: $primary-400;
+        }
+      }
+    }
+  }
+}

@@ -13,6 +13,7 @@ export class ThemeUtils {
     if (initialThemeMode) {
       ThemeUtils.updateThemeMode(initialThemeMode);
     }
+    // ThemeUtils.updateThemeMode("dark");
   }
 
   /**

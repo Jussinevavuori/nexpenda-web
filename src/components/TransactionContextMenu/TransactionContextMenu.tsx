@@ -12,6 +12,7 @@ import {
 } from "@material-ui/icons";
 import { useTransactionContextMenuController } from "./useTransactionContextMenuController";
 import { Type } from "../Type/Type";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 
 export type TransactionContextMenuProps = {
@@ -20,6 +21,7 @@ export type TransactionContextMenuProps = {
 export function TransactionContextMenu(props: TransactionContextMenuProps) {
 
 	const controller = useTransactionContextMenuController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <Menu
 		className="TransactionContextMenu"
@@ -35,10 +37,20 @@ export function TransactionContextMenu(props: TransactionContextMenuProps) {
 			className="editItem"
 		>
 			<EditIcon />
-			<Type disablePointerEvents component="label" variant="bold" color="primary-600">
+			<Type
+				disablePointerEvents
+				component="label"
+				variant="bold"
+				color={isDarkTheme ? "primary-400" : "primary-600"}
+			>
 				{"Edit"}
 			</Type>
-			<Type disablePointerEvents className="shortcut" component="span" color="gray-500">
+			<Type
+				disablePointerEvents
+				className="shortcut"
+				component="span"
+				color="gray-500"
+			>
 				{"Shift + E"}
 			</Type>
 		</MenuItem>
@@ -49,10 +61,20 @@ export function TransactionContextMenu(props: TransactionContextMenuProps) {
 			className="deleteItem"
 		>
 			<DeleteIcon />
-			<Type disablePointerEvents component="label" variant="bold" color="red-600">
+			<Type
+				disablePointerEvents
+				component="label"
+				variant="bold"
+				color={isDarkTheme ? "red-400" : "red-600"}
+			>
 				{"Delete"}
 			</Type>
-			<Type disablePointerEvents className="shortcut" component="span" color="gray-500">
+			<Type
+				disablePointerEvents
+				className="shortcut"
+				component="span"
+				color="gray-500"
+			>
 				{"Shift + D"}
 			</Type>
 		</MenuItem>

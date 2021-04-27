@@ -19,19 +19,27 @@ export type DashboardProps = {
 }
 
 export function Dashboard(props: DashboardProps) {
-
 	const trueAfterTimeout = useTrueAfterTimeout(100)
-
 	const controller = useDashboardController()
 
 	return <ViewContainer
 		viewHeader={<ViewHeader>
 			<div className="Dashboard__headerContent">
 				<p>
-					<Type component="span" variant="boldcaps" size="sm" color="white">
+					<Type
+						component="span"
+						variant="boldcaps"
+						size="sm"
+						color={"white"}
+					>
 						{`${controller.transactionsCount} transactions`}
 					</Type>
-					<Type component="span" variant="boldcaps" size="sm" color="primary-300">
+					<Type
+						component="span"
+						variant="boldcaps"
+						size="sm"
+						color="primary-300"
+					>
 						{controller.intervalLabel}
 					</Type>
 				</p>

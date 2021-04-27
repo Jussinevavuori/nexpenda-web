@@ -48,3 +48,21 @@
     }
   }
 }
+
+@include darkmode {
+  .AnalyticsCategory {
+    & > .bars {
+      & > .activeBar {
+        &.expense {
+          background: $red-500;
+        }
+        &.income {
+          background: $green-500;
+        }
+      }
+      & > .backgroundBar {
+        background: $gray-800;
+      }
+    }
+  }
+}

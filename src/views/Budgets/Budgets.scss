@@ -49,3 +49,13 @@
     margin-bottom: $spacing-8;
   }
 }
+
+@include darkmode {
+  .Budgets {
+    & .noBudgets {
+      & > svg {
+        color: $primary-400;
+      }
+    }
+  }
+}

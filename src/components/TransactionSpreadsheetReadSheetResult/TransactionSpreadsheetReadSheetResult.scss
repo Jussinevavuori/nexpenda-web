@@ -39,3 +39,31 @@
     padding-top: $spacing-2;
   }
 }
+
+@include darkmode {
+  .TransactionSpreadsheetReadSheetResult {
+    & table {
+      & thead {
+        & tr {
+          & td {
+            border-color: $gray-700;
+            & .Type {
+              color: $gray-400;
+            }
+          }
+        }
+      }
+
+      & tbody {
+        & tr {
+          & td {
+            border-color: $gray-700;
+            & .Type {
+              color: $gray-400;
+            }
+          }
+        }
+      }
+    }
+  }
+}

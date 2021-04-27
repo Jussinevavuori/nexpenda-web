@@ -9,6 +9,7 @@ import { Type } from "../Type/Type";
 import { IconButton } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import { BudgetBlockMenu } from "../BudgetBlockMenu/BudgetBlockMenu";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type BudgetBlockProps = {
 	budget: Budget
@@ -17,6 +18,7 @@ export type BudgetBlockProps = {
 export function BudgetBlock(props: BudgetBlockProps) {
 
 	const controller = useBudgetBlockController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <>
 
@@ -36,8 +38,8 @@ export function BudgetBlock(props: BudgetBlockProps) {
 					percentage={controller.percentage}
 					backgroundColor={
 						props.budget.type === "expense"
-							? controller.percentage > 100 ? "red-200" : undefined
-							: controller.percentage > 100 ? "green-200" : undefined
+							? controller.percentage > 100 ? (isDarkTheme ? "red-900" : "red-200") : undefined
+							: controller.percentage > 100 ? (isDarkTheme ? "green-800" : "green-200") : undefined
 					}
 					filledColor={
 						props.budget.type === "expense"
@@ -53,19 +55,22 @@ export function BudgetBlock(props: BudgetBlockProps) {
 					</Type>
 				</div>
 				<div className={cx("amount")}>
-					{controller.progress.formatAbsValue()}
-					{" / "}
-					{props.budget.amount.formatAbsValue()}
+					<Type component="span" color={isDarkTheme ? "gray-300" : "gray-700"}>
+						{controller.progress.formatAbsValue()}
+					</Type>
+					<Type component="span" color={isDarkTheme ? "gray-300" : "gray-700"}>
+						{" / "}
+					</Type>
+					<Type component="span" color={isDarkTheme ? "gray-300" : "gray-700"}>
+						{props.budget.amount.formatAbsValue()}
+					</Type>
 				</div>
 			</div>
 			<div className={cx("categories")}>
 				{
-					controller.budgetCategories.map(category => {
-						return <CategoryChip
-							category={category}
-							key={category.id}
-						/>
-					})
+					controller.budgetCategories.map(category => (
+						<CategoryChip category={category} key={category.id} />
+					))
 				}
 			</div>
 			<div className={cx("manage")}>

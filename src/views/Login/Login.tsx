@@ -11,12 +11,14 @@ import { Type } from "../../components/Type/Type";
 import { useLoginController } from "./useLoginController";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { AutoLoginIndicator } from "../../components/AutoLoginIndicator/AutoLoginIndicator";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type LoginProps = {
 }
 
 export function Login() {
 	const controller = useLoginController()
+	const isDarkTheme = useIsDarkTheme()
 
 	return <AnimateSharedLayout>
 		<div className="Login">
@@ -24,7 +26,7 @@ export function Login() {
 			<Type
 				component="h1"
 				variant="bold"
-				color="black"
+				color={isDarkTheme ? "gray-100" : "gray-900"}
 				size="xxl"
 			>
 				{"Log in"}

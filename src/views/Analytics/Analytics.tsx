@@ -8,18 +8,19 @@ import { useAnalyticsController } from "./useAnalyticsController";
 import { Type } from "../../components/Type/Type";
 import { AnalyticsAllTimeColumns } from "./AnalyticsAllTimeColumns/AnalyticsAllTimeColumns";
 import { AnalyticsOverview } from "./AnalyticsOverview/AnalyticsOverview";
-import { AnalyticsAllTimeOverview } from "../../components/AnalyticsAllTimeOverview/AnalyticsAllTimeOverview";
 import { BudgetsOverview } from "../../components/BudgetsOverview/BudgetsOverview";
 import { BudgetsContextProvider } from "../../contexts/BudgetsContext.context";
 import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
 import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
 import { DefaultViewPanel } from "../../components/DefaultViewPanel/DefaultViewPanel";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type AnalyticsProps = {
 }
 
 export function Analytics(props: AnalyticsProps) {
 	const controller = useAnalyticsController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <BudgetsContextProvider>
 		<AnalyticsContextProvider>
@@ -33,7 +34,7 @@ export function Analytics(props: AnalyticsProps) {
 						component="h2"
 						variant="bold"
 						size="xl"
-						color="gray-900"
+						color={isDarkTheme ? "gray-100" : "gray-900"}
 					>
 						{`Summary of ${controller.intervalLabel}`}
 					</Type>
@@ -47,30 +48,11 @@ export function Analytics(props: AnalyticsProps) {
 							<BudgetsOverview variant="narrow" />
 						</Masonry>
 					</ResponsiveMasonry>
-					{/* 
-						<Type
-							component="h2"
-							variant="bold"
-							size="xl"
-							color="gray-900"
-						>
-							{"Past year habits"}
-						</Type>
-						<ResponsiveMasonry
-							columnsCountBreakPoints={{ 350: 1, 700: 2 }}
-						>
-							<Masonry gutter={theme.spacing_4}>
-								<AnalyticsAverageTotals />
-								<AnalyticsAverageCategories showOnly="incomes" />
-								<AnalyticsAverageCategories showOnly="expenses" />
-							</Masonry>
-						</ResponsiveMasonry>
-						*/}
 					<Type
 						component="h2"
 						variant="bold"
 						size="xl"
-						color="gray-900"
+						color={isDarkTheme ? "gray-100" : "gray-900"}
 					>
 						{"All time charts"}
 					</Type>
@@ -79,8 +61,7 @@ export function Analytics(props: AnalyticsProps) {
 						columnsCountBreakPoints={{ 350: 1, 700: 2 }}
 					>
 						<Masonry gutter={theme.spacing_4}>
-							<AnalyticsAllTimeOverview />
-							{/* <AnalyticsAllTimeLine /> */}
+							<AnalyticsOverview interval="allTime" />
 							<AnalyticsAllTimeColumns />
 						</Masonry>
 					</ResponsiveMasonry>

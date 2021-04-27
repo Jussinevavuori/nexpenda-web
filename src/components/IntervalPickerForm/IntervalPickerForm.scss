@@ -2,7 +2,6 @@
 
 .IntervalPickerForm {
   @include sm {
-    // max-width: 80vw;
     min-width: 300px;
   }
 
@@ -29,11 +28,6 @@
     align-items: center;
     justify-content: space-between;
     padding: $spacing-2 0;
-
-    // border-bottom: $border;
-    // margin-bottom: $spacing-4;
-    // padding-bottom: $spacing-4;
-
     & * {
       color: $gray-800;
     }
@@ -58,12 +52,30 @@
       }
     }
   }
+}
 
-  // & section.dateSection {
-  // padding: $spacing-4 0;
-  //
-  // & > *:first-child {
-  // margin-bottom: $spacing-4;
-  // }
-  // }
+@include darkmode {
+  .IntervalPickerForm {
+    & section.intervalLength {
+      & button {
+        border-color: $gray-700;
+        &.active {
+          color: $primary-400;
+          border-bottom-color: $primary-400;
+        }
+      }
+    }
+
+    & section.title {
+      & * {
+        color: $gray-300;
+      }
+
+      & .nextOrPreviousInterval {
+        & button:disabled * {
+          color: $gray-400;
+        }
+      }
+    }
+  }
 }

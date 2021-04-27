@@ -5,6 +5,7 @@ import { Type } from "../../../components/Type/Type";
 import { AnimateSharedLayout, motion } from "framer-motion"
 import { AnalyticsCategory } from "../AnalyticsCategory/AnalyticsCategory";
 import { ContainerBlock } from "../../../components/Container/ContainerBlock";
+import { useIsDarkTheme } from "../../../hooks/application/useIsThemeMode";
 
 export type AnalyticsCategoriesProps = {
 }
@@ -12,12 +13,16 @@ export type AnalyticsCategoriesProps = {
 export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 
 	const controller = useAnalyticsCategoriesController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <ContainerBlock containerTitle="Categories">
 		<div className="AnalyticsCategories">
 			<AnimateSharedLayout>
 				<motion.div layout className="incomes">
-					<Type color="gray-600" variant="boldcaps">
+					<Type
+						color={isDarkTheme ? "gray-500" : "gray-600"}
+						variant="boldcaps"
+					>
 						{"Incomes"}
 					</Type>
 					<ul>
@@ -44,7 +49,10 @@ export function AnalyticsCategories(props: AnalyticsCategoriesProps) {
 					</ul>
 				</motion.div>
 				<motion.div layout className="expenses">
-					<Type color="gray-600" variant="boldcaps">
+					<Type
+						color={isDarkTheme ? "gray-500" : "gray-600"}
+						variant="boldcaps"
+					>
 						{"Expenses"}
 					</Type>
 					<ul>

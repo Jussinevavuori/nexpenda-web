@@ -99,3 +99,12 @@
     }
   }
 }
+
+@include darkmode {
+  .TransactionForm {
+    & .MuiButton-root:not(.MuiButton-contained),
+    & .MuiTextField-root {
+      background: $gray-810;
+    }
+  }
+}

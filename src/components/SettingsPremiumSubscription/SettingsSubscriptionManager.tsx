@@ -5,6 +5,7 @@ import { useSettingsSubscriptionManagerController } from "./useSettingsSubscript
 import { Type } from "../Type/Type";
 import { Button } from "@material-ui/core";
 import { isFuture } from "date-fns";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type SettingsSubscriptionManagerProps = {
 
@@ -13,6 +14,7 @@ export type SettingsSubscriptionManagerProps = {
 export function SettingsSubscriptionManager(props: SettingsSubscriptionManagerProps) {
 
 	const controller = useSettingsSubscriptionManagerController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className={cx("SettingsSubscriptionManager")}>
 
@@ -57,7 +59,9 @@ export function SettingsSubscriptionManager(props: SettingsSubscriptionManagerPr
 							<Type
 								component="p"
 								className={cx("activeStatus", { isActive })}
-								color={isActive ? "primary-600" : "gray-600"}
+								color={isActive
+									? (isDarkTheme ? "primary-400" : "primary-600")
+									: (isDarkTheme ? "gray-400" : "gray-600")}
 								variant="bold"
 								size="sm"
 							>
@@ -65,12 +69,21 @@ export function SettingsSubscriptionManager(props: SettingsSubscriptionManagerPr
 							</Type>
 							{
 								start &&
-								<Type component="p" color="gray-700" size="sm">
+								<Type
+									component="p"
+									color={isDarkTheme ? "gray-400" : "gray-700"}
+									size="sm"
+								>
 									{start}
 								</Type>
 							}
 							{
-								end && <Type component="p" color="gray-700" size="sm">
+								end &&
+								<Type
+									component="p"
+									color={isDarkTheme ? "gray-400" : "gray-700"}
+									size="sm"
+								>
 									{end}
 								</Type>
 							}

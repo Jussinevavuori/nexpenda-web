@@ -110,3 +110,52 @@
     }
   }
 }
+
+@include darkmode {
+  .TransactionsFilter {
+    & > .container {
+      & .buttonBase {
+        & span .Type {
+          color: $gray-400;
+        }
+        @include md {
+          background: $gray-810;
+          border-color: $gray-700;
+        }
+        & .icon {
+          color: $gray-500;
+          &.iconButton {
+            @include md {
+              & > .iconButtonChild {
+                &:hover {
+                  background: $gray-800;
+                }
+              }
+            }
+          }
+        }
+        & .inputContainer {
+          & .smartCategoriesContainer {
+            & > .smartCategories {
+              & > .smartCategory {
+                border-color: $gray-600;
+                color: $gray-300;
+              }
+            }
+          }
+
+          & .input {
+            background: $gray-810;
+            color: $gray-300;
+          }
+        }
+
+        &.open {
+          &:focus-within {
+            border-color: $primary-400;
+          }
+        }
+      }
+    }
+  }
+}

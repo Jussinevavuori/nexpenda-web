@@ -10,12 +10,7 @@ export function MaterialUiThemeProvider(props: MaterialUiThemeProviderProps) {
 	const [themeColor] = useThemeColor()
 	const [themeMode] = useThemeMode()
 
-	const theme = useMemo(() => {
-		return createTheme(themeColor, themeMode)
-	}, [themeColor, themeMode])
+	const theme = useMemo(() => createTheme(themeColor, themeMode), [themeColor, themeMode])
 
-	return <ThemeProvider
-		{...props}
-		theme={theme}
-	/>
+	return <ThemeProvider	{...props} theme={theme} />
 }

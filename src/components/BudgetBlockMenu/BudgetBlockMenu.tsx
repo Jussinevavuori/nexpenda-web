@@ -7,6 +7,7 @@ import { Budget } from "../../classes/Budget";
 import { MenuItem } from "@material-ui/core";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 import { Type } from "../Type/Type";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type BudgetBlockMenuProps = {
 	budget: Budget;
@@ -14,28 +15,22 @@ export type BudgetBlockMenuProps = {
 
 export function BudgetBlockMenu(props: BudgetBlockMenuProps) {
 	const controller = useBudgetBlockMenuController(props)
-
 	const { budget, ...responsiveMenuProps } = props
+	const isDarkTheme = useIsDarkTheme()
 
 	return <ResponsiveMenu {...responsiveMenuProps}>
 		<div className={cx("BudgetBlockMenu")}>
 			{
 				process.env.NODE_ENV === "development" &&
-				<MenuItem
-					className="edit"
-					onClick={controller.handleEdit}
-				>
-					<Type variant="bold" color="primary-600">
+				<MenuItem className="edit" onClick={controller.handleEdit} >
+					<Type variant="bold" color={isDarkTheme ? "primary-400" : "primary-600"}>
 						<EditIcon />
 						{"Edit"}
 					</Type>
 				</MenuItem>
 			}
-			<MenuItem
-				className="delete"
-				onClick={controller.handleDelete}
-			>
-				<Type variant="bold" color="red-600">
+			<MenuItem className="delete" onClick={controller.handleDelete} >
+				<Type variant="bold" color={isDarkTheme ? "red-400" : "red-600"}>
 					<DeleteIcon />
 					{"Delete"}
 				</Type>

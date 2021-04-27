@@ -11,6 +11,7 @@ import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
 import { motion, Variants } from "framer-motion";
 import { useTransactionListItemController } from "./useTransactionListItemController";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type TransactionListItemProps = {
 	transaction: Transaction;
@@ -19,6 +20,7 @@ export type TransactionListItemProps = {
 export function TransactionListItem(props: TransactionListItemProps) {
 
 	const controller = useTransactionListItemController(props)
+	const isDarkTheme = useIsDarkTheme()
 	const { handleSelect, handleDeselect, selected, selectionActive } = controller
 
 	const vibrate = useVibration()
@@ -100,20 +102,28 @@ export function TransactionListItem(props: TransactionListItemProps) {
 			</motion.div>
 		</div>
 		<div className="category">
-			<Type color="gray-800" size="md" variant="bold">
+			<Type
+				color={isDarkTheme ? "gray-200" : "gray-800"}
+				size="md"
+				variant="bold"
+			>
 				{props.transaction.category.value}
 			</Type>
 		</div>
 		<div className="comment">
-			<Type color="gray-600" size="md" variant="regular">
+			<Type
+				color={isDarkTheme ? "gray-500" : "gray-600"}
+				size="md"
+				variant="regular"
+			>
 				{props.transaction.comment}
 			</Type>
 		</div>
 		<div className={cx("amount")}>
 			<MoneyType
 				amount={props.transaction.amount}
-				colorIfPositive="green-600"
-				colorIfNegative="red-600"
+				colorIfPositive={isDarkTheme ? "green-500" : "green-600"}
+				colorIfNegative={isDarkTheme ? "red-500" : "red-600"}
 				size="lg"
 				variant="bold"
 			/>
@@ -122,7 +132,6 @@ export function TransactionListItem(props: TransactionListItemProps) {
 }
 
 const iconVariants: Variants = {
-
 	selected: {
 		scale: 1.4,
 		transition: {

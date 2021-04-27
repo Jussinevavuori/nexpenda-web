@@ -14,9 +14,7 @@ export function ExampleSpreadsheet(props: ExampleSpreadsheetProps) {
 
 	// const controller = useExampleSpreadsheetController(props)
 
-	return <table
-		className={cx("ExampleSpreadsheet")}
-	>
+	return <table className={cx("ExampleSpreadsheet")} >
 		<thead>
 			<tr>
 				<Tooltip

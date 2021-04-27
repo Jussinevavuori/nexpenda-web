@@ -1,9 +1,11 @@
 import "./Logo.scss";
 import React from "react"
-import IconLogoColoredSvg from "../../images/icon-logo-colored.svg"
+import IconLogoBlackColoredSvg from "../../images/icon-logo-colored.svg"
+import IconLogoWhiteColoredSvg from "../../images/icon-logo-white-colored.svg"
 import cx from "classnames"
 import { Type, TypeProps } from "../Type/Type";
 import { AnimatePresence, motion } from "framer-motion";
+import { useThemeMode } from "../../hooks/application/useThemeMode";
 // import { useLogoController } from "./useLogoController";
 
 export type LogoProps = TypeProps & {
@@ -27,6 +29,7 @@ export type LogoProps = TypeProps & {
 type LogoTypeVariant = "default" | "highlight" | "premium"
 
 export function Logo(props: LogoProps) {
+	const [themeMode] = useThemeMode()
 
 	const {
 		defaultLetterProps,
@@ -47,7 +50,8 @@ export function Logo(props: LogoProps) {
 		switch (variant) {
 			case "default":
 				return {
-					...defaultTypeProps["default"],
+					...defaultTypeProps["default"].default,
+					...defaultTypeProps["default"][themeMode],
 					...typeProps,
 					...defaultLetterProps,
 					className: cx(
@@ -58,7 +62,8 @@ export function Logo(props: LogoProps) {
 				}
 			case "highlight":
 				return {
-					...defaultTypeProps["highlight"],
+					...defaultTypeProps["highlight"].default,
+					...defaultTypeProps["highlight"][themeMode],
 					...typeProps,
 					...highlightLetterProps,
 					className: cx(
@@ -69,7 +74,8 @@ export function Logo(props: LogoProps) {
 				}
 			case "premium":
 				return {
-					...defaultTypeProps["premium"],
+					...defaultTypeProps["premium"].default,
+					...defaultTypeProps["premium"][themeMode],
 					...typeProps,
 					...premiumLetterProps,
 					className: cx(
@@ -94,7 +100,7 @@ export function Logo(props: LogoProps) {
 					exit={{ opacity: 0, scaleX: 0, transformOrigin: "left" }}
 				>
 					<img
-						src={IconLogoColoredSvg}
+						src={themeMode === "dark" ? IconLogoWhiteColoredSvg : IconLogoBlackColoredSvg}
 						alt="Nexpenda"
 						className=""
 					/>
@@ -142,23 +148,44 @@ export function Logo(props: LogoProps) {
 	</span>
 }
 
-const defaultTypeProps: Record<LogoTypeVariant, TypeProps> = {
+const defaultTypeProps: Record<LogoTypeVariant, Record<ThemeMode | "default", TypeProps>> = {
 	default: {
-		component: "span",
-		size: "xl",
-		variant: "extrabold",
-		color: "black",
+		default: {
+			component: "span",
+			size: "xl",
+			variant: "extrabold",
+		},
+		dark: {
+			color: "white",
+		},
+		light: {
+			color: "black"
+		}
 	},
 	highlight: {
-		component: "span",
-		size: "xl",
-		variant: "extrabold",
-		color: "primary-500",
+		default: {
+			component: "span",
+			size: "xl",
+			variant: "extrabold",
+		},
+		dark: {
+			color: "primary-500",
+		},
+		light: {
+			color: "primary-500"
+		}
 	},
 	premium: {
-		component: "span",
-		size: "md",
-		variant: "bold",
-		color: "primary-700",
+		default: {
+			component: "span",
+			size: "md",
+			variant: "bold",
+		},
+		dark: {
+			color: "primary-300",
+		},
+		light: {
+			color: "primary-700"
+		}
 	}
 }

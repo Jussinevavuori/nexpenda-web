@@ -2,6 +2,7 @@ import "./Type.scss";
 import React, { ElementType, forwardRef } from "react"
 import cx from "classnames"
 import { Typography, TypographyProps } from "@material-ui/core";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type TypeProps = Omit<TypographyProps, "color" | "variant"> & {
 	component?: ElementType;
@@ -24,7 +25,9 @@ export const Type = forwardRef<HTMLElement, TypeProps>((props, ref) => {
 		...typographyProps
 	} = props
 
-	const textColor = color ?? "gray-900"
+	const isDarkTheme = useIsDarkTheme()
+
+	const textColor = color ?? (isDarkTheme ? "gray-100" : "gray-900")
 	const textVariant = variant ?? "regular"
 	const textSize = size ?? "md"
 

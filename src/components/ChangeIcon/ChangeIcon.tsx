@@ -1,6 +1,7 @@
 import "./ChangeIcon.scss";
 import cx from "classnames";
 import { ArrowDownward, ArrowUpward, Remove } from "@material-ui/icons";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type ChangeIconProps = {
 	change?: number;
@@ -13,6 +14,8 @@ export type ChangeIconProps = {
 
 export function ChangeIcon(props: ChangeIconProps) {
 
+	const isDarkTheme = useIsDarkTheme()
+
 	const changeType = !props.change
 		? "neutral"
 		: props.change > 0
@@ -23,7 +26,7 @@ export function ChangeIcon(props: ChangeIconProps) {
 		? typeof props.color === "string"
 			? props.color
 			: props.color[changeType]
-		: "gray-800"
+		: (isDarkTheme ? "gray-200" : "gray-800")
 
 	const className = cx(
 		"ChangeIcon",

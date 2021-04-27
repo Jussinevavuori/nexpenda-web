@@ -4,17 +4,19 @@ import { useForgotPasswordController } from "./useForgotPasswordController";
 import { TextField, Button, InputAdornment } from "@material-ui/core";
 import { Email as EmailIcon } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export function ForgotPassword() {
 
 	const controller = useForgotPasswordController()
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className="ForgotPassword">
 
 		<Type
 			component="h1"
 			variant="bold"
-			color="black"
+			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
 			{"Forgot password"}
@@ -28,7 +30,7 @@ export function ForgotPassword() {
 					</Type>
 					: <form noValidate onSubmit={controller.handleSubmit}>
 
-						<Type>
+						<Type color={isDarkTheme ? "gray-500" : "gray-300"}>
 							{"Enter your email below and we will send you an email containing a link, which you can use to change your password."}
 						</Type>
 

@@ -14,6 +14,10 @@ function GrowTransition(props: TransitionProps) {
 	return <Grow {...props} />;
 }
 
+/**
+ * @todo Darkmode
+ */
+
 export function NotificationView(props: NotificationViewProps) {
 
 	const [open, setOpen] = useState(true)

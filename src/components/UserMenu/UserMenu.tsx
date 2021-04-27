@@ -6,6 +6,7 @@ import { MenuItem, MenuList } from "@material-ui/core";
 import { ExitToApp as LogoutIcon, Settings as SettingsIcon } from "@material-ui/icons";
 import { Type } from "../Type/Type";
 import { ResponsiveMenu, ResponsiveMenuProps } from "../ResponsiveMenu/ResponsiveMenu";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type UserMenuProps = {
 
@@ -14,8 +15,8 @@ export type UserMenuProps = {
 export const UserMenu = forwardRef((props: UserMenuProps, ref: Ref<UserMenuRef>) => {
 
 	const controller = useUserMenuController(props, ref)
-
 	const { className, ...ResponsiveMenuProps } = props
+	const isDarkTheme = useIsDarkTheme()
 
 	return <ResponsiveMenu
 		className={cx("UserMenu", className)}
@@ -31,10 +32,10 @@ export const UserMenu = forwardRef((props: UserMenuProps, ref: Ref<UserMenuRef>)
 	>
 		<div className="UserMenu__content" >
 			<section className="profile">
-				<Type variant="bold" size="lg" component="h2">
+				<Type variant="bold">
 					{controller.user?.displayName ?? "Not logged in"}
 				</Type>
-				<Type color="gray-700">
+				<Type color={isDarkTheme ? "gray-400" : "gray-700"}>
 					{controller.user?.email ?? "No email"}
 				</Type>
 			</section>
@@ -42,13 +43,13 @@ export const UserMenu = forwardRef((props: UserMenuProps, ref: Ref<UserMenuRef>)
 				<MenuList>
 					<MenuItem onClick={controller.handleSettings}>
 						<SettingsIcon />
-						<Type variant="bold">
+						<Type >
 							{"Settings"}
 						</Type>
 					</MenuItem>
 					<MenuItem onClick={controller.handleLogout}>
 						<LogoutIcon />
-						<Type variant="bold">
+						<Type >
 							{"Log out"}
 						</Type>
 					</MenuItem>

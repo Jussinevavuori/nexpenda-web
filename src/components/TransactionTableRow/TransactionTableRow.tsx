@@ -11,6 +11,7 @@ import {
 } from "@material-ui/icons"
 import { useTransactionTableRowController } from "./useTransactionTableRowController";
 import { TransactionForm } from "../TransactionForm/TransactionForm";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type TransactionTableRowProps = {
 	transaction: Transaction;
@@ -20,6 +21,7 @@ export type TransactionTableRowProps = {
 export function TransactionTableRow(props: TransactionTableRowProps) {
 
 	const controller = useTransactionTableRowController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	if (controller.isEditing) {
 		return <div className={cx("TransactionTableRow editing")}>
@@ -64,7 +66,11 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 			}
 		</div>
 		<div className="category">
-			<Type variant="bold" color="gray-800" size="md">
+			<Type
+				variant="bold"
+				color={isDarkTheme ? "gray-400" : "gray-800"}
+				size="md"
+			>
 				<span className="categoryIcon">
 					{controller.transaction.icon}
 				</span>
@@ -76,12 +82,16 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 				amount={controller.transaction.amount}
 				variant="bold"
 				size="md"
-				colorIfPositive="green-600"
-				colorIfNegative="red-600"
+				colorIfPositive={isDarkTheme ? "green-500" : "green-600"}
+				colorIfNegative={isDarkTheme ? "red-500" : "red-600"}
 			/>
 		</div>
 		<div className="comment">
-			<Type color="gray-700" variant="regular" size="md">
+			<Type
+				color={isDarkTheme ? "gray-500" : "gray-700"}
+				variant="regular"
+				size="md"
+			>
 				{
 					controller.transaction.isUpcoming &&
 					<span className="upcomingTag">
@@ -92,7 +102,11 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 			</Type>
 		</div>
 		<div className="date">
-			<Type color="gray-700" variant="regular" size="md">
+			<Type
+				color={isDarkTheme ? "gray-400" : "gray-700"}
+				variant="regular"
+				size="md"
+			>
 				{toDatestring(controller.transaction.date)}
 			</Type>
 		</div>

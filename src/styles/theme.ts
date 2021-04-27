@@ -207,7 +207,8 @@ export function createTheme(color: ThemeColor, mode: ThemeMode) {
       grey: colors.gray,
       divider: _.gray_300,
       common: { black: _.black, white: _.white },
-      background: { default: _.white, paper: _.white },
+      // background: { default: _.white, paper: _.white },
+      type: mode,
     },
     /**
      * Overrides
@@ -215,10 +216,22 @@ export function createTheme(color: ThemeColor, mode: ThemeMode) {
     overrides: {
       MuiTooltip: {
         tooltip: {
-          backgroundColor: "#ffffff",
-          border: `1px solid ${colors[color][500]}`,
-          color: `${colors["gray"][800]}`,
+          backgroundColor: mode === "dark" ? colors["gray"][800] : _.white,
+          border:
+            mode === "dark"
+              ? `2px solid ${_.gray_700}}`
+              : `1px solid ${colors[color][500]}`,
+          color: mode === "dark" ? `${_.gray_100}` : `${_.gray_900}`,
           fontSize: _.text_sm,
+        },
+      },
+      MuiButton: {
+        outlinedPrimary: {
+          color: colors[color][400],
+          borderColor: colors[color][400],
+          "&:hover": {
+            borderColor: colors[color][400],
+          },
         },
       },
     },

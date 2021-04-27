@@ -3,8 +3,9 @@
 .SettingsSubscriptionManager {
   & ul {
     & > li {
-      margin: $spacing-4 0;
+      margin-bottom: $spacing-4;
       padding: $spacing-4 $spacing-4;
+      background: $gray-100;
       border: 1px solid $gray-300;
       border-radius: $spacing-1;
 
@@ -28,6 +29,22 @@
           transform: translateY(-50%);
           background: $primary-600;
           transition: background-color $timing-theme;
+        }
+      }
+    }
+  }
+}
+
+@include darkmode {
+  .SettingsSubscriptionManager {
+    & ul {
+      & > li {
+        border-color: $gray-820;
+        background: $gray-800;
+        & .activeStatus {
+          &.isActive::before {
+            background: $primary-400;
+          }
         }
       }
     }

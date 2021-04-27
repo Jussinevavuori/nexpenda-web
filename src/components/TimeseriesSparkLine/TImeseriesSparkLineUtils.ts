@@ -17,6 +17,16 @@ export class TimeseriesSparkLineUtils {
     hideValuesBefore: TimeseriesSparkLineProps["hideValuesBefore"];
     maxPoints: NonNullable<TimeseriesSparkLineProps["maxPoints"]>;
   }): SparkLineProps["data"] {
+    if (options.data.length === 0) {
+      return [
+        { x: 0, y: 1, hidden: true },
+        { x: 0, y: -1, hidden: true },
+        { x: 0, y: 0, hidden: true },
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+      ];
+    }
+
     /**
      * Map data to easier usable items
      */

@@ -3,6 +3,7 @@ import React from "react"
 import { Type } from "../../components/Type/Type";
 import { Button, CircularProgress } from "@material-ui/core";
 import { useConfirmEmailController } from "./useConfirmEmailController";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type ConfirmEmailProps = {
 }
@@ -10,13 +11,14 @@ export type ConfirmEmailProps = {
 export function ConfirmEmail(props: ConfirmEmailProps) {
 
 	const controller = useConfirmEmailController()
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className="ConfirmEmail">
 
 		<Type
 			component="h1"
 			variant="bold"
-			color="black"
+			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
 			{"Confirm your email"}
@@ -35,7 +37,7 @@ export function ConfirmEmail(props: ConfirmEmailProps) {
 
 						return <>
 
-							<Type color="red-600">
+							<Type color={isDarkTheme ? "red-400" : "red-600"}>
 								{controller.error ?? "Invalid password change link"}
 							</Type>
 
@@ -56,7 +58,12 @@ export function ConfirmEmail(props: ConfirmEmailProps) {
 
 						return <>
 
-							<Type color="green-600" variant="bold" component="h2" size="lg">
+							<Type
+								color={isDarkTheme ? "green-400" : "green-600"}
+								variant="bold"
+								component="h2"
+								size="lg"
+							>
 								{"Email succesfully confirmed"}
 							</Type>
 

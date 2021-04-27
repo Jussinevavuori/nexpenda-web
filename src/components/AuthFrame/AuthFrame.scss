@@ -1,6 +1,7 @@
 @import "main";
 
 .AuthFrame {
+  min-height: $fullvh;
   & > nav {
     height: 4rem;
     width: 100%;
@@ -50,6 +51,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      & .MuiButton-root {
+        font-weight: $text-regular;
+      }
+    }
+  }
+}
+
+@include darkmode {
+  .AuthFrame {
+    background: $gray-820;
+    & > nav {
+      background: $gray-830;
+      border-color: $gray-820;
+    }
+    & footer {
+      border-color: $gray-800;
     }
   }
 }

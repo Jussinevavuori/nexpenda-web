@@ -160,7 +160,7 @@
 
 @include darkmode {
   & .SidebarNavigation {
-    background: $gray-900;
+    background: $gray-830;
     & .body {
       & .links {
         & .link {
@@ -189,7 +189,12 @@
       }
     }
     & > .cornerPiece > path {
-      fill: $gray-900;
+      fill: $gray-830;
+    }
+    &__linkTooltip {
+      & .Type {
+        color: white;
+      }
     }
   }
 }

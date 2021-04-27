@@ -105,7 +105,6 @@
 
   & .comment {
     grid-area: comment;
-    color: rgba(0, 0, 0, 0.6);
     &,
     & > p {
       text-overflow: ellipsis;
@@ -127,12 +126,56 @@
   & .date {
     grid-area: date;
     justify-self: end;
-    color: rgba(0, 0, 0, 0.9);
     &,
     & > p {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+    }
+  }
+}
+
+@include darkmode {
+  .TransactionTableRow {
+    &.editing {
+      background: $gray-800;
+      &.selected {
+        background: $gray-800;
+      }
+      &:hover {
+        background: $gray-800;
+      }
+    }
+
+    &.selected {
+      background: $gray-800;
+    }
+
+    &.contextMenuSelected {
+      &::after {
+        border-color: $gray-700;
+        background: $gray-800;
+      }
+    }
+
+    &:hover {
+      background: $gray-800;
+    }
+
+    & .action {
+      & svg {
+        color: $gray-600;
+        &.selected {
+          color: $primary-400;
+        }
+      }
+    }
+
+    & .comment {
+      & .upcomingTag {
+        background: $primary-500;
+        color: $primary-300;
+      }
     }
   }
 }

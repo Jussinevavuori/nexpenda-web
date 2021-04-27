@@ -5,6 +5,7 @@ import { usePercentageCircleController } from "./usePercentageCircleController";
 import { Type, TypeProps } from "../Type/Type";
 import { SvgPath } from "../../utils/SvgUtils/SvgPath";
 import { Angle } from "../../utils/GeometryUtils/Angle";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type PercentageCircleProps = {
 	/**
@@ -28,25 +29,24 @@ export type PercentageCircleProps = {
 	className?: string;
 
 	/**
-	 * Optional background color. Defaults to `white`
+	 * Optional background color.
 	 */
 	backgroundColor?: Color;
 
 	/**
 	 * Optional inactive percentage color (color of unfilled part of circle).
-	 * Defaults to `primary-200`.
 	 */
 	unfilledColor?: Color;
 
 	/**
 	 * Optional active percentage color (color of filled part of circle).
-	 * Defaults to `primray-500`.
 	 */
 	filledColor?: Color;
 };
 
 export function PercentageCircle(props: PercentageCircleProps) {
 	const controller = usePercentageCircleController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <div className={cx(
 		"PercentageCircle",
@@ -71,7 +71,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 				className={cx(
 					"background",
 					{ isOverflow: controller.isOverflow },
-					`color-${props.backgroundColor || "white"}`
+					`color-${props.backgroundColor || (isDarkTheme ? "gray-810" : "white")}`
 				)}
 				cx={controller.radius}
 				cy={controller.radius}
@@ -81,7 +81,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 				className={cx(
 					"inactive",
 					{ isOverflow: controller.isOverflow },
-					`color-${props.unfilledColor || "primary-200"}`
+					`color-${props.unfilledColor || (isDarkTheme ? "primary-900" : "primary-200")}`
 				)}
 				d={SvgPath.describePartialCirclePath({
 					radius: controller.radius,

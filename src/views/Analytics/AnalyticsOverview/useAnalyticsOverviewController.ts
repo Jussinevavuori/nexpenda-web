@@ -7,10 +7,12 @@ import { AnalyticsOverviewProps } from "./AnalyticsOverview";
 
 export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
   const analytics = useAnalyticsContext();
-  const isAll = useStoreState((_) => _.interval.isAll);
   const intervalLengthLabel = useStoreState((_) => _.interval.lengthType);
+  const allTransactions = useStoreState((_) => _.transactions.items);
+  const isSelectedIntervalAll = useStoreState((_) => _.interval.isAll);
+  const isAll = isSelectedIntervalAll || props.interval === "allTime";
 
-  // Calculat all percentage increases
+  // Calculate all percentage increases
   const totalPercentageIncrease = getPercentageIncrease(
     analytics.previous.total.total,
     analytics.selected.total.total
@@ -24,24 +26,34 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
     analytics.selected.total.expenses
   );
 
+  // All absolute values
+  const totalTotal = isAll
+    ? analytics.allTime.total.total
+    : analytics.selected.total.total;
+  const incomesTotal = isAll
+    ? analytics.allTime.total.incomes
+    : analytics.selected.total.incomes;
+  const expensesTotal = isAll
+    ? analytics.allTime.total.expenses
+    : analytics.selected.total.expenses;
+
   // Calculate timeseries sparkline props: provide data, interval and hide
   // required values.
   const timeseriesSparklineProps = useMemo((): Pick<
     TimeseriesSparkLineProps,
     "data" | "startDate" | "endDate" | "hideValuesAfter" | "hideValuesBefore"
   > => {
-    const transactions = analytics.selected.transactions;
-
     // Fix performance issues
     if (isAll) {
       return {
-        data: transactions.map((transaction) => ({
+        data: allTransactions.map((transaction) => ({
           time: transaction.date,
           value: transaction.amount.decimalValue,
         })),
       };
     }
 
+    const selectedTransactions = analytics.selected.transactions;
     const startDate = analytics.selectedInterval.start;
     const endDate = analytics.selectedInterval.end;
     const currentDate = new Date();
@@ -51,7 +63,7 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
       DateUtils.compareDate(currentDate, "<", endDate);
 
     return {
-      data: transactions.map((transaction) => ({
+      data: selectedTransactions.map((transaction) => ({
         time: transaction.date,
         value: transaction.amount.decimalValue,
       })),
@@ -60,15 +72,17 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
       hideValuesBefore: undefined,
       hideValuesAfter: isCurrentDateWithinInterval ? currentDate : undefined,
     };
-  }, [analytics, isAll]);
+  }, [analytics, isAll, allTransactions]);
 
   return {
-    analytics,
-    intervalLengthLabel,
+    intervalLengthLabel: isAll ? "all" : intervalLengthLabel,
     totalPercentageIncrease,
     incomePercentageIncrease,
     expensesPercentageIncrease,
     timeseriesSparklineProps,
+    totalTotal,
+    incomesTotal,
+    expensesTotal,
     isAll,
   };
 }
@@ -83,7 +97,7 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
  */
 function getPercentageIncrease(previous: number, current: number) {
   const currentSign = current === 0 ? 0 : current < 0 ? -1 : 1;
-  const previousSign = previous === 0 ? 0 : previous < 0 ? -1 : 1;
+  // const previousSign = previous === 0 ? 0 : previous < 0 ? -1 : 1;
 
   // If no previous value, automatically display...
   // 0 %    when current value is 0
@@ -92,5 +106,5 @@ function getPercentageIncrease(previous: number, current: number) {
   if (previous === 0) return 100 * currentSign;
 
   // Return difference between values with correct sign
-  return ((100 * (current - previous)) / previous) * previousSign;
+  return (100 * (current - previous)) / previous;
 }

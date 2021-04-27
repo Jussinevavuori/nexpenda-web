@@ -1,11 +1,11 @@
 import "./AnalyticsCategory.scss";
 import React from "react";
-import { useAnalyticsCategoryController } from "./useAnalyticsCategoryController";
 import { createClassnames } from "../../../utils/Utils/createClassnames";
 import { motion } from "framer-motion";
 import { Category } from "../../../classes/Category";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
+import { useIsDarkTheme } from "../../../hooks/application/useIsThemeMode";
 
 export type AnalyticsCategoryProps = {
 	variant: "income" | "expense";
@@ -18,8 +18,7 @@ export type AnalyticsCategoryProps = {
 };
 
 export function AnalyticsCategory(props: AnalyticsCategoryProps) {
-	useAnalyticsCategoryController(props)
-
+	const isDarkTheme = useIsDarkTheme()
 	const cx = createClassnames(props.variant)
 
 	return <motion.li layout className={cx("AnalyticsCategory")}>
@@ -33,7 +32,9 @@ export function AnalyticsCategory(props: AnalyticsCategoryProps) {
 			<Type
 				component="span"
 				className="name"
-				color="green-800"
+				color={props.variant === "income"
+					? isDarkTheme ? "green-400" : "green-800"
+					: isDarkTheme ? "red-400" : "red-800"}
 				variant="bold"
 			>
 				{props.category?.value || ""}
@@ -42,7 +43,7 @@ export function AnalyticsCategory(props: AnalyticsCategoryProps) {
 				size="sm"
 				component="span"
 				className="count"
-				color="gray-600"
+				color={isDarkTheme ? "gray-700" : "gray-600"}
 				variant="bold"
 			>
 				{"x"}{props.count}
@@ -60,8 +61,8 @@ export function AnalyticsCategory(props: AnalyticsCategoryProps) {
 				: <MoneyType
 					animate
 					className="amount"
-					colorIfPositive="green-600"
-					colorIfNegative="red-600"
+					colorIfPositive={isDarkTheme ? "green-500" : "green-600"}
+					colorIfNegative={isDarkTheme ? "red-500" : "red-600"}
 					amount={props.total}
 				/>
 		}

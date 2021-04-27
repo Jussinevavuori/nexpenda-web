@@ -9,7 +9,6 @@ export type LogoutProps = {
 };
 
 export function Logout(props: LogoutProps) {
-
 	const controller = useLogoutController(props)
 
 	return <div className={cx("Logout")}>

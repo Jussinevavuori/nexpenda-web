@@ -81,3 +81,15 @@
     height: 48px;
   }
 }
+
+@include darkmode {
+  .ProfilePanel {
+    & > .nameContainer {
+      & > .editNameContainer {
+        & svg.check {
+          color: $green-500;
+        }
+      }
+    }
+  }
+}

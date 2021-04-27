@@ -97,3 +97,20 @@
     }
   }
 }
+
+@include darkmode {
+  .AnalyticsOverview {
+    & .content {
+      & > .subtotals {
+        & > .subtotal {
+          &.income::before {
+            background: $green-600;
+          }
+          &.expense::before {
+            background: $red-500;
+          }
+        }
+      }
+    }
+  }
+}

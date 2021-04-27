@@ -9,6 +9,10 @@ export type PremiumUserLockedOutDialogProps = {
 
 } & Omit<DialogProps, "handleClose" | "open">;
 
+/**
+ * @todo Darkmode
+ */
+
 export function PremiumUserLockedOutDialog(props: PremiumUserLockedOutDialogProps) {
 	const controller = usePremiumUserLockedOutDialogController(props)
 

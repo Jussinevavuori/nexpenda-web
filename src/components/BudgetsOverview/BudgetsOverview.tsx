@@ -7,6 +7,7 @@ import { Type } from "../Type/Type";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Button } from "@material-ui/core";
 import { ContainerBlock } from "../Container/ContainerBlock";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type BudgetsOverviewProps = {
 	variant?: "narrow" | "default";
@@ -15,6 +16,7 @@ export type BudgetsOverviewProps = {
 export function BudgetsOverview(props: BudgetsOverviewProps) {
 
 	const controller = useBudgetsOverviewController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <ContainerBlock
 		containerTitle="Budgets overview"
@@ -36,7 +38,7 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 					size={52 * 2}
 					className="percentage"
 					percentage={controller.total.percentage}
-					backgroundColor={controller.total.percentage > 100 ? "green-200" : undefined}
+					backgroundColor={controller.total.percentage > 100 ? (isDarkTheme ? "green-800" : "green-200") : undefined}
 					filledColor={controller.total.percentage > 100 ? "green-500" : undefined}
 					labelProps={{ size: "lg" }}
 				/>
@@ -44,12 +46,12 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 
 			<div className="progress">
 
-				<Type color="gray-600">
+				<Type color={isDarkTheme ? "gray-400" : "gray-600"}>
 					{`Budget left`}
 				</Type>
 				<MoneyType
-					colorIfPositive={"green-600"}
-					colorIfNegative={"red-600"}
+					colorIfPositive={isDarkTheme ? "green-400" : "green-600"}
+					colorIfNegative={isDarkTheme ? "red-400" : "red-600"}
 					size="lg"
 					amount={controller.total.progress}
 				/>
@@ -58,12 +60,12 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 
 			<div className="estimate">
 
-				<Type color="gray-600">
+				<Type color={isDarkTheme ? "gray-400" : "gray-600"}>
 					{`Estimate`}
 				</Type>
 				<MoneyType
-					colorIfPositive={"green-600"}
-					colorIfNegative={"red-600"}
+					colorIfPositive={isDarkTheme ? "green-400" : "green-600"}
+					colorIfNegative={isDarkTheme ? "red-400" : "red-600"}
 					size="lg"
 					variant="regular"
 					amount={controller.total.estimate}
@@ -71,7 +73,7 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 
 			</div>
 			<div className="subtotal incomes">
-				<Type color="gray-600">
+				<Type color={isDarkTheme ? "gray-400" : "gray-600"}>
 					{"Incomes"}
 				</Type>
 				<p className="value">
@@ -79,21 +81,21 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 						component="span"
 						color={
 							controller.income.percentage >= 100
-								? "green-600"
-								: "gray-800"
+								? (isDarkTheme ? "green-500" : "green-600")
+								: (isDarkTheme ? "gray-400" : "gray-800")
 						}
 						variant="bold"
 						amount={controller.income.progress}
 					/>
 					<Type
 						component="span"
-						color="gray-600"
+						color={isDarkTheme ? "gray-400" : "gray-600"}
 					>
 						{" / "}
 					</Type>
 					<MoneyType
 						component="span"
-						color="gray-600"
+						color={isDarkTheme ? "gray-400" : "gray-600"}
 						variant="regular"
 						amount={controller.income.estimate}
 					/>
@@ -101,13 +103,13 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 				<PercentageCircle
 					className="percentage"
 					percentage={controller.income.percentage}
-					backgroundColor={controller.income.percentage > 100 ? "green-200" : undefined}
+					backgroundColor={controller.income.percentage > 100 ? (isDarkTheme ? "green-800" : "green-200") : undefined}
 					filledColor={controller.income.percentage > 100 ? "green-500" : undefined}
 				/>
 			</div>
 
 			<div className="subtotal expenses">
-				<Type color="gray-600">
+				<Type color={isDarkTheme ? "gray-400" : "gray-600"}>
 					{"Expenses"}
 				</Type>
 				<p className="value">
@@ -115,21 +117,21 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 						component="span"
 						color={
 							controller.expense.percentage >= 100
-								? "red-600"
-								: "gray-800"
+								? (isDarkTheme ? "red-500" : "red-600")
+								: (isDarkTheme ? "gray-400" : "gray-800")
 						}
 						variant="bold"
 						amount={controller.expense.progress}
 					/>
 					<Type
 						component="span"
-						color="gray-600"
+						color={isDarkTheme ? "gray-400" : "gray-600"}
 					>
 						{" / "}
 					</Type>
 					<MoneyType
 						component="span"
-						color="gray-600"
+						color={isDarkTheme ? "gray-400" : "gray-600"}
 						variant="regular"
 						amount={controller.expense.estimate}
 					/>
@@ -137,7 +139,7 @@ export function BudgetsOverview(props: BudgetsOverviewProps) {
 				<PercentageCircle
 					className="percentage"
 					percentage={controller.expense.percentage}
-					backgroundColor={controller.expense.percentage > 100 ? "red-200" : undefined}
+					backgroundColor={controller.expense.percentage > 100 ? (isDarkTheme ? "red-900" : "red-200") : undefined}
 					filledColor={controller.expense.percentage > 100 ? "red-500" : undefined}
 				/>
 			</div>

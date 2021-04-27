@@ -2,7 +2,7 @@ import React from "react";
 import { Route, RouteProps, Redirect } from "react-router-dom";
 import { useStoreState } from "../../store";
 import { routes } from "../../Routes";
-import { ProtectedRouteView } from "./ProtectedRouteView";
+import { CircularProgress } from "@material-ui/core";
 
 export type ProtectedRouteProps = {
 	fallbackRoute?: string;
@@ -31,7 +31,9 @@ export function ProtectedRoute(props: ProtectedRouteProps) {
 
 		if (showLoadingScreenOnUnitialized) {
 
-			return <ProtectedRouteView />
+			return <div style={{ height: "100vh", width: "100%", display: "grid", placeItems: "center" }}>
+				<CircularProgress />
+			</div>
 		}
 
 		else return <Route {...routeProps} />

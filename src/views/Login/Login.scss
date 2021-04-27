@@ -17,3 +17,16 @@
     }
   }
 }
+
+@include darkmode {
+  .Login {
+    & .oauthProviders {
+      border-color: $gray-800;
+    }
+    & .MuiTextField-root {
+      & svg {
+        color: $gray-500;
+      }
+    }
+  }
+}

@@ -8,14 +8,16 @@ import { PiechartCircle } from "../../../components/PiechartCircle/PiechartCircl
 import { ChangeIcon } from "../../../components/ChangeIcon/ChangeIcon";
 import { TimeseriesSparkLine } from "../../../components/TimeseriesSparkLine/TimeseriesSparkLine";
 import { ContainerBlock } from "../../../components/Container/ContainerBlock";
+import { useIsDarkTheme } from "../../../hooks/application/useIsThemeMode";
 
 export type AnalyticsOverviewProps = {
-
+	interval?: "allTime" | "selected"
 };
 
 export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 	const controller = useAnalyticsOverviewController(props)
+	const isDarkTheme = useIsDarkTheme()
 
 	return <ContainerBlock
 		className={cx("AnalyticsOverview")}
@@ -26,14 +28,19 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 			<section className="total">
 
-				<Type className="label" variant="boldcaps" color="gray-700" size="sm">
+				<Type
+					className="label"
+					variant="boldcaps"
+					color={isDarkTheme ? "gray-200" : "gray-700"}
+					size="sm"
+				>
 					{"Total savings"}
 				</Type>
 
 				<MoneyType
 					className="total"
-					amount={controller.analytics.selected.total.total}
-					color="gray-800"
+					amount={controller.totalTotal}
+					color={isDarkTheme ? "gray-100" : "gray-800"}
 					size="xl"
 				/>
 
@@ -43,9 +50,9 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 						<ChangeIcon
 							change={controller.totalPercentageIncrease}
 							color={{
-								negative: "red-600",
-								positive: "green-600",
-								neutral: "gray-600"
+								negative: isDarkTheme ? "red-400" : "red-600",
+								positive: isDarkTheme ? "green-400" : "green-600",
+								neutral: isDarkTheme ? "gray-400" : "gray-600"
 							}}
 						/>
 						<Type
@@ -53,15 +60,15 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 							variant="bold"
 							color={
 								!controller.totalPercentageIncrease
-									? "gray-600"
+									? (isDarkTheme ? "gray-400" : "gray-600")
 									: controller.totalPercentageIncrease > 0
-										? "green-600"
-										: "red-600"
+										? (isDarkTheme ? "green-400" : "green-600")
+										: (isDarkTheme ? "red-400" : "red-600")
 							}
 						>
 							{`${controller.totalPercentageIncrease.toFixed(1)} %`}
 						</Type>
-						<Type component="span" color="gray-600">
+						<Type component="span" color={isDarkTheme ? "gray-400" : "gray-600"}>
 							{`vs last ${controller.intervalLengthLabel}`}
 						</Type>
 					</div>
@@ -73,12 +80,12 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 						data={[
 							{
 								color: "green-500",
-								amount: Math.abs(controller.analytics.selected.total.incomes),
+								amount: Math.abs(controller.incomesTotal),
 								label: "Incomes"
 							},
 							{
 								color: "red-500",
-								amount: Math.abs(controller.analytics.selected.total.expenses),
+								amount: Math.abs(controller.expensesTotal),
 								label: "Expenses"
 							},
 						]}
@@ -97,7 +104,7 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 					<MoneyType
 						className="amount income"
-						amount={controller.analytics.selected.total.incomes}
+						amount={controller.incomesTotal}
 						color="green-600"
 					/>
 
@@ -107,9 +114,9 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 							<ChangeIcon
 								change={controller.incomePercentageIncrease}
 								color={{
-									negative: "red-600",
-									positive: "green-600",
-									neutral: "gray-600"
+									negative: isDarkTheme ? "red-400" : "red-600",
+									positive: isDarkTheme ? "green-400" : "green-600",
+									neutral: isDarkTheme ? "gray-400" : "gray-600"
 								}}
 							/>
 							<Type
@@ -118,10 +125,10 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 								variant="bold"
 								color={
 									!controller.incomePercentageIncrease
-										? "gray-600"
+										? (isDarkTheme ? "gray-400" : "gray-600")
 										: controller.incomePercentageIncrease > 0
-											? "green-600"
-											: "red-600"
+											? (isDarkTheme ? "green-400" : "green-600")
+											: (isDarkTheme ? "red-400" : "red-600")
 								}
 							>
 								{`${controller.incomePercentageIncrease.toFixed(1)} %`}
@@ -139,7 +146,7 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 					<MoneyType
 						className="amount expense"
-						amount={controller.analytics.selected.total.expenses}
+						amount={controller.expensesTotal}
 						color="red-600"
 					/>
 
@@ -149,9 +156,9 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 							<ChangeIcon
 								change={controller.expensesPercentageIncrease}
 								color={{
-									negative: "green-600",
-									positive: "red-600",
-									neutral: "gray-600"
+									negative: (isDarkTheme ? "green-400" : "green-600"),
+									positive: (isDarkTheme ? "red-400" : "red-600"),
+									neutral: (isDarkTheme ? "gray-400" : "gray-600")
 								}}
 							/>
 							<Type
@@ -161,10 +168,10 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 
 								color={
 									!controller.expensesPercentageIncrease
-										? "gray-600"
+										? (isDarkTheme ? "gray-400" : "gray-600")
 										: controller.expensesPercentageIncrease > 0
-											? "red-600"
-											: "green-600"
+											? (isDarkTheme ? "red-400" : "red-600")
+											: (isDarkTheme ? "green-400" : "green-600")
 								}
 							>
 								{`${controller.expensesPercentageIncrease.toFixed(1)} %`}
@@ -188,5 +195,5 @@ export function AnalyticsOverview(props: AnalyticsOverviewProps) {
 				</div>
 			</section>
 		</div>
-	</ContainerBlock>
+	</ContainerBlock >
 }
