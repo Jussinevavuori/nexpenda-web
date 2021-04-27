@@ -4,6 +4,10 @@
   max-width: 400px;
   $theme-size: 36px;
 
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+
   & > ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, $theme-size);
@@ -16,6 +20,15 @@
       border-radius: 0.5 * $theme-size;
 
       cursor: pointer;
+
+      &.mode {
+        &.light {
+          background: $gray-300;
+        }
+        &.dark {
+          background: $gray-800;
+        }
+      }
 
       &:hover::after,
       &:focus::after {

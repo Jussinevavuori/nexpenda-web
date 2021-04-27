@@ -30,19 +30,19 @@ export type PercentageCircleProps = {
 	/**
 	 * Optional background color. Defaults to `white`
 	 */
-	backgroundColor?: ThemeColor;
+	backgroundColor?: Color;
 
 	/**
 	 * Optional inactive percentage color (color of unfilled part of circle).
 	 * Defaults to `primary-200`.
 	 */
-	unfilledColor?: ThemeColor;
+	unfilledColor?: Color;
 
 	/**
 	 * Optional active percentage color (color of filled part of circle).
 	 * Defaults to `primray-500`.
 	 */
-	filledColor?: ThemeColor;
+	filledColor?: Color;
 };
 
 export function PercentageCircle(props: PercentageCircleProps) {

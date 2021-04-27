@@ -1,8 +1,8 @@
-type ThemeTextVariant = "regular" | "bold" | "boldcaps" | "extrabold";
+type TextVariant = "regular" | "bold" | "boldcaps" | "extrabold";
 
-type ThemeTextSize = "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
+type TextSize = "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
 
-type ThemeColor =
+type Color =
   | "white"
   | "black"
   | "blue-100"

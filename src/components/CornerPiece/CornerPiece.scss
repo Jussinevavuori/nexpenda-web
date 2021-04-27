@@ -1,0 +1,11 @@
+@import "main";
+
+// Generate all color styles
+@each $name, $color in $colors {
+  svg.CornerPiece.fill-#{$name} > path {
+    fill: $color;
+  }
+}
+
+.CornerPiece {
+}

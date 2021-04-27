@@ -1,28 +1,41 @@
-import { useTheme } from "../../hooks/application/useTheme";
+import { useThemeColor } from "../../hooks/application/useThemeColor";
+import { useThemeMode } from "../../hooks/application/useThemeMode";
 import { StorageService } from "../../services/StorageService";
 import { useStoreActions } from "../../store";
 import { ThemeUtils } from "../../utils/ThemeUtils/ThemeUtils";
 import { ThemePickerProps } from "./ThemePicker";
 
 export function useThemePickerController(props: ThemePickerProps) {
-  const [theme, setTheme] = useTheme();
+  const [themeColor, setThemeColor] = useThemeColor();
+  const [themeMode, setThemeMode] = useThemeMode();
 
   const updateProfile = useStoreActions((_) => _.auth.updateProfile);
 
-  function getThemeChangeHandler(targetTheme: Theme) {
+  function getThemeColorChangeHandler(target: ThemeColor) {
     return () => {
-      setTheme(targetTheme);
-      updateProfile({ prefersColorScheme: targetTheme });
-      StorageService.latestSelectedTheme.setValue(targetTheme);
+      setThemeColor(target);
+      updateProfile({ themeColor: target });
+      StorageService.latestSelectedThemeColor.setValue(target);
+    };
+  }
+
+  function getThemeModeChangeHandler(target: ThemeMode) {
+    return () => {
+      setThemeMode(target);
+      updateProfile({ themeMode: target });
+      StorageService.latestSelectedThemeMode.setValue(target);
     };
   }
 
   return {
-    theme,
-    getThemeChangeHandler,
-    getThemeColor(theme: Theme) {
+    themeColor,
+    themeMode,
+    getThemeColorChangeHandler,
+    getThemeModeChangeHandler,
+    getThemeColor(theme: ThemeColor) {
       return ThemeUtils.getThemePropertyValue(theme, "color-500");
     },
-    allThemes: ThemeUtils.themes,
+    allThemeColors: ThemeUtils.themeColors,
+    allThemeModes: ThemeUtils.themeModes,
   };
 }

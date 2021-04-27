@@ -15,24 +15,35 @@ export function ThemePicker(props: ThemePickerProps) {
 	return <div className={cx("ThemePicker")}>
 		<ul>
 			{
-				controller.allThemes.map(theme => {
+				controller.allThemeColors.map(color => {
 					return <PremiumUserLock
-						key={theme}
-						isLocked={ThemeUtils.isPremiumTheme(theme)}
+						key={color}
+						isLocked={ThemeUtils.isPremiumThemeColor(color)}
 					>
 						{
 							(args) => (<li
-								className={cx("theme", {
-									selected: controller.theme === theme,
+								className={cx("theme", "color", {
+									selected: controller.themeColor === color,
 									isLocked: args.isLocked,
 								})}
-								onClick={controller.getThemeChangeHandler(theme)}
-								style={{
-									backgroundColor: controller.getThemeColor(theme)
-								}}
+								onClick={controller.getThemeColorChangeHandler(color)}
+								style={{ backgroundColor: controller.getThemeColor(color) }}
 							/>)
 						}
 					</PremiumUserLock>
+				})
+			}
+		</ul>
+		<ul>
+			{
+				controller.allThemeModes.map(mode => {
+					return <li
+						key={mode}
+						className={cx("theme", "mode", mode, {
+							selected: controller.themeMode === mode,
+						})}
+						onClick={controller.getThemeModeChangeHandler(mode)}
+					/>
 				})
 			}
 		</ul>

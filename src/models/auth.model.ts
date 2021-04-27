@@ -229,8 +229,11 @@ export const authModel: AuthModel = {
       const user = new Auth(json);
       state.user = user;
 
-      if (user.prefersColorScheme) {
-        StorageService.latestSelectedTheme.setValue(user.prefersColorScheme);
+      if (user.themeColor) {
+        StorageService.latestSelectedThemeColor.setValue(user.themeColor);
+      }
+      if (user.themeMode) {
+        StorageService.latestSelectedThemeMode.setValue(user.themeMode);
       }
     }
   }),
@@ -240,8 +243,11 @@ export const authModel: AuthModel = {
       const user = new Auth(json);
       state.user = user;
 
-      if (user.prefersColorScheme) {
-        StorageService.latestSelectedTheme.setValue(user.prefersColorScheme);
+      if (user.themeColor) {
+        StorageService.latestSelectedThemeColor.setValue(user.themeColor);
+      }
+      if (user.themeMode) {
+        StorageService.latestSelectedThemeMode.setValue(user.themeMode);
       }
     }
   }),

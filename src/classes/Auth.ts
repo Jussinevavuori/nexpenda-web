@@ -9,7 +9,8 @@ export type JsonAuth = {
   photoUrl: string | undefined;
   email: string | undefined;
   googleId: string | undefined;
-  prefersColorScheme?: string | undefined;
+  themeColor?: string | undefined;
+  themeMode?: string | undefined;
   isAdmin?: boolean;
   isPremium?: boolean;
 
@@ -20,7 +21,8 @@ export type JsonAuth = {
 export type UpdatableJsonAuthFields = {
   displayName?: string | undefined;
   photoUrl?: string | undefined;
-  prefersColorScheme?: string | undefined;
+  themeColor?: string | undefined;
+  themeMode?: string | undefined;
 };
 
 export class Auth {
@@ -29,7 +31,8 @@ export class Auth {
   email?: string;
   photoUrl?: string;
   googleId?: string;
-  prefersColorScheme?: Theme | undefined;
+  themeColor?: ThemeColor | undefined;
+  themeMode?: ThemeMode | undefined;
   isAdmin: boolean;
   isPremium: boolean;
 
@@ -53,8 +56,11 @@ export class Auth {
       (jsonSub) => new StripeSubscription(jsonSub)
     );
 
-    if (ThemeUtils.isTheme(json.prefersColorScheme)) {
-      this.prefersColorScheme = json.prefersColorScheme;
+    if (ThemeUtils.isThemeColor(json.themeColor)) {
+      this.themeColor = json.themeColor;
+    }
+    if (ThemeUtils.isThemeMode(json.themeMode)) {
+      this.themeMode = json.themeMode;
     }
   }
 

@@ -31,7 +31,7 @@
   & > main {
     grid-area: main;
     overflow: hidden;
-    background: $primary-100;
+    background: $gray-100;
     @include md {
       z-index: 1;
     }

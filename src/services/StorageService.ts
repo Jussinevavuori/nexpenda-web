@@ -194,15 +194,31 @@ export class StorageService {
   /**
    * StorageService component:
    *
-   * Represents the memorized latest selected theme. When a theme is selected,
-   * it is stored here for quicker access and initialization of the application
-   * theme. Validates the theme.
+   * Represents the memorized latest selected theme color. When a theme color
+   * is selected, it is stored here for quicker access and initialization of the
+   * application theme. Validates the theme.
    */
-  static latestSelectedTheme = StorageService.createComponent<
-    Theme | undefined
+  static latestSelectedThemeColor = StorageService.createComponent<
+    ThemeColor | undefined
   >({
-    key: "@nexpenda/latestSelectedTheme",
-    decode: (value) => (ThemeUtils.isTheme(value) ? value : undefined),
+    key: "@nexpenda/latestSelectedThemeColor",
+    decode: (value) => (ThemeUtils.isThemeColor(value) ? value : undefined),
+    encode: (value) => value,
+    options: { storage: StorageType.Local },
+  });
+
+  /**
+   * StorageService component:
+   *
+   * Represents the memorized latest selected theme mode. When a theme mode
+   * is selected, it is stored here for quicker access and initialization of the
+   * application theme. Validates the theme.
+   */
+  static latestSelectedThemeMode = StorageService.createComponent<
+    ThemeMode | undefined
+  >({
+    key: "@nexpenda/latestSelectedThemeMode",
+    decode: (value) => (ThemeUtils.isThemeMode(value) ? value : undefined),
     encode: (value) => value,
     options: { storage: StorageType.Local },
   });
@@ -236,6 +252,35 @@ export class StorageService {
       key: `@nexpenda/hasDismissedBetaFeatureBanner/${feature}`,
       options: { storage: StorageType.Local },
     });
+  }
+
+  /**
+   * Prints the contents of StorageService into the console
+   */
+  static print() {
+    function printStorage(storageType: StorageType) {
+      const storage = StorageService.getStorage({ storage: storageType });
+      for (let i = 0; i < storage.length; i++) {
+        const key = storage.key(i);
+        if (key?.includes("@nexpenda")) {
+          const value = storage.getItem(key);
+          console.log(
+            `%c${key.replace("@nexpenda/", "")}: %c${value}`,
+            `font-weight:regular;`,
+            `font-weight:bold;`
+          );
+        }
+      }
+    }
+
+    console.group("StorageService:");
+    console.group("localStorage:");
+    printStorage(StorageType.Local);
+    console.groupEnd();
+    console.group("sessionStorage:");
+    printStorage(StorageType.Session);
+    console.groupEnd();
+    console.groupEnd();
   }
 }
 

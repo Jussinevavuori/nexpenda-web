@@ -15,7 +15,10 @@
   & > h2 {
     margin: $spacing-6 0;
     @include md {
-      margin: 0 0 $spacing-8 0;
+      margin: $spacing-8 0;
+      &:first-of-type {
+        margin-top: 0;
+      }
     }
   }
 }

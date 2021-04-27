@@ -4,10 +4,10 @@ import { ArrowDownward, ArrowUpward, Remove } from "@material-ui/icons";
 
 export type ChangeIconProps = {
 	change?: number;
-	color?: ThemeColor | {
-		positive: ThemeColor;
-		negative: ThemeColor;
-		neutral: ThemeColor;
+	color?: Color | {
+		positive: Color;
+		negative: Color;
+		neutral: Color;
 	};
 };
 

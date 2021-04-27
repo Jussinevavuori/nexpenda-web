@@ -8,7 +8,6 @@
   background: white;
   display: flex;
   flex-direction: column;
-
   &.open {
     min-width: 246px;
   }
@@ -129,6 +128,15 @@
         border: none;
         background: none;
         cursor: pointer;
+        border-radius: $radius-sm;
+
+        &:hover,
+        &:focus {
+          background: $gray-100;
+        }
+        &:active {
+          background: $gray-200;
+        }
 
         & > span {
           height: 24px;
@@ -137,18 +145,11 @@
     }
   }
 
-  & > svg.cornerPiece {
+  & > .cornerPiece {
     display: block;
     position: absolute;
     top: $header-height;
     left: 100%;
-    width: 20px;
-    height: 20px;
-
-    & path {
-      fill: white;
-    }
-    clip-path: generateClipPath();
   }
 
   &__linkTooltip {

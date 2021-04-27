@@ -3,7 +3,7 @@ import React from "react";
 import cx from "classnames";
 
 export type TitleHighlightColumnProps = {
-	color?: ThemeColor;
+	color?: Color;
 };
 
 export function TitleHighlightColumn(props: TitleHighlightColumnProps) {

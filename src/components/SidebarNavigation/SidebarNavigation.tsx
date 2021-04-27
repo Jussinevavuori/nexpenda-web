@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "@material-ui/icons";
 import { Logo } from "../Logo/Logo";
 import { Tooltip } from "@material-ui/core";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
+import { CornerPiece } from "../CornerPiece/CornerPiece";
 
 export type SidebarNavigationProps = {
 
@@ -164,12 +164,13 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 
 		</div>
 
-		<svg className="cornerPiece" viewBox="0 0 24 24">
-			<path d={SvgPath.describeCornerPiecePath({
-				size: 24,
-				position: "top-left"
-			})} />
-		</svg>
+		<CornerPiece
+			fill="white"
+			className="cornerPiece"
+			size={8}
+			position="top-left"
+			variant="internal"
+		/>
 
 	</motion.aside>
 }

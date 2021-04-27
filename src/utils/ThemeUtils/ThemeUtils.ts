@@ -1,46 +1,75 @@
+import { LogService } from "../../services/LogService";
 import { StorageService } from "../../services/StorageService";
 
 export class ThemeUtils {
   // Initialize theme variables
   static initialize() {
-    const initialTheme = StorageService.latestSelectedTheme.getValue();
-    if (initialTheme) {
-      ThemeUtils.switchThemeVariables(initialTheme);
+    const initialThemeColor = StorageService.latestSelectedThemeColor.getValue();
+    if (initialThemeColor) {
+      ThemeUtils.switchThemeColorVariables(initialThemeColor);
+    }
+
+    const initialThemeMode = StorageService.latestSelectedThemeMode.getValue();
+    if (initialThemeMode) {
+      ThemeUtils.updateThemeMode(initialThemeMode);
     }
   }
 
   /**
-   * Default theme
+   * Default theme color
    */
-  static freeDefaultTheme: Theme = "blue";
+  static freeDefaultThemeColor: ThemeColor = "blue";
 
   /**
-   * Property to access all themes
+   * Property to access all theme colors
    */
-  static themes: Theme[] = ["blue", "green", "red", "yellow", "pink", "purple"];
+  static themeColors: ThemeColor[] = [
+    "blue",
+    "green",
+    "red",
+    "yellow",
+    "pink",
+    "purple",
+  ];
 
   /**
    * Property to access all freemium themes
    */
-  static freeThemes: Theme[] = ["blue", "green"];
+  static freeThemeColors: ThemeColor[] = ["blue", "green"];
 
   /**
    * Property to access all premium themes
    */
-  static premiumThemes: Theme[] = ["red", "yellow", "pink", "purple"];
+  static premiumThemeColors: ThemeColor[] = ["red", "yellow", "pink", "purple"];
+
+  /**
+   * Property to access all theme modes
+   */
+  static themeModes: ThemeMode[] = ["dark", "light"];
 
   /**
    * Check if a theme is a premium theme
    */
-  static isPremiumTheme(theme: Theme) {
-    return this.premiumThemes.includes(theme);
+  static isPremiumThemeColor(theme: ThemeColor) {
+    return this.premiumThemeColors.includes(theme);
   }
 
   /**
-   * Check if a variable is a valid theme
+   * Check if a variable is a valid theme color
    */
-  static isTheme(val: any): val is Theme {
-    return typeof val === "string" && this.themes.includes(val as Theme);
+  static isThemeColor(val: any): val is ThemeColor {
+    return (
+      typeof val === "string" && this.themeColors.includes(val as ThemeColor)
+    );
+  }
+
+  /**
+   * Check if a variable is a valid theme mode
+   */
+  static isThemeMode(val: any): val is ThemeMode {
+    return (
+      typeof val === "string" && this.themeModes.includes(val as ThemeMode)
+    );
   }
 
   /**
@@ -57,6 +86,36 @@ export class ThemeUtils {
     "color-800",
     "color-900",
   ];
+
+  /**
+   * Utility function to switch all CSS variables to those of another theme
+   *
+   * @param themeColor Theme color to switch to
+   */
+  static switchThemeColorVariables(themeColor: ThemeColor) {
+    const properties = this.getThemeProperties(themeColor);
+    properties.forEach((property) => {
+      const value = this.getVariableValue(property.sourceName);
+      this.setVariableValue(property.targetName, value);
+    });
+  }
+
+  /**
+   * Utility function to switch body classname depending on theme mode
+   *
+   * @param themeMode Theme mode to switch to
+   */
+  static updateThemeMode(themeMode: ThemeMode) {
+    try {
+      document.body.classList.remove(`mode-light`);
+      document.body.classList.remove(`mode-dark`);
+      document.body.classList.add(`mode-${themeMode}`);
+    } catch (e) {
+      LogService.error({
+        message: `Error updating body classList for themeMode ${themeMode}`,
+      });
+    }
+  }
 
   /**
    * Utility method to access the root element which holds all CSS
@@ -87,21 +146,8 @@ export class ThemeUtils {
     el.style.setProperty("--" + name, value);
   }
 
-  /**
-   * Utility function to switch all CSS variables to those of another theme
-   *
-   * @param theme Theme to switch to
-   */
-  static switchThemeVariables(theme: Theme) {
-    const properties = this.getThemeProperties(theme);
-    properties.forEach((property) => {
-      const value = this.getVariableValue(property.sourceName);
-      this.setVariableValue(property.targetName, value);
-    });
-  }
-
   static getThemeProperty(
-    theme: Theme,
+    theme: ThemeColor,
     label: ThemePropertyLabel
   ): ThemeProperty {
     switch (label) {
@@ -177,7 +223,7 @@ export class ThemeUtils {
    *
    * @param theme Theme to decide which source names to use
    */
-  static getThemeProperties(theme: Theme): ThemeProperty[] {
+  static getThemeProperties(theme: ThemeColor): ThemeProperty[] {
     const labels = this.themePropertyLabels;
     return labels.map((label) => this.getThemeProperty(theme, label));
   }
@@ -188,7 +234,7 @@ export class ThemeUtils {
    * @param theme Theme
    */
   static getThemePropertyValue(
-    theme: Theme,
+    theme: ThemeColor,
     label: ThemePropertyLabel
   ): string {
     const property = this.getThemeProperty(theme, label);
@@ -201,7 +247,7 @@ export class ThemeUtils {
    * @param theme Theme
    */
   static getThemePropertyValues(
-    theme: Theme
+    theme: ThemeColor
   ): Record<ThemePropertyLabel, string> {
     const properties = this.getThemeProperties(theme);
 
@@ -216,5 +262,11 @@ export class ThemeUtils {
       ThemePropertyLabel,
       string
     >;
+  }
+
+  static getBrowserPreferredThemeMode(): ThemeMode {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   }
 }

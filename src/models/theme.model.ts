@@ -16,18 +16,28 @@ export interface ThemeModel {
   //==============================================================//
 
   /**
-   * Current theme
+   * Current color theme
    */
-  theme: Theme;
+  themeColor: ThemeColor;
+
+  /**
+   * Current mode (dark mode or light mode)
+   */
+  themeMode: ThemeMode;
 
   //==============================================================//
   // ACTIONS
   //==============================================================//
 
   /**
-   * Sets the theme
+   * Sets the theme color
    */
-  setTheme: Action<ThemeModel, Theme>;
+  setThemeColor: Action<ThemeModel, ThemeColor>;
+
+  /**
+   * Sets the mode
+   */
+  setThemeMode: Action<ThemeModel, ThemeMode>;
 
   //==============================================================//
   // LISTENERS
@@ -36,7 +46,12 @@ export interface ThemeModel {
   /**
    * Listen to theme changes; update css variables
    */
-  onThemeChange: ActionOn<ThemeModel>;
+  onThemeColorChange: ActionOn<ThemeModel>;
+
+  /**
+   * Listen to theme changes; update css variables
+   */
+  onThemeModeChange: ActionOn<ThemeModel>;
 
   /**
    * Listening to auth changes
@@ -54,44 +69,63 @@ export const themeModel: ThemeModel = {
   // PROPERTIES
   //==============================================================//
 
-  theme:
-    StorageService.latestSelectedTheme.getValue() ??
-    ThemeUtils.freeDefaultTheme,
+  themeColor:
+    StorageService.latestSelectedThemeColor.getValue() ??
+    ThemeUtils.freeDefaultThemeColor,
+
+  themeMode:
+    StorageService.latestSelectedThemeMode.getValue() ??
+    ThemeUtils.getBrowserPreferredThemeMode(),
 
   //==============================================================//
   // ACTIONS
   //==============================================================//
 
-  setTheme: action((state, payload) => {
-    state.theme = payload;
+  setThemeColor: action((state, payload) => {
+    state.themeColor = payload;
+  }),
+
+  setThemeMode: action((state, payload) => {
+    state.themeMode = payload;
   }),
 
   //==============================================================//
   // LISTENERS
   //==============================================================//
 
-  onThemeChange: actionOn(
-    (actions) => actions.setTheme,
+  onThemeColorChange: actionOn(
+    (actions) => actions.setThemeColor,
     (_state, target) => {
-      ThemeUtils.switchThemeVariables(target.payload);
+      ThemeUtils.switchThemeColorVariables(target.payload);
+    }
+  ),
+
+  onThemeModeChange: actionOn(
+    (actions) => actions.setThemeMode,
+    (_state, target) => {
+      ThemeUtils.updateThemeMode(target.payload);
     }
   ),
 
   onLogin: thunkOn(
     (_, store) => store.auth.setAuthToState,
     (actions, target) => {
-      const theme = target.payload.prefersColorScheme;
-      if (ThemeUtils.isTheme(theme)) {
-        if (ThemeUtils.isPremiumTheme(theme)) {
+      const themeColor = target.payload.themeColor;
+      const themeMode = target.payload.themeMode;
+      if (ThemeUtils.isThemeColor(themeColor)) {
+        if (ThemeUtils.isPremiumThemeColor(themeColor)) {
           if (target.payload.isPremium) {
-            actions.setTheme(theme);
+            actions.setThemeColor(themeColor);
           } else {
-            actions.setTheme(ThemeUtils.freeDefaultTheme);
-            StorageService.latestSelectedTheme.clearValue();
+            actions.setThemeColor(ThemeUtils.freeDefaultThemeColor);
+            StorageService.latestSelectedThemeColor.clearValue();
           }
         } else {
-          actions.setTheme(theme);
+          actions.setThemeColor(themeColor);
         }
+      }
+      if (ThemeUtils.isThemeMode(themeMode)) {
+        actions.setThemeMode(themeMode);
       }
     }
   ),
@@ -99,8 +133,9 @@ export const themeModel: ThemeModel = {
   onLogout: thunkOn(
     (_, store) => store.auth.logout,
     (actions, target) => {
-      actions.setTheme("blue");
-      StorageService.latestSelectedTheme.setValue(undefined);
+      actions.setThemeColor("blue");
+      StorageService.latestSelectedThemeColor.setValue(undefined);
+      StorageService.latestSelectedThemeMode.setValue(undefined);
     }
   ),
 };

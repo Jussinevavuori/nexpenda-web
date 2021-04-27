@@ -4,10 +4,11 @@ import { theme as _ } from "./main";
 /**
  * Create a Material UI theme based on the currently selected theme.
  *
- * @param variant Theme variant to use
+ * @param color Theme color variant to use
+ * @param mode  Theme mode variant to use
  * @returns Created Material UI theme
  */
-export function createTheme(variant: Theme) {
+export function createTheme(color: ThemeColor, mode: ThemeMode) {
   /**
    * Define all font styles
    */
@@ -198,11 +199,11 @@ export function createTheme(variant: Theme) {
      * Apply colors by current theme
      */
     palette: {
-      primary: colors[variant],
+      primary: colors[color],
       success: colors.green,
       error: colors.red,
-      info: colors[variant],
-      secondary: colors[variant],
+      info: colors[color],
+      secondary: colors[color],
       grey: colors.gray,
       divider: _.gray_300,
       common: { black: _.black, white: _.white },
@@ -215,7 +216,7 @@ export function createTheme(variant: Theme) {
       MuiTooltip: {
         tooltip: {
           backgroundColor: "#ffffff",
-          border: `1px solid ${colors[variant][500]}`,
+          border: `1px solid ${colors[color][500]}`,
           color: `${colors["gray"][800]}`,
           fontSize: _.text_sm,
         },

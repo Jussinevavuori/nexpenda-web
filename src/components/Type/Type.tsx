@@ -5,9 +5,9 @@ import { Typography, TypographyProps } from "@material-ui/core";
 
 export type TypeProps = Omit<TypographyProps, "color" | "variant"> & {
 	component?: ElementType;
-	color?: ThemeColor;
-	variant?: ThemeTextVariant;
-	size?: ThemeTextSize;
+	color?: Color;
+	variant?: TextVariant;
+	size?: TextSize;
 	center?: boolean;
 	disablePointerEvents?: boolean;
 }

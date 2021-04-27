@@ -13,12 +13,12 @@ export type SparkLineProps = {
 	/**
 	 * Optional color of sparkline. Defaults to `primary-500`.
 	 */
-	color?: ThemeColor;
+	color?: Color;
 
 	/**
 	 * Optional color of sparkline shadow. Defaults to `primary-200`.
 	 */
-	shadowColor?: ThemeColor;
+	shadowColor?: Color;
 
 	/**
 	 * Optional height ratio. Defines viewbox size. Defaults to 2.00.
@@ -59,7 +59,7 @@ export type SparkLineProps = {
 	/**
 	 * Zero line color. Defaults to a gray color.
 	 */
-	zerolineColor?: ThemeColor;
+	zerolineColor?: Color;
 
 	/**
 	 * Shadow gradient opacity stops

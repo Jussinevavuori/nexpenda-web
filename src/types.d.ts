@@ -42,7 +42,12 @@ type TransactionSortStrategy =
 /**
  * All possible themes
  */
-type Theme = "blue" | "green" | "red" | "yellow" | "purple" | "pink";
+type ThemeColor = "blue" | "green" | "red" | "yellow" | "purple" | "pink";
+
+/**
+ * All possible color modes
+ */
+type ThemeMode = "dark" | "light";
 
 type ThemePropertyLabel =
   | "color-100"

@@ -366,6 +366,14 @@ $vh: var(--vh, 1vh);
   }
 }
 
+// Dark mode
+
+@mixin darkmode {
+  :is(body.mode-dark) {
+    @content;
+  }
+}
+
 // Breakpoints and breakpoint mixins
 
 $bp-sm: 600px;

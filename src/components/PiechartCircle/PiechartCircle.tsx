@@ -12,7 +12,7 @@ export type PiechartCircleProps = {
 	 */
 	data: Array<{
 		amount: number;
-		color: ThemeColor;
+		color: Color;
 		label: string;
 	}>
 

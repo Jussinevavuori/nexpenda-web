@@ -16,7 +16,7 @@ export function AuthFrame(props: AuthFrameProps) {
 	return <div className="AuthFrame">
 		<nav>
 			<a href="https://nexpenda.com" target="_blank" rel="noreferrer noopener">
-				<Logo />
+				<Logo showIcon />
 			</a>
 			{
 				controller.handlePwaInstall &&

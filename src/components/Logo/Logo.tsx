@@ -24,6 +24,8 @@ export type LogoProps = TypeProps & {
 	showText?: boolean;
 };
 
+type LogoTypeVariant = "default" | "highlight" | "premium"
+
 export function Logo(props: LogoProps) {
 
 	const {
@@ -41,14 +43,11 @@ export function Logo(props: LogoProps) {
 	const showIcon = propsShowIcon ?? false
 	const showText = propsShowText ?? true
 
-	const getProps = (variant: "default" | "highlight" | "premium"): TypeProps => {
+	const getProps = (variant: LogoTypeVariant): TypeProps => {
 		switch (variant) {
 			case "default":
 				return {
-					component: "span",
-					size: "xl",
-					variant: "extrabold",
-					color: "black",
+					...defaultTypeProps["default"],
 					...typeProps,
 					...defaultLetterProps,
 					className: cx(
@@ -59,10 +58,7 @@ export function Logo(props: LogoProps) {
 				}
 			case "highlight":
 				return {
-					component: "span",
-					size: "xl",
-					variant: "extrabold",
-					color: "primary-500",
+					...defaultTypeProps["highlight"],
 					...typeProps,
 					...highlightLetterProps,
 					className: cx(
@@ -73,10 +69,7 @@ export function Logo(props: LogoProps) {
 				}
 			case "premium":
 				return {
-					component: "span",
-					size: "md",
-					variant: "bold",
-					color: "primary-700",
+					...defaultTypeProps["premium"],
 					...typeProps,
 					...premiumLetterProps,
 					className: cx(
@@ -147,4 +140,25 @@ export function Logo(props: LogoProps) {
 			}
 		</AnimatePresence>
 	</span>
+}
+
+const defaultTypeProps: Record<LogoTypeVariant, TypeProps> = {
+	default: {
+		component: "span",
+		size: "xl",
+		variant: "extrabold",
+		color: "black",
+	},
+	highlight: {
+		component: "span",
+		size: "xl",
+		variant: "extrabold",
+		color: "primary-500",
+	},
+	premium: {
+		component: "span",
+		size: "md",
+		variant: "bold",
+		color: "primary-700",
+	}
 }
