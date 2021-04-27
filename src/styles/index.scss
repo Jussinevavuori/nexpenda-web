@@ -18,20 +18,20 @@ a {
 }
 
 /** Temporary poor man's dark mode */
-@include darkmode {
-  #root {
-    filter: invert(1) hue-rotate(180deg);
-    & img,
-    & .categoryIcon,
-    & .category > .icon,
-    & .ThemePicker .theme.mode {
-      filter: invert(1) hue-rotate(180deg);
-    }
-    & .Logo > .icon > img {
-      filter: none;
-    }
-  }
-}
+// @include darkmode {
+//   #root {
+//     filter: invert(1) hue-rotate(180deg);
+//     & img,
+//     & .categoryIcon,
+//     & .category > .icon,
+//     & .ThemePicker .theme.mode {
+//       filter: invert(1) hue-rotate(180deg);
+//     }
+//     & .Logo > .icon > img {
+//       filter: none;
+//     }
+//   }
+// }
 
 /** Remove shadows on contained buttons */
 .MuiButton-root.MuiButton-contained {

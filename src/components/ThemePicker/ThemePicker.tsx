@@ -34,18 +34,21 @@ export function ThemePicker(props: ThemePickerProps) {
 				})
 			}
 		</ul>
-		<ul>
-			{
-				controller.allThemeModes.map(mode => {
-					return <li
-						key={mode}
-						className={cx("theme", "mode", mode, {
-							selected: controller.themeMode === mode,
-						})}
-						onClick={controller.getThemeModeChangeHandler(mode)}
-					/>
-				})
-			}
-		</ul>
+		{
+			process.env.NODE_ENV === "development" &&
+			<ul>
+				{
+					controller.allThemeModes.map(mode => {
+						return <li
+							key={mode}
+							className={cx("theme", "mode", mode, {
+								selected: controller.themeMode === mode,
+							})}
+							onClick={controller.getThemeModeChangeHandler(mode)}
+						/>
+					})
+				}
+			</ul>
+		}
 	</div>
 }

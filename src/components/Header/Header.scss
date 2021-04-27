@@ -10,3 +10,8 @@
 
   @include background-shadow-sm;
 }
+@include darkmode {
+  .Header {
+    background: $gray-900;
+  }
+}

@@ -157,3 +157,39 @@
     gap: $spacing-2;
   }
 }
+
+@include darkmode {
+  & .SidebarNavigation {
+    background: $gray-900;
+    & .body {
+      & .links {
+        & .link {
+          & .Type {
+            color: $gray-300;
+          }
+          &:focus,
+          &:hover {
+            background: $gray-820;
+            &.active {
+              background: $primary-600;
+            }
+          }
+
+          &:active {
+            background: $gray-800;
+            &.active {
+              background: $primary-700;
+            }
+          }
+
+          &.active {
+            background: $primary-500;
+          }
+        }
+      }
+    }
+    & > .cornerPiece > path {
+      fill: $gray-900;
+    }
+  }
+}

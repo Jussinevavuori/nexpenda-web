@@ -58,3 +58,13 @@
     }
   }
 }
+
+@include darkmode {
+  .Logo {
+    & > .text {
+      & span {
+        color: white;
+      }
+    }
+  }
+}
