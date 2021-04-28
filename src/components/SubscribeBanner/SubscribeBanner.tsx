@@ -1,7 +1,6 @@
 import "./SubscribeBanner.scss";
 import React from "react";
 import cx from "classnames";
-// import { useSubscribeBannerController } from "./useSubscribeBannerController";
 import { Type } from "../Type/Type";
 import { Button } from "@material-ui/core";
 import { routes } from "../../Routes";
@@ -11,14 +10,7 @@ export type SubscribeBannerProps = {
 
 };
 
-/**
- * @todo Darkmode
- */
-
 export function SubscribeBanner(props: SubscribeBannerProps) {
-
-	// const controller = useSubscribeBannerController(props)
-
 	return <div className={cx("SubscribeBanner")}>
 
 		<Type variant="bold" size="lg" color="white">

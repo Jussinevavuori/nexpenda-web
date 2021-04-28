@@ -50,3 +50,23 @@
     }
   }
 }
+
+@include darkmode {
+  .DashboardPanel.ViewPanel {
+    &.selection {
+      & .selection-container {
+        & .selection-actions {
+          & .MuiIconButton-root {
+            color: $gray-300;
+            &.deleteButton {
+              color: $red-400;
+            }
+            &:disabled {
+              color: $gray-800;
+            }
+          }
+        }
+      }
+    }
+  }
+}

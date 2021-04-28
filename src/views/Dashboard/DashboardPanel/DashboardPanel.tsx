@@ -16,6 +16,7 @@ import { Type } from "../../../components/Type/Type";
 import { TransactionsFilter } from "../../../components/TransactionsFilter/TransactionsFilter";
 import { motion } from "framer-motion";
 import { useMdMedia } from "../../../hooks/utils/useMedia";
+import { useIsDarkTheme } from "../../../hooks/application/useIsThemeMode";
 
 export type DashboardPanelProps = {
 
@@ -24,10 +25,12 @@ export type DashboardPanelProps = {
 export function DashboardPanel(props: DashboardPanelProps) {
 
 	const controller = useDashboardPanelController(props)
+	const isDarkTheme = useIsDarkTheme()
 	const isDesktopLayout = useMdMedia()
 
 	return <ViewPanel className={cx("DashboardPanel", {
 		searchIsOpen: controller.isSearchOpen,
+		selection: controller.isSelectionActive,
 	})}>
 		{
 			controller.isSelectionActive
@@ -37,7 +40,7 @@ export function DashboardPanel(props: DashboardPanelProps) {
 							onClick={controller.handleDeselectAll}
 							children={<DeselectAllIcon />}
 						/>
-						<Type variant="boldcaps" color="gray-800">
+						<Type variant="boldcaps" color={isDarkTheme ? "gray-300" : "gray-800"}>
 							{`${controller.selection.length} selected`}
 						</Type>
 					</motion.div>

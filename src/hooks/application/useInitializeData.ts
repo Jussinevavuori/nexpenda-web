@@ -11,13 +11,10 @@ export function useInitializeData() {
   /**
    * Initialize by fetching the user's profile and this month's transactions
    * if any exist.
-   *
-   * @todo Remove timeout
    */
   useEffect(
     function initializeAuth() {
-      setTimeout(getProfile, 2000);
-      // getProfile();
+      getProfile();
     },
     [getProfile]
   );
