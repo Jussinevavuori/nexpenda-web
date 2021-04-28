@@ -24,8 +24,6 @@ export function BudgetBlock(props: BudgetBlockProps) {
 
 		<BudgetBlockMenu
 			budget={props.budget}
-			open={controller.isMenuOpen}
-			onClose={controller.handleMenuClose}
 			MenuProps={{
 				anchorEl: controller.menuAnchorEl,
 			}}
@@ -62,8 +60,20 @@ export function BudgetBlock(props: BudgetBlockProps) {
 						{" / "}
 					</Type>
 					<Type component="span" color={isDarkTheme ? "gray-300" : "gray-700"}>
-						{props.budget.amount.formatAbsValue()}
+						{controller.budgetAmount.formatAbsValue()}
 					</Type>
+					{
+						controller.isAveraged && controller.budget &&
+						<Type
+							component="span"
+							size="sm"
+							color={isDarkTheme ? "gray-500" : "gray-600"}
+							className="average"
+						>
+							{`Average of ${controller.budget.periodMonths} previous months`}
+						</Type>
+					}
+
 				</div>
 			</div>
 			<div className={cx("categories")}>

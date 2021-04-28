@@ -66,7 +66,7 @@ export function Settings(props: SettingsProps) {
 			}
 
 
-			<ContainerBlock className="customization" containerTitle="Customize">
+			<ContainerBlock className="customization" containerTitle="Theme">
 				<ThemePicker />
 			</ContainerBlock>
 

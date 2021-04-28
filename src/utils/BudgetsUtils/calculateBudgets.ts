@@ -1,7 +1,7 @@
 import { Budget } from "../../classes/Budget";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { Transaction } from "../../classes/Transaction";
-import * as datefns from "date-fns";
+import { differenceInMonths, startOfDay, endOfDay, sub } from "date-fns";
 
 export type CalculateBudgetsArguments = {
   transactions: Transaction[];
@@ -13,76 +13,172 @@ export type CalculateBudgetsArguments = {
 };
 
 export function calculateBudgets(args: CalculateBudgetsArguments) {
-  // Filter transactions by interval
-  const transactions = args.transactions.filter((transaction) => {
-    return transaction.filter("", args.interval.start, args.interval.end);
-  });
-
+  // Get lenght of interval in months
   const lengthInMonths =
-    datefns.differenceInMonths(args.interval.start, args.interval.end) + 1;
+    differenceInMonths(args.interval.end, args.interval.start) + 1;
+
+  // Helper function to get all transactions for a budget. Returns a list
+  // of all transactions that belong to the specific budget and are within
+  // the interval (or extended interval if budget has a longer period that
+  // is selected)
+  function getTransactionsForBudget(budget: Budget) {
+    // Adjust interval start if necessary such that transactions from at least
+    // budget.periodMonths months are considered.
+    const intervalStart = startOfDay(
+      lengthInMonths < budget.periodMonths
+        ? sub(args.interval.start, {
+            months: budget.periodMonths - lengthInMonths,
+          })
+        : args.interval.start
+    );
+
+    // Get interval end as is
+    const intervalEnd = endOfDay(args.interval.end);
+
+    return args.transactions.filter((transaction) => {
+      return (
+        budget.includesTransaction(transaction) &&
+        transaction.filter("", intervalStart, intervalEnd)
+      );
+    });
+  }
 
   // Temp counter
-  let _total = {
-    incomeProgress: 0,
-    incomeEstimate: 0,
-    expenseProgress: 0,
-    expenseEstimate: 0,
+  let _ = {
+    monthly: {
+      income: {
+        progress: 0,
+        estimate: 0,
+      },
+      expense: {
+        progress: 0,
+        estimate: 0,
+      },
+    },
+    absolute: {
+      income: {
+        progress: 0,
+        estimate: 0,
+      },
+      expense: {
+        progress: 0,
+        estimate: 0,
+      },
+    },
   };
 
   // Calculate progress of all budgets
   const extendedBudgets = args.budgets.map((budget) => {
-    // All transactions that are counted towards the budget
-    const budgetTransactions = transactions.filter((_) => {
-      return budget.includesTransaction(_);
-    });
+    // All transactions that are counted towards the budget,
+    // including transactions outside of the current range if
+    // period is longer than selection.
+    const budgetTransactions = getTransactionsForBudget(budget);
 
     // The progressed amount counted towards the budget
-    const progressAmount = new MoneyAmount(
-      budgetTransactions.reduce((sum, transaction) => {
-        return sum + transaction.amount.value;
-      }, 0)
-    );
+    const progressAmount = budgetTransactions.reduce((sum, transaction) => {
+      return sum + transaction.amount.value;
+    }, 0);
+
+    // The adjusted progressed amount counted towards the total budget
+    const adjustedProgressAmount = progressAmount / budget.periodMonths;
+
+    // Value of budget
+    const value = budget.amount.value * lengthInMonths;
+
+    // Adjusted value of budget (how much the budget should be worth during
+    // the specified interval).
+    const adjustedValue = value / budget.periodMonths;
 
     // How many percentage is the progress of the budget limit?
-    const progressPercentage = percentage(
-      progressAmount.value,
-      budget.amount.value * lengthInMonths
-    );
+    const progressPercentage = percentage(progressAmount, adjustedValue);
+    const adjustedProgressPercentage = progressPercentage / budget.periodMonths;
 
     // Count progress and limit to temp variable
     if (budget.isExpense) {
-      _total.expenseEstimate += Math.abs(budget.amount.value * lengthInMonths);
-      _total.expenseProgress += Math.abs(progressAmount.value);
+      _.monthly.expense.estimate += Math.abs(adjustedValue);
+      _.monthly.expense.progress += Math.abs(adjustedProgressAmount);
+      _.absolute.expense.estimate += Math.abs(value);
+      _.absolute.expense.progress += Math.abs(progressAmount);
     } else {
-      _total.incomeEstimate += Math.abs(budget.amount.value * lengthInMonths);
-      _total.incomeProgress += Math.abs(progressAmount.value);
+      _.monthly.income.estimate += Math.abs(adjustedValue);
+      _.monthly.income.progress += Math.abs(adjustedProgressAmount);
+      _.absolute.income.estimate += Math.abs(value);
+      _.absolute.income.progress += Math.abs(progressAmount);
     }
 
     return {
       budget,
-      progressAmount,
-      progressPercentage,
+      progressAmount: {
+        monthly: new MoneyAmount(adjustedProgressAmount),
+        absolute: new MoneyAmount(progressAmount),
+      },
+      progressPercentage: {
+        monthly: adjustedProgressPercentage,
+        absolute: progressPercentage,
+      },
     };
   });
 
   // Total income and expense budgets
   const budgetTotals = {
-    income: {
-      estimate: new MoneyAmount(_total.incomeEstimate),
-      progress: new MoneyAmount(_total.incomeProgress),
-      percentage: percentage(_total.incomeProgress, _total.incomeEstimate),
+    monthly: {
+      income: {
+        estimate: new MoneyAmount(_.monthly.income.estimate),
+        progress: new MoneyAmount(_.monthly.income.progress),
+        percentage: percentage(
+          _.monthly.income.progress,
+          _.monthly.income.estimate
+        ),
+      },
+      expense: {
+        estimate: new MoneyAmount(_.monthly.expense.estimate),
+        progress: new MoneyAmount(_.monthly.expense.progress),
+        percentage: percentage(
+          _.monthly.expense.progress,
+          _.monthly.expense.estimate
+        ),
+      },
     },
-    expense: {
-      estimate: new MoneyAmount(_total.expenseEstimate),
-      progress: new MoneyAmount(_total.expenseProgress),
-      percentage: percentage(_total.expenseProgress, _total.expenseEstimate),
+    absolute: {
+      income: {
+        estimate: new MoneyAmount(_.absolute.income.estimate),
+        progress: new MoneyAmount(_.absolute.income.progress),
+        percentage: percentage(
+          _.absolute.income.progress,
+          _.absolute.income.estimate
+        ),
+      },
+      expense: {
+        estimate: new MoneyAmount(_.absolute.expense.estimate),
+        progress: new MoneyAmount(_.absolute.expense.progress),
+        percentage: percentage(
+          _.absolute.expense.progress,
+          _.absolute.expense.estimate
+        ),
+      },
     },
-    total: {
-      estimate: new MoneyAmount(_total.incomeEstimate - _total.expenseEstimate),
-      progress: new MoneyAmount(_total.incomeProgress - _total.expenseProgress),
+    monthlyTotal: {
+      estimate: new MoneyAmount(
+        _.monthly.income.estimate - _.monthly.expense.estimate
+      ),
+      progress: new MoneyAmount(
+        _.monthly.income.progress - _.monthly.expense.progress
+      ),
       percentage: percentage(
-        _total.incomeProgress + _total.expenseProgress,
-        _total.incomeEstimate + _total.expenseEstimate
+        _.monthly.income.progress + _.monthly.expense.progress,
+        _.monthly.income.estimate + _.monthly.expense.estimate
+      ),
+    },
+    absoluteTotal: {
+      estimate: new MoneyAmount(
+        _.absolute.income.estimate - _.absolute.expense.estimate
+      ),
+      progress: new MoneyAmount(
+        _.absolute.income.progress - _.absolute.expense.progress
+      ),
+      percentage: percentage(
+        _.absolute.income.progress + _.absolute.expense.progress,
+        _.absolute.income.estimate + _.absolute.expense.estimate
       ),
     },
   };
@@ -92,8 +188,8 @@ export function calculateBudgets(args: CalculateBudgetsArguments) {
     extendedBudgets,
     data: {
       budgets: args.budgets,
-      transactions,
       interval: args.interval,
+      intervalLengthInMonths: lengthInMonths,
     },
   };
 }

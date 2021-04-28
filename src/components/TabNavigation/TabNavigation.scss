@@ -18,6 +18,10 @@
       border-radius: 0;
       width: 100%;
 
+      & svg {
+        color: $gray-700;
+      }
+
       &.add {
         & svg {
           transform: scale(1.2);

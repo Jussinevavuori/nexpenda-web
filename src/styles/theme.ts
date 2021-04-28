@@ -207,7 +207,10 @@ export function createTheme(color: ThemeColor, mode: ThemeMode) {
       grey: colors.gray,
       divider: _.gray_300,
       common: { black: _.black, white: _.white },
-      // background: { default: _.white, paper: _.white },
+      background:
+        mode === "dark"
+          ? { default: _.gray_820, paper: _.gray_820 }
+          : { default: _.white, paper: _.white },
       type: mode,
     },
     /**
@@ -226,6 +229,9 @@ export function createTheme(color: ThemeColor, mode: ThemeMode) {
         },
       },
       MuiButton: {
+        contained: {
+          boxShadow: "",
+        },
         outlinedPrimary: {
           color: colors[color][400],
           borderColor: colors[color][400],

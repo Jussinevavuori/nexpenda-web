@@ -115,6 +115,14 @@ export function SparkLine(props: SparkLineProps) {
 			}
 			<path
 				className={cx(
+					"sparkline-blur",
+					`stroke-${props.color ?? (isDarkTheme ? "primary-400" : "primary-500")}`
+				)}
+				strokeWidth={controller.strokeWidth}
+				d={controller.svgPath.mainPathD}
+			/>
+			<path
+				className={cx(
 					"sparkline",
 					`stroke-${props.color ?? (isDarkTheme ? "primary-400" : "primary-500")}`
 				)}

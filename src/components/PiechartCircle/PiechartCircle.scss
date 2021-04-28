@@ -9,6 +9,11 @@
       filter: drop-shadow(0 0 5px $color);
     }
   }
+  @include darkmode {
+    .PiechartCircle > path.segment.color-#{$name} {
+      filter: drop-shadow(0 0 5px $color);
+    }
+  }
 }
 
 .PiechartCircle {

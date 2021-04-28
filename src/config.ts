@@ -2,9 +2,21 @@ import { StorageService } from "./services/StorageService";
 
 export class Config {
   /**
+   * Get the current environment
+   */
+  static ENVIRONMENT = process.env.NODE_ENV;
+
+  /**
+   * Check if the current environment is the given one
+   */
+  static isEnvironment(env: typeof process.env.NODE_ENV) {
+    return process.env.NODE_ENV === env;
+  }
+
+  /**
    * Current application version number
    */
-  static VERSION = "0.1.2";
+  static VERSION = "0.2.0";
 
   /**
    * Get the correct API URL. While in development or testing, use localhost

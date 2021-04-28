@@ -7,6 +7,15 @@
   }
   .PercentageCircle > svg > path.color-#{$name} {
     stroke: $color;
+    filter: drop-shadow(0 0 5px $color);
+  }
+}
+
+@include darkmode {
+  @each $name, $color in $colors {
+    .PercentageCircle > svg > path.color-#{$name} {
+      filter: drop-shadow(0 0 5px $color);
+    }
   }
 }
 
@@ -23,6 +32,7 @@
   }
 
   & svg {
+    overflow: visible;
     & path {
       fill: transparent;
       stroke-width: 4px;

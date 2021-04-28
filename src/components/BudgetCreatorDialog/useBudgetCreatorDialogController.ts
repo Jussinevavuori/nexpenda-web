@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useQueryState } from "../../hooks/state/useQueryState";
 import { BudgetCreatorDialogProps } from "./BudgetCreatorDialog";
 
-export const BudgetCreatorDialogOpenHash = "create-budget";
+export const BudgetCreatorDialogOpenHash = "budget";
 
 export function useBudgetCreatorDialogVariableOpenState() {
   return useQueryState<"income" | "expense" | undefined>({
@@ -11,18 +11,18 @@ export function useBudgetCreatorDialogVariableOpenState() {
     encode(val) {
       switch (val) {
         case "income":
-          return "i";
+          return "create--income";
         case "expense":
-          return "e";
+          return "create--expense";
         default:
           return undefined;
       }
     },
     decode(val) {
       switch (val) {
-        case "i":
+        case "create--income":
           return "income";
-        case "e":
+        case "create--expense":
           return "expense";
         default:
           return undefined;

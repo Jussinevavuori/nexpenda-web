@@ -46,6 +46,7 @@ export const Type = forwardRef<HTMLElement, TypeProps>((props, ref) => {
 			{
 				centered: center,
 				pointerEventsDisabled: disablePointerEvents,
+				hasOnClickEvent: !!props.onClick,
 			}
 		)}
 	/>

@@ -3,8 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Category } from "../../classes/Category";
-import { useStoreActions } from "../../store";
+import { useStoreActions, useStoreState } from "../../store";
 import { BudgetFormProps } from "./BudgetForm";
+import { useOpenState } from "../../hooks/state/useOpenState";
 
 function getIntegerAmount(value: string | number) {
   if (typeof value === "number") {
@@ -22,15 +23,29 @@ export const budgetValidationSchema = z.object({
   amount: z
     .string()
     .regex(/^-?\d*[.,]?\d{0,2}$/, {
-      message: "Amount is not a valid number REGEX",
+      message: "Amount is not a valid number",
     })
+    .refine((value) => !!getIntegerAmount(value), {
+      message: "Amount is not a valid number",
+    }),
+  periodMonths: z
+    .string()
+    .regex(/^\d+$/, { message: "Period is not a valid number" })
     .refine(
       (value) => {
-        const int = getIntegerAmount(value);
-        return !!int;
+        const float = parseFloat(value);
+        const int = parseInt(value);
+        return !!int && int === float;
       },
-      { message: "Amount is not a valid number INT" }
-    ),
+      { message: "Period must be an integer" }
+    )
+    .refine((value) => parseInt(value) > 0, {
+      message: "Period must be a positive number",
+    })
+    .refine((value) => parseInt(value) <= 12, {
+      message: "Period cannot be longer than 12 months",
+    })
+    .optional(),
 });
 
 export type BudgetFormType = z.TypeOf<typeof budgetValidationSchema>;
@@ -38,9 +53,15 @@ export type BudgetFormType = z.TypeOf<typeof budgetValidationSchema>;
 export function useBudgetFormController(props: BudgetFormProps) {
   const postBudget = useStoreActions((_) => _.budgets.postBudget);
   const putBudget = useStoreActions((_) => _.budgets.putBudget);
+  const allCategories = useStoreState((_) => _.transactions.categories);
 
   // All selected categories
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(
+    props.variant.edit?.budget.getCategories(allCategories) ?? []
+  );
+
+  // Expansion state
+  const expansion = useOpenState();
 
   // Is the form an expense or income budget?
   const variant = props.variant.edit
@@ -55,6 +76,13 @@ export function useBudgetFormController(props: BudgetFormProps) {
   // Form
   const form = useForm<BudgetFormType>({
     resolver: zodResolver(budgetValidationSchema),
+    defaultValues: props.variant.edit
+      ? {
+          amount: props.variant.edit.budget.amount.decimalValue.toFixed(2),
+          label: props.variant.edit.budget.customLabel,
+          periodMonths: props.variant.edit.budget.periodMonths.toFixed(0),
+        }
+      : undefined,
   });
 
   // Submitting handler
@@ -66,20 +94,40 @@ export function useBudgetFormController(props: BudgetFormProps) {
       return;
     }
 
+    // Parse integer amount
     const sign = variant === "income" ? 1 : -1;
+    const integerAmount = getIntegerAmount(values.amount) * sign;
+
+    // Parse period months
+    let periodMonths = 1;
+    try {
+      if (values.periodMonths) {
+        periodMonths = z
+          .number()
+          .int()
+          .min(1)
+          .max(12)
+          .parse(parseInt(values.periodMonths));
+      }
+    } catch (e) {
+      setError("Invalid period");
+      return;
+    }
 
     // Update or post
     const result = await (props.variant.edit?.budget
       ? putBudget({
-          integerAmount: getIntegerAmount(values.amount) * sign,
+          integerAmount,
           label: values.label,
           categoryIds: categories.map((_) => _.id),
           id: props.variant.edit.budget.id,
+          periodMonths,
         })
       : postBudget({
-          integerAmount: getIntegerAmount(values.amount) * sign,
+          integerAmount,
           label: values.label,
           categoryIds: categories.map((_) => _.id),
+          periodMonths,
         }));
 
     /**
@@ -123,6 +171,10 @@ export function useBudgetFormController(props: BudgetFormProps) {
     handleSubmit: form.handleSubmit(submitHandler),
     labelError: form.formState.touched.label && form.errors.label?.message,
     amountError: form.formState.touched.amount && form.errors.amount?.message,
+    periodError:
+      form.formState.touched.periodMonths && form.errors.periodMonths?.message,
+
+    expansion,
 
     variant,
     isEditing: !!props.variant.edit,

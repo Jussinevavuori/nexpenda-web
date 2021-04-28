@@ -18,6 +18,9 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    & .average {
+      margin-left: $spacing-3;
+    }
   }
   & > .categories {
     grid-area: categories;

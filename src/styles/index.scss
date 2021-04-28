@@ -17,25 +17,18 @@ a {
   --vh: 1vh;
 }
 
-// Temporary poor man's dark mode
-// @include darkmode {
-//   #root {
-//     filter: invert(1) hue-rotate(180deg);
-//     & img,
-//     & .categoryIcon,
-//     & .category > .icon,
-//     & .ThemePicker .theme.mode {
-//       filter: invert(1) hue-rotate(180deg);
-//     }
-//     & .Logo > .icon > img {
-//       filter: none;
-//     }
-//   }
-// }
-
-/** Remove shadows on contained buttons */
-.MuiButton-root.MuiButton-contained {
-  box-shadow: none !important;
+@include darkmode {
+  /** Tweak shade of focused TextFields for better contrast in darkmode */
+  .MuiTextField-root {
+    &:focus-within {
+      & > .MuiInputBase-root * {
+        border-color: $primary-400;
+      }
+      & > .MuiFormLabel-root.Mui-focused {
+        color: $primary-400;
+      }
+    }
+  }
 }
 
 /** Fix the <Icon /> compnent when other styles override it */

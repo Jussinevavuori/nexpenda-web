@@ -95,7 +95,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 				className={cx(
 					"active",
 					{ isOverflow: controller.isOverflow },
-					`color-${props.filledColor || "primary-500"}`
+					`color-${props.filledColor || (isDarkTheme ? "primary-500" : "primary-500")}`
 				)}
 				ref={controller.activeRef}
 				d={SvgPath.describePartialCirclePath({

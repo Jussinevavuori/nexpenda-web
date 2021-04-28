@@ -54,9 +54,11 @@
     & > .bars {
       & > .activeBar {
         &.expense {
+          box-shadow: 0 0 5px $red-500;
           background: $red-500;
         }
         &.income {
+          box-shadow: 0 0 5px $green-500;
           background: $green-500;
         }
       }

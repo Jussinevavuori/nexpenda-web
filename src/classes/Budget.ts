@@ -27,6 +27,11 @@ export class Budget {
   public readonly amount: MoneyAmount;
 
   /**
+   * How many months is the period of this budget? Defaults to 1.
+   */
+  public readonly periodMonths: number;
+
+  /**
    * Creation date
    */
   public readonly createdAt: Date;
@@ -43,20 +48,45 @@ export class Budget {
     this.amount = new MoneyAmount(json.integerAmount);
     this.createdAt = new Date(json.createdAt);
     this.categoryIds = json.categoryIds;
+    this.periodMonths = json.periodMonths;
   }
 
+  /**
+   * Get type of budget. Budgets with negative integer amounts are considered
+   * expense budgets while budgets with non-negative integer amounts are
+   * considered income budgets.
+   */
   get type() {
     return this.integerAmount >= 0 ? "income" : "expense";
   }
 
+  /**
+   * Check if this budget is an income budget. (Has non-negative integer amount)
+   */
   get isIncome() {
     return this.integerAmount >= 0;
   }
 
+  /**
+   * Check if this budget is an expense budget. (Has negative integer amount)
+   */
   get isExpense() {
     return this.integerAmount < 0;
   }
 
+  /**
+   * Get the monthly amount for this budget, which is the amount divided by
+   * the period.
+   */
+  get monthlyAmount() {
+    return this.amount.divide(this.periodMonths);
+  }
+
+  /**
+   * Provided list of all categories, fetch a label for this budget. If no
+   * internal label is provided, the label is automatically generated from
+   * the existing categories.
+   */
   getLabel(allCategories: Category[]) {
     if (this._label) {
       return this._label;
@@ -76,6 +106,13 @@ export class Budget {
     }
 
     return label;
+  }
+
+  /**
+   * Returns the internal, user specified label
+   */
+  get customLabel() {
+    return this._label;
   }
 
   /**
@@ -109,6 +146,7 @@ export class Budget {
     integerAmount: z.number().int(),
     createdAt: z.number().positive().int(),
     categoryIds: z.array(z.string()),
+    periodMonths: z.number().positive().int(),
   });
 
   /**
@@ -124,6 +162,7 @@ export class Budget {
     label: z.string().optional(),
     integerAmount: z.number().int(),
     categoryIds: z.array(z.string()),
+    periodMonths: z.number().positive().int(),
   });
 
   /**
@@ -146,6 +185,7 @@ export class Budget {
       categoryIds: this.categoryIds,
       createdAt: this.createdAt.getTime(),
       integerAmount: this.integerAmount,
+      periodMonths: this.periodMonths,
     };
   }
 
@@ -161,6 +201,7 @@ export class Budget {
       categoryIds: this.categoryIds,
       integerAmount: this.integerAmount,
       label: this._label,
+      periodMonths: this.periodMonths,
     };
 
     if (options.id) {

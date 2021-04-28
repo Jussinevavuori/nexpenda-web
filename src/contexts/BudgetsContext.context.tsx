@@ -16,19 +16,14 @@ export function BudgetsContextProvider(
 ) {
 	const transactions = useStoreState(_ => _.transactions.items)
 	const budgets = useStoreState(_ => _.budgets.items)
-	const startDate = useStoreState(_ => _.interval.startDate)
-	const endDate = useStoreState(_ => _.interval.endDate)
+	const start = useStoreState(_ => _.interval.startDate)
+	const end = useStoreState(_ => _.interval.endDate)
 
-	const value = useMemo(() => {
-		return calculateBudgets({
-			transactions,
-			budgets,
-			interval: {
-				start: startDate,
-				end: endDate,
-			}
-		})
-	}, [transactions, budgets, startDate, endDate])
+	const value = useMemo(() => calculateBudgets({
+		transactions,
+		budgets,
+		interval: { start, end, }
+	}), [transactions, budgets, start, end])
 
 	return <BudgetsContext.Provider value={value}>
 		{props.children}
@@ -38,21 +33,40 @@ export function BudgetsContextProvider(
 function getDefaultBudgetsContextValue(): BudgetsContextType {
 	return {
 		budgetTotals: {
-			income: {
-				estimate: new MoneyAmount(0),
-				progress: new MoneyAmount(0),
-				percentage: 0,
+			monthly: {
+				income: {
+					estimate: new MoneyAmount(-1),
+					progress: new MoneyAmount(-1),
+					percentage: -1,
+				},
+				expense: {
+					estimate: new MoneyAmount(-1),
+					progress: new MoneyAmount(-1),
+					percentage: -1,
+				},
 			},
-			expense: {
-				estimate: new MoneyAmount(0),
-				progress: new MoneyAmount(0),
-				percentage: 0,
+			absolute: {
+				income: {
+					estimate: new MoneyAmount(-1),
+					progress: new MoneyAmount(-1),
+					percentage: -1,
+				},
+				expense: {
+					estimate: new MoneyAmount(-1),
+					progress: new MoneyAmount(-1),
+					percentage: -1,
+				},
 			},
-			total: {
-				estimate: new MoneyAmount(0),
-				progress: new MoneyAmount(0),
-				percentage: 0,
-			}
+			monthlyTotal: {
+				estimate: new MoneyAmount(-1),
+				progress: new MoneyAmount(-1),
+				percentage: -1,
+			},
+			absoluteTotal: {
+				estimate: new MoneyAmount(-1),
+				progress: new MoneyAmount(-1),
+				percentage: -1,
+			},
 		},
 		extendedBudgets: [],
 		data: {
@@ -60,8 +74,8 @@ function getDefaultBudgetsContextValue(): BudgetsContextType {
 				start: new Date(),
 				end: new Date(),
 			},
+			intervalLengthInMonths: -1,
 			budgets: [],
-			transactions: [],
 		}
 	}
 }

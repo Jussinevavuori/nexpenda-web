@@ -30,6 +30,10 @@
     pointer-events: none;
   }
 
+  &.hasOnClickEvent {
+    cursor: pointer;
+  }
+
   /** Variants */
   &.Type-variant-regular {
     @include text-regular;

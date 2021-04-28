@@ -3,17 +3,19 @@ import { useCallback, useMemo } from "react";
 import { useQueryState } from "../../hooks/state/useQueryState";
 import { useStoreState } from "../../store";
 
-export const BudgetEditorDialogOpenHash = "edit-budget";
+export const BudgetEditorDialogOpenHash = "budget";
 
 export function useBudgetEditorDialogVariableOpenState() {
   return useQueryState<null | string>({
     key: BudgetEditorDialogOpenHash,
-    method: "push",
-    decode(encodedId) {
-      return !!encodedId && typeof encodedId === "string" ? encodedId : null;
+    method: "replace",
+    decode(value) {
+      return value && typeof value === "string" && value.startsWith("edit--")
+        ? value.replace("edit--", "")
+        : null;
     },
     encode(id) {
-      return id ?? undefined;
+      return id ? `edit--${id}` : undefined;
     },
   });
 }

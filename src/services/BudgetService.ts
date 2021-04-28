@@ -2,6 +2,7 @@ import { Service } from "./Service";
 import { Budget } from "../classes/Budget";
 import { Success } from "../result/Success";
 import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { DataUtils } from "../utils/DataUtils/DataUtils";
 
 export class BudgetService extends Service {
   /**
@@ -73,10 +74,12 @@ export class BudgetService extends Service {
    * Put a budget on the server as json (upsert) and
    * return upserted json budget as Result.
    */
-  static async putBudget(json: JsonBudgetInitializer & { id: string }) {
-    const result = await Service.put(`/budgets/${json.id}`, json, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+  static async putBudget(json: JsonBudgetIdInitializer) {
+    const result = await Service.put(
+      `/budgets/${json.id}`,
+      DataUtils.removeProperty(json, "id"),
+      { service: { enableLogoutOnUnauthorized: true } }
+    );
 
     if (result.isFailure()) {
       return result;
@@ -94,10 +97,12 @@ export class BudgetService extends Service {
    * Patch a budget on the server as json (partial update)
    * and return updated json budget as Result.
    */
-  static async patchBudget(json: JsonBudgetInitializer & { id: string }) {
-    const result = await Service.patch(`/budgets/${json.id}`, json, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+  static async patchBudget(json: JsonBudgetIdInitializer) {
+    const result = await Service.patch(
+      `/budgets/${json.id}`,
+      DataUtils.removeProperty(json, "id"),
+      { service: { enableLogoutOnUnauthorized: true } }
+    );
 
     if (result.isFailure()) {
       return result;

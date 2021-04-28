@@ -8,7 +8,7 @@ import { routes } from "../Routes";
 import { StorageService } from "./StorageService";
 
 export type ServiceRequestConfig = {
-  enableLogoutOnUnauthorized: boolean;
+  enableLogoutOnUnauthorized?: boolean;
 };
 
 export type RequestConfig = {
@@ -154,10 +154,7 @@ export class Service {
     }
 
     // Override config with headers
-    return {
-      ...override,
-      headers,
-    };
+    return { ...override, headers };
   }
 
   /**

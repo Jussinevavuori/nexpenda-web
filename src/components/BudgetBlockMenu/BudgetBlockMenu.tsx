@@ -11,24 +11,25 @@ import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type BudgetBlockMenuProps = {
 	budget: Budget;
-} & ResponsiveMenuProps
+} & Omit<ResponsiveMenuProps, "open" | "onClose">
 
 export function BudgetBlockMenu(props: BudgetBlockMenuProps) {
 	const controller = useBudgetBlockMenuController(props)
 	const { budget, ...responsiveMenuProps } = props
 	const isDarkTheme = useIsDarkTheme()
 
-	return <ResponsiveMenu {...responsiveMenuProps}>
+	return <ResponsiveMenu
+		{...responsiveMenuProps}
+		open={controller.isOpen}
+		onClose={controller.handleClose}
+	>
 		<div className={cx("BudgetBlockMenu")}>
-			{
-				process.env.NODE_ENV === "development" &&
-				<MenuItem className="edit" onClick={controller.handleEdit} >
-					<Type variant="bold" color={isDarkTheme ? "primary-400" : "primary-600"}>
-						<EditIcon />
-						{"Edit"}
-					</Type>
-				</MenuItem>
-			}
+			<MenuItem className="edit" onClick={controller.handleEdit} >
+				<Type variant="bold" color={isDarkTheme ? "primary-400" : "primary-600"}>
+					<EditIcon />
+					{"Edit"}
+				</Type>
+			</MenuItem>
 			<MenuItem className="delete" onClick={controller.handleDelete} >
 				<Type variant="bold" color={isDarkTheme ? "red-400" : "red-600"}>
 					<DeleteIcon />

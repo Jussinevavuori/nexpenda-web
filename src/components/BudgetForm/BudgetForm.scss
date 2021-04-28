@@ -5,4 +5,50 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-4;
+
+  & .inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+  }
+
+  & .MuiTextField-root {
+    background: white;
+  }
+
+  & .showMore {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  & .moreOptions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+
+    background: $gray-200;
+    border: 1px solid $gray-300;
+    padding: $spacing-4;
+    border-radius: $radius-sm;
+
+    & .MuiTextField-root {
+      background: white;
+    }
+  }
+}
+
+@include darkmode {
+  .BudgetForm {
+    & .MuiTextField-root {
+      background: $gray-810;
+    }
+    & .moreOptions {
+      background: $gray-810;
+      border-color: $gray-800;
+
+      & .MuiTextField-root {
+        background: $gray-800;
+      }
+    }
+  }
 }

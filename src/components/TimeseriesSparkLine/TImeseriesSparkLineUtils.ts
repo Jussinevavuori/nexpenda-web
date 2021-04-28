@@ -17,16 +17,6 @@ export class TimeseriesSparkLineUtils {
     hideValuesBefore: TimeseriesSparkLineProps["hideValuesBefore"];
     maxPoints: NonNullable<TimeseriesSparkLineProps["maxPoints"]>;
   }): SparkLineProps["data"] {
-    if (options.data.length === 0) {
-      return [
-        { x: 0, y: 1, hidden: true },
-        { x: 0, y: -1, hidden: true },
-        { x: 0, y: 0, hidden: true },
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-      ];
-    }
-
     /**
      * Map data to easier usable items
      */
@@ -45,9 +35,13 @@ export class TimeseriesSparkLineUtils {
     const groupedData = DateUtils.groupByDateSerialToMap(data, (t) => t.date);
 
     /**
-     * Get date range (min and max date) from data
+     * Get date range (min and max date) from data. If empty date, use
+     * placeholder values of 1 and 2
      */
-    const dateRange = DateUtils.datesToDateRange(data.map((_) => _.date));
+    const dateRange =
+      data.length > 0
+        ? DateUtils.datesToDateRange(data.map((_) => _.date))
+        : { min: new Date(1), max: new Date(2) };
 
     /**
      * Initialize cumulative value counter from 0
@@ -115,13 +109,27 @@ export class TimeseriesSparkLineUtils {
 
     /**
      * Return the values as specified in the props of SparkLine.
+     * Also add additional padding to correct ends, starts and arrays with
+     * 0 or 1 items.
      */
-    return values.map((value) => {
-      return {
-        x: value.date.getTime(),
-        y: value.value,
-        hidden: value.hidden,
-      };
-    });
+    return [
+      // Add hidden (0, 1), (0, -1) and (0, 0) points to data at beginning
+      // in order to draw zerolines at correct height.
+      { x: dateRange.min.getTime(), y: 1, hidden: true },
+      { x: dateRange.min.getTime(), y: -1, hidden: true },
+      { x: dateRange.min.getTime(), y: 0, hidden: true },
+
+      // Add real data
+      ...values.map((value) => {
+        return {
+          x: value.date.getTime(),
+          y: value.value,
+          hidden: value.hidden,
+        };
+      }),
+
+      // Draw to end
+      { x: dateRange.max.getTime(), y: values[values.length - 1]?.value ?? 0 },
+    ];
   }
 }

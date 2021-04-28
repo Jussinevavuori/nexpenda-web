@@ -81,33 +81,35 @@ export class SvgSparkLinePath {
 
     // Draw line to each point
     for (const datapoint of data) {
-      const nextPoint = `${datapoint.hidden ? "M" : "L"} ${getPoint(
-        datapoint
-      )} `;
+      if (datapoint.hidden) {
+        continue;
+      }
+      const nextPoint = `L ${getPoint(datapoint)} `;
       mainPathD += nextPoint;
       shadowPathD += nextPoint;
 
       // Find first and last visible datapoints
-      if (!datapoint.hidden) {
-        firstVisibleDatapoint = firstVisibleDatapoint ?? datapoint;
-        lastVisibleDatapoint = datapoint;
-      }
+      firstVisibleDatapoint = firstVisibleDatapoint ?? datapoint;
+      lastVisibleDatapoint = datapoint;
     }
 
-    // Complete rectangle
+    // Complete shadow rectangle
     if (firstVisibleDatapoint && lastVisibleDatapoint) {
-      shadowPathD += `M ${getPoint(lastVisibleDatapoint)}`;
       shadowPathD += `L ${getPoint({
         x: lastVisibleDatapoint.x,
         y: min_y,
         ignoreVerticalPadding: true,
-      })}`;
+      })} `;
       shadowPathD += `L ${getPoint({
         x: firstVisibleDatapoint.x,
         y: min_y,
         ignoreVerticalPadding: true,
-      })}`;
-      shadowPathD += `L ${getPoint(firstVisibleDatapoint)}`;
+      })} `;
+      shadowPathD += `L ${getPoint({
+        x: firstVisibleDatapoint.x,
+        y: firstVisibleDatapoint.y,
+      })} `;
+      shadowPathD += `z`;
     }
 
     // Draw zero line

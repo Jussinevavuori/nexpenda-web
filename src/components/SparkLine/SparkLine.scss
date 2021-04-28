@@ -21,3 +21,15 @@
     }
   }
 }
+
+@include darkmode {
+  .SparkLine {
+    & > svg {
+      & > path {
+        &.sparkline-blur {
+          filter: blur(1px);
+        }
+      }
+    }
+  }
+}

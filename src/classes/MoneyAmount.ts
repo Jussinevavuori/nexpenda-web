@@ -1,3 +1,5 @@
+import { LogService } from "../services/LogService";
+
 export class MoneyAmount {
   /**
    * Value of money amount as integer in cents
@@ -156,6 +158,27 @@ export class MoneyAmount {
    */
   subtract(that: MoneyAmount) {
     return new MoneyAmount(this._value - that._value);
+  }
+
+  /**
+   * Multiply this MoneyAmount by a number to get a new MoneyAmount.
+   */
+  multiply(num: number) {
+    return new MoneyAmount(this._value * num);
+  }
+
+  /**
+   * Method to divide a MoneyAmount by a factor to produce a new MoneyAmount.
+   * In case of a divide by zero error, 0 is returned and an error is logged to
+   * the console.
+   */
+  divide(num: number) {
+    if (num === 0) {
+      LogService.error({ message: `Attempted to divide MoneyAmount by zero` });
+      return new MoneyAmount(0);
+    } else {
+      return new MoneyAmount(this._value / num);
+    }
   }
 
   /**
