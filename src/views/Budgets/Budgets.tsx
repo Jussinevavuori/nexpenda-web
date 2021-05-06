@@ -14,6 +14,7 @@ import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
 import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
 import { DefaultViewPanel } from "../../components/DefaultViewPanel/DefaultViewPanel";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
 
 export type BudgetsProps = {
 
@@ -26,7 +27,18 @@ export function Budgets(props: BudgetsProps) {
 	return <BudgetsContextProvider>
 		<ViewContainer
 			scrollable
-			viewHeader={<ViewHeader>{"Budgets"}</ViewHeader>}
+			viewHeader={<ViewHeader>
+				<Type
+					className="title"
+					component="h1"
+					size="xl"
+					color="white"
+					variant="bold"
+				>
+					{"Budgets"}
+				</Type>
+				<MiniFreemiumTracker variant="budget" />
+			</ViewHeader>}
 			viewPanel={<DefaultViewPanel />}
 		>
 			<div className={cx("Budgets")}>

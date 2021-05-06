@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { useStoreActions } from "../../store";
+import { useMemo, useState } from "react";
+import { useIsPremium } from "../../hooks/application/useIsPremium";
+import { useRedirect } from "../../hooks/utils/useRedirect";
+import { useStoreActions, useStoreState } from "../../store";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
 import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet";
 import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet";
@@ -15,6 +17,18 @@ export function useFileUploaderController(props: FileUploaderProps) {
   const massPostTransactions = useStoreActions(
     (_) => _.transactions.massPostTransactions
   );
+
+  const redirect = useRedirect();
+
+  const isPremium = useIsPremium();
+  const transactions = useStoreState((_) => _.transactions.items);
+  const transactionsCount = useMemo(() => transactions.length, [transactions]);
+  const transactionsLimit = useStoreState((_) => _.appConfig.value)
+    .freeTransactionsLimit;
+
+  function handleUpgrade() {
+    redirect((_) => _.subscribe);
+  }
 
   /**
    * State of reading uploaded spreadsheet file
@@ -41,6 +55,14 @@ export function useFileUploaderController(props: FileUploaderProps) {
   const selectedSheet = readFileState.result
     ? readFileState.result.sheets[selectedSheetName]
     : undefined;
+
+  /**
+   * Does the currently selected sheet have too many transaciotns
+   */
+  const tooManyTransactions =
+    !isPremium &&
+    (selectedSheet?.result.rows.length ?? 0) + transactionsCount >
+      transactionsLimit;
 
   /**
    * State of uploading selected sheet to server
@@ -160,5 +182,10 @@ export function useFileUploaderController(props: FileUploaderProps) {
     handleUploadTransactions,
     handleFinish,
     handleResetState,
+
+    transactionsLimit,
+    tooManyTransactions,
+    handleUpgrade,
+    disableUpload: tooManyTransactions,
   };
 }

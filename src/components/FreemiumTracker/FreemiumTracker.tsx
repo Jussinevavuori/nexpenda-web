@@ -16,8 +16,10 @@ export type FreemiumTrackerProps = {
 	hideTransactions?: boolean;
 	hideBudgets?: boolean;
 
+	hideUpgradeButton?: boolean;
 	variant?: "minimal" | "default"
 
+	size?: "container" | "full"
 };
 
 export function FreemiumTracker(props: FreemiumTrackerProps) {
@@ -29,7 +31,13 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 	if (controller.isPremium) return null
 
 	return <ContainerBlock
-		className={cx("FreemiumTracker")}
+		className={cx(
+			"FreemiumTracker",
+			`size-${props.size ?? "container"}`,
+			{
+				upgradeButtonHidden: props.hideUpgradeButton,
+			}
+		)}
 		containerTitle={props.variant === "default" ? "Free limits" : undefined}
 	>
 
@@ -140,39 +148,42 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 
 		}
 
-		<Tooltip
-			title={<div className="FreemiumTracker__Tooltip">
-				<div>
-					<Type component="span" size="sm">
-						{"Upgrade to "}
-					</Type>
-					<Type component="span" variant="bold" size="sm">
-						{"Nexpenda Premium "}
-					</Type>
-					<Type component="span" size="sm">
-						{"to unlock unlimited resources"}
-					</Type>
-				</div>
-				<div className="left">
-					<Type component="span" size="sm" variant="bold">
-						{"Learn more..."}
-					</Type>
-				</div>
-			</div>}
-		>
-			<Link to={routes.subscribe.path}>
-				<Button
-					className={cx("upgradeButton")}
-					variant="contained"
-					color="primary"
-					startIcon={<Star />}
-				>
-					<span className={cx("buttonLabel")}>
-						{"Upgrade"}
-					</span>
-				</Button>
-			</Link>
-		</Tooltip>
+		{
+			!props.hideUpgradeButton &&
+			<Tooltip
+				title={<div className="FreemiumTracker__Tooltip">
+					<div>
+						<Type component="span" size="sm">
+							{"Upgrade to "}
+						</Type>
+						<Type component="span" variant="bold" size="sm">
+							{"Nexpenda Premium "}
+						</Type>
+						<Type component="span" size="sm">
+							{"to unlock unlimited resources"}
+						</Type>
+					</div>
+					<div className="left">
+						<Type component="span" size="sm" variant="bold">
+							{"Learn more..."}
+						</Type>
+					</div>
+				</div>}
+			>
+				<Link to={routes.subscribe.path}>
+					<Button
+						className={cx("upgradeButton")}
+						variant="contained"
+						color="primary"
+						startIcon={<Star />}
+					>
+						<span className={cx("buttonLabel")}>
+							{"Upgrade"}
+						</span>
+					</Button>
+				</Link>
+			</Tooltip>
+		}
 
 	</ContainerBlock>
 }

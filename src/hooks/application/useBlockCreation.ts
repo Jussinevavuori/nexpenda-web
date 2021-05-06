@@ -4,6 +4,7 @@ import { useTransactionCreatorDrawerOpenState } from "../../components/Transacti
 import { useStoreActions } from "../../store";
 import { useRedirect } from "../utils/useRedirect";
 import { useIsBudgetsLimitExceeded } from "./useIsBudgetsLimitExceeded";
+import { useIsPremium } from "./useIsPremium";
 import { useIsTransactionsLimitExceeded } from "./useIsTransactionsLimitExceeded";
 
 export function useBlockCreation() {
@@ -19,6 +20,8 @@ export function useBlockCreation() {
     setOpenBudgetMenu,
   ] = useBudgetCreatorDialogVariableOpenState();
 
+  const isPremium = useIsPremium();
+
   const isTransactionsLimitExceeded = useIsTransactionsLimitExceeded();
   const isBudgetsLimitExceeded = useIsBudgetsLimitExceeded();
 
@@ -26,6 +29,7 @@ export function useBlockCreation() {
    * Automatically close transaction creation when limit exceeded.
    */
   useEffect(() => {
+    if (isPremium) return;
     if (openTransactionMenu && isTransactionsLimitExceeded) {
       setOpenTransactionMenu(false);
       notify({
@@ -46,6 +50,7 @@ export function useBlockCreation() {
   }, [
     notify,
     redirect,
+    isPremium,
     openTransactionMenu,
     setOpenTransactionMenu,
     isTransactionsLimitExceeded,
@@ -55,6 +60,7 @@ export function useBlockCreation() {
    * Automatically close budget creation when limit exceeded.
    */
   useEffect(() => {
+    if (isPremium) return;
     if (openBudgetMenu && isBudgetsLimitExceeded) {
       setOpenBudgetMenu(undefined);
       notify({
@@ -75,6 +81,7 @@ export function useBlockCreation() {
   }, [
     notify,
     redirect,
+    isPremium,
     openBudgetMenu,
     setOpenBudgetMenu,
     isBudgetsLimitExceeded,

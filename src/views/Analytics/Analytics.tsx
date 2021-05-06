@@ -14,6 +14,7 @@ import { ViewHeader } from "../../components/ViewHeader/ViewHeader";
 import { ViewContainer } from "../../components/ViewContainer/ViewContainer";
 import { DefaultViewPanel } from "../../components/DefaultViewPanel/DefaultViewPanel";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
 
 export type AnalyticsProps = {
 }
@@ -26,7 +27,18 @@ export function Analytics(props: AnalyticsProps) {
 		<AnalyticsContextProvider>
 			<ViewContainer
 				scrollable
-				viewHeader={<ViewHeader>{"Analytics"}</ViewHeader>}
+				viewHeader={<ViewHeader>
+					<Type
+						className="title"
+						component="h1"
+						size="xl"
+						color="white"
+						variant="bold"
+					>
+						{"Analytics"}
+					</Type>
+					<MiniFreemiumTracker variant="transaction" />
+				</ViewHeader>}
 				viewPanel={<DefaultViewPanel />}
 			>
 				<div className="Analytics">

@@ -3,6 +3,7 @@ type TextVariant = "regular" | "bold" | "boldcaps" | "extrabold";
 type TextSize = "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
 
 type Color =
+  | "transparent"
   | "white"
   | "black"
   | "blue-100"

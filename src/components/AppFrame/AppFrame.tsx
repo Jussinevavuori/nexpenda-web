@@ -11,6 +11,7 @@ import { FileUploaderDrawer } from "../FileUploaderDrawer/FileUploaderDrawer";
 import { AnimateSharedLayout } from "framer-motion";
 import { SidebarNavigation } from "../SidebarNavigation/SidebarNavigation";
 import { TabNavigation } from "../TabNavigation/TabNavigation";
+import { FreemiumTrackerDialog } from "../FreemiumTrackerDialog/FreemiumTrackerDialog";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -33,6 +34,7 @@ export function AppFrame(props: AppFrameProps) {
 			<BudgetCreatorDialog />
 			<FeedbackDialog />
 			<FileUploaderDrawer />
+			<FreemiumTrackerDialog />
 
 			{/* Static elements */}
 			<header>

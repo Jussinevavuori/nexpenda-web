@@ -32,6 +32,12 @@
 
   & svg {
     overflow: visible;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     & path {
       fill: transparent;
       stroke-width: 4px;

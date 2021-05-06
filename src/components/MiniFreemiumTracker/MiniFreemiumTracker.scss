@@ -1,0 +1,19 @@
+@import "main";
+
+.MiniFreemiumTracker {
+  & > button {
+    display: block;
+    border: none;
+    background: none;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover,
+    &:focus {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    &:active {
+      background: rgba(0, 0, 0, 0.15);
+    }
+  }
+}

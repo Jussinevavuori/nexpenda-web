@@ -11,6 +11,16 @@
       padding-bottom: 0;
     }
 
+    &.upgradeButtonHidden {
+      padding-bottom: $spacing-3;
+    }
+
+    &.size-full {
+      border: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
     & > .limits {
       display: flex;
       flex-direction: column;

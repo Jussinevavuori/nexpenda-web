@@ -162,6 +162,7 @@ export function FileUploader(props: FileUploaderProps) {
 							loading={controller.uploadFileState.isUploading}
 							onClick={controller.handleUploadTransactions}
 							startIcon={<UploadIcon />}
+							disabled={controller.disableUpload}
 						>
 							{
 								controller.uploadFileState.isUploading
@@ -170,6 +171,34 @@ export function FileUploader(props: FileUploaderProps) {
 							}
 						</EnhancedButton>
 					</div>
+					{
+						controller.tooManyTransactions &&
+						<div className="iconTypeContainer error">
+							<Error />
+							<span className="column">
+								<Type
+									color={isDarkTheme ? "red-300" : "red-800"}
+									variant="bold"
+								>
+									{"Too many transactions"}
+								</Type>
+								<Type color={isDarkTheme ? "red-300" : "red-800"}>
+									{`Free accounts have a limit of `}
+									{`${controller.transactionsLimit} free transactions. `}
+									{`Uploading this file would exceed that limit. `}
+									{`Upgrade to a premium account and try again later.`}
+								</Type>
+								<Button
+									variant="contained"
+									color="primary"
+									onClick={controller.handleUpgrade}
+								>
+
+									{"Upgrade"}
+								</Button>
+							</span>
+						</div>
+					}
 
 					{
 						controller.uploadFileState.isUploading && (controller.selectedSheet?.result.succeeded ?? 0) > 100 &&
@@ -186,7 +215,7 @@ export function FileUploader(props: FileUploaderProps) {
 						controller.uploadFileState.error &&
 						<div className="iconTypeContainer error">
 							<Error />
-							<Type color="red-800">
+							<Type color={isDarkTheme ? "red-300" : "red-800"}>
 								{controller.uploadFileState.error}
 							</Type>
 						</div>

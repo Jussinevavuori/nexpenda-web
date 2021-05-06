@@ -48,11 +48,14 @@ export function PercentageCircle(props: PercentageCircleProps) {
 	const controller = usePercentageCircleController(props)
 	const isDarkTheme = useIsDarkTheme()
 
-	return <div className={cx(
-		"PercentageCircle",
-		{ isOverflow: controller.isOverflow },
-		props.className
-	)}>
+	return <div
+		className={cx(
+			"PercentageCircle",
+			{ isOverflow: controller.isOverflow },
+			props.className
+		)}
+		style={{ width: 2 * controller.radius, height: 2 * controller.radius }}
+	>
 
 		<Type
 			component="label"
@@ -71,7 +74,7 @@ export function PercentageCircle(props: PercentageCircleProps) {
 				className={cx(
 					"background",
 					{ isOverflow: controller.isOverflow },
-					`color-${props.backgroundColor || (isDarkTheme ? "gray-810" : "white")}`
+					`color-${props.backgroundColor || "transparent"}`
 				)}
 				cx={controller.radius}
 				cy={controller.radius}

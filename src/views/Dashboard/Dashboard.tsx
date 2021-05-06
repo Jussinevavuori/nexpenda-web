@@ -14,6 +14,7 @@ import { Type } from "../../components/Type/Type";
 import { MoneyType } from "../../components/MoneyType/MoneyType";
 import { DashboardActions } from "./DashboardActions/DashboardActions";
 import { DashboardPanel } from "./DashboardPanel/DashboardPanel";
+import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
 
 export type DashboardProps = {
 }
@@ -49,6 +50,7 @@ export function Dashboard(props: DashboardProps) {
 					amount={controller.transactionsTotal}
 					animate
 				/>
+				<MiniFreemiumTracker variant="transaction" className="limit" />
 			</div>
 		</ViewHeader>}
 		viewPanel={<DashboardPanel />}
