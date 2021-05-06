@@ -15,6 +15,7 @@ import { themeModel, ThemeModel } from "./models/theme.model";
 import { stripeModel, StripeModel } from "./models/stripe.model";
 import { budgetsModel, BudgetsModel } from "./models/budgets.model";
 import { SidebarModel, sidebarModel } from "./models/sidebar.model";
+import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
 
 export interface StoreModel {
   notification: NotificationModel;
@@ -27,6 +28,7 @@ export interface StoreModel {
   stripe: StripeModel;
   budgets: BudgetsModel;
   sidebar: SidebarModel;
+  appConfig: AppConfigModel;
 }
 
 const storeModel: StoreModel = {
@@ -40,6 +42,7 @@ const storeModel: StoreModel = {
   stripe: stripeModel,
   budgets: budgetsModel,
   sidebar: sidebarModel,
+  appConfig: appConfigModel,
 };
 
 export const store = createStore(storeModel);

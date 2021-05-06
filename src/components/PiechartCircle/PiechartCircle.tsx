@@ -41,6 +41,8 @@ export function PiechartCircle(props: PiechartCircleProps) {
 		{
 			controller.segments.map((segment, i) => (
 				<Tooltip
+					open={true}
+					onClose={() => { }}
 					key={i}
 					title={`${segment.label} - ${segment.percentage.toFixed(1)} %`}
 				>

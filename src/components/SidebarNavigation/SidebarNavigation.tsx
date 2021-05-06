@@ -14,6 +14,7 @@ import { ChevronLeft } from "@material-ui/icons";
 import { Logo } from "../Logo/Logo";
 import { Tooltip } from "@material-ui/core";
 import { CornerPiece } from "../CornerPiece/CornerPiece";
+import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type SidebarNavigationProps = {
 
@@ -22,6 +23,7 @@ export type SidebarNavigationProps = {
 export function SidebarNavigation(props: SidebarNavigationProps) {
 
 	const controller = useSidebarNavigationController(props)
+	const isDarkTheme = useIsDarkTheme()
 	const cx = createClassnames({
 		open: controller.isOpen,
 		closed: !controller.isOpen
@@ -59,10 +61,10 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 
 				<Tooltip
 					title={<div className="SidebarNavigation__linkTooltip">
-						<Type variant="bold" color="primary-600">
+						<Type variant="bold" color="white">
 							{"Dashboard"}
 						</Type>
-						<Type color="gray-600">
+						<Type color={isDarkTheme ? "white" : "gray-400"}>
 							{"(Alt + 1)"}
 						</Type>
 					</div>}
@@ -78,10 +80,10 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 
 				<Tooltip
 					title={<div className="SidebarNavigation__linkTooltip">
-						<Type variant="bold" color="primary-600">
+						<Type variant="bold" color="white">
 							{"Analytics"}
 						</Type>
-						<Type color="gray-600">
+						<Type color={isDarkTheme ? "white" : "gray-400"}>
 							{"(Alt + 2)"}
 						</Type>
 					</div>}
@@ -98,10 +100,10 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 
 				<Tooltip
 					title={<div className="SidebarNavigation__linkTooltip">
-						<Type variant="bold" color="primary-600">
+						<Type variant="bold" color="white">
 							{"Budgets"}
 						</Type>
-						<Type color="gray-600">
+						<Type color={isDarkTheme ? "white" : "gray-400"}>
 							{"(Alt + 3)"}
 						</Type>
 					</div>}
@@ -118,10 +120,10 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 
 				<Tooltip
 					title={<div className="SidebarNavigation__linkTooltip">
-						<Type variant="bold" color="primary-600">
+						<Type variant="bold" color="white">
 							{"Settings"}
 						</Type>
-						<Type color="gray-600">
+						<Type color={isDarkTheme ? "white" : "gray-400"}>
 							{"(Alt + 4)"}
 						</Type>
 					</div>}
@@ -144,7 +146,7 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 						<Type variant="bold" color="primary-600">
 							{"Toggle sidebar"}
 						</Type>
-						<Type color="gray-600">
+						<Type color={isDarkTheme ? "white" : "gray-400"}>
 							{"(Shift + T)"}
 						</Type>
 					</div>}
