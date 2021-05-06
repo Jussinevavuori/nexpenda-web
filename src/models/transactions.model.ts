@@ -189,11 +189,6 @@ export interface TransactionsModel {
   //==============================================================//
 
   /**
-   * Fetch data on login
-   */
-  onLogin: ThunkOn<TransactionsModel, any, StoreModel>;
-
-  /**
    * Clear data on logout
    */
   onLogout: ThunkOn<TransactionsModel, any, StoreModel>;
@@ -438,13 +433,6 @@ export const transactionsModel: TransactionsModel = {
   //==============================================================//
   // LISTENERS
   //==============================================================//
-
-  onLogin: thunkOn(
-    (_, store) => store.auth.setAuthToState,
-    async (actions) => {
-      await actions.getTransactions();
-    }
-  ),
 
   onLogout: thunkOn(
     (_, store) => store.auth.logout,

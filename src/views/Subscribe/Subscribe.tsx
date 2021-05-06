@@ -7,6 +7,9 @@ import { SubscriptionFrame } from "../../components/SubscriptionFrame/Subscripti
 import { PremiumFeatures } from "../../components/PremiumFeatures/PremiumFeatures";
 import { PremiumPricingOptions } from "../../components/PremiumPricingOptions/PremiumPricingOptions";
 import { ClearableErrorDialog } from "../../components/ClearableErrorDialog/ClearableErrorDialog";
+import { Link } from "react-router-dom";
+import { routes } from "../../Routes";
+import { Button } from "@material-ui/core";
 
 export type SubscribeProps = {
 
@@ -44,10 +47,26 @@ export function Subscribe(props: SubscribeProps) {
 		</Type>
 		<PremiumFeatures />
 
-		<Type component="h3" variant="bold" size="lg">
-			{"Choose your price"}
-		</Type>
-		<PremiumPricingOptions />
+
+		{
+			controller.isPremium
+				? <>
+					<Type component="h3" variant="bold" size="lg">
+						{"You are already a Nexpenda premium user"}
+					</Type>
+					<Link to={routes.dashboard.path}>
+						<Button color="primary" variant="contained">
+							{"Go back"}
+						</Button>
+					</Link>
+				</>
+				: <>
+					<Type component="h3" variant="bold" size="lg">
+						{"Choose your price"}
+					</Type>
+					<PremiumPricingOptions />
+				</>
+		}
 
 	</SubscriptionFrame>
 }

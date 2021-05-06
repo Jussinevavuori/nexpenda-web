@@ -58,7 +58,6 @@ export class TransactionService extends Service {
       );
     }
   }
-
   /**
    * Post many transactions by IDs and return created json transactions as result.
    */

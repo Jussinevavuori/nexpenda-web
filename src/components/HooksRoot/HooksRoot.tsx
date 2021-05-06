@@ -5,6 +5,8 @@ import { useApplicationShortcuts } from "../../hooks/shortcuts/useApplicationSho
 import { useInitializeData } from "../../hooks/application/useInitializeData";
 import { useForceInterval } from "../../hooks/application/useForceInterval";
 import { usePathTitle } from "../../hooks/application/usePathTitle";
+import { useNotifyOnNetworkFailure } from "../../hooks/network/useNotifyOnNetworkFailure";
+import { useBlockCreation } from "../../hooks/application/useBlockCreation";
 
 /**
  * The purpose of the HooksRoot component is to call all required "global"
@@ -33,6 +35,12 @@ export function HooksRoot() {
 
 	// Sync the current path title
 	usePathTitle()
+
+	// Network failure notifications
+	useNotifyOnNetworkFailure()
+
+	// Block creating new items when limits exceeded
+	useBlockCreation()
 
 	return null
 }

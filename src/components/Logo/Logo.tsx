@@ -178,8 +178,8 @@ const defaultTypeProps: Record<LogoTypeVariant, Record<ThemeMode | "default", Ty
 	premium: {
 		default: {
 			component: "span",
-			size: "md",
-			variant: "bold",
+			size: "xl",
+			variant: "regular",
 		},
 		dark: {
 			color: "primary-300",

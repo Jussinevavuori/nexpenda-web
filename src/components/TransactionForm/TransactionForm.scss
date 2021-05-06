@@ -1,6 +1,7 @@
 @import "main";
 
 .TransactionForm {
+  position: relative;
   display: grid;
   grid-template:
     "title close" auto

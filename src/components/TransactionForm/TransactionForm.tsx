@@ -1,6 +1,7 @@
 import "./TransactionForm.scss";
 import React, { useRef } from "react"
 import cx from "classnames"
+import EmojiPicker from "emoji-picker-react";
 import { TextField, InputAdornment, Button, ButtonGroup, Menu, IconButton } from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
@@ -9,7 +10,6 @@ import { useMdMedia, useSmMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { useTransactionFormController } from "./useTransactionFormController";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
-import EmojiPicker from "emoji-picker-react";
 import { Close } from "@material-ui/icons";
 
 export type TransactionFormProps = {

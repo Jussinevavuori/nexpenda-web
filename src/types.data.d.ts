@@ -25,6 +25,9 @@ type BudgetType = import("zod").TypeOf<
 >;
 
 type JsonCategory = JsonTransaction["category"];
+type JsonAppConfig = import("zod").TypeOf<
+  typeof import("./classes/AppConfig").AppConfig["Schema"]
+>;
 
 type JsonSpreadsheetTransaction = Pick<
   JsonTransactionInitializer,

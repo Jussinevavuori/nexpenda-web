@@ -7,14 +7,15 @@ import { routes } from "../../Routes";
 import { Link } from "react-router-dom";
 
 export type SubscribeBannerProps = {
-
+	onClose?(): void;
+	title?: string;
 };
 
 export function SubscribeBanner(props: SubscribeBannerProps) {
 	return <div className={cx("SubscribeBanner")}>
 
 		<Type variant="bold" size="lg" color="white">
-			{"Unlock the full potential of Nexpenda"}
+			{props.title || "Unlock the full potential of Nexpenda"}
 		</Type>
 
 		<Type color="white">
@@ -25,12 +26,25 @@ export function SubscribeBanner(props: SubscribeBannerProps) {
 
 		<Link to={routes.subscribe.path}>
 			<Button
+				className="primaryButton"
 				variant="contained"
 				fullWidth
 			>
 				{"Learn more"}
 			</Button>
 		</Link>
+
+		{
+			props.onClose &&
+			<Button
+				className="closeButton"
+				variant="text"
+				fullWidth
+				onClick={props.onClose}
+			>
+				{"Close"}
+			</Button>
+		}
 
 
 	</div>

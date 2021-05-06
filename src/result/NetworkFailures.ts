@@ -14,6 +14,7 @@ export type ServerFailureCode =
   | "transaction/limit-exceeded"
   | "budget/already-exists"
   | "budget/not-found"
+  | "budget/limit-exceeded"
   | "auth/missing-token"
   | "auth/invalid-token"
   | "auth/user-has-no-password"

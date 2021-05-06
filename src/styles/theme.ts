@@ -219,11 +219,11 @@ export function createTheme(color: ThemeColor, mode: ThemeMode) {
     overrides: {
       MuiTooltip: {
         tooltip: {
-          background: mode === "dark" ? colors["gray"][800] : _.white,
+          backgroundColor: mode === "dark" ? colors["gray"][800] : _.white,
           border:
             mode === "dark"
               ? `1px solid ${_.gray_700}`
-              : `2px solid ${_.gray_700}`,
+              : `2px solid ${_.gray_200}`,
           color: mode === "dark" ? `${_.gray_100}` : `${_.gray_900}`,
           fontSize: _.text_sm,
         },

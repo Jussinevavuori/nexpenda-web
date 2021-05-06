@@ -16,6 +16,7 @@ import { UserAvatar } from "../../components/UserAvatar/UserAvatar";
 import { ProfilePanel } from "../../components/ProfilePanel/ProfilePanel";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { Config } from "../../config";
+import { FreemiumTracker } from "../../components/FreemiumTracker/FreemiumTracker";
 
 export type SettingsProps = {
 }
@@ -65,6 +66,12 @@ export function Settings(props: SettingsProps) {
 				<SubscribeBanner />
 			}
 
+			{
+				!isDesktop && !controller.user.isPremium &&
+				<ContainerBlock className="customization" containerTitle="Free limits">
+					<FreemiumTracker />
+				</ContainerBlock>
+			}
 
 			<ContainerBlock className="customization" containerTitle="Theme">
 				<ThemePicker />
@@ -95,7 +102,6 @@ export function Settings(props: SettingsProps) {
 					<SettingsSubscriptionManager />
 				</ContainerBlock>
 			}
-
 
 			<ContainerBlock
 				containerTitle="Send feedback"

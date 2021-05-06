@@ -41,6 +41,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
     @include background-shadow-sm;
 
     & .links {
@@ -108,10 +109,15 @@
             display: none;
           }
           & svg {
-            margin-right: 0px;
+            margin: 0 auto;
           }
         }
       }
+    }
+
+    & .extra {
+      margin-top: auto;
+      padding: $spacing-4 $spacing-6;
     }
 
     & .actions {
@@ -140,6 +146,11 @@
 
         & > span {
           height: 24px;
+        }
+        &.closed {
+          & > span {
+            margin: 0 auto;
+          }
         }
       }
     }
@@ -184,6 +195,20 @@
 
           &.active {
             background: $primary-500;
+          }
+        }
+      }
+      & .actions {
+        & svg {
+          color: $gray-100;
+        }
+        & .toggle {
+          &:hover,
+          &:focus {
+            background: $gray-900;
+          }
+          &:active {
+            background: $gray-800;
           }
         }
       }

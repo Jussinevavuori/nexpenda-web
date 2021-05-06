@@ -31,6 +31,17 @@ a {
   }
 }
 
+/** Better alerts */
+.MuiAlert-root {
+  & > .MuiAlert-message {
+    text-transform: none;
+    @include text-regular;
+  }
+  & > .MuiAlert-icon {
+    align-self: center;
+  }
+}
+
 /** Fix the <Icon /> compnent when other styles override it */
 .MuiIcon-root.material-icons {
   font-family: "Material Icons";

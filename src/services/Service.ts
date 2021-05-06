@@ -6,6 +6,7 @@ import { Success } from "../result/Success";
 import { NetworkFailure } from "../result/NetworkFailures";
 import { routes } from "../Routes";
 import { StorageService } from "./StorageService";
+import { Subscribable } from "../utils/SubscriptionUtils/Subscribable";
 
 export type ServiceRequestConfig = {
   enableLogoutOnUnauthorized?: boolean;
@@ -17,6 +18,15 @@ export type RequestConfig = {
 };
 
 export class Service {
+  /**
+   * Subscribable for all errors
+   */
+  static NetworkFailureSubscribable = new Subscribable(
+    (failure: NetworkFailure<any, { errors?: any }>) => {
+      return failure;
+    }
+  );
+
   /**
    * Base URL for sending requests to the API
    */
@@ -137,7 +147,12 @@ export class Service {
       | Success<AxiosResponse<any>, string>
       | NetworkFailure<any, { errors?: any }>,
     config?: ServiceRequestConfig | undefined
-  ) {}
+  ) {
+    // Publish network failures
+    if (result.isFailure()) {
+      Service.NetworkFailureSubscribable.publish(result);
+    }
+  }
 
   /**
    * Gets basic axios config

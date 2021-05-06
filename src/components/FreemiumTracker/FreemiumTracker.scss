@@ -1,0 +1,90 @@
+@import "main";
+
+.FreemiumTracker {
+  &.ContainerBlock {
+    width: 100%;
+
+    padding-top: $spacing-3;
+    &.variant-minimal {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+
+    & > .limits {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-4;
+
+      & > .MuiCircularProgress-root {
+        margin: 0 auto;
+      }
+
+      & > .limit {
+        height: 50px;
+        width: 100%;
+        display: grid;
+        grid-template: "percentage title" auto "percentage value" auto / auto 1fr;
+        gap: 0 $spacing-3;
+
+        &.variant-minimal {
+          grid-template: "percentage" auto / 1fr;
+          gap: 0;
+        }
+
+        & > .title {
+          grid-area: title;
+          &.variant-minimal {
+            display: none;
+          }
+        }
+
+        & > .percentage {
+          grid-area: percentage;
+          align-self: center;
+          &.variant-minimal {
+            justify-self: center;
+          }
+        }
+
+        & > .value {
+          grid-area: value;
+          &.variant-minimal {
+            display: none;
+          }
+        }
+      }
+    }
+
+    & > a > .upgradeButton {
+      $offset: $spacing-6;
+      width: calc(100% + #{2 * $offset});
+      margin-top: $spacing-4;
+      margin-left: -$offset;
+      margin-right: -$offset;
+      margin-bottom: -$offset;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      &.variant-minimal {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        & .MuiButton-startIcon {
+          margin: 0;
+        }
+        & span.buttonLabel {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__Tooltip {
+    & .left {
+      margin-top: $spacing-2;
+    }
+  }
+}
