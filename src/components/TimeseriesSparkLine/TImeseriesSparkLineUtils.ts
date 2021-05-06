@@ -72,11 +72,12 @@ export class TimeseriesSparkLineUtils {
 
           // Hide if `hideValuesAfter` or `hideValuesBefore` provided and the
           // date matches either of those.
-          hidden:
+          hidden: Boolean(
             (options.hideValuesAfter &&
               DateUtils.compareDate(date, ">", options.hideValuesAfter)) ||
-            (options.hideValuesBefore &&
-              DateUtils.compareDate(date, "<", options.hideValuesBefore)),
+              (options.hideValuesBefore &&
+                DateUtils.compareDate(date, "<", options.hideValuesBefore))
+          ),
         };
       }
     );

@@ -72,45 +72,55 @@ export class SvgSparkLinePath {
       return `${x.toFixed(2)} ${y.toFixed(2)}`;
     }
 
-    // Start drawing with initial point
-    let mainPathD = `M ${getPoint(data[0])} `;
-    let shadowPathD = `M ${getPoint(data[0])} `;
-
+    // Find first and last visible datapoints
     let firstVisibleDatapoint: SparkLineDataPoint | undefined;
     let lastVisibleDatapoint: SparkLineDataPoint | undefined;
 
+    for (const datapoint of data) {
+      if (!datapoint.hidden) {
+        firstVisibleDatapoint = firstVisibleDatapoint ?? datapoint;
+        lastVisibleDatapoint = datapoint;
+      }
+    }
+
+    // If no visible datapoints, return empty
+    if (!firstVisibleDatapoint || !lastVisibleDatapoint) {
+      return {
+        mainPathD: "",
+        shadowPathD: "",
+        zeroLinePathD: "",
+      };
+    }
+
+    // Start drawing with initial point
+    let mainPathD = `M ${getPoint(firstVisibleDatapoint)} `;
+    let shadowPathD = `M ${getPoint(firstVisibleDatapoint)} `;
+
     // Draw line to each point
     for (const datapoint of data) {
-      if (datapoint.hidden) {
-        continue;
+      if (!datapoint.hidden) {
+        const nextPoint = `L ${getPoint(datapoint)} `;
+        mainPathD += nextPoint;
+        shadowPathD += nextPoint;
       }
-      const nextPoint = `L ${getPoint(datapoint)} `;
-      mainPathD += nextPoint;
-      shadowPathD += nextPoint;
-
-      // Find first and last visible datapoints
-      firstVisibleDatapoint = firstVisibleDatapoint ?? datapoint;
-      lastVisibleDatapoint = datapoint;
     }
 
     // Complete shadow rectangle
-    if (firstVisibleDatapoint && lastVisibleDatapoint) {
-      shadowPathD += `L ${getPoint({
-        x: lastVisibleDatapoint.x,
-        y: min_y,
-        ignoreVerticalPadding: true,
-      })} `;
-      shadowPathD += `L ${getPoint({
-        x: firstVisibleDatapoint.x,
-        y: min_y,
-        ignoreVerticalPadding: true,
-      })} `;
-      shadowPathD += `L ${getPoint({
-        x: firstVisibleDatapoint.x,
-        y: firstVisibleDatapoint.y,
-      })} `;
-      shadowPathD += `z`;
-    }
+    shadowPathD += `L ${getPoint({
+      x: lastVisibleDatapoint.x,
+      y: min_y,
+      ignoreVerticalPadding: true,
+    })} `;
+    shadowPathD += `L ${getPoint({
+      x: firstVisibleDatapoint.x,
+      y: min_y,
+      ignoreVerticalPadding: true,
+    })} `;
+    shadowPathD += `L ${getPoint({
+      x: firstVisibleDatapoint.x,
+      y: firstVisibleDatapoint.y,
+    })} `;
+    shadowPathD += `z`;
 
     // Draw zero line
     const zeroY = range_y
