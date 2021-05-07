@@ -28,16 +28,18 @@ export function Budgets(props: BudgetsProps) {
 		<ViewContainer
 			scrollable
 			viewHeader={<ViewHeader>
-				<Type
-					className="title"
-					component="h1"
-					size="xl"
-					color="white"
-					variant="bold"
-				>
-					{"Budgets"}
-				</Type>
-				<MiniFreemiumTracker variant="budget" />
+				<div className="Budgets__headerContent">
+					<Type
+						className="title"
+						component="h1"
+						size="xl"
+						color="white"
+						variant="bold"
+					>
+						{"Budgets"}
+					</Type>
+					<MiniFreemiumTracker variant="budget" className="limit" />
+				</div>
 			</ViewHeader>}
 			viewPanel={<DefaultViewPanel />}
 		>

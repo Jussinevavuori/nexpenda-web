@@ -28,16 +28,18 @@ export function Analytics(props: AnalyticsProps) {
 			<ViewContainer
 				scrollable
 				viewHeader={<ViewHeader>
-					<Type
-						className="title"
-						component="h1"
-						size="xl"
-						color="white"
-						variant="bold"
-					>
-						{"Analytics"}
-					</Type>
-					<MiniFreemiumTracker variant="transaction" />
+					<div className="Analytics__headerContent">
+						<Type
+							className="title"
+							component="h1"
+							size="xl"
+							color="white"
+							variant="bold"
+						>
+							{"Analytics"}
+						</Type>
+						<MiniFreemiumTracker variant="transaction" className="limit" />
+					</div>
 				</ViewHeader>}
 				viewPanel={<DefaultViewPanel />}
 			>

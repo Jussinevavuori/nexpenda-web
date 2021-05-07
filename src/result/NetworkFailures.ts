@@ -27,7 +27,6 @@ export type ServerFailureCode =
   | "auth/email-already-confirmed"
   | "mail/error"
   | "database/access-failure"
-  | "firestore/access-failure"
   | "failure/validation"
   | "failure/unimplemented"
   | "failure/error"
