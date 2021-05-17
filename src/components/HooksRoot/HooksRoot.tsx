@@ -9,38 +9,93 @@ import { useNotifyOnNetworkFailure } from "../../hooks/network/useNotifyOnNetwor
 import { useBlockCreation } from "../../hooks/application/useBlockCreation";
 
 /**
+ * List of all hook components
+ */
+const HookComponents = [
+	/**
+	 * Enable Gtag tracking
+	 */
+	function HookComponent__useGtagTracking() {
+		useGtagTracking()
+		return null
+	},
+
+	/**
+	 * CSS utility for fullscreen (especially on mobile)
+	 */
+	function HookComponent__useVhFix() {
+		useVhFix()
+		return null
+	},
+
+	/**
+	 * Enable history notifications
+	 */
+	function HookComponent__useHistoryNotifications() {
+		useHistoryNotifications()
+		return null
+	},
+
+	/**
+	 * Enable all application shortcuts
+	 */
+	function HookComponent__useApplicationShortcuts() {
+		useApplicationShortcuts()
+		return null
+	},
+
+	/**
+	 * Initialize application data by instantly fetching the profile and 
+	 * transactions
+	 */
+	function HookComponent__useInitializeData() {
+		useInitializeData()
+		return null
+	},
+
+	/**
+	 * Apply forced or disabledd intervals
+	 */
+	function HookComponent__useForceInterval() {
+		useForceInterval()
+		return null
+	},
+
+	/**
+	 * Sync the current path title
+	 */
+	function HookComponent__usePathTitle() {
+		usePathTitle()
+		return null
+	},
+
+	/**
+	 * Network failure notifications
+	 */
+	function HookComponent__useNotifyOnNetworkFailure() {
+		useNotifyOnNetworkFailure()
+		return null
+	},
+
+	/**
+	 * Block creating new items when limits exceeded
+	 */
+	// Block creating new items when limits exceeded
+	function HookComponent__useBlockCreation() {
+		useBlockCreation()
+		return null
+	},
+] as const
+
+/**
  * The purpose of the HooksRoot component is to call all required "global"
  * application hooks from the "root" of the application without having to
  * rerender the real application root.
  */
 export function HooksRoot() {
-	// Enable Gtag tracking
-	useGtagTracking()
-
-	// CSS utility for fullscreen (especially on mobile)
-	useVhFix()
-
-	// Enable history notifications
-	useHistoryNotifications()
-
-	// Enable all application shortcuts
-	useApplicationShortcuts()
-
-	// Initialize application data by instantly fetching the profile and 
-	// transactions
-	useInitializeData()
-
-	// Apply forced or disabledd intervals
-	useForceInterval()
-
-	// Sync the current path title
-	usePathTitle()
-
-	// Network failure notifications
-	useNotifyOnNetworkFailure()
-
-	// Block creating new items when limits exceeded
-	useBlockCreation()
-
-	return null
+	return <>
+		{
+			HookComponents.map((Component, index) => <Component key={index} />)
+		}
+	</>
 }

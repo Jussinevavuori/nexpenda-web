@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useBudgetCreatorDialogVariableOpenState } from "../../components/BudgetCreatorDialog/useBudgetCreatorDialogController";
 import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
-import { useStoreActions } from "../../store";
+import { useStoreActions, useStoreState } from "../../store";
 import { useRedirect } from "../utils/useRedirect";
 import { useIsBudgetsLimitExceeded } from "./useIsBudgetsLimitExceeded";
 import { useIsPremium } from "./useIsPremium";
@@ -11,27 +11,51 @@ export function useBlockCreation() {
   const notify = useStoreActions((_) => _.notification.notify);
   const redirect = useRedirect();
 
-  const [
-    openTransactionMenu,
-    setOpenTransactionMenu,
-  ] = useTransactionCreatorDrawerOpenState();
-  const [
-    openBudgetMenu,
-    setOpenBudgetMenu,
-  ] = useBudgetCreatorDialogVariableOpenState();
+  /**
+   * Check if the user is loaded to prevent early blocking
+   */
+  const isUserLoaded = useStoreState((_) => _.auth.initialized);
 
+  /**
+   * Check if the user is a premium user
+   */
   const isPremium = useIsPremium();
 
+  /**
+   * Access transaction menu for closing it when required
+   */
+  const [isTransactionMenuOpen, setIsTransactionMenuOpen] =
+    useTransactionCreatorDrawerOpenState();
+
+  /**
+   * Access budget menu for closing it when required
+   */
+  const [isBudgetMenuOpen, setIsBudgetMenuOpen] =
+    useBudgetCreatorDialogVariableOpenState();
+
+  /**
+   * Check if the current transaction limit has been exceeded
+   */
   const isTransactionsLimitExceeded = useIsTransactionsLimitExceeded();
+
+  /**
+   * Check if the current budgets limit has been exceeded
+   */
   const isBudgetsLimitExceeded = useIsBudgetsLimitExceeded();
 
   /**
    * Automatically close transaction creation when limit exceeded.
    */
   useEffect(() => {
+    // Do not close when user not yet loaded
+    if (!isUserLoaded) return;
+
+    // Do not close if premium
     if (isPremium) return;
-    if (openTransactionMenu && isTransactionsLimitExceeded) {
-      setOpenTransactionMenu(false);
+
+    // Close transactions menu if exceeded
+    if (isTransactionMenuOpen && isTransactionsLimitExceeded) {
+      setIsTransactionMenuOpen(false);
       notify({
         message:
           `You have hit the limit of free transactions. ` +
@@ -51,8 +75,9 @@ export function useBlockCreation() {
     notify,
     redirect,
     isPremium,
-    openTransactionMenu,
-    setOpenTransactionMenu,
+    isUserLoaded,
+    isTransactionMenuOpen,
+    setIsTransactionMenuOpen,
     isTransactionsLimitExceeded,
   ]);
 
@@ -60,9 +85,15 @@ export function useBlockCreation() {
    * Automatically close budget creation when limit exceeded.
    */
   useEffect(() => {
+    // Do not close when user not yet loaded
+    if (!isUserLoaded) return;
+
+    // Do not close if premium
     if (isPremium) return;
-    if (openBudgetMenu && isBudgetsLimitExceeded) {
-      setOpenBudgetMenu(undefined);
+
+    // Close budget menu if exceeded
+    if (isBudgetMenuOpen && isBudgetsLimitExceeded) {
+      setIsBudgetMenuOpen(undefined);
       notify({
         message:
           `You have hit the limit of free budgets. ` +
@@ -82,8 +113,9 @@ export function useBlockCreation() {
     notify,
     redirect,
     isPremium,
-    openBudgetMenu,
-    setOpenBudgetMenu,
+    isUserLoaded,
+    isBudgetMenuOpen,
+    setIsBudgetMenuOpen,
     isBudgetsLimitExceeded,
   ]);
 }

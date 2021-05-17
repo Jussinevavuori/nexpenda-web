@@ -2,9 +2,16 @@ import { LogService } from "../../services/LogService";
 import { StorageService } from "../../services/StorageService";
 
 export class ThemeUtils {
+  // Reset theme to unauthenticate user's theme
+  static resetTheme() {
+    StorageService.latestSelectedThemeColor.setValue(undefined);
+    StorageService.latestSelectedThemeMode.setValue(undefined);
+  }
+
   // Initialize theme variables
   static initialize() {
-    const initialThemeColor = StorageService.latestSelectedThemeColor.getValue();
+    const initialThemeColor =
+      StorageService.latestSelectedThemeColor.getValue();
     if (initialThemeColor) {
       ThemeUtils.switchThemeColorVariables(initialThemeColor);
     }

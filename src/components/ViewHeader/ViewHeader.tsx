@@ -1,5 +1,5 @@
 import "./ViewHeader.scss";
-import textureImg from "../../images/shapelined-_JBKdviweXI-unsplash.jpg";
+import textureImg from "../../assets/images/textureImage.jpg";
 import React from "react";
 import { createClassnames } from "../../utils/Utils/createClassnames";
 import { Type } from "../Type/Type";

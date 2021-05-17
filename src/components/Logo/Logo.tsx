@@ -1,11 +1,10 @@
 import "./Logo.scss";
 import React from "react"
-import IconLogoBlackColoredSvg from "../../images/icon-logo-colored.svg"
-import IconLogoWhiteColoredSvg from "../../images/icon-logo-white-colored.svg"
 import cx from "classnames"
 import { Type, TypeProps } from "../Type/Type";
 import { AnimatePresence, motion } from "framer-motion";
 import { useThemeMode } from "../../hooks/application/useThemeMode";
+import { LogoIcon } from "../LogoIcon/LogoIcon";
 // import { useLogoController } from "./useLogoController";
 
 export type LogoProps = TypeProps & {
@@ -99,11 +98,7 @@ export function Logo(props: LogoProps) {
 					animate={{ opacity: 1, scaleX: 1, transformOrigin: "left" }}
 					exit={{ opacity: 0, scaleX: 0, transformOrigin: "left" }}
 				>
-					<img
-						src={themeMode === "dark" ? IconLogoWhiteColoredSvg : IconLogoBlackColoredSvg}
-						alt="Nexpenda"
-						className=""
-					/>
+					<LogoIcon />
 				</motion.span>
 			}
 		</AnimatePresence>

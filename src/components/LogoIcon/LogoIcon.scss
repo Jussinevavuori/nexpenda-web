@@ -1,0 +1,8 @@
+@import "main";
+
+// Generate all color styles
+@each $name, $color in $colors {
+  svg.LogoIcon > path.color-#{$name} {
+    fill: $color;
+  }
+}

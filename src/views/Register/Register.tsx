@@ -1,7 +1,7 @@
 import "./Register.scss"
 import React from 'react';
 import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core";
-import googleLogo from "../../images/logo_google.png"
+import googleLogo from "../../assets/logos/googleLogo.png"
 import {
 	Email as EmailIcon,
 	Visibility as PasswordVisibleIcon,

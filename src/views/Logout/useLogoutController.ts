@@ -4,6 +4,7 @@ import { useRedirect } from "../../hooks/utils/useRedirect";
 import { routes } from "../../Routes";
 import { StorageService } from "../../services/StorageService";
 import { useStoreActions } from "../../store";
+import { ThemeUtils } from "../../utils/ThemeUtils/ThemeUtils";
 import { LogoutProps } from "./Logout";
 
 export function useLogoutController(props: LogoutProps) {
@@ -26,6 +27,15 @@ export function useLogoutController(props: LogoutProps) {
   function handleRedirect() {
     redirect(routes.login);
   }
+
+  /**
+   * Handle theme reset
+   */
+  const setThemeColor = useStoreActions((_) => _.theme.setThemeColor);
+  useEffect(() => {
+    ThemeUtils.resetTheme();
+    setThemeColor(ThemeUtils.freeDefaultThemeColor);
+  }, [setThemeColor]);
 
   return { handleRedirect };
 }

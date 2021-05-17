@@ -111,6 +111,7 @@ export const themeModel: ThemeModel = {
     (actions, target) => {
       const themeColor = target.payload.themeColor;
       const themeMode = target.payload.themeMode;
+
       if (ThemeUtils.isThemeColor(themeColor)) {
         if (ThemeUtils.isPremiumThemeColor(themeColor)) {
           if (target.payload.isPremium) {
@@ -133,8 +134,7 @@ export const themeModel: ThemeModel = {
     (_, store) => store.auth.logout,
     (actions, target) => {
       actions.setThemeColor("blue");
-      StorageService.latestSelectedThemeColor.setValue(undefined);
-      StorageService.latestSelectedThemeMode.setValue(undefined);
+      ThemeUtils.resetTheme();
     }
   ),
 };
