@@ -34,17 +34,22 @@ export class Category {
   static defaultExpenseIcon = "💸";
 
   /**
-   * Category icon. Defaults to the defaultExpenseIcon if no icon provided.
+   * Category icon. Based on the given sign uses either the default income
+   * icon or default expense icon.
    */
-  public get defaultedIcon() {
-    return this.icon ?? Category.defaultIncomeIcon;
+  public getDefaultedIcon(sign: number | "+" | "-" = "+") {
+    const _sign = sign === "+" ? 1 : sign === "-" ? -1 : sign;
+    const defaultIcon =
+      _sign > 0 ? Category.defaultIncomeIcon : Category.defaultExpenseIcon;
+    return this.icon || defaultIcon;
   }
 
   /**
-   * Get the full label of the category, which includes the name and the icon
+   * Get the full label of the category, which includes the name and the icon.
+   * Uses a defaulted icon, using the given sign.
    */
-  public get fullLabel() {
-    return this.defaultedIcon + " " + this.name;
+  public getFullLabel(sign: number | "+" | "-" = "+") {
+    return `${this.getDefaultedIcon(sign)} ${this.name}`;
   }
 
   /**

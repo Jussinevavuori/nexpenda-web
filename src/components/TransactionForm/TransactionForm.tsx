@@ -181,6 +181,7 @@ export function TransactionForm(props: TransactionFormProps) {
 				autoComplete
 				fullWidth
 				options={controller.categories.map(_ => _.value)}
+				renderOption={controller.optionRenderer}
 				renderInput={(params) => (
 					<TextField
 						variant="outlined"

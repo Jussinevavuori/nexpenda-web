@@ -35,7 +35,7 @@ export function MultiCategorySelector(props: MultiCategorySelectorProps) {
 				filterSelectedOptions
 				fullWidth
 				options={controller.categories}
-				getOptionLabel={category => category.fullLabel}
+				getOptionLabel={category => category.getFullLabel()}
 				renderInput={(params) => (
 					<TextField
 						variant="outlined"

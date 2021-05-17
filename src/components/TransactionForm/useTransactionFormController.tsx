@@ -3,6 +3,7 @@ import emojiRegex from "emoji-regex"
 import { useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
+import { Category } from "../../classes/Category";
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -56,6 +57,22 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		setTime(editTransaction.date)
 		setIcon(editTransaction.category.icon)
 	}, [editTransaction])
+
+
+
+	/**
+	 * Render option with icon in list
+	 */
+	function optionRenderer(categoryValue: string) {
+		const categoryObject = categories.find(_ => _.value === categoryValue)
+		if (categoryObject) {
+			return categoryObject.getFullLabel(sign)
+		}
+		const icon = sign === "+"
+			? Category.defaultIncomeIcon
+			: Category.defaultExpenseIcon
+		return `${icon} ${categoryValue}`
+	}
 
 	/**
 	 * Error state
@@ -273,5 +290,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		errors: errors,
 		categories: categories,
 		edit: !!editTransaction,
+		optionRenderer,
 	}
 }
