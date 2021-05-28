@@ -97,7 +97,7 @@ export class LogService extends Service {
    */
   static async warn(options: Loggable) {
     const log = new Log({
-      type: "info",
+      type: "warn",
       message: options.message,
       data: options.data,
     });
@@ -115,7 +115,7 @@ export class LogService extends Service {
    */
   static async error(options: Loggable) {
     const log = new Log({
-      type: "info",
+      type: "error",
       message: options.message,
       data: options.data,
     });

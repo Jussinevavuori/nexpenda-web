@@ -38,6 +38,7 @@ type NetworkFailureDetails<E> = {
   code: ServerFailureCode;
   message: string;
   data?: E;
+  url?: string;
 };
 
 export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
@@ -46,20 +47,37 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
   public readonly message: string;
   public readonly code: ServerFailureCode;
   public readonly data?: E;
+  public readonly url?: string;
 
   constructor(details: NetworkFailureDetails<E>) {
-    super("network");
+    super("network", {
+      silent: NetworkFailure.shouldSilence(details),
+    });
     this.details = details;
     this.status = details.status;
     this.message = details.message;
     this.code = details.code;
     this.data = details.data;
+    this.url = details.url;
 
     if (process.env.NODE_ENV === "development") {
       console.error(this);
     } else {
       console.error(`E${this.code}: ${this.message} <${this.status}>`);
     }
+  }
+
+  /**
+   * Check if a given network failure should be silenced based on its details.
+   */
+  static shouldSilence<E>(details: NetworkFailureDetails<E>) {
+    // Silence /api/logs endpoint events
+    if (details.url?.includes("/api/url")) {
+      return true;
+    }
+
+    // By default do not silence
+    return false;
   }
 
   static FromAxiosError<T>(
@@ -79,6 +97,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
           data.errors && typeof data.errors === "object"
             ? { errors: data.errors }
             : {},
+        url: error.config.url,
       });
     } else if (error.request) {
       return new NetworkFailure<T, { errors?: object }>({
@@ -86,6 +105,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         code: "server/unavailable",
         message: "Could not contact server. Try again later.",
         data: {},
+        url: error.config.url,
       });
     } else {
       return new NetworkFailure<T, { errors?: object }>({
@@ -93,6 +113,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         code: "server/failure-formulating-request",
         message: "Could not formulate request to server.",
         data: {},
+        url: error.config.url,
       });
     }
   }

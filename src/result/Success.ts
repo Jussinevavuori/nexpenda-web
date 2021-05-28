@@ -9,7 +9,7 @@ export class Success<T, R = string> implements IResult<T, R> {
     this.value = value;
   }
 
-  public getOr(fallback: T): T {
+  public getOr<FB>(fallback: FB): T | FB {
     return this.value;
   }
 
@@ -21,16 +21,18 @@ export class Success<T, R = string> implements IResult<T, R> {
     return false;
   }
 
+  /**
+   * Get all successes from a list of results.
+   */
   static All<T>(results: IResult<T>[]) {
-    const all: Success<T>[] = [];
-    results.forEach((result) => {
-      if (result.isSuccess()) {
-        all.push(result);
-      }
-    });
-    return all;
+    return results.reduce((successes, result) => {
+      return result.isSuccess() ? [...successes, result] : successes;
+    }, [] as Array<Success<T, string>>);
   }
 
+  /**
+   * Create a new empty success without a value with the void type.
+   */
   static Empty() {
     return new Success<void>(undefined);
   }
