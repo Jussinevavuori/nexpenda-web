@@ -28,7 +28,7 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 	const isDarkTheme = useIsDarkTheme()
 	const cx = createClassnames(`variant-${props.variant ?? "default"}`)
 
-	if (controller.isPremium) return null
+	if (controller.isPremium || !controller.isUserLoaded) return null
 
 	return <ContainerBlock
 		className={cx(

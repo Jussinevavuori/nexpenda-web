@@ -67,13 +67,13 @@
       & .inputContainer {
         position: relative;
 
-        & .smartCategoriesContainer {
+        & .smartContainer {
           position: absolute;
           z-index: 10;
           top: 50%;
-          & > .smartCategories {
+          & > ul {
             transform: translateY(-50%);
-            & > .smartCategory {
+            & > li {
               border: 1px solid $gray-300;
               padding: $spacing-1 $spacing-2;
               border-radius: $spacing-4;

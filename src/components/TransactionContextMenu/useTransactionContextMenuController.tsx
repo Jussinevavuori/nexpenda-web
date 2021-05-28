@@ -111,7 +111,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	const { 1: setIsSearchOpen } = useIsSearchOpen()
 
 	const isCategoryFilterToggledOn = useMemo(() => {
-		return smartSearch.matchCategories.some(c => {
+		return smartSearch.categories.some(c => {
 			return c.id === menu.transaction?.category.id
 		})
 	}, [smartSearch, menu])
@@ -123,12 +123,12 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 		if (!transaction) return
 
 		// If category included, remove it, else toggle it on
-		const categoryAlreadyIncluded = smartSearch.matchCategories.some(_ => _.id === transaction.category.id)
+		const categoryAlreadyIncluded = smartSearch.includesCategory(transaction.category)
 
 		// Get new categories by excluding or adding the category
 		const categories = categoryAlreadyIncluded
-			? smartSearch.matchCategories.filter(_ => _.id !== transaction.category.id)
-			: smartSearch.matchCategories.concat(transaction.category)
+			? smartSearch.categories.filter(_ => _.id !== transaction.category.id)
+			: smartSearch.categories.concat(transaction.category)
 
 		// If added category, open search
 		if (!categoryAlreadyIncluded) {
@@ -136,7 +136,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 		}
 
 		// Get new search
-		const newSearch = smartSearch.getSearchTermWithCategory(categories)
+		const newSearch = smartSearch.setCategories(categories)
 		setSearch(newSearch)
 
 		// Close

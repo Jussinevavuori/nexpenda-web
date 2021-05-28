@@ -80,31 +80,55 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 									{
 										controller.open &&
 										!controller.isInputFocused &&
-										controller.smartSearch.matchCategories.length > 0 &&
+										controller.smartSearch.categories.length > 0 &&
 										<motion.div
-											className="smartCategoriesContainer"
+											className="categories smartContainer"
 											transition={{ duration: 0.1 }}
 											initial={{ opacity: 0, y: -10 }}
 											animate={{ opacity: 1, y: 0 }}
 											exit={{ opacity: 0, y: 10 }}
 										>
-											<motion.div
-												className="smartCategories"
-												transition={{ duration: 0.2 }}
-											>
+											<motion.ul transition={{ duration: 0.2 }}>
 												{
-													controller.smartSearch.matchCategories.map(c => {
-														return <span className="smartCategory" key={c.id}>
+													controller.smartSearch.categories.map(c => {
+														return <li key={c.id}>
 															<span className="icon">
 																{c.icon || "💰"}
 															</span>
 															<span className="name">
 																{c.name}
 															</span>
-														</span>
+														</li>
 													})
 												}
-											</motion.div>
+											</motion.ul>
+										</motion.div>
+									}
+									{
+										controller.open &&
+										!controller.isInputFocused &&
+										controller.smartSearch.amountComparisons.length > 0 &&
+										<motion.div
+											className="amountComparisons smartContainer"
+											transition={{ duration: 0.1 }}
+											initial={{ opacity: 0, y: -10 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: 10 }}
+										>
+											<motion.ul transition={{ duration: 0.2 }}>
+												{
+													controller.smartSearch.amountComparisons.map(c => {
+														return <li key={c.id}>
+															<span className="icon">
+																{c.comparisonType}
+															</span>
+															<span className="name">
+																{c.amount.format()}
+															</span>
+														</li>
+													})
+												}
+											</motion.ul>
 										</motion.div>
 									}
 								</AnimatePresence>

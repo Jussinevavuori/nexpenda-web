@@ -3,195 +3,221 @@ import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { Category } from "./Category";
 import { Transaction } from "./Transaction";
 import { lightFormat } from "date-fns";
-import { LogService } from "../services/LogService";
+import { SearchTermParser } from "./SearchTermParser";
+import { MoneyAmountComparison } from "./MoneyAmountComparison";
 
+/**
+ * Class to enable parsing a search string into a complex matcher that filters
+ * based on the
+ *
+ * 1. Selected date range
+ * 2. Specified categories with `category:category-1;category-2` terms.
+ * 3. Specified amount with `amount:>158,39;<200,00` terms.
+ */
 export class SmartTransactionFilter {
+  /**
+   * The cleaned search string where extra values have been removed and parsed
+   * into the correct properties.
+   */
   public readonly search: string;
+
+  /**
+   * Context (all categories and selected timerange) for filtering transactions.
+   */
   public readonly context: {
     categories: Category[];
     startDate: Date;
     endDate: Date;
   };
-  public readonly matchCategories: Category[];
+
+  /**
+   * All parsed categories.
+   */
+  public readonly categories: Category[];
+
+  /**
+   * All parsed money amount comparisons.
+   */
+  public readonly amountComparisons: MoneyAmountComparison[];
+
+  /**
+   * The original unparsed search term
+   */
   public readonly originalSearch: string;
+
+  /**
+   * Check whether the filter is empty.
+   */
   public readonly isEmpty: boolean;
 
   constructor(search: string, context: SmartTransactionFilter["context"]) {
     this.originalSearch = search;
     this.context = context;
 
-    this.matchCategories = SmartTransactionFilter.getCategoriesFromSearch(
+    // Parse all extra data
+    this.categories = SmartTransactionFilter.getCategories(search, context);
+    this.amountComparisons =
+      SmartTransactionFilter.getAmountComparisons(search);
+
+    // Clean search
+    this.search = SearchTermParser.removeValuesFromSearch(
       search,
-      context
+      [
+        SmartTransactionFilter.categoryPrefix,
+        SmartTransactionFilter.amountComparisonPrefix,
+      ],
+      { clean: true }
     );
 
-    this.search = SmartTransactionFilter.removeValuesFromSearch(search, [
-      SmartTransactionFilter.categoryPrefix,
-    ])
-      .trim()
-      .replace(/\s+/g, " ");
+    // Check if the filter is empty
+    this.isEmpty =
+      !this.search &&
+      this.categories.length === 0 &&
+      this.amountComparisons.length === 0;
+  }
 
-    this.isEmpty = !this.search && this.matchCategories.length === 0;
+  /**
+   * ===========================================================================
+   * TRANSACTION COMPARISON AND FILTERING UTILITIES
+   * ===========================================================================
+   */
+
+  /**
+   * Utility function for compare
+   */
+  private matchesDateRange(transaction: Transaction) {
+    return (
+      DateUtils.compareDate(transaction.date, ">=", this.context.startDate) &&
+      DateUtils.compareDate(transaction.date, "<=", this.context.endDate)
+    );
+  }
+
+  /**
+   * Utility function for compare
+   */
+  private matchesCategories(transaction: Transaction) {
+    return (
+      this.categories.length === 0 ||
+      this.categories.some((category) => {
+        return category.id === transaction.category.id;
+      })
+    );
+  }
+
+  /**
+   * Utility function for compare
+   */
+  private matchesAmountComparisons(transaction: Transaction) {
+    return (
+      this.amountComparisons.length === 0 ||
+      this.amountComparisons.every((_) => _.compare(transaction.amount))
+    );
+  }
+
+  /**
+   * Utility function for compare
+   */
+  private matchesSearchTerm(transaction: Transaction) {
+    const targets = [
+      transaction.amount.format(),
+      transaction.category.value,
+      transaction.comment,
+      lightFormat(transaction.date, "d.M.yyyy"),
+    ];
+    return DataUtils.textSearch(this.search, ...targets);
   }
 
   /**
    * Function to compare whether a transaction matches the current filter
    */
   compare(transaction: Transaction) {
-    // Match by start date
-    if (DateUtils.compareDate(transaction.date, "<", this.context.startDate)) {
-      return false;
-    }
-
-    // Match by end date
-    if (DateUtils.compareDate(transaction.date, ">", this.context.endDate)) {
-      return false;
-    }
-
-    // Match by categories
-    if (this.matchCategories.length > 0) {
-      if (!this.matchCategories.some((_) => _.id === transaction.category.id)) {
-        return false;
-      }
-    }
-
-    // Match by raw search
-    if (this.search) {
-      const matchAny = [
-        transaction.amount.format(),
-        transaction.category.value,
-        transaction.comment,
-        lightFormat(transaction.date, "d.M.yyyy"),
-      ];
-      if (!DataUtils.textSearch(this.search, ...matchAny)) {
-        return false;
-      }
-    }
-
-    return true;
+    return (
+      this.matchesDateRange(transaction) &&
+      this.matchesCategories(transaction) &&
+      this.matchesSearchTerm(transaction) &&
+      this.matchesAmountComparisons(transaction)
+    );
   }
 
   /**
-   * Prefix from values separator <prefix>:<values>
+   * ===========================================================================
+   * CATEGORY MATCHING UTILITIES
+   * ===========================================================================
    */
-  static prefixSeparator = ":";
 
   /**
-   * Value from value separator <value_1>;<value_2>
-   */
-  static valuesSeparator = ";";
-
-  /**
-   * Returns the search string with all smart filters removed
-   *
-   * @param search Original search string
-   * @param prefixes Smart filters to remove
-   */
-  static removeValuesFromSearch(search: string, prefixes: string[]) {
-    let result = search;
-
-    const sep = SmartTransactionFilter.prefixSeparator;
-
-    prefixes.forEach((prefix) => {
-      // eslint-disable-next-line
-      const regexp = new RegExp(`${prefix}${sep}([^\\s]+)`, "gmi");
-      const match = search.match(regexp);
-      if (!match) return;
-
-      const matchString = match[0];
-      if (!matchString) return;
-
-      result = result.replace(matchString, "");
-    });
-
-    return result;
-  }
-
-  /**
-   * Extracts a value from a search string with a specific prefix. For example,
-   * from the search string `"something category:example"`, the function
-   * would extract the value `["example"]` for the prefix `"category"`.
-   *
-   * Returns `undefined` when no value can be found. Multiple values can also
-   * be returned when they are separated with the `;`-character. For example for
-   * the search string `"something test:one;two;three"` the function would
-   * return the value `["one","two","three"]` for the prefix `"test"`
-   *
-   * @param search The search string
-   * @param prefix The prefix to get the value for
-   */
-  static getValuesFromSearch(search: string, prefix: string): string[] {
-    try {
-      // Prefix-value separator character and value-value separator character
-      const prefixSep = SmartTransactionFilter.prefixSeparator;
-      const valueSep = SmartTransactionFilter.valuesSeparator;
-
-      // Construct regexp and match
-      // eslint-disable-next-line
-      const regexp = new RegExp(`${prefix}${prefixSep}([^\\s]+)`, "gmi");
-      const match = search.match(regexp);
-
-      // Extract values
-      return match?.[0]?.split(prefixSep)?.[1]?.split(valueSep) ?? [];
-    } catch (error) {
-      LogService.warn({
-        message: `An error occured while extracting value from "${search}" with prefix ${prefix}:`,
-        data: { error },
-      });
-      return [];
-    }
-  }
-
-  /**
-   * Category prefix
+   * Category prefix for matching categories.
    */
   static categoryPrefix = "category";
 
   /**
-   * Finds the categories corresponding to the transaction filter
+   * Get all categories from a search (based on the categories provided in the
+   * context object).
    */
-  static getCategoriesFromSearch(
+  static getCategories(
     search: string,
     context: SmartTransactionFilter["context"]
   ): Category[] {
+    // Find all category slugs
     const prefix = SmartTransactionFilter.categoryPrefix;
-    const values = SmartTransactionFilter.getValuesFromSearch(search, prefix);
+    const values = SearchTermParser.getValuesFromSearch(search, prefix);
     const slugs = values.map((v) => v.toLowerCase().replace(/\s+/g, "-"));
 
-    let categories: Category[] = [];
-
-    slugs.forEach((slug) => {
+    // Match all slugs to categories if possible
+    return slugs.reduce((categories, slug) => {
       const category = context.categories.find((_) => _.slug === slug);
-      if (category) {
-        categories.push(category);
-      }
-    });
-
-    return categories;
+      return category ? categories.concat(category) : categories;
+    }, [] as Category[]);
   }
 
   /**
-   * Set the category in the original search
+   * Set the category in the original search.
+   *
+   * @returns New search term.
    */
-  getSearchTermWithCategory(category: Category[] | Category | undefined) {
-    let search = this.search;
-
+  setCategories(category: Category[] | Category = []): string {
     // All categories as an array
-    const categories = Array.isArray(category)
-      ? category
-      : category
-      ? [category]
-      : [];
+    const categories = Array.isArray(category) ? category : [category];
 
-    // Prepend category if one defined
-    if (categories.length > 0) {
-      const prefix = SmartTransactionFilter.categoryPrefix;
-      const prefixSep = SmartTransactionFilter.prefixSeparator;
-      const valuesSep = SmartTransactionFilter.valuesSeparator;
-      const values = categories.map((_) => _.slug);
-      search = `${prefix}${prefixSep}${values.join(valuesSep)}`;
-    }
+    return SearchTermParser.setValuesToSearch(
+      this.search,
+      SmartTransactionFilter.categoryPrefix,
+      categories.map((_) => _.slug)
+    );
+  }
 
-    return search;
+  /**
+   * Does the search include the a category?
+   *
+   * @param category Category object or id
+   */
+  includesCategory(category: string | Category) {
+    const categoryId = typeof category === "string" ? category : category.id;
+    return this.categories.some((_) => _.id === categoryId);
+  }
+
+  /**
+   * ===========================================================================
+   * CATEGORY MATCHING UTILITIES
+   * ===========================================================================
+   */
+
+  /**
+   * Prefix for matching amount comparisons.
+   */
+  static amountComparisonPrefix = "amount";
+
+  /**
+   * Get all money amount comparisons from a search.
+   */
+  static getAmountComparisons(search: string): MoneyAmountComparison[] {
+    // Find all comparisons and convert all valid ones into money amount
+    // comparison instances
+    const prefix = SmartTransactionFilter.amountComparisonPrefix;
+    const values = SearchTermParser.getValuesFromSearch(search, prefix);
+    return values.reduce((comparisons, value) => {
+      const comparison = MoneyAmountComparison.fromString(value);
+      return comparison ? [...comparisons, comparison] : comparisons;
+    }, [] as MoneyAmountComparison[]);
   }
 }

@@ -4,6 +4,7 @@ import { FreemiumTrackerProps } from "./FreemiumTracker";
 
 export function useFreemiumTrackerController(props: FreemiumTrackerProps) {
   // Premium status
+  const isUserLoaded = useStoreState((_) => _.auth.initialized);
   const isPremium = useStoreState((_) => _.auth.user)?.isPremium;
 
   // Limits
@@ -30,6 +31,7 @@ export function useFreemiumTrackerController(props: FreemiumTrackerProps) {
   const budgetsPercentage = (100 * budgetsCount) / budgetsLimit;
 
   return {
+    isUserLoaded,
     isPremium,
     isDefaultAppConfig: appConfig.isDefaultAppConfig,
 

@@ -7,6 +7,7 @@ export function useMiniFreemiumTrackerController(
   props: MiniFreemiumTrackerProps
 ) {
   // Premium status
+  const isUserLoaded = useStoreState((_) => _.auth.initialized);
   const isPremium = useStoreState((_) => _.auth.user)?.isPremium;
 
   // Limits
@@ -38,6 +39,7 @@ export function useMiniFreemiumTrackerController(
   }, [setIsDialogOpen]);
 
   return {
+    isUserLoaded,
     isPremium,
     isDefaultAppConfig: appConfig.isDefaultAppConfig,
     limit: props.variant === "transaction" ? transactionsLimit : budgetsLimit,

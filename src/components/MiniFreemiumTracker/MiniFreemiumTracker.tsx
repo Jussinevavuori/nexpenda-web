@@ -14,7 +14,7 @@ export function MiniFreemiumTracker(props: MiniFreemiumTrackerProps) {
 
 	const controller = useMiniFreemiumTrackerController(props)
 
-	if (controller.isPremium) return null
+	if (controller.isPremium || !controller.isUserLoaded) return null
 
 	return <div className={cx("MiniFreemiumTracker", props.className)}>
 
