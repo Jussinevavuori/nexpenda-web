@@ -1,5 +1,5 @@
 import { useAuth } from "../../hooks/application/useAuth";
-import { useIsLockedOutDialogOpen } from "../../hooks/application/useIsLockedOutDialogOpen";
+import { useIsLockedOutDialogOpen } from "../../hooks/componentStates/useIsLockedOutDialogOpen";
 import { PremiumUserLockProps } from "./PremiumUserLock";
 
 export function usePremiumUserLockController(props: PremiumUserLockProps) {

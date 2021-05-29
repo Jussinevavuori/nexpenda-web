@@ -2,12 +2,17 @@ import { DashboardPanelProps } from "./DashboardPanel";
 import { useCallback, useMemo } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
 import { DataUtils } from "../../../utils/DataUtils/DataUtils";
-import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController";
 import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState";
+import { useTransactionEditorDrawerVariableOpenState } from "../../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
+import { ComponentState } from "../../../hooks/componentStates/ComponentState";
 
 export function useDashboardPanelController(props: DashboardPanelProps) {
   // Is the search open
-  const [isSearchOpen] = useBooleanQueryState("search", "replace", "open");
+  const [isSearchOpen] = useBooleanQueryState(
+    ComponentState.keys.Search,
+    "replace",
+    "open"
+  );
 
   // Selection state
   const selection = useStoreState((_) => _.selection.selection);

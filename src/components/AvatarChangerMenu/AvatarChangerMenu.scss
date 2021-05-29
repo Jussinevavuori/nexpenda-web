@@ -1,0 +1,25 @@
+@import "main";
+
+.AvatarChangerMenu {
+  & .MuiMenuItem-root {
+    & > .Type {
+      padding: $spacing-2 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+      justify-content: center;
+
+      @include md {
+        padding: 0;
+        justify-content: flex-start;
+      }
+    }
+    &.upload svg {
+      color: $primary-600;
+    }
+    &.remove svg {
+      color: $red-600;
+    }
+  }
+}

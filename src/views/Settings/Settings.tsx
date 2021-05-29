@@ -1,7 +1,7 @@
 import "./Settings.scss";
 import React from "react"
 import { Button, CircularProgress } from "@material-ui/core";
-import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIcon } from "@material-ui/icons";
+import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIcon, Camera } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
@@ -17,6 +17,7 @@ import { ProfilePanel } from "../../components/ProfilePanel/ProfilePanel";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { Config } from "../../config";
 import { FreemiumTracker } from "../../components/FreemiumTracker/FreemiumTracker";
+import { AvatarChangerMenu } from "../../components/AvatarChangerMenu/AvatarChangerMenu";
 
 export type SettingsProps = {
 }
@@ -37,117 +38,135 @@ export function Settings(props: SettingsProps) {
 		</div>
 	}
 
-	return <ViewContainer
-		scrollable
-		viewHeader={<ViewHeader>
-			<div className="Settings__headerContent">
-				<UserAvatar />
-			</div>
-		</ViewHeader>}
-	>
+	return <>
+		<AvatarChangerMenu
+			open={controller.avatarChangerMenu.isOpen}
+			onClose={controller.avatarChangerMenu.handleClose}
+			DrawerProps={{ anchor: "bottom" }}
+			MenuProps={{ anchorEl: controller.avatarChangerMenu.anchorEl }}
+		/>
 
-		<div className="Settings">
+		<ViewContainer
+			scrollable
+			viewHeader={<ViewHeader>
+				<div className="Settings__headerContent">
+					<UserAvatar
+						hoverIcon={<Camera />}
+						onClick={controller.avatarChangerMenu.handleOpen}
+					/>
+				</div>
+			</ViewHeader>}
+		>
 
-			<Type
-				component="h2"
-				variant="bold"
-				size="xl"
-				color={isDarkTheme ? "gray-100" : "gray-900"}
-			>
-				{`Settings`}
-			</Type>
+			<div className="Settings">
 
-			<ContainerBlock className="profilePanel" containerTitle="Profile">
-				<ProfilePanel disableAvatar={!isDesktop} />
-			</ContainerBlock>
-
-			{
-				!controller.user.isPremium &&
-				<SubscribeBanner />
-			}
-
-			{
-				!isDesktop && !controller.user.isPremium &&
-				<ContainerBlock className="customization" containerTitle="Free limits">
-					<FreemiumTracker />
-				</ContainerBlock>
-			}
-
-			<ContainerBlock className="customization" containerTitle="Theme">
-				<ThemePicker />
-			</ContainerBlock>
-
-			<ContainerBlock className="fileHandlers" containerTitle="Import and export">
 				<Type
-					color={isDarkTheme ? "gray-400" : "gray-800"}
+					component="h2"
+					variant="bold"
+					size="xl"
+					color={isDarkTheme ? "gray-100" : "gray-900"}
 				>
-					{"Import existing transactions from your own spreadsheets "}
-					{"or export all your transactions into a .xlsx spreadsheet."}
+					{`Settings`}
 				</Type>
+
+				<ContainerBlock className="profilePanel" containerTitle="Profile">
+					<ProfilePanel
+						disableAvatar={!isDesktop}
+						UserAvatarProps={{
+							hoverIcon: <Camera />,
+							onClick: controller.avatarChangerMenu.handleOpen,
+						}}
+					/>
+				</ContainerBlock>
+
+				{
+					!controller.user.isPremium &&
+					<SubscribeBanner />
+				}
+
+				{
+					!isDesktop && !controller.user.isPremium &&
+					<ContainerBlock className="customization" containerTitle="Free limits">
+						<FreemiumTracker />
+					</ContainerBlock>
+				}
+
+				<ContainerBlock className="customization" containerTitle="Theme">
+					<ThemePicker />
+				</ContainerBlock>
+
+				<ContainerBlock className="fileHandlers" containerTitle="Import and export">
+					<Type
+						color={isDarkTheme ? "gray-400" : "gray-800"}
+					>
+						{"Import existing transactions from your own spreadsheets "}
+						{"or export all your transactions i	nto a .xlsx spreadsheet."}
+					</Type>
+					<Button
+						color="primary"
+						variant="contained"
+						endIcon={<UploadIcon />}
+						onClick={controller.handleOpenFileUploaderDrawer}
+						fullWidth
+					>
+						{"Import transactions"}
+					</Button>
+					<FileDownloader />
+				</ContainerBlock>
+
+				{
+					controller.canManageBilling &&
+					<ContainerBlock containerTitle="Manage your subscription">
+						<SettingsSubscriptionManager />
+					</ContainerBlock>
+				}
+
+				<ContainerBlock
+					containerTitle="Send feedback"
+					className="feedbackSection"
+				>
+					<Type
+						color={isDarkTheme ? "gray-400" : "gray-800"}
+						component="label"
+					>
+						{"Send honest feedback, report bugs or tell us what you love "}
+						{"about Nexpenda below!"}
+					</Type>
+					<Button
+						variant="outlined"
+						onClick={controller.handleOpenFeedbackDialog}
+						startIcon={<FeedbackIcon />}
+						fullWidth
+					>
+						{"Send feedback"}
+					</Button>
+				</ContainerBlock>
+
+
 				<Button
 					color="primary"
 					variant="contained"
-					endIcon={<UploadIcon />}
-					onClick={controller.handleOpenFileUploaderDrawer}
+					onClick={controller.handleLogout}
+					startIcon={<LogoutIcon />}
 					fullWidth
 				>
-					{"Import transactions"}
+					{"Log out"}
 				</Button>
-				<FileDownloader />
-			</ContainerBlock>
-
-			{
-				controller.canManageBilling &&
-				<ContainerBlock containerTitle="Manage your subscription">
-					<SettingsSubscriptionManager />
-				</ContainerBlock>
-			}
-
-			<ContainerBlock
-				containerTitle="Send feedback"
-				className="feedbackSection"
-			>
-				<Type
-					color={isDarkTheme ? "gray-400" : "gray-800"}
-					component="label"
-				>
-					{"Send honest feedback, report bugs or tell us what you love "}
-					{"about Nexpenda below!"}
-				</Type>
-				<Button
-					variant="outlined"
-					onClick={controller.handleOpenFeedbackDialog}
-					startIcon={<FeedbackIcon />}
-					fullWidth
-				>
-					{"Send feedback"}
-				</Button>
-			</ContainerBlock>
 
 
-			<Button
-				color="primary"
-				variant="contained"
-				onClick={controller.handleLogout}
-				startIcon={<LogoutIcon />}
-				fullWidth
-			>
-				{"Log out"}
-			</Button>
+				<div className="version">
+					<Type component="span" size="sm" color="gray-600">
+						{"Version"}
+					</Type>
+					<Type component="span" variant="bold" size="sm" color="gray-700" >
+						{Config.VERSION}
+					</Type>
+					<Type component="span" variant="bold" size="sm" color="gray-600">
+						{"Alpha"}
+					</Type>
+				</div>
 
-
-			<div className="version">
-				<Type component="span" size="sm" color="gray-600">
-					{"Version"}
-				</Type>
-				<Type component="span" variant="bold" size="sm" color="gray-700" >
-					{Config.VERSION}
-				</Type>
-				<Type component="span" variant="bold" size="sm" color="gray-600">
-					{"Alpha"}
-				</Type>
-			</div>
-
-		</div >
-	</ViewContainer>
+			</div >
+		</ViewContainer>
+	</>
 }

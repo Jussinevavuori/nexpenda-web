@@ -2,8 +2,8 @@ import { useRouteMatch } from "react-router-dom";
 import { routes } from "../../Routes";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState, useStoreActions } from "../../store";
-import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
 import { TabNavigationProps } from "./TabNavigation";
+import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
 
 export function useTabNavigationController(props: TabNavigationProps) {
   const dashboardMatch = useRouteMatch(routes.dashboard);

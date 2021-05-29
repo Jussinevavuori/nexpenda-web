@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { useBudgetsContext } from "../../contexts/BudgetsContext.context";
+import { useBudgetBlockMenuVariableOpenState } from "../../hooks/componentStates/useBudgetBlockMenuVariableOpenState";
 import { useStoreState } from "../../store";
-import { useBudgetBlockMenuDialogVariableOpenState } from "../BudgetBlockMenu/useBudgetBlockMenuController";
 import { BudgetBlockProps } from "./BudgetBlock";
 
 export function useBudgetBlockController(props: BudgetBlockProps) {
@@ -18,7 +18,7 @@ export function useBudgetBlockController(props: BudgetBlockProps) {
   const budgetCategories = props.budget.getCategories(categories);
   const budgetLabel = props.budget.getLabel(categories);
 
-  const { 1: setMenuId } = useBudgetBlockMenuDialogVariableOpenState();
+  const { 1: setMenuId } = useBudgetBlockMenuVariableOpenState();
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement>();
 
   const handleMenuOpen = useCallback(

@@ -5,24 +5,32 @@ import { useUserAvatarController } from "./useUserAvatarController"
 import { Avatar, AvatarProps, CircularProgress } from "@material-ui/core";
 
 export type UserAvatarProps = {
-
-} & AvatarProps
+	hoverIcon?: JSX.Element;
+} & Omit<AvatarProps, "children">
 
 export function UserAvatar(props: UserAvatarProps) {
 
-	const { className, ...MuiAvatarProps } = props
+	const { className, hoverIcon, ...MuiAvatarProps } = props
 
 	const controller = useUserAvatarController(props)
 
+	const isClickable = !!props.onClick
+
 	return <Avatar
-		className={cx("UserAvatar", className)}
+		className={cx("UserAvatar", className, { isClickable })}
 		{...MuiAvatarProps}
 	>
+		{
+			isClickable && props.hoverIcon &&
+			<div className="hover">
+				{props.hoverIcon}
+			</div>
+		}
 		{
 			controller.user
 				? controller.user.photoUrl
 					? <img alt="profileimage" src={controller.user.photoUrl} />
-					: controller.user.initials
+					: <span className="initials">{controller.user.initials}</span>
 				: <CircularProgress variant="indeterminate" />
 		}
 	</Avatar>

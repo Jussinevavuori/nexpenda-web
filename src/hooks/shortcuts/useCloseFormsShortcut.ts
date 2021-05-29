@@ -5,8 +5,7 @@ import {
   stringify as createQueryString,
 } from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
-import { TransactionCreatorDrawerOpenQuery } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
-import { TransactionEditorDrawerOpenHash } from "../../components/TransactionEditorDrawer/useTransactionEditorDrawerController";
+import { ComponentState } from "../componentStates/ComponentState";
 
 export function useCloseFormsShortcut() {
   const history = useHistory();
@@ -16,8 +15,8 @@ export function useCloseFormsShortcut() {
     const query = parseQueryString(location.search);
     const queryString = createQueryString({
       ...query,
-      [TransactionEditorDrawerOpenHash]: undefined,
-      [TransactionCreatorDrawerOpenQuery]: undefined,
+      [ComponentState.keys.TransactionEditorDrawer]: undefined,
+      [ComponentState.keys.TransactionCreatorDrawer]: undefined,
     });
 
     history.replace({ search: queryString });

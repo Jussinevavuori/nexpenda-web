@@ -1,14 +1,8 @@
 import { useState } from "react";
-import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
+import { useFeedbackDialogOpenState } from "../../hooks/componentStates/useFeedbackDialogOpenState";
 import { FeedbackService } from "../../services/FeedbackService";
 import { useStoreActions } from "../../store";
 import { FeedbackDialogProps } from "./FeedbackDialog";
-
-const FeedbackDialogOpenQuery = "feedback";
-
-export function useFeedbackDialogOpenState() {
-  return useBooleanQueryState(FeedbackDialogOpenQuery, "push", "open");
-}
 
 export function useFeedbackDialogController(props: FeedbackDialogProps) {
   const notify = useStoreActions((_) => _.notification.notify);

@@ -15,12 +15,8 @@ export function UserManager(props: UserManagerProps) {
 	return <div className="UserManager">
 		<UserAvatar
 			tabIndex={0}
-			onClick={(e) => {
-				if (controller.userMenuRef.current) {
-					controller.userMenuRef.current.open(e)
-				}
-			}}
+			onClick={controller.userMenu.handleOpen}
 		/>
-		<UserMenu ref={controller.userMenuRef} />
+		<UserMenu />
 	</div>
 }

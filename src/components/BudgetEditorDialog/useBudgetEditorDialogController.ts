@@ -1,24 +1,7 @@
 import { BudgetEditorDialogProps } from "./BudgetEditorDialog";
 import { useCallback, useMemo } from "react";
-import { useQueryState } from "../../hooks/state/useQueryState";
 import { useStoreState } from "../../store";
-
-export const BudgetEditorDialogOpenHash = "budget";
-
-export function useBudgetEditorDialogVariableOpenState() {
-  return useQueryState<null | string>({
-    key: BudgetEditorDialogOpenHash,
-    method: "replace",
-    decode(value) {
-      return value && typeof value === "string" && value.startsWith("edit--")
-        ? value.replace("edit--", "")
-        : null;
-    },
-    encode(id) {
-      return id ? `edit--${id}` : undefined;
-    },
-  });
-}
+import { useBudgetEditorDialogVariableOpenState } from "../../hooks/componentStates/useBudgetEditorDialogVariableOpenState";
 
 export function useBudgetEditorDialogController(
   props: BudgetEditorDialogProps

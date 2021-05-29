@@ -1,4 +1,4 @@
-import { useIsLockedOutDialogOpen } from "../../hooks/application/useIsLockedOutDialogOpen";
+import { useIsLockedOutDialogOpen } from "../../hooks/componentStates/useIsLockedOutDialogOpen";
 import { PremiumUserLockedOutDialogProps } from "./PremiumUserLockedOutDialog";
 
 export function usePremiumUserLockedOutDialogController(

@@ -1,16 +1,15 @@
-import { useRef } from "react"
+import { useUserMenuOpenState } from "../../hooks/componentStates/useUserMenuOpenState"
 import { useStoreState } from "../../store"
-import { UserMenuRef } from "../UserMenu/useUserMenuController"
 import { UserManagerProps } from "./UserManager"
 
 export function useUserManagerController(props: UserManagerProps) {
 
 	const user = useStoreState(_ => _.auth.user)
 
-	const userMenuRef = useRef<UserMenuRef | null>(null)
+	const userMenu = useUserMenuOpenState()
 
 	return {
 		user,
-		userMenuRef
+		userMenu,
 	}
 }

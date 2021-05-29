@@ -12,6 +12,7 @@ import { AnimateSharedLayout } from "framer-motion";
 import { SidebarNavigation } from "../SidebarNavigation/SidebarNavigation";
 import { TabNavigation } from "../TabNavigation/TabNavigation";
 import { FreemiumTrackerDialog } from "../FreemiumTrackerDialog/FreemiumTrackerDialog";
+import { AvatarChangerDialog } from "../AvatarChangerDialog/AvatarChangerDialog";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -35,6 +36,7 @@ export function AppFrame(props: AppFrameProps) {
 			<FeedbackDialog />
 			<FileUploaderDrawer />
 			<FreemiumTrackerDialog />
+			<AvatarChangerDialog />
 
 			{/* Static elements */}
 			<header>

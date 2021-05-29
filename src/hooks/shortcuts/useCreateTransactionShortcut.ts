@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useTransactionCreatorDrawerOpenState } from "../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
 import { useIsApplicationActive } from "../application/useIsApplicationActive";
+import { useTransactionCreatorDrawerOpenState } from "../componentStates/useTransactionCreatorDrawerOpenState";
 import { useShortcut } from "./useShortcut";
 
 export function useCreateTransactionShortcut() {

@@ -1,10 +1,11 @@
+import { ComponentState } from "../../hooks/componentStates/ComponentState";
 import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
 import { useStoreState } from "../../store";
 import { SubscribeProps } from "./Subscribe";
 
 export function useSubscribeController(props: SubscribeProps) {
   const [isCanceled, setIsCanceled] = useBooleanQueryState(
-    "canceled",
+    ComponentState.keys.SubscriptionCanceled,
     "replace",
     "true"
   );

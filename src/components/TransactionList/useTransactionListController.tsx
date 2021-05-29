@@ -1,9 +1,9 @@
 import { createRef, useMemo, useCallback, useState, useEffect } from "react"
 import { List } from "react-virtualized"
+import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState"
 import { useStoreState } from "../../store"
 import { theme } from "../../styles/main"
 import { DateUtils } from "../../utils/DateUtils/DateUtils"
-import { useTransactionCreatorDrawerOpenState } from "../TransactionCreatorDrawer/useTransactionCreatorDrawerController"
 import { TransactionListProps } from "./TransactionList"
 
 

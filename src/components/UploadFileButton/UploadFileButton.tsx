@@ -1,26 +1,28 @@
 import "./UploadFileButton.scss";
 import React from "react";
 import cx from "classnames";
-import { useUploadFileButtonController } from "./useUploadFileButtonController";
 import { EnhancedButton, EnhancedButtonProps } from "../EnhancedButton/EnhancedButton";
 
 export type UploadFileButtonProps = {
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
+	inputRef?: React.MutableRefObject<HTMLInputElement | null>;
+	accept?: string;
 } & Omit<EnhancedButtonProps, "onChange">;
 
 export function UploadFileButton(props: UploadFileButtonProps) {
-
-	const controller = useUploadFileButtonController(props)
+	const { onChange, accept, inputRef, className, children, ...ButtonProps } = props;
 
 	return <EnhancedButton
-		{...controller.ButtonProps}
-		className={cx("UploadFileButton", props.className)}
+		{...ButtonProps}
+		className={cx("UploadFileButton", className)}
 	>
-		{props.children}
+		{children}
 		<input
 			className="fileInput"
 			type="file"
-			onChange={props.onChange}
+			onChange={onChange}
+			accept={accept}
+			ref={inputRef}
 		/>
 	</EnhancedButton>
 }

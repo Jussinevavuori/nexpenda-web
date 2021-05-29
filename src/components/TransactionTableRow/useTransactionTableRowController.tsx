@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
+import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
 import { useStoreActions, useStoreState } from "../../store"
-import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { TransactionTableRowProps } from "./TransactionTableRow"
 
 export function useTransactionTableRowController(props: TransactionTableRowProps) {

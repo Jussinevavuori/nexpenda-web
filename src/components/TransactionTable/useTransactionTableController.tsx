@@ -3,8 +3,8 @@ import { List } from "react-virtualized"
 import { useXlMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction"
 import { useStoreState } from "../../store"
-import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { TransactionTableProps } from "./TransactionTable"
+import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
 
 const virtualizedListRef = createRef<List>()
 

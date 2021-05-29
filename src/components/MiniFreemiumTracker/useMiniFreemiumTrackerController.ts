@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
+import { useFreemiumTrackerDialogOpenState } from "../../hooks/componentStates/useFreemiumTrackerDialogOpenState";
 import { useStoreState } from "../../store";
-import { useFreemiumTrackerDialogOpenState } from "../FreemiumTrackerDialog/useFreemiumTrackerDialogController";
 import { MiniFreemiumTrackerProps } from "./MiniFreemiumTracker";
 
 export function useMiniFreemiumTrackerController(

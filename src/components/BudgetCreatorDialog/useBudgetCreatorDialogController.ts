@@ -1,35 +1,6 @@
 import { useCallback } from "react";
-import { useQueryState } from "../../hooks/state/useQueryState";
+import { useBudgetCreatorDialogVariableOpenState } from "../../hooks/componentStates/useBudgetCreatorDialogVariableOpenState";
 import { BudgetCreatorDialogProps } from "./BudgetCreatorDialog";
-
-export const BudgetCreatorDialogOpenHash = "budget";
-
-export function useBudgetCreatorDialogVariableOpenState() {
-  return useQueryState<"income" | "expense" | undefined>({
-    key: BudgetCreatorDialogOpenHash,
-    method: "push",
-    encode(val) {
-      switch (val) {
-        case "income":
-          return "create--income";
-        case "expense":
-          return "create--expense";
-        default:
-          return undefined;
-      }
-    },
-    decode(val) {
-      switch (val) {
-        case "create--income":
-          return "income";
-        case "create--expense":
-          return "expense";
-        default:
-          return undefined;
-      }
-    },
-  });
-}
 
 export function useBudgetCreatorDialogController(
   props: BudgetCreatorDialogProps

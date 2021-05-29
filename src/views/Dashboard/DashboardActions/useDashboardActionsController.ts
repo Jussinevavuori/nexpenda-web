@@ -2,11 +2,12 @@ import { DashboardActionsProps } from "./DashboardActions";
 import { useCallback, useMemo, useState } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
 import { DataUtils } from "../../../utils/DataUtils/DataUtils";
-import { useTransactionEditorDrawerVariableOpenState } from "../../../components/TransactionEditorDrawer/useTransactionEditorDrawerController";
-import { useTransactionCreatorDrawerOpenState } from "../../../components/TransactionCreatorDrawer/useTransactionCreatorDrawerController";
 import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState";
 import { TransactionSpreadsheet } from "../../../utils/FileIO/TransactionSpreadsheet";
 import { useMenuAnchorState } from "../../../hooks/state/useMenuAnchorState";
+import { useTransactionCreatorDrawerOpenState } from "../../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionEditorDrawerVariableOpenState } from "../../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
+import { ComponentState } from "../../../hooks/componentStates/ComponentState";
 
 export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
@@ -18,7 +19,11 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
    * Search open
    */
-  const [isSearchOpen] = useBooleanQueryState("search", "replace", "open");
+  const [isSearchOpen] = useBooleanQueryState(
+    ComponentState.keys.Search,
+    "replace",
+    "open"
+  );
 
   /**
    * Selection
@@ -96,10 +101,8 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
    * Create transaction drawer
    */
-  const [
-    createDrawerOpen,
-    setCreateDrawerOpen,
-  ] = useTransactionCreatorDrawerOpenState();
+  const [createDrawerOpen, setCreateDrawerOpen] =
+    useTransactionCreatorDrawerOpenState();
   const handleCreate = useCallback(() => {
     setCreateDrawerOpen(!createDrawerOpen);
   }, [createDrawerOpen, setCreateDrawerOpen]);

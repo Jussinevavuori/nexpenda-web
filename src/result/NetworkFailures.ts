@@ -26,6 +26,9 @@ export type ServerFailureCode =
   | "auth/email-not-confirmed"
   | "auth/email-already-confirmed"
   | "mail/error"
+  | "image/failure"
+  | "file/failure"
+  | "file/too-large"
   | "database/access-failure"
   | "failure/validation"
   | "failure/unimplemented"
@@ -72,7 +75,12 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
    */
   static shouldSilence<E>(details: NetworkFailureDetails<E>) {
     // Silence /api/logs endpoint events
-    if (details.url?.includes("/api/url")) {
+    if (details.url?.includes("/api/logs")) {
+      return true;
+    }
+
+    // Silence /api/auth/refresh_token endpoint events
+    if (details.url?.includes("/api/auth/refresh_token")) {
       return true;
     }
 

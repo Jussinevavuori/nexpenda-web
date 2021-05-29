@@ -1,7 +1,7 @@
 import "./UserMenu.scss";
-import React, { forwardRef, Ref } from "react"
+import React from "react"
 import cx from "classnames"
-import { UserMenuRef, useUserMenuController } from "./useUserMenuController"
+import { useUserMenuController } from "./useUserMenuController"
 import { MenuItem, MenuList } from "@material-ui/core";
 import { ExitToApp as LogoutIcon, Settings as SettingsIcon } from "@material-ui/icons";
 import { Type } from "../Type/Type";
@@ -12,18 +12,18 @@ export type UserMenuProps = {
 
 } & Omit<ResponsiveMenuProps, "open" | "onClose">
 
-export const UserMenu = forwardRef((props: UserMenuProps, ref: Ref<UserMenuRef>) => {
+export function UserMenu(props: UserMenuProps) {
 
-	const controller = useUserMenuController(props, ref)
+	const controller = useUserMenuController(props)
 	const { className, ...ResponsiveMenuProps } = props
 	const isDarkTheme = useIsDarkTheme()
 
 	return <ResponsiveMenu
 		className={cx("UserMenu", className)}
-		open={controller.open}
+		open={controller.isOpen}
 		onClose={controller.handleClose}
 		MenuProps={{
-			anchorEl: controller.anchor.current,
+			anchorEl: controller.anchorEl,
 			anchorOrigin: { horizontal: "right", vertical: "bottom" },
 			transformOrigin: { horizontal: "right", vertical: "top" },
 			getContentAnchorEl: null,
@@ -57,4 +57,4 @@ export const UserMenu = forwardRef((props: UserMenuProps, ref: Ref<UserMenuRef>)
 			</section>
 		</div>
 	</ResponsiveMenu>
-})
+}

@@ -5,13 +5,14 @@ import { useProfilePanelController } from "./useProfilePanelController"
 import { Button, CircularProgress, IconButton, TextField } from "@material-ui/core";
 import { Type } from "../Type/Type";
 import { Clear as ClearIcon, Check as CheckIcon, Edit as EditIcon } from "@material-ui/icons";
-import { UserAvatar } from "../UserAvatar/UserAvatar";
+import { UserAvatar, UserAvatarProps } from "../UserAvatar/UserAvatar";
 import { Link } from "react-router-dom";
 import { routes } from "../../Routes";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type ProfilePanelProps = {
 	disableAvatar?: boolean;
+	UserAvatarProps?: UserAvatarProps
 }
 
 export function ProfilePanel(props: ProfilePanelProps) {
@@ -27,7 +28,7 @@ export function ProfilePanel(props: ProfilePanelProps) {
 		{
 			!props.disableAvatar &&
 			<div className="avatarContainer">
-				<UserAvatar />
+				<UserAvatar {...props.UserAvatarProps} />
 			</div>
 		}
 

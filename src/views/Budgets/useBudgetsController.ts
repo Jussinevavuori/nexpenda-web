@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Budget } from "../../classes/Budget";
-import { useBudgetCreatorDialogVariableOpenState } from "../../components/BudgetCreatorDialog/useBudgetCreatorDialogController";
+import { useBudgetCreatorDialogVariableOpenState } from "../../hooks/componentStates/useBudgetCreatorDialogVariableOpenState";
 import { useStoreState } from "../../store";
 import { BudgetsProps } from "./Budgets";
 

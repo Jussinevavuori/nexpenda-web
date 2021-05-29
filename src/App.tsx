@@ -3,16 +3,19 @@ import { Notification } from "./components/Notification/Notification"
 import { TransactionContextMenuProvider } from './contexts/TransactionContextMenu.context';
 import { PremiumUserLockedOutDialog } from './components/PremiumUserLockedOutDialog/PremiumUserLockedOutDialog';
 import { HooksRoot } from './components/HooksRoot/HooksRoot';
+import { ElementContextProvider } from './contexts/ElementContext.context';
 
 function App() {
 
 	return <>
 		<HooksRoot />
-		<TransactionContextMenuProvider>
-			<PremiumUserLockedOutDialog />
-			<Notification />
-			<Routes />
-		</TransactionContextMenuProvider>
+		<ElementContextProvider>
+			<TransactionContextMenuProvider>
+				<PremiumUserLockedOutDialog />
+				<Notification />
+				<Routes />
+			</TransactionContextMenuProvider>
+		</ElementContextProvider>
 	</>
 }
 

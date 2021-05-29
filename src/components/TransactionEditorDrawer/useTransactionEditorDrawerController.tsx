@@ -1,23 +1,7 @@
 import { useEffect, useMemo } from "react"
-import { useQueryState } from "../../hooks/state/useQueryState"
+import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
 import { useStoreState } from "../../store"
 import { TransactionEditorDrawerProps } from "./TransactionEditorDrawer"
-
-
-export const TransactionEditorDrawerOpenHash = `edit`
-
-export function useTransactionEditorDrawerVariableOpenState() {
-	return useQueryState<null | string>({
-		key: TransactionEditorDrawerOpenHash,
-		method: "push",
-		decode(encodedId) {
-			return !!encodedId && typeof encodedId === "string" ? encodedId : null
-		},
-		encode(id) {
-			return id ?? undefined
-		}
-	})
-}
 
 export function useTransactionEditorDrawerController(props: TransactionEditorDrawerProps) {
 

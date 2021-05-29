@@ -1,13 +1,7 @@
-import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
+import { useFreemiumTrackerDialogOpenState } from "../../hooks/componentStates/useFreemiumTrackerDialogOpenState";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState } from "../../store";
 import { FreemiumTrackerDialogProps } from "./FreemiumTrackerDialog";
-
-const FreemiumTrackerDialogOpenQuery = "frmt";
-
-export function useFreemiumTrackerDialogOpenState() {
-  return useBooleanQueryState(FreemiumTrackerDialogOpenQuery, "push", "open");
-}
 
 export function useFreemiumTrackerDialogController(
   props: FreemiumTrackerDialogProps

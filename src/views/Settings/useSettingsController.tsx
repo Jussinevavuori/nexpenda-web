@@ -2,8 +2,11 @@ import ReactGA from "react-ga";
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
-import { useFeedbackDialogOpenState } from "../../components/FeedbackDialog/useFeedbackDialogController";
-import { useFileUploaderDrawerOpenState } from "../../components/FileUploaderDrawer/useFileUploaderDrawerController";
+import { useHashMenuState } from "../../hooks/state/useHashMenuState";
+import { ComponentState } from "../../hooks/componentStates/ComponentState";
+import { useFeedbackDialogOpenState } from "../../hooks/componentStates/useFeedbackDialogOpenState";
+import { useFileUploaderDrawerOpenState } from "../../hooks/componentStates/useFileUploaderDrawerOpenState";
+import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
 
 
 export function useSettingsController() {
@@ -29,16 +32,17 @@ export function useSettingsController() {
 	}
 
 	// Upload state
-	const [, setIsFileUploaderDrawerOpen] = useFileUploaderDrawerOpenState()
-	const handleOpenFileUploaderDrawer = useCallback(() => {
-		setIsFileUploaderDrawerOpen(true)
-	}, [setIsFileUploaderDrawerOpen])
+	const { handleOpen: handleOpenFileUploaderDrawer } = useOpenStateWrapper(
+		useFileUploaderDrawerOpenState()
+	)
+
+	// Avatar changer menu state
+	const avatarChangerMenu = useHashMenuState(ComponentState.keys.AvatarChangerMenu)
 
 	// Feedback dialog state
-	const [, setIsFeedbackDialogOpen] = useFeedbackDialogOpenState()
-	const handleOpenFeedbackDialog = useCallback(() => {
-		setIsFeedbackDialogOpen(true)
-	}, [setIsFeedbackDialogOpen])
+	const { handleOpen: handleOpenFeedbackDialog } = useOpenStateWrapper(
+		useFeedbackDialogOpenState()
+	)
 
 	return {
 		user,
@@ -46,6 +50,7 @@ export function useSettingsController() {
 		handleSubscribe,
 		canManageBilling: !!user?.customer,
 		handleOpenFileUploaderDrawer,
+		avatarChangerMenu,
 		handleOpenFeedbackDialog,
 	}
 }

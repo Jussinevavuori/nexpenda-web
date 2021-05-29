@@ -95,6 +95,17 @@ export interface AuthModel {
   >;
 
   /**
+   * Function to partially update the profile
+   */
+  updateAvatar: Thunk<
+    AuthModel,
+    Parameters<typeof ProfileService["updateAvatar"]>[0],
+    any,
+    StoreModel,
+    ReturnType<typeof ProfileService["updateAvatar"]>
+  >;
+
+  /**
    * Log in the current user with a Google account
    */
   loginWithGoogle: Thunk<
@@ -275,6 +286,14 @@ export const authModel: AuthModel = {
 
   updateProfile: thunk(async (actions, payload) => {
     const profile = await ProfileService.updateProfile(payload);
+    if (profile.isSuccess()) {
+      actions.updateAuthToState(profile.value);
+    }
+    return profile;
+  }),
+
+  updateAvatar: thunk(async (actions, payload) => {
+    const profile = await ProfileService.updateAvatar(payload);
     if (profile.isSuccess()) {
       actions.updateAuthToState(profile.value);
     }

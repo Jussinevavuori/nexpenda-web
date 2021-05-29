@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 import { Transaction } from "../../classes/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen"
+import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
-import { useTransactionEditorDrawerVariableOpenState } from "../TransactionEditorDrawer/useTransactionEditorDrawerController"
 import { TransactionContextMenuProps } from "./TransactionContextMenu"
 
 

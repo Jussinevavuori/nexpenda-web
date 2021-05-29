@@ -1,5 +1,11 @@
 import { Failure } from "./Failure";
 
+export class FileNotUploadedFailure<T> extends Failure<T, "file-not-uploaded"> {
+  constructor() {
+    super("file-not-uploaded");
+  }
+}
+
 export class FileReaderFailure<T> extends Failure<T, "file-reader-failure"> {
   public readonly event?: ProgressEvent<FileReader>;
 
