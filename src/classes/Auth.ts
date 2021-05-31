@@ -7,6 +7,7 @@ export type JsonAuth = {
   id: string;
   displayName: string | undefined;
   photoUrl: string | undefined;
+  googlePhotoUrl: string | undefined;
   email: string | undefined;
   googleId: string | undefined;
   themeColor?: string | undefined;
@@ -20,7 +21,6 @@ export type JsonAuth = {
 
 export type UpdatableJsonAuthFields = {
   displayName?: string | undefined;
-  photoUrl?: string | undefined;
   themeColor?: string | undefined;
   themeMode?: string | undefined;
 };
@@ -30,6 +30,7 @@ export class Auth {
   displayName?: string;
   email?: string;
   photoUrl?: string;
+  googlePhotoUrl?: string;
   googleId?: string;
   themeColor?: ThemeColor | undefined;
   themeMode?: ThemeMode | undefined;
@@ -44,6 +45,7 @@ export class Auth {
     this.displayName = json.displayName ?? undefined;
     this.email = json.email ?? undefined;
     this.photoUrl = json.photoUrl ?? undefined;
+    this.googlePhotoUrl = json.googlePhotoUrl ?? undefined;
     this.googleId = json.googleId ?? undefined;
     this.isAdmin = !!json.isAdmin;
     this.isPremium = !!json.isPremium;
@@ -84,6 +86,7 @@ export class Auth {
     id: z.string().min(1),
     displayName: z.string().optional(),
     photoUrl: z.string().optional(),
+    googlePhotoUrl: z.string().optional(),
     email: z.string().optional(),
     googleId: z.string().optional(),
     isAdmin: z.boolean().optional(),

@@ -16,7 +16,10 @@
       }
     }
     &.upload svg {
-      color: $primary-600;
+      color: $primary-500;
+    }
+    &.reset svg {
+      color: $primary-500;
     }
     &.remove svg {
       color: $red-600;

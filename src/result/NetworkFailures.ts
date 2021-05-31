@@ -91,8 +91,11 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
   static FromAxiosError<T>(
     error: AxiosError
   ): NetworkFailure<T, { errors?: any }> {
+    const url = error.config.url;
+
     if (error.response) {
       const data = error.response.data;
+      const errors = data.data.errors;
 
       return new NetworkFailure<T, { errors?: object }>({
         status: error.response.status,
@@ -101,11 +104,8 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
             ? data.message
             : "Unknown server error. Try again later.",
         code: typeof data?.code === "string" ? data.code : "server/unknown",
-        data:
-          data.errors && typeof data.errors === "object"
-            ? { errors: data.errors }
-            : {},
-        url: error.config.url,
+        data: errors && typeof errors === "object" ? { errors: errors } : {},
+        url,
       });
     } else if (error.request) {
       return new NetworkFailure<T, { errors?: object }>({
@@ -113,7 +113,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         code: "server/unavailable",
         message: "Could not contact server. Try again later.",
         data: {},
-        url: error.config.url,
+        url,
       });
     } else {
       return new NetworkFailure<T, { errors?: object }>({
@@ -121,7 +121,7 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         code: "server/failure-formulating-request",
         message: "Could not formulate request to server.",
         data: {},
-        url: error.config.url,
+        url,
       });
     }
   }

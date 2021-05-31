@@ -28,9 +28,15 @@ export function UserAvatar(props: UserAvatarProps) {
 		}
 		{
 			controller.user
-				? controller.user.photoUrl
-					? <img alt="profileimage" src={controller.user.photoUrl} />
-					: <span className="initials">{controller.user.initials}</span>
+				? controller.avatar.type === "set" && controller.avatar.src
+					? <img
+						alt="profileimage"
+						src={controller.avatar.src}
+						onError={controller.handleImageLoadError}
+					/>
+					: <span className="initials">
+						{controller.user.initials}
+					</span>
 				: <CircularProgress variant="indeterminate" />
 		}
 	</Avatar>

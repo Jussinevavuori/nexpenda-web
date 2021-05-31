@@ -51,11 +51,11 @@ export class ProfileService extends Service {
    * @param imageFileInput When null, will remove the avatar. Otherwise
    * 											 must be provided an input for updating.
    */
-  static async updateAvatar(imageFileInput: HTMLInputElement | null) {
+  static async updateAvatar(target: HTMLInputElement | null | string) {
     /**
-     * Delete avatar if null provided
+     * Delete avatar if no target provided
      */
-    if (!imageFileInput) {
+    if (!target) {
       const result = await Service.delete<JsonAuth>("/avatar", {
         service: { enableLogoutOnUnauthorized: true },
       });
@@ -73,9 +73,32 @@ export class ProfileService extends Service {
     }
 
     /**
-     * Get file from input to form data
+     * Attempt directly update photo URL via a PUT request when a string is
+     * provided as target.
      */
-    const file = imageFileInput.files?.[0];
+    if (typeof target === "string") {
+      const result = await Service.put<{ url: string }, JsonAuth>(
+        "/avatar",
+        { url: target },
+        { service: { enableLogoutOnUnauthorized: true } }
+      );
+
+      if (result.isFailure()) {
+        return result;
+      } else if (Auth.Schema.check(result.value.data)) {
+        return new Success(result.value.data);
+      } else {
+        return new InvalidServerResponseFailure<JsonAuth>(
+          result.value,
+          "/avatar"
+        );
+      }
+    }
+
+    /**
+     * Get file from input to form data by default.
+     */
+    const file = target.files?.[0];
     if (!file) {
       return new FileNotUploadedFailure<JsonAuth>();
     }
