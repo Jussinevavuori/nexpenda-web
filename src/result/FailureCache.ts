@@ -102,4 +102,4 @@ window.setInterval(() => {
   FailureCache.clean();
 }, FailureCache.defaultTimeout);
 
-exposeToWindow({ FailureCache });
+exposeToWindow({ FailureCache }, { allowProduction: true });
