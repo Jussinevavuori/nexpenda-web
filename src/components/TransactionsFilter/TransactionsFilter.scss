@@ -66,18 +66,21 @@
 
       & .inputContainer {
         position: relative;
-
+        display: flex;
+        align-items: center;
         & .smartContainer {
-          position: absolute;
-          z-index: 10;
-          top: 50%;
+          display: flex;
+          align-items: center;
           & > ul {
-            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
             & > li {
               border: 1px solid $gray-300;
               padding: $spacing-1 $spacing-2;
               border-radius: $spacing-4;
               margin-right: $spacing-2;
+              white-space: nowrap;
+              display: flex;
               & > .icon {
                 margin-right: $spacing-1;
               }
@@ -135,9 +138,9 @@
           }
         }
         & .inputContainer {
-          & .smartCategoriesContainer {
-            & > .smartCategories {
-              & > .smartCategory {
+          & .smartContainer {
+            & > ul {
+              & > li {
                 border-color: $gray-600;
                 color: $gray-300;
               }

@@ -80,7 +80,8 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 									{
 										controller.open &&
 										!controller.isInputFocused &&
-										controller.smartSearch.categories.length > 0 &&
+										(controller.smartSearch.categories.length > 0
+											|| controller.smartSearch.amountComparisons.length > 0) &&
 										<motion.div
 											className="categories smartContainer"
 											transition={{ duration: 0.1 }}
@@ -102,19 +103,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 													})
 												}
 											</motion.ul>
-										</motion.div>
-									}
-									{
-										controller.open &&
-										!controller.isInputFocused &&
-										controller.smartSearch.amountComparisons.length > 0 &&
-										<motion.div
-											className="amountComparisons smartContainer"
-											transition={{ duration: 0.1 }}
-											initial={{ opacity: 0, y: -10 }}
-											animate={{ opacity: 1, y: 0 }}
-											exit={{ opacity: 0, y: 10 }}
-										>
+
 											<motion.ul transition={{ duration: 0.2 }}>
 												{
 													controller.smartSearch.amountComparisons.map(c => {
