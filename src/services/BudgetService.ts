@@ -1,7 +1,7 @@
 import { Service } from "./Service";
 import { Budget } from "../classes/Budget";
 import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 
 export class BudgetService extends Service {

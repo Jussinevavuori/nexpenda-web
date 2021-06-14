@@ -1,5 +1,5 @@
 import { Service } from "./Service";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 import { Success } from "../result/Success";
 
 export class AuthService extends Service {

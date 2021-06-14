@@ -1,12 +1,12 @@
 import XLSX from "xlsx";
 import * as z from "zod";
 import { Failure } from "../../result/Failure";
-import { ErrorFailure } from "../../result/GenericFailures";
+import { ErrorFailure } from "../../result/Failures";
 import {
   SpreadsheetNoFileCreatedFailure,
   SpreadsheetReadFileFailure,
   SpreadsheetReadRowFailure,
-} from "../../result/SpreadsheetFailures";
+} from "../../result/Failures";
 import { Success } from "../../result/Success";
 import { FileIO } from "./FileIO";
 

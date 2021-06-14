@@ -112,6 +112,36 @@ export function ProfilePanel(props: ProfilePanelProps) {
 			</Type>
 		</div>
 
+		<div className="container changePasswordContainer">
+			<div>
+				<Type
+					component="label"
+					size="sm"
+					variant="boldcaps"
+					color={isDarkTheme ? "gray-600" : "gray-700"}
+				>
+					{"Password"}
+				</Type>
+				<Type>
+					{
+						controller.user.hasPassword === undefined
+							? "Hidden"
+							: (controller.user.hasPassword ? "Set" : "Unset")
+					}
+				</Type>
+			</div>
+			<div>
+				<Button
+					size="small"
+					variant="text"
+					onClick={controller.handleChangePassword}
+					disabled={!controller.user.hasPassword}
+				>
+					{"Change password"}
+				</Button>
+			</div>
+		</div>
+
 		<div className="container accountTypeContainer">
 			<Type
 				component="label"

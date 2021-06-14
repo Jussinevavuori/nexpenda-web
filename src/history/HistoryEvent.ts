@@ -1,4 +1,4 @@
-import { HistoryEventAlreadyRestoredFailure } from "../result/HistoryFailures";
+import { HistoryEventAlreadyRestoredFailure } from "../result/Failures";
 import { v4 as uuid } from "uuid";
 
 /**

@@ -5,7 +5,7 @@ import { useStoreActions } from "../../store";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LogService } from "../../services/LogService";
+import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
 
 export const forgotPasswordValidationSchema = z.object({
 	email: z.string().min(3).max(255).email(),
@@ -50,31 +50,7 @@ export function useForgotPasswordController() {
 			})
 			setSuccess(true)
 		} else {
-			setError(() => {
-				switch (result.reason) {
-					case "invalidServerResponse":
-						return "Invalid response received from server."
-					case "network":
-						switch (result.code) {
-							case "request/invalid-request-data":
-								return "Invalid email or password."
-							case "request/too-many-requests":
-								return "You are trying too fast! Try again later."
-							case "auth/invalid-credentials":
-								return "Wrong password or the user does not have a password."
-							case "auth/user-not-found":
-								return "No user exists with that email."
-							case "server/unavailable":
-								return "Could not contact server. Try again later."
-							default:
-								LogService.warn({
-									message: "Uncaught error code in login:",
-									data: { result }
-								})
-								return "An error occured while logging in. Try again."
-						}
-				}
-			})
+			setError(getErrorMessage("forgotPassword", result))
 		}
 	}
 

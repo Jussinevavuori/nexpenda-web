@@ -3,9 +3,7 @@ import { Service } from "../../services/Service";
 import { ListenerType } from "../../utils/SubscriptionUtils/Subscribable";
 
 export function useOnNetworkError(
-  handler: ListenerType<typeof Service.NetworkFailureSubscribable>
+  handler: ListenerType<typeof Service.Failuresubscribable>
 ) {
-  useEffect(() => Service.NetworkFailureSubscribable.subscribe(handler), [
-    handler,
-  ]);
+  useEffect(() => Service.Failuresubscribable.subscribe(handler), [handler]);
 }

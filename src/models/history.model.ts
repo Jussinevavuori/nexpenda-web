@@ -1,6 +1,6 @@
 import { action, Action, Computed, computed, thunk, Thunk } from "easy-peasy";
 import { HistoryEvent } from "../history/HistoryEvent";
-import { EventNotFoundFailure } from "../result/HistoryFailures";
+import { EventNotFoundFailure } from "../result/Failures";
 
 export type HistoryModel = {
   //==============================================================//

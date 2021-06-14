@@ -1,6 +1,6 @@
 import { Transaction } from "../classes/Transaction";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
-import { NetworkFailure } from "../result/NetworkFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
+import { NetworkFailure } from "../result/Failures";
 import { Success } from "../result/Success";
 import { store } from "../store";
 import { HistoryEvent } from "./HistoryEvent";

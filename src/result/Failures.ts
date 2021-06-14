@@ -1,6 +1,45 @@
 import { AxiosError } from "axios";
 import { Failure } from "./Failure";
 
+export type AnyFailure<T = any> =
+  | UnimplementedFailure<T>
+  | UnknownFailure<T>
+  | ErrorFailure<T>
+  | NetworkFailure<T, any>
+  | InvalidServerResponseFailure<T>
+  | FileNotUploadedFailure<T>
+  | FileReaderFailure<T>
+  | FileReaderAbortedFailure<T>
+  | FileReaderNoEventTargetFailure<T>
+  | FileReaderInvalidTypeFailure<T>
+  | FileReaderMissingFileFailure<T>
+  | HistoryEventAlreadyRestoredFailure<T>
+  | EventNotFoundFailure<T>
+  | SpreadsheetReadRowFailure<T>
+  | SpreadsheetReadFileFailure<T>
+  | SpreadsheetNoFileCreatedFailure<T>
+  | StripeInitializationFailure<T>;
+
+export class UnimplementedFailure<T> extends Failure<T, "unimplemented"> {
+  constructor() {
+    super("unimplemented");
+  }
+}
+
+export class UnknownFailure<T> extends Failure<T, "unknown"> {
+  constructor() {
+    super("unknown");
+  }
+}
+
+export class ErrorFailure<T> extends Failure<T, "error"> {
+  public readonly error: Error;
+  constructor(error: Error, options: { silent?: boolean } = {}) {
+    super("error", options);
+    this.error = error;
+  }
+}
+
 export type ServerFailureCode =
   | "server/unavailable"
   | "server/failure-formulating-request"
@@ -124,5 +163,122 @@ export class NetworkFailure<T, E = undefined> extends Failure<T, "network"> {
         url,
       });
     }
+  }
+}
+
+export class InvalidServerResponseFailure<T> extends Failure<
+  T,
+  "invalidServerResponse"
+> {
+  public readonly response: any;
+  public readonly method: string;
+
+  constructor(response: any, method: string) {
+    super("invalidServerResponse");
+    this.response = response;
+    this.method = method;
+  }
+}
+
+export class FileNotUploadedFailure<T> extends Failure<T, "file-not-uploaded"> {
+  constructor() {
+    super("file-not-uploaded");
+  }
+}
+
+export class FileReaderFailure<T> extends Failure<T, "file-reader-failure"> {
+  public readonly event?: ProgressEvent<FileReader>;
+
+  constructor(event: ProgressEvent<FileReader>) {
+    super("file-reader-failure");
+    this.event = event;
+  }
+}
+
+export class FileReaderAbortedFailure<T> extends Failure<
+  T,
+  "file-reader-aborted"
+> {
+  constructor() {
+    super("file-reader-aborted");
+  }
+}
+
+export class FileReaderNoEventTargetFailure<T> extends Failure<
+  T,
+  "file-reader-no-event-target"
+> {
+  constructor() {
+    super("file-reader-no-event-target");
+  }
+}
+
+export class FileReaderInvalidTypeFailure<T> extends Failure<
+  T,
+  "file-reader-invalid-type"
+> {
+  public readonly eventValue: string | ArrayBuffer | null;
+
+  constructor(eventValue: string | ArrayBuffer | null) {
+    super("file-reader-invalid-type");
+    this.eventValue = eventValue;
+  }
+}
+
+export class FileReaderMissingFileFailure<T> extends Failure<
+  T,
+  "file-reader-missing-file-failure"
+> {
+  constructor() {
+    super("file-reader-missing-file-failure");
+  }
+}
+
+export class HistoryEventAlreadyRestoredFailure<T> extends Failure<
+  T,
+  "already-recovered"
+> {
+  constructor() {
+    super("already-recovered");
+  }
+}
+
+export class EventNotFoundFailure<T> extends Failure<T, "event-not-found"> {
+  constructor() {
+    super("event-not-found");
+  }
+}
+export class SpreadsheetReadRowFailure<T> extends Failure<
+  T,
+  "spreadsheet-read-row-failure"
+> {
+  constructor() {
+    super("spreadsheet-read-row-failure", { silent: true });
+  }
+}
+
+export class SpreadsheetReadFileFailure<T> extends Failure<
+  T,
+  "spreadsheet-read-file-failure"
+> {
+  constructor() {
+    super("spreadsheet-read-file-failure");
+  }
+}
+
+export class SpreadsheetNoFileCreatedFailure<T> extends Failure<
+  T,
+  "spreadsheet-no-file-created"
+> {
+  constructor() {
+    super("spreadsheet-no-file-created");
+  }
+}
+export class StripeInitializationFailure<T> extends Failure<
+  T,
+  "stripe-initialization-failure"
+> {
+  constructor() {
+    super("stripe-initialization-failure");
   }
 }

@@ -1,6 +1,6 @@
 import { Service } from "./Service";
 import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 
 export class FeedbackService extends Service {
   /**

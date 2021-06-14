@@ -1,7 +1,7 @@
 import { Service } from "./Service";
 import { Transaction } from "../classes/Transaction";
 import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 
 export class TransactionService extends Service {
   /**

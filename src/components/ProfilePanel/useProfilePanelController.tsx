@@ -2,6 +2,7 @@ import ReactGA from "react-ga";
 import { useState, useCallback } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { ProfilePanelProps } from "./ProfilePanel"
+import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
 
 export function useProfilePanelController(props: ProfilePanelProps) {
 
@@ -77,11 +78,26 @@ export function useProfilePanelController(props: ProfilePanelProps) {
 		handleCancelEditName()
 	}, [handleCancelEditName, updateProfile, notify, nameValue])
 
+	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
+	const handleChangePassword = useCallback(async () => {
+		if (!user || !user.email || !user.hasPassword) return
+		const result = await forgotPassword({ email: user.email })
+		if (result.isSuccess()) {
+			notify({ message: "Password change email sent", severity: "success" })
+		} else {
+			notify({
+				message: getErrorMessage("forgotPassword", result),
+				severity: "error",
+			})
+		}
+	}, [notify, forgotPassword, user])
+
 	const manageSubscription = useStoreActions(_ => _.stripe.createBillingPortalSession)
 
 	return {
 		editNameInputId,
 		user,
+		handleChangePassword,
 		async handleManageSubscription() {
 			manageSubscription()
 		},

@@ -14,6 +14,7 @@ export type JsonAuth = {
   themeMode?: string | undefined;
   isAdmin?: boolean;
   isPremium?: boolean;
+  hasPassword?: boolean;
 
   customer?: JsonStripeCustomer;
   subscriptions?: JsonStripeSubscription[];
@@ -36,6 +37,7 @@ export class Auth {
   themeMode?: ThemeMode | undefined;
   isAdmin: boolean;
   isPremium: boolean;
+  hasPassword?: boolean;
 
   customer: StripeCustomer | undefined;
   subscriptions: StripeSubscription[];
@@ -49,6 +51,7 @@ export class Auth {
     this.googleId = json.googleId ?? undefined;
     this.isAdmin = !!json.isAdmin;
     this.isPremium = !!json.isPremium;
+    this.hasPassword = json.hasPassword;
 
     this.customer = json.customer
       ? new StripeCustomer(json.customer)
@@ -92,6 +95,7 @@ export class Auth {
     isAdmin: z.boolean().optional(),
     isPremium: z.boolean().optional(),
     prefersColorScheme: z.string().optional(),
+    hasPassword: z.boolean().optional(),
     customer: StripeCustomer.Schema.optional(),
     subscriptions: z.array(StripeSubscription.Schema).optional(),
   });

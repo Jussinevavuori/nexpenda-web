@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { Log } from "../classes/Log";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 import { Success } from "../result/Success";
 import { exposeToWindow } from "../utils/Utils/exposeToWindow";
 import { Service } from "./Service";

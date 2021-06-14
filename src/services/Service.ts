@@ -3,7 +3,7 @@ import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
 import { Success } from "../result/Success";
-import { NetworkFailure } from "../result/NetworkFailures";
+import { NetworkFailure } from "../result/Failures";
 import { routes } from "../Routes";
 import { StorageService } from "./StorageService";
 import { Subscribable } from "../utils/SubscriptionUtils/Subscribable";
@@ -21,7 +21,7 @@ export class Service {
   /**
    * Subscribable for all errors
    */
-  static NetworkFailureSubscribable = new Subscribable(
+  static Failuresubscribable = new Subscribable(
     (failure: NetworkFailure<any, { errors?: any }>) => {
       return failure;
     }
@@ -150,7 +150,7 @@ export class Service {
   ) {
     // Publish network failures
     if (result.isFailure()) {
-      Service.NetworkFailureSubscribable.publish(result);
+      Service.Failuresubscribable.publish(result);
     }
   }
 

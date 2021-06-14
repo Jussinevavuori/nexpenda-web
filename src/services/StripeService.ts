@@ -1,5 +1,5 @@
 import { Service } from "./Service";
-import { InvalidServerResponseFailure } from "../result/InvalidServerResponseFailures";
+import { InvalidServerResponseFailure } from "../result/Failures";
 import { Success } from "../result/Success";
 import {
   StripeSessionIdResponse,
@@ -8,8 +8,8 @@ import {
 } from "../utils/StripeUtils/StripeUtils";
 import { Config } from "../config";
 import { loadStripe } from "@stripe/stripe-js";
-import { StripeInitializationFailure } from "../result/StripeFailure";
-import { ErrorFailure } from "../result/GenericFailures";
+import { StripeInitializationFailure } from "../result/Failures";
+import { ErrorFailure } from "../result/Failures";
 import { StripeProduct } from "../classes/StripeProduct";
 
 export class StripeService extends Service {

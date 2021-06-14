@@ -5,7 +5,7 @@ import { ListenerType } from "../../utils/SubscriptionUtils/Subscribable";
 import { useRedirect } from "../utils/useRedirect";
 import { useOnNetworkError } from "./useOnNetworkError";
 
-type Args = Parameters<ListenerType<typeof Service.NetworkFailureSubscribable>>;
+type Args = Parameters<ListenerType<typeof Service.Failuresubscribable>>;
 
 export function useNotifyOnNetworkFailure() {
   const notify = useStoreActions((_) => _.notification.notify);
