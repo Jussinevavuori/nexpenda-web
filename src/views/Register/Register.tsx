@@ -28,7 +28,7 @@ export function Register() {
 			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
-			{"Welcome!"}
+			{"Create your new account!"}
 		</Type>
 
 		<main>
