@@ -3,23 +3,6 @@ import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
 import { StripeCustomer } from "./StripeCustomer";
 import { StripeSubscription } from "./StripeSubscription";
 
-export type JsonAuth = {
-  id: string;
-  displayName: string | undefined;
-  photoUrl: string | undefined;
-  googlePhotoUrl: string | undefined;
-  email: string | undefined;
-  googleId: string | undefined;
-  themeColor?: string | undefined;
-  themeMode?: string | undefined;
-  isAdmin?: boolean;
-  isPremium?: boolean;
-  hasPassword?: boolean;
-
-  customer?: JsonStripeCustomer;
-  subscriptions?: JsonStripeSubscription[];
-};
-
 export type UpdatableJsonAuthFields = {
   displayName?: string | undefined;
   themeColor?: string | undefined;
@@ -27,19 +10,69 @@ export type UpdatableJsonAuthFields = {
 };
 
 export class Auth {
+  /**
+   * Nexpenda user ID
+   */
   id: string;
+
+  /**
+   * User's profile display name
+   */
   displayName?: string;
+
+  /**
+   * User's email address if any
+   */
   email?: string;
+
+  /**
+   * URL to user's photo if any
+   */
   photoUrl?: string;
+
+  /**
+   * URL to user's google photo if one provided
+   */
   googlePhotoUrl?: string;
+
+  /**
+   * The user's Google ID if user has a Google account associated
+   */
   googleId?: string;
+
+  /**
+   * The user's saved preferred theme color
+   */
   themeColor?: ThemeColor | undefined;
+
+  /**
+   * The user's saved preferred theme mode
+   */
   themeMode?: ThemeMode | undefined;
+
+  /**
+   * Is the user an admin or not?
+   */
   isAdmin: boolean;
+
+  /**
+   * Is the user a premium user or not?
+   */
   isPremium: boolean;
+
+  /**
+   * Does the user have a password or not?
+   */
   hasPassword?: boolean;
 
+  /**
+   * The user's stripe customer object if any
+   */
   customer: StripeCustomer | undefined;
+
+  /**
+   * The user's stripe subscriptions if any
+   */
   subscriptions: StripeSubscription[];
 
   constructor(json: JsonAuth) {
@@ -94,6 +127,8 @@ export class Auth {
     googleId: z.string().optional(),
     isAdmin: z.boolean().optional(),
     isPremium: z.boolean().optional(),
+    themeColor: z.enum(ThemeUtils.themeColors),
+    themeMode: z.enum(ThemeUtils.themeModes),
     prefersColorScheme: z.string().optional(),
     hasPassword: z.boolean().optional(),
     customer: StripeCustomer.Schema.optional(),

@@ -66,3 +66,5 @@ type ThemeProperty = {
   sourceName: string;
   targetName: string;
 };
+
+type NonEmptyArray<T> = [T, ...T[]];

@@ -31,7 +31,7 @@ export class ThemeUtils {
   /**
    * Property to access all theme colors
    */
-  static themeColors: ThemeColor[] = [
+  static themeColors: NonEmptyArray<ThemeColor> = [
     "blue",
     "green",
     "red",
@@ -43,17 +43,22 @@ export class ThemeUtils {
   /**
    * Property to access all freemium themes
    */
-  static freeThemeColors: ThemeColor[] = ["blue", "green"];
+  static freeThemeColors: NonEmptyArray<ThemeColor> = ["blue", "green"];
 
   /**
    * Property to access all premium themes
    */
-  static premiumThemeColors: ThemeColor[] = ["red", "yellow", "pink", "purple"];
+  static premiumThemeColors: NonEmptyArray<ThemeColor> = [
+    "red",
+    "yellow",
+    "pink",
+    "purple",
+  ];
 
   /**
    * Property to access all theme modes
    */
-  static themeModes: ThemeMode[] = ["dark", "light"];
+  static themeModes: NonEmptyArray<ThemeMode> = ["dark", "light"];
 
   /**
    * Check if a theme is a premium theme
