@@ -1,5 +1,5 @@
 import { Service } from "./Service";
-import { Auth, JsonAuth, UpdatableJsonAuthFields } from "../classes/Auth";
+import { Auth } from "../classes/Auth";
 import { InvalidServerResponseFailure } from "../result/Failures";
 import { Success } from "../result/Success";
 import { FileNotUploadedFailure } from "../result/Failures";
