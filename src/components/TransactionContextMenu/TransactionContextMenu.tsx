@@ -1,6 +1,6 @@
 import "./TransactionContextMenu.scss";
 import React from "react"
-import { Divider, Menu, MenuItem } from "@material-ui/core";
+import { Icon, Divider, Menu, MenuItem } from "@material-ui/core";
 import {
 	SelectAll as SelectAllIcon,
 	Clear as DeselectAllIcon,
@@ -52,6 +52,30 @@ export function TransactionContextMenu(props: TransactionContextMenuProps) {
 				color="gray-500"
 			>
 				{"Shift + E"}
+			</Type>
+		</MenuItem>
+
+		{/* Copy */}
+		<MenuItem
+			onClick={controller.onCopy}
+			className="copyItem"
+		>
+			<Icon children="content_copy" />
+			<Type
+				disablePointerEvents
+				component="label"
+				variant="bold"
+				color={isDarkTheme ? "primary-400" : "primary-600"}
+			>
+				{"Copy"}
+			</Type>
+			<Type
+				disablePointerEvents
+				className="shortcut"
+				component="span"
+				color="gray-500"
+			>
+				{"Shift + C"}
 			</Type>
 		</MenuItem>
 

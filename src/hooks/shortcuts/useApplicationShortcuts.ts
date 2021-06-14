@@ -1,4 +1,5 @@
 import { useCloseFormsShortcut } from "./useCloseFormsShortcut";
+import { useCopyTransactionShortcut } from "./useCopyTransactionShortcut";
 import { useCreateTransactionShortcut } from "./useCreateTransactionShortcut";
 import { useDeleteTransactionsShortcut } from "./useDeleteTransactionsShortcut";
 import { useEditTransactionShortcut } from "./useEditTransactionShortcut";
@@ -14,4 +15,5 @@ export function useApplicationShortcuts() {
   useSelectShortcuts();
   useSelectTabShortcuts();
   useToggleSidebarShortcut();
+  useCopyTransactionShortcut();
 }

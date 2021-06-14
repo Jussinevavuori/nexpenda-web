@@ -82,6 +82,18 @@ export class StorageService {
   }
 
   /**
+   * Session storage namespace
+   */
+  static namespace = "@nexpenda";
+
+  /**
+   * Returns a namespaced version of the given key
+   */
+  static createKey(key: string, ...args: string[]) {
+    return [StorageService.namespace, key, ...args].join("/");
+  }
+
+  /**
    * Creates a storage component which has the following methods:
    * - `getKey()`     for getting the key of the component.
    * - `getValue()`   for fetching the current value of the component.
@@ -91,7 +103,7 @@ export class StorageService {
    * A component represents a single property in a storage (such as
    * localStorage) and represents it with a clear, centralized API.
    *
-   * @param options 					Component options
+   * @param args 					Component options
    * @param options.key				Key of item to use in storage
    * @param options.encode		Function to encode a valid value into a
    * 													string / undefined representation which
@@ -100,30 +112,26 @@ export class StorageService {
    * 													of encode back into a valid value.
    * @param options.options		Storage options
    */
-  protected static createComponent<T>(options: {
+  protected static createComponent<T>(args: {
     key: string;
     decode(value: string | null): T;
     encode(t: T): string | undefined;
-    options: StorageServiceOptions;
+    storage: StorageType;
   }) {
+    const options: StorageServiceOptions = { storage: args.storage };
+
     return {
       getKey() {
-        return options.key;
+        return args.key;
       },
       getValue() {
-        return options.decode(
-          StorageService.getItem(options.key, options.options)
-        );
+        return args.decode(StorageService.getItem(args.key, options));
       },
       setValue(t: T) {
-        return StorageService.setItem(
-          options.key,
-          options.encode(t),
-          options.options
-        );
+        return StorageService.setItem(args.key, args.encode(t), options);
       },
       clearValue() {
-        return StorageService.removeItem(options.key, options.options);
+        return StorageService.removeItem(args.key, options);
       },
     };
   }
@@ -138,15 +146,16 @@ export class StorageService {
    * @param options.key 		Key to use for storing the component.
    * @param options.options Storage options.
    */
-  protected static createBooleanComponent(options: {
+  protected static createBooleanComponent(args: {
     key: string;
-    options: StorageServiceOptions;
+    storage: StorageType;
   }) {
     const truthy = StorageService.DefaultTruthyValue;
     return StorageService.createComponent({
-      ...options,
       decode: (value) => value === truthy,
       encode: (value) => (value ? truthy : undefined),
+      key: args.key,
+      storage: args.storage,
     });
   }
 
@@ -166,7 +175,7 @@ export class StorageService {
    */
   static hadAccessToken = StorageService.createBooleanComponent({
     key: "@nexpenda/hadAccessToken",
-    options: { storage: StorageType.Session },
+    storage: StorageType.Session,
   });
 
   /**
@@ -176,8 +185,8 @@ export class StorageService {
    * true, the app will automatically attempt
    */
   static wasLoggedIn = StorageService.createBooleanComponent({
-    key: "@nexpenda/wasLoggedIn",
-    options: { storage: StorageType.Local },
+    key: StorageService.createKey("wasLoggedIn"),
+    storage: StorageType.Local,
   });
 
   /**
@@ -187,8 +196,8 @@ export class StorageService {
    * memorize the state over page reloads.
    */
   static isSidebarClosed = StorageService.createBooleanComponent({
-    key: "@nexpenda/isSidebarClosed",
-    options: { storage: StorageType.Local },
+    key: StorageService.createKey("isSidebarClosed"),
+    storage: StorageType.Local,
   });
 
   /**
@@ -201,10 +210,10 @@ export class StorageService {
   static latestSelectedThemeColor = StorageService.createComponent<
     ThemeColor | undefined
   >({
-    key: "@nexpenda/latestSelectedThemeColor",
+    key: StorageService.createKey("latestSelectedThemeColor"),
     decode: (value) => (ThemeUtils.isThemeColor(value) ? value : undefined),
     encode: (value) => value,
-    options: { storage: StorageType.Local },
+    storage: StorageType.Local,
   });
 
   /**
@@ -217,10 +226,10 @@ export class StorageService {
   static latestSelectedThemeMode = StorageService.createComponent<
     ThemeMode | undefined
   >({
-    key: "@nexpenda/latestSelectedThemeMode",
+    key: StorageService.createKey("latestSelectedThemeMode"),
     decode: (value) => (ThemeUtils.isThemeMode(value) ? value : undefined),
     encode: (value) => value,
-    options: { storage: StorageType.Local },
+    storage: StorageType.Local,
   });
 
   /**
@@ -231,10 +240,10 @@ export class StorageService {
    * API URL to connect to instead of the default URL.
    */
   static apiUrlOverride = StorageService.createComponent<string | undefined>({
-    key: "@nexpenda/apiUrlOverride",
+    key: StorageService.createKey("apiUrlOverride"),
     decode: (value) => value || undefined,
     encode: (value) => value,
-    options: { storage: StorageType.Local },
+    storage: StorageType.Local,
   });
 
   /**
@@ -249,8 +258,8 @@ export class StorageService {
    */
   static hasDismissedBetaFeatureBanner(feature: string) {
     return StorageService.createBooleanComponent({
-      key: `@nexpenda/hasDismissedBetaFeatureBanner/${feature}`,
-      options: { storage: StorageType.Local },
+      key: StorageService.createKey("hasDismissedBetaFeatureBanner", feature),
+      storage: StorageType.Local,
     });
   }
 

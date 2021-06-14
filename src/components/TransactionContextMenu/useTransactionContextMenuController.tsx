@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 import { Transaction } from "../../classes/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen"
+import { useTransactionCopy } from "../../hooks/application/useTransactionCopy"
 import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
@@ -93,6 +94,17 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	}, [handleClose, menu, setEditor])
 
 	/**
+	 * Duplicating
+	 */
+	const copyTransaction = useTransactionCopy();
+	const handleCopy = useCallback(() => {
+		if (menu.transaction) {
+			copyTransaction(menu.transaction);
+		}
+		handleClose()
+	}, [menu, handleClose, copyTransaction])
+
+	/**
 	 * Deletion
 	 */
 	const deleteTransactions = useStoreActions(_ => _.transactions.massDeleteTransactions)
@@ -156,6 +168,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 		onSelectAllToggle: handleSelectAllToggle,
 		onSelectToggle: handleSelectToggle,
 
+		onCopy: handleCopy,
 		onDelete: handleDelete,
 		onEdit: handleEdit,
 

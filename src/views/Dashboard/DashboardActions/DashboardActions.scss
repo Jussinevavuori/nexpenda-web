@@ -17,19 +17,32 @@
   }
   & .actionButtons {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
     flex-wrap: nowrap;
     gap: $spacing-3;
   }
   & .filtersButton {
     flex: 1;
+    align-items: stretch;
   }
   & .button {
     padding: $spacing-2 $spacing-4;
     & svg {
       transform: scale(1.1);
       margin-right: $spacing-2;
+    }
+    &.iconOnlyButton {
+      min-width: unset;
+      & > span.MuiButton-label {
+        & > span.MuiButton-startIcon {
+          margin-right: 0;
+          transform: translate(1px);
+        }
+      }
+      & svg {
+        margin-right: 0;
+      }
     }
     &.editButton,
     &.moreButton {
@@ -41,6 +54,7 @@
       }
     }
     &.deleteButton {
+      border-color: $red-700;
       & * {
         color: $red-600;
       }
@@ -52,12 +66,44 @@
 
   &__moreMenu {
     & .menuItem {
-      gap: $spacing-3;
+      gap: $spacing-1;
       & .Type {
+        color: $gray-800;
         transform: scale(0.9);
       }
       & svg {
         font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@include darkmode {
+  .DashboardActions {
+    & .button {
+      &.editButton,
+      &.moreButton {
+        & * {
+          color: $gray-400;
+        }
+        &:disabled * {
+          color: $gray-700;
+        }
+      }
+      &.deleteButton {
+        & * {
+          color: $red-600;
+        }
+        &:disabled * {
+          color: $gray-500;
+        }
+      }
+    }
+    &__moreMenu {
+      & .menuItem {
+        & .Type {
+          color: $gray-400;
+        }
       }
     }
   }

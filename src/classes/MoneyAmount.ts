@@ -58,6 +58,14 @@ export class MoneyAmount {
   }
 
   /**
+   * Gets the sign of the money amount as a symbol. Returns "+" when value > 0,
+   * else returns "-"
+   */
+  get signSymbol(): "+" | "-" {
+    return this._value > 0 ? "+" : "-";
+  }
+
+  /**
    * True if the amount is a positive amount (> 0)
    */
   get isPositive() {

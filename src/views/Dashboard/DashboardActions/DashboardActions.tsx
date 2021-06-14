@@ -33,7 +33,7 @@ export function DashboardActions(props: DashboardActionsProps) {
 				disabled={controller.selection.length === 0}
 			>
 				<DownloadIcon />
-				<Type variant="boldcaps" color="gray-800">
+				<Type variant="boldcaps">
 					{"Download selected"}
 				</Type>
 			</MenuItem>
@@ -72,20 +72,16 @@ export function DashboardActions(props: DashboardActionsProps) {
 							onClick={controller.handleDelete}
 							disabled={controller.selection.length === 0}
 						>
-							<Type variant="boldcaps" >
+							<Type variant="boldcaps">
 								{"Delete"}
 							</Type>
 						</Button>
 						<Button
 							variant="outlined"
-							className="button moreButton"
+							className="button moreButton iconOnlyButton"
 							startIcon={<MoreVert />}
 							onClick={controller.moreMenu.handleMenuOpen}
-						>
-							<Type variant="boldcaps">
-								{"More"}
-							</Type>
-						</Button>
+						></Button>
 					</>
 				}
 			</div>

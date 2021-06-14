@@ -1,9 +1,23 @@
 import ReactGA from "react-ga";
 import emojiRegex from "emoji-regex"
-import { useEffect, useRef, useState } from "react"
+import * as z from "zod"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
 import { Category } from "../../classes/Category";
+import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCopy";
+import { Transaction } from "../../classes/Transaction";
+
+export const transactionFormSchema = z.object({
+	icon: z.string(),
+	sign: z.enum(["+", "-"]),
+	amount: z.string(),
+	category: z.string(),
+	time: z.date(),
+	comment: z.string(),
+})
+
+export type TransactionFormSchema = z.TypeOf<typeof transactionFormSchema>
 
 export function useTransactionFormController(props: TransactionFormProps) {
 
@@ -41,15 +55,22 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	// Initialize input state from editTransaction. We use the
 	// `latestEditTransactionId` for preventing double-initializations of
 	// the same transaction.
+	//
+	// If no edit transaction present, attempt to get values from storage
+	// service's autofill
 	const latestEditTransactionId = useRef<string>('')
 	useEffect(() => {
-		if (!editTransaction) {
-			return
-		}
-		if (latestEditTransactionId.current === editTransaction.id) {
-			return
-		}
+
+		// Skip when not editing transaction
+		if (!editTransaction) return
+
+		// Skip duplicate initialization of same editable transaction
+		if (latestEditTransactionId.current === editTransaction.id) return
+
+		// Memorize ID as latest edit transaction ID 
 		latestEditTransactionId.current = editTransaction.id
+
+		// Initialize values
 		setSign(editTransaction.amount.sign === 1 ? "+" : "-")
 		setAmount(editTransaction.amount.decimalValue.toFixed(2))
 		setCategory(editTransaction.category.value)
@@ -58,7 +79,15 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		setIcon(editTransaction.category.icon)
 	}, [editTransaction])
 
-
+	// Enable copying transactions
+	useOnTransactionCopy(
+		useCallback((copied: Transaction) => {
+			setAmount(copied.amount.decimalValue.toFixed(2))
+			setSign(copied.amount.signSymbol)
+			setCategory(copied.category.name)
+			setComment(copied.comment)
+		}, [setAmount, setSign, setCategory, setComment])
+	)
 
 	/**
 	 * Render option with icon in list

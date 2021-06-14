@@ -32,8 +32,6 @@ export function useUserAvatarController(props: UserAvatarProps) {
 	 */
 	useEffect(function initPhotoUrl() {
 
-		console.log(`${avatar.type}: ${(avatar.src ?? ("None")).substring(0, 30)}`)
-
 		// When no user, set to unset
 		if (!user) {
 			if (avatar.type !== "unset") {
@@ -53,7 +51,6 @@ export function useUserAvatarController(props: UserAvatarProps) {
 	 * Set to error state when image loading gives error
 	 */
 	function handleImageLoadError() {
-		console.log("Error")
 		setAvatar({ type: "error", src: undefined })
 	}
 

@@ -10,14 +10,22 @@
       padding-left: $spacing-2;
       margin-left: auto;
     }
-    & svg {
+    & svg,
+    & .MuiIcon-root {
       margin-right: 0.5rem;
     }
-    &.editItem svg {
+    &.editItem svg,
+    &.editItem .MuiIcon-root {
       color: $primary-600;
       transition: color $timing-theme;
     }
-    &.deleteItem svg {
+    &.copyItem svg,
+    &.copyItem .MuiIcon-root {
+      color: $primary-600;
+      transition: color $timing-theme;
+    }
+    &.deleteItem svg,
+    &.deleteItem .MuiIcon-root {
       color: $red-500;
     }
   }
@@ -25,10 +33,16 @@
 @include darkmode {
   .TransactionContextMenu {
     & .MuiMenuItem-root {
-      &.editItem svg {
+      &.editItem svg,
+      &.editItem .MuiIcon-root {
         color: $primary-400;
       }
-      &.deleteItem svg {
+      &.copyItem svg,
+      &.copyItem .MuiIcon-root {
+        color: $primary-400;
+      }
+      &.deleteItem svg,
+      &.deleteItem .MuiIcon-root {
         color: $red-400;
       }
     }
