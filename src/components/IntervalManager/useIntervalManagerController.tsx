@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ComponentState } from "../../hooks/componentStates/ComponentState"
-import { useHashOpenState } from "../../hooks/state/useHashOpenState"
+import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState"
 import { useStoreActions, useStoreState } from "../../store"
 import { IntervalManagerProps } from "./IntervalManager"
 
@@ -15,7 +15,7 @@ export function useIntervalManagerController(props: IntervalManagerProps) {
 
 	const shouldShowControls = props.hideControls !== true
 
-	const [intervalPickerOpen, setIntervalPickerOpen] = useHashOpenState(ComponentState.keys.IntervalMenu)
+	const [intervalPickerOpen, setIntervalPickerOpen] = useBooleanQueryState(ComponentState.keys.IntervalMenu, "push")
 	const [intervalPickerMenuAnchor, setIntervalPickerMenuAnchor] = useState<HTMLElement>()
 
 

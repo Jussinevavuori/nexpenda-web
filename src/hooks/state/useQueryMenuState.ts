@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { useRegisteredHTMLElement } from "../application/useRegisteredHTMLElement";
-import { useHashOpenState } from "./useHashOpenState";
+import { useBooleanQueryState } from "./useBooleanQueryState";
 
 /**
  * Helper function to handle a menu's state which uses hash open state.
  * Takes in same parameters as the hash open state function.
  */
-export function useHashMenuState(hash: string) {
+export function useQueryMenuState(key: string, method: "push" | "replace") {
   // Open and anchor el state
-  const [isOpen, setIsOpen] = useHashOpenState(hash);
-  const [anchorEl, setAnchorEl] = useRegisteredHTMLElement(hash);
+  const [isOpen, setIsOpen] = useBooleanQueryState(key, method);
+  const [anchorEl, setAnchorEl] = useRegisteredHTMLElement(key);
 
   // Open function
   const handleOpen = useCallback(

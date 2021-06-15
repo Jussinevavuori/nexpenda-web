@@ -12,9 +12,7 @@ export function useQueryState<T>(options: {
   encode: (decoded: T) => string | null | undefined;
 }): [T, (t: T) => void] {
   const { key, decode, encode, method } = options;
-
   const location = useLocation();
-
   const history = useHistory();
 
   /**
@@ -40,9 +38,7 @@ export function useQueryState<T>(options: {
 
       switch (method) {
         case "push":
-          history.push({
-            search: queryString,
-          });
+          history.push({ search: queryString });
           break;
         case "replace":
           history.replace({ search: queryString });

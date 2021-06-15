@@ -2,11 +2,11 @@ import ReactGA from "react-ga";
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
-import { useHashMenuState } from "../../hooks/state/useHashMenuState";
 import { ComponentState } from "../../hooks/componentStates/ComponentState";
 import { useFeedbackDialogOpenState } from "../../hooks/componentStates/useFeedbackDialogOpenState";
 import { useFileUploaderDrawerOpenState } from "../../hooks/componentStates/useFileUploaderDrawerOpenState";
 import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
+import { useQueryMenuState } from "../../hooks/state/useQueryMenuState";
 
 
 export function useSettingsController() {
@@ -37,7 +37,7 @@ export function useSettingsController() {
 	)
 
 	// Avatar changer menu state
-	const avatarChangerMenu = useHashMenuState(ComponentState.keys.AvatarChangerMenu)
+	const avatarChangerMenu = useQueryMenuState(ComponentState.keys.AvatarChangerMenu, "push")
 
 	// Feedback dialog state
 	const { handleOpen: handleOpenFeedbackDialog } = useOpenStateWrapper(
