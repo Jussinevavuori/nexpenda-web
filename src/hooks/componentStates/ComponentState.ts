@@ -22,5 +22,6 @@ export class ComponentState {
     Search: "search",
     SubscriptionCanceled: "subscription-canceled",
     UserMenu: "usermenu",
+    Calculator: "calc",
   };
 }

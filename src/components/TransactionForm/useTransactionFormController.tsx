@@ -7,6 +7,8 @@ import { useStoreActions, useStoreState } from "../../store"
 import { Category } from "../../classes/Category";
 import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCopy";
 import { Transaction } from "../../classes/Transaction";
+import { useCalculatorDialogOpenState } from "../../hooks/componentStates/useCalculatorDialogOpenState";
+import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
 
 export const transactionFormSchema = z.object({
 	icon: z.string(),
@@ -45,8 +47,31 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	const [time, setTime] = useState<Date>(new Date())
 	const [comment, setComment] = useState<string>("")
 
+	/**
+	 * Emoji picker state
+	 */
 	const [emojiPickerAnchor, setEmojiPickerAnchor] = useState<Element | null>(null)
 	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
+
+	/**
+	 * Calculator state
+	 */
+	const {
+		isOpen: isCalculatorOpen,
+		handleOpen: handleCalculatorOpen,
+		handleClose: handleCalculatorClose,
+	} = useOpenStateWrapper(useCalculatorDialogOpenState())
+
+	/**
+	 * Calculator submission handler
+	 */
+	const onCalculatorSubmit = useCallback((value: number) => {
+		handleCalculatorClose()
+		if (!Number.isNaN(value)) {
+			setSign(value <= 0 ? "-" : "+");
+			setAmount(value.toFixed(2));
+		}
+	}, [handleCalculatorClose])
 
 	// If existing category selected and it has an icon, display
 	// it (unless an icon is selected)
@@ -316,6 +341,10 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		onCategoryChange: setCategory,
 		onTimeChange: setTime,
 		onCommentChange: setComment,
+		isCalculatorOpen,
+		handleCalculatorOpen,
+		handleCalculatorClose,
+		onCalculatorSubmit,
 		errors: errors,
 		categories: categories,
 		edit: !!editTransaction,

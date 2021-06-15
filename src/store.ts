@@ -16,6 +16,7 @@ import { stripeModel, StripeModel } from "./models/stripe.model";
 import { budgetsModel, BudgetsModel } from "./models/budgets.model";
 import { SidebarModel, sidebarModel } from "./models/sidebar.model";
 import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
+import { exposeToWindow } from "./utils/Utils/exposeToWindow";
 
 export interface StoreModel {
   notification: NotificationModel;
@@ -47,9 +48,51 @@ const storeModel: StoreModel = {
 
 export const store = createStore(storeModel);
 
-if (process.env.NODE_ENV === "development") {
-  (window as any).store = store;
-}
+exposeToWindow({
+  store,
+  setThemeColor(themeColor: ThemeColor) {
+    store.getActions().auth.updateProfile({ themeColor });
+    store.getActions().theme.setThemeColor(themeColor);
+  },
+  setThemeMode(themeMode: ThemeMode) {
+    store.getActions().auth.updateProfile({ themeMode });
+    store.getActions().theme.setThemeMode(themeMode);
+  },
+  toggleThemeColor() {
+    const now = store.getState().theme.themeColor;
+    let themeColor = ((): ThemeColor => {
+      switch (now) {
+        case "blue":
+          return "green";
+        case "green":
+          return "pink";
+        case "pink":
+          return "purple";
+        case "purple":
+          return "red";
+        case "red":
+          return "yellow";
+        case "yellow":
+          return "blue";
+      }
+    })();
+    store.getActions().auth.updateProfile({ themeColor });
+    store.getActions().theme.setThemeColor(themeColor);
+  },
+  toggleThemeMode() {
+    const now = store.getState().theme.themeMode;
+    let themeMode = ((): ThemeMode => {
+      switch (now) {
+        case "dark":
+          return "light";
+        case "light":
+          return "dark";
+      }
+    })();
+    store.getActions().auth.updateProfile({ themeMode });
+    store.getActions().theme.setThemeMode(themeMode);
+  },
+});
 
 export const typedHooks = createTypedHooks<StoreModel>();
 

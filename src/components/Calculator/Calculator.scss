@@ -1,0 +1,182 @@
+@import "main";
+
+.Calculator {
+  $button-size: 50px;
+  $button-names: clr, bck, div, no1, no2, no3, no4, no5, no6, no7, no8, no9, no0,
+    dot, par, eql, div, mul, sub, add;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: $spacing-2;
+
+  & > .display {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    background: $gray-300;
+    padding: $spacing-2;
+    border-radius: $spacing-1;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+
+    &:not(.isValid) {
+      border-bottom-color: $red-500;
+    }
+    width: 4 * $button-size;
+
+    & > .input,
+    & > .output {
+      height: 22px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    & > .output {
+      & > p {
+        max-width: calc(#{4 * $button-size} - #{$spacing-4});
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+
+    & > .input {
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+      & > p {
+        white-space: nowrap;
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+  & > .buttons {
+    display: grid;
+    width: 4 * $button-size;
+    height: 5 * $button-size;
+    gap: 2px;
+    grid-template:
+      "clr clr bck div" 1fr
+      "no7 no8 no9 mul" 1fr
+      "no4 no5 no6 sub" 1fr
+      "no1 no2 no3 add" 1fr
+      "dot no0 par eql" 1fr / 1fr 1fr 1fr 1fr;
+
+    & button {
+      border-radius: $spacing-1;
+      border: none;
+      background: $gray-400;
+      display: grid;
+      place-items: center;
+      position: relative;
+
+      &.numBtn,
+      &.utilBtn {
+        background: $gray-300;
+      }
+
+      &.eql {
+        background: $primary-500;
+        & > p {
+          color: white;
+        }
+      }
+
+      &.opBtn {
+        & > * {
+          transform: scale(1.4);
+        }
+      }
+
+      & > svg {
+        font-size: 18px;
+      }
+
+      @each $button-name in $button-names {
+        &.#{$button-name} {
+          grid-area: $button-name;
+        }
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        display: block;
+        border-radius: 50%;
+      }
+
+      outline: none;
+
+      &:hover {
+        &::after {
+          background: rgba(0, 0, 0, 0.1);
+          transform: scale(0.8);
+        }
+      }
+
+      &:focus {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
+      }
+
+      &:active {
+        transform: scale(0.95);
+        &::after {
+          background: rgba(0, 0, 0, 0.15);
+          transform: scale(0.75);
+        }
+      }
+    }
+  }
+}
+
+@include darkmode {
+  .Calculator {
+    & > .display {
+      background: $gray-800;
+
+      &:not(.isValid) {
+        box-shadow: 0 0 6px 3px $red-300;
+      }
+    }
+    & > .buttons {
+      & button {
+        background: $gray-800;
+        color: white;
+
+        &.numBtn,
+        &.utilBtn {
+          background: $gray-700;
+        }
+
+        &.eql {
+          background: $primary-500;
+          & > p {
+            color: white;
+          }
+        }
+
+        &:hover {
+          &::after {
+            background: rgba(0, 0, 0, 0.05);
+          }
+        }
+
+        &:focus {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        &:active {
+          transform: scale(0.95);
+          &::after {
+            background: rgba(0, 0, 0, 0.15);
+          }
+        }
+      }
+    }
+  }
+}
