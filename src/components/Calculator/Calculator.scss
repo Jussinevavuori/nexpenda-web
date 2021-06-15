@@ -1,7 +1,22 @@
 @import "main";
 
 .Calculator {
-  $button-size: 50px;
+  $def-button-size: 14vw;
+  $min-button-size: 60px;
+  $max-button-size: 60px;
+  $count-x-buttons: 4;
+  $count-y-buttons: 5;
+  $button-size: clamp($min-button-size, $def-button-size, $max-button-size);
+  $calc-width: clamp(
+    #{$count-x-buttons * $min-button-size},
+    #{$count-x-buttons * $def-button-size},
+    #{$count-x-buttons * $max-button-size}
+  );
+  $calc-height: clamp(
+    #{$count-y-buttons * $min-button-size},
+    #{$count-y-buttons * $def-button-size},
+    #{$count-y-buttons * $max-button-size}
+  );
   $button-names: clr, bck, div, no1, no2, no3, no4, no5, no6, no7, no8, no9, no0,
     dot, par, eql, div, mul, sub, add;
 
@@ -24,7 +39,7 @@
     &:not(.isValid) {
       border-bottom-color: $red-500;
     }
-    width: 4 * $button-size;
+    width: $calc-width;
 
     & > .input,
     & > .output {
@@ -34,11 +49,8 @@
     }
 
     & > .output {
+      overflow: hidden;
       & > p {
-        max-width: calc(#{4 * $button-size} - #{$spacing-4});
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
         white-space: nowrap;
       }
     }
@@ -56,8 +68,8 @@
   }
   & > .buttons {
     display: grid;
-    width: 4 * $button-size;
-    height: 5 * $button-size;
+    width: $calc-width;
+    height: $calc-height;
     gap: 2px;
     grid-template:
       "clr clr bck div" 1fr

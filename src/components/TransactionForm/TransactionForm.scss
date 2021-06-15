@@ -136,5 +136,18 @@
     & .MuiTextField-root {
       background: $gray-810;
     }
+    &__CalculatorDialog {
+      & .MuiIconButton-root {
+        background: $gray-820;
+
+        &:hover,
+        &:focus {
+          background: $gray-810;
+        }
+        &:active {
+          background: $gray-800;
+        }
+      }
+    }
   }
 }
