@@ -1,15 +1,13 @@
 import { useCallback } from "react";
-import { useOpenStateWrapper } from "../state/useOpenStateWrapper";
-import { useTransactionCreatorDrawerOpenState } from "../componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionCreatorOpenState } from "../componentStates/useTransactionCreatorOpenState";
 import { Transaction } from "../../classes/Transaction";
 import { TransactionCopySubscriber } from "./useOnTransactionCopy";
-import { useTransactionEditorDrawerVariableOpenState } from "../componentStates/useTransactionEditorDrawerVariableOpenState";
+import { useTransactionEditorOpenState } from "../componentStates/useTransactionEditorOpenState";
 
 export function useTransactionCopy() {
-  const { handleOpen: handleTransactionCreatorOpen } = useOpenStateWrapper(
-    useTransactionCreatorDrawerOpenState()
-  );
-  const [editingTransactionId] = useTransactionEditorDrawerVariableOpenState();
+  const { handleOpen: handleTransactionCreatorOpen } =
+    useTransactionCreatorOpenState();
+  const { openedId: editingTransactionId } = useTransactionEditorOpenState();
 
   return useCallback(
     (transaction: Transaction) => {
@@ -18,8 +16,11 @@ export function useTransactionCopy() {
         handleTransactionCreatorOpen();
       }
 
-      // Publish the copy event
-      TransactionCopySubscriber.publish(transaction);
+      // Publish the copy event (on a timeout in order to allow the
+      // form to render before it receives the data)
+      setTimeout(() => {
+        TransactionCopySubscriber.publish(transaction);
+      }, 10);
     },
     [editingTransactionId, handleTransactionCreatorOpen]
   );

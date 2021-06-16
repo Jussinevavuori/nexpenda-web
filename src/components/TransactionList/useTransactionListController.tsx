@@ -1,6 +1,6 @@
-import { createRef, useMemo, useCallback, useState, useEffect } from "react"
+import { createRef, useMemo, useState, useEffect } from "react"
 import { List } from "react-virtualized"
-import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState"
+import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState"
 import { useStoreState } from "../../store"
 import { theme } from "../../styles/main"
 import { DateUtils } from "../../utils/DateUtils/DateUtils"
@@ -35,11 +35,7 @@ export function useTransactionListController(props: TransactionListProps) {
 	const shouldShowSkeletons = !initializedItems || !initializedUser
 	const showSkeletons = props.showSkeletons && shouldShowSkeletons
 
-	const [, setCreateMenuOpen] = useTransactionCreatorDrawerOpenState()
-
-	const handleCreate = useCallback(() => {
-		setCreateMenuOpen(true)
-	}, [setCreateMenuOpen])
+	const { handleOpen } = useTransactionCreatorOpenState()
 
 	// Recalculate virtualized list row heights each time the 
 	// props change
@@ -95,7 +91,7 @@ export function useTransactionListController(props: TransactionListProps) {
 			? itemsByDates.length + 1
 			: 0,
 		showSkeletons,
-		handleCreate,
+		handleCreate: () => handleOpen(),
 		isUpcomingOpen,
 		handleOpenUpcomingToggle() {
 			setIsUpcomingOpen(_ => !_)

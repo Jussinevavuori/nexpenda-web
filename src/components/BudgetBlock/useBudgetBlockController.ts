@@ -1,51 +1,50 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { MoneyAmount } from "../../classes/MoneyAmount";
 import { useBudgetsContext } from "../../contexts/BudgetsContext.context";
-import { useBudgetBlockMenuVariableOpenState } from "../../hooks/componentStates/useBudgetBlockMenuVariableOpenState";
+import { useBudgetMenuState } from "../../hooks/componentStates/useBudgetMenuState";
 import { useStoreState } from "../../store";
 import { BudgetBlockProps } from "./BudgetBlock";
 
 export function useBudgetBlockController(props: BudgetBlockProps) {
+  const budget = props.budget;
+
   const categories = useStoreState((_) => _.transactions.categories);
   const context = useBudgetsContext();
   const isMonth = useStoreState((_) => _.interval.isMonth);
 
   const progress = context.extendedBudgets.find(
-    (_) => _.budget.id === props.budget.id
+    (_) => _.budget.id === budget.id
   );
 
-  const budgetId = props.budget.id;
-  const budgetCategories = props.budget.getCategories(categories);
-  const budgetLabel = props.budget.getLabel(categories);
+  const budgetCategories = budget.getCategories(categories);
+  const budgetLabel = budget.getLabel(categories);
 
-  const { 1: setMenuId } = useBudgetBlockMenuVariableOpenState();
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement>();
+  const menu = useBudgetMenuState();
 
   const handleMenuOpen = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      setMenuId(budgetId);
-      setMenuAnchorEl(e.currentTarget);
+      menu.handleOpen(e, budget);
     },
-    [setMenuAnchorEl, setMenuId, budgetId]
+    [budget, menu]
   );
 
   return {
     budgetCategories,
     budgetLabel,
     budgetNotFound: !progress,
-    budget: props.budget,
+    budget,
     progress:
       progress?.progressAmount[isMonth ? "monthly" : "absolute"] ??
       new MoneyAmount(0),
     percentage:
       progress?.progressPercentage[isMonth ? "monthly" : "absolute"] ?? 0,
-    budgetAmount: props.budget.monthlyAmount.multiply(
+    budgetAmount: budget.monthlyAmount.multiply(
       context.data.intervalLengthInMonths
     ),
     isAveraged:
-      context.data.intervalLengthInMonths < (props.budget.periodMonths ?? 0),
+      context.data.intervalLengthInMonths < (budget.periodMonths ?? 0),
 
-    menuAnchorEl,
     handleMenuOpen,
+    menu,
   };
 }

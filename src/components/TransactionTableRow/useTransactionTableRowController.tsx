@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
-import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
+import { useTransactionEditorOpenState } from "../../hooks/componentStates/useTransactionEditorOpenState"
 import { useStoreActions, useStoreState } from "../../store"
 import { TransactionTableRowProps } from "./TransactionTableRow"
 
@@ -16,13 +16,10 @@ export function useTransactionTableRowController(props: TransactionTableRowProps
 	/**
 	 * Is the transaction being edited.
 	 */
-	const [editingId, setEditingId] = useTransactionEditorDrawerVariableOpenState()
+	const { openedId: editingId, handleClose: handleCloseEditing } = useTransactionEditorOpenState()
 	const isEditing = useMemo(() => {
 		return editingId === props.transaction.id
 	}, [editingId, props.transaction])
-	const handleCloseEditing = useCallback(() => {
-		setEditingId(null)
-	}, [setEditingId])
 
 	const select = useStoreActions(_ => _.selection.select)
 	const selectAll = useStoreActions(_ => _.selection.selectAll)

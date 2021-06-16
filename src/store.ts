@@ -16,6 +16,7 @@ import { stripeModel, StripeModel } from "./models/stripe.model";
 import { budgetsModel, BudgetsModel } from "./models/budgets.model";
 import { SidebarModel, sidebarModel } from "./models/sidebar.model";
 import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
+import { SearchModel, searchModel } from "./models/search.model";
 import { exposeToWindow } from "./utils/Utils/exposeToWindow";
 
 export interface StoreModel {
@@ -29,6 +30,7 @@ export interface StoreModel {
   stripe: StripeModel;
   budgets: BudgetsModel;
   sidebar: SidebarModel;
+  search: SearchModel;
   appConfig: AppConfigModel;
 }
 
@@ -43,6 +45,7 @@ const storeModel: StoreModel = {
   stripe: stripeModel,
   budgets: budgetsModel,
   sidebar: sidebarModel,
+  search: searchModel,
   appConfig: appConfigModel,
 };
 

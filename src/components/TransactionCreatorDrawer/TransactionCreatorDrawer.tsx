@@ -15,7 +15,7 @@ export function TransactionCreatorDrawer(props: TransactionCreatorDrawerProps) {
 
 	return <Drawer
 		className="TransactionCreatorDrawer"
-		open={controller.open}
+		open={controller.isOpen}
 		onClose={controller.onClose}
 		anchor={largerScreen ? "left" : "bottom"}
 	>

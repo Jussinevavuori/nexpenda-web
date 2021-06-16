@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../store";
-import { useBudgetCreatorDialogVariableOpenState } from "../componentStates/useBudgetCreatorDialogVariableOpenState";
-import { useTransactionCreatorDrawerOpenState } from "../componentStates/useTransactionCreatorDrawerOpenState";
+import { useBudgetCreatorOpenState } from "../componentStates/useBudgetCreatorOpenState";
+import { useTransactionCreatorOpenState } from "../componentStates/useTransactionCreatorOpenState";
 import { useRedirect } from "../utils/useRedirect";
 import { useIsBudgetsLimitExceeded } from "./useIsBudgetsLimitExceeded";
 import { useIsPremium } from "./useIsPremium";
@@ -24,14 +24,16 @@ export function useBlockCreation() {
   /**
    * Access transaction menu for closing it when required
    */
-  const [isTransactionMenuOpen, setIsTransactionMenuOpen] =
-    useTransactionCreatorDrawerOpenState();
+  const {
+    isOpen: isTransactionCreatorOpen,
+    handleClose: handleTransactionCreatorClose,
+  } = useTransactionCreatorOpenState();
 
   /**
    * Access budget menu for closing it when required
    */
-  const [isBudgetMenuOpen, setIsBudgetMenuOpen] =
-    useBudgetCreatorDialogVariableOpenState();
+  const { isOpen: isBudgetCreatorOpen, handleClose: handleBudgetCreatorClose } =
+    useBudgetCreatorOpenState();
 
   /**
    * Check if the current transaction limit has been exceeded
@@ -54,8 +56,8 @@ export function useBlockCreation() {
     if (isPremium) return;
 
     // Close transactions menu if exceeded
-    if (isTransactionMenuOpen && isTransactionsLimitExceeded) {
-      setIsTransactionMenuOpen(false);
+    if (isTransactionCreatorOpen && isTransactionsLimitExceeded) {
+      handleTransactionCreatorClose();
       notify({
         message:
           `You have hit the limit of free transactions. ` +
@@ -76,8 +78,8 @@ export function useBlockCreation() {
     redirect,
     isPremium,
     isUserLoaded,
-    isTransactionMenuOpen,
-    setIsTransactionMenuOpen,
+    isTransactionCreatorOpen,
+    handleTransactionCreatorClose,
     isTransactionsLimitExceeded,
   ]);
 
@@ -92,8 +94,8 @@ export function useBlockCreation() {
     if (isPremium) return;
 
     // Close budget menu if exceeded
-    if (isBudgetMenuOpen && isBudgetsLimitExceeded) {
-      setIsBudgetMenuOpen(undefined);
+    if (isBudgetCreatorOpen && isBudgetsLimitExceeded) {
+      handleBudgetCreatorClose();
       notify({
         message:
           `You have hit the limit of free budgets. ` +
@@ -114,8 +116,8 @@ export function useBlockCreation() {
     redirect,
     isPremium,
     isUserLoaded,
-    isBudgetMenuOpen,
-    setIsBudgetMenuOpen,
+    isBudgetCreatorOpen,
+    handleBudgetCreatorClose,
     isBudgetsLimitExceeded,
   ]);
 }

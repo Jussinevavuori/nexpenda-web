@@ -11,10 +11,15 @@ export function useOpenStateWrapper(state: [boolean, (t: boolean) => void]) {
     setIsOpen(false);
   }, [setIsOpen]);
 
+  const handleToggle = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [setIsOpen, isOpen]);
+
   return {
     isOpen,
     setIsOpen,
     handleOpen,
     handleClose,
+    handleToggle,
   };
 }

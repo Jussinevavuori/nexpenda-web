@@ -1,26 +1,14 @@
 import { BudgetEditorDialogProps } from "./BudgetEditorDialog";
-import { useCallback, useMemo } from "react";
-import { useStoreState } from "../../store";
-import { useBudgetEditorDialogVariableOpenState } from "../../hooks/componentStates/useBudgetEditorDialogVariableOpenState";
+import { useBudgetEditorOpenState } from "../../hooks/componentStates/useBudgetEditorOpenState";
 
 export function useBudgetEditorDialogController(
   props: BudgetEditorDialogProps
 ) {
-  const [editingId, setEditingId] = useBudgetEditorDialogVariableOpenState();
-
-  const budgets = useStoreState((_) => _.budgets.items);
-
-  const budget = useMemo(() => {
-    return budgets.find((_) => _.id === editingId);
-  }, [budgets, editingId]);
-
-  const handleClose = useCallback(() => {
-    setEditingId(null);
-  }, [setEditingId]);
+  const { isOpen, openedBudget, handleClose } = useBudgetEditorOpenState();
 
   return {
-    isOpen: !!budget,
-    budget,
+    isOpen,
+    budget: openedBudget,
     handleClose,
   };
 }

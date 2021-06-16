@@ -2,17 +2,12 @@ import { DashboardPanelProps } from "./DashboardPanel";
 import { useCallback, useMemo } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
 import { DataUtils } from "../../../utils/DataUtils/DataUtils";
-import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState";
-import { useTransactionEditorDrawerVariableOpenState } from "../../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
-import { ComponentState } from "../../../hooks/componentStates/ComponentState";
+import { useTransactionEditorOpenState } from "../../../hooks/componentStates/useTransactionEditorOpenState";
+import { useIsSearchOpen } from "../../../hooks/application/useIsSearchOpen";
 
 export function useDashboardPanelController(props: DashboardPanelProps) {
   // Is the search open
-  const [isSearchOpen] = useBooleanQueryState(
-    ComponentState.keys.Search,
-    "replace",
-    "open"
-  );
+  const { isOpen: isSearchOpen } = useIsSearchOpen();
 
   // Selection state
   const selection = useStoreState((_) => _.selection.selection);
@@ -51,13 +46,13 @@ export function useDashboardPanelController(props: DashboardPanelProps) {
   }, [deleteTransactions, selection, deselectAll]);
 
   // Edit functionality
-  const [, setEditor] = useTransactionEditorDrawerVariableOpenState();
+  const { handleOpen: handleOpenEditor } = useTransactionEditorOpenState();
   const handleEdit = useCallback(() => {
     if (selection.length === 1) {
-      setEditor(selection[0].id);
+      handleOpenEditor(selection[0]);
       deselectAll();
     }
-  }, [selection, setEditor, deselectAll]);
+  }, [selection, handleOpenEditor, deselectAll]);
 
   return {
     selection,

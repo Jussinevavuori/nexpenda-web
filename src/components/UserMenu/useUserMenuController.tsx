@@ -12,7 +12,7 @@ export function useUserMenuController(props: UserMenuProps) {
 	const redirect = useRedirect()
 
 	// Open state
-	const { isOpen, setIsOpen, handleOpen, handleClose, anchorEl } = useUserMenuOpenState()
+	const { isOpen, handleOpen, handleClose, anchorEl } = useUserMenuOpenState()
 
 	// Settings action
 	const handleSettings = useCallback(() => {
@@ -36,7 +36,6 @@ export function useUserMenuController(props: UserMenuProps) {
 
 	return {
 		isOpen,
-		setIsOpen,
 		anchorEl,
 		handleClose,
 		handleOpen,

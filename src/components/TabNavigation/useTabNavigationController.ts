@@ -3,7 +3,7 @@ import { routes } from "../../Routes";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState, useStoreActions } from "../../store";
 import { TabNavigationProps } from "./TabNavigation";
-import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState";
 
 export function useTabNavigationController(props: TabNavigationProps) {
   const dashboardMatch = useRouteMatch(routes.dashboard);
@@ -17,7 +17,7 @@ export function useTabNavigationController(props: TabNavigationProps) {
 
   const redirect = useRedirect();
 
-  const [, setTransactionCreatorOpen] = useTransactionCreatorDrawerOpenState();
+  const { handleOpen } = useTransactionCreatorOpenState();
 
   return {
     isDashboard: !!dashboardMatch,
@@ -45,7 +45,7 @@ export function useTabNavigationController(props: TabNavigationProps) {
     user: user,
     logout: () => logout(),
 
-    onTransactionCreatorOpen: () => setTransactionCreatorOpen(true),
+    onTransactionCreatorOpen: () => handleOpen(),
   };
 }
 

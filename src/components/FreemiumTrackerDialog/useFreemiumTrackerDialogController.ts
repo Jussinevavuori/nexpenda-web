@@ -1,4 +1,4 @@
-import { useFreemiumTrackerDialogOpenState } from "../../hooks/componentStates/useFreemiumTrackerDialogOpenState";
+import { useFreemiumTrackerOpenState } from "../../hooks/componentStates/useFreemiumTrackerOpenState";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState } from "../../store";
 import { FreemiumTrackerDialogProps } from "./FreemiumTrackerDialog";
@@ -6,7 +6,7 @@ import { FreemiumTrackerDialogProps } from "./FreemiumTrackerDialog";
 export function useFreemiumTrackerDialogController(
   props: FreemiumTrackerDialogProps
 ) {
-  const [isOpen, setIsOpen] = useFreemiumTrackerDialogOpenState();
+  const { isOpen, setIsOpen } = useFreemiumTrackerOpenState();
 
   const redirect = useRedirect();
 

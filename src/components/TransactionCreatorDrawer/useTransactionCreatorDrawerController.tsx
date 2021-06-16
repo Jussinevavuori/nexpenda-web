@@ -1,14 +1,14 @@
-import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState"
+import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState"
 import { TransactionCreatorDrawerProps } from "./TransactionCreatorDrawer"
 
 
 export function useTransactionCreatorDrawerController(props: TransactionCreatorDrawerProps) {
 
-	const [open, setOpen] = useTransactionCreatorDrawerOpenState()
+	const { isOpen, handleOpen, handleClose } = useTransactionCreatorOpenState()
 
 	return {
-		open,
-		onOpen: () => setOpen(true),
-		onClose: () => setOpen(false),
+		isOpen,
+		onOpen: () => handleOpen(),
+		onClose: () => handleClose(),
 	}
 }

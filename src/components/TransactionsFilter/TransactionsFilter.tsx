@@ -25,14 +25,14 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 		<AnimateSharedLayout>
 			<motion.div
 				layout={trueAfterTimeout}
-				className={cx("container", { open: controller.open })}
+				className={cx("container", { open: controller.isOpen })}
 			>
 				<ButtonBase
 					focusRipple
-					disableRipple={controller.open}
-					className={cx({ open: controller.open })}
+					disableRipple={controller.isOpen}
+					className={cx({ open: controller.isOpen })}
 					onClick={() => {
-						if (!controller.open) {
+						if (!controller.isOpen) {
 							controller.onOpen()
 						}
 						setTimeout(() => {
@@ -45,7 +45,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 				>
 					<motion.div
 						layout={trueAfterTimeout}
-						className={cx("buttonBase", { open: controller.open })}
+						className={cx("buttonBase", { open: controller.isOpen })}
 					>
 						<motion.span
 							className="icon startIcon"
@@ -55,7 +55,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 						</motion.span>
 						<AnimatePresence>
 							{
-								(!controller.open && isDesktopLayout) && <motion.span
+								(!controller.isOpen && isDesktopLayout) && <motion.span
 									transition={{ duration: 0.4 }}
 									layout="position"
 									initial={{ opacity: 0, scale: 1 }}
@@ -69,8 +69,8 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 							}
 						</AnimatePresence>
 						{
-							controller.open && <motion.span
-								className={cx("inputContainer", { open: controller.open })}
+							controller.isOpen && <motion.span
+								className={cx("inputContainer", { open: controller.isOpen })}
 								layout={trueAfterTimeout ? "position" : false}
 								initial={{ opacity: 0, scale: 0 }}
 								animate={{ opacity: 1, scale: 1 }}
@@ -78,7 +78,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 							>
 								<AnimatePresence exitBeforeEnter={false}>
 									{
-										controller.open &&
+										controller.isOpen &&
 										!controller.isInputFocused &&
 										(controller.smartSearch.categories.length > 0
 											|| controller.smartSearch.amountComparisons.length > 0) &&
@@ -136,7 +136,7 @@ export function TransactionsFilter(props: TransactionsFilterProps) {
 							</motion.span>
 						}
 						{
-							controller.open && <motion.span
+							controller.isOpen && <motion.span
 								transition={{ duration: 0.4 }}
 								initial={{ opacity: 0, y: -10 }}
 								animate={{ opacity: 1, y: 0 }}

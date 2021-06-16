@@ -1,15 +1,13 @@
-import { useAvatarChangerDialogOpenState } from "../../hooks/componentStates/useAvatarChangerDialogOpenState";
+import { useAvatarChangerOpenState } from "../../hooks/componentStates/useAvatarChangerOpenState";
 import { AvatarChangerDialogProps } from "./AvatarChangerDialog";
 
 export function useAvatarChangerDialogController(
   props: AvatarChangerDialogProps
 ) {
-  const [isOpen, setIsOpen] = useAvatarChangerDialogOpenState();
+  const { isOpen, handleClose } = useAvatarChangerOpenState();
 
   return {
-    handleClose() {
-      setIsOpen(false);
-    },
+    handleClose,
     isOpen,
   };
 }

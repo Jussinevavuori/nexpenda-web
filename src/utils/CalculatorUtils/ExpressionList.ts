@@ -70,16 +70,10 @@ export class ExpressionList {
    * a recursive expression list.
    */
   static parseParenthesis(list: ExpressionListItem[]): ExpressionList {
-    groupCollapsed("Parsing parenthesis");
-
     // Automatically return empty for empty
     if (list.length === 0) {
-      log("Returning empty list");
-      groupEnd();
       return new ExpressionList();
     }
-
-    log("Received", debug(list));
 
     // Stack to contain each expression list level
     const stack: ExpressionList[] = [new ExpressionList()];
@@ -112,10 +106,6 @@ export class ExpressionList {
       }
     }
 
-    log("Parsed to", debug(stack[0]));
-
-    groupEnd();
-
     return stack[0];
   }
 
@@ -124,17 +114,11 @@ export class ExpressionList {
    * failed.
    */
   static evaluate(rawlist: ExpressionListItem[]): Big {
-    group("Evaluate");
-
     // Parse to recursive list of expressions and expression lists
     const list = ExpressionList.parseParenthesis(rawlist).expressions;
 
-    log("Received parsed list", debug(list));
-
     // Empty lists are considered invalid and automatically fail
     if (list.length === 0) {
-      log("❌ Parsed list was empty", debug(list));
-      groupEnd();
       throw new Error("Parsed list was empty");
     }
 
@@ -146,20 +130,16 @@ export class ExpressionList {
     ) {
       const number = toNumberExpression(list[1]);
       list.splice(0, 2, number.multiply(new Big(-1)));
-      log("Handled unary negation", debug(list));
     }
 
     // If last item in list is an operator, append the operator's identity
     const last = list[list.length - 1];
     if (OperatorExpression.is(last)) {
       list.push(last.getIdentity());
-      log("Appended identity", debug(list));
     }
 
     // List must have an odd length to be valid
     if (list.length % 2 === 0) {
-      log("❌ List has even length", debug(list));
-      groupEnd();
       throw new Error("List has even length");
     }
 
@@ -172,8 +152,6 @@ export class ExpressionList {
           : OperatorExpression.is(expr)
       )
     ) {
-      log("❌ Invalid order of expression types in list", debug(list));
-      groupEnd();
       throw new Error("Invalid order of expression types in list");
     }
 
@@ -205,8 +183,6 @@ export class ExpressionList {
 
       // Ensure valid operator found
       if (!op || opIndex < 0) {
-        log("❌ Unable to find operator in list", debug(list));
-        groupEnd();
         throw new Error("Unable to find operator in list");
       }
 
@@ -219,12 +195,6 @@ export class ExpressionList {
         !(NumberExpression.is(a) || ExpressionList.is(a)) ||
         !(NumberExpression.is(b) || ExpressionList.is(b))
       ) {
-        log(
-          "❌ Could not find numeric operands for operator in list",
-          `Operator: ${op.value} @ ${opIndex}`,
-          debug(list)
-        );
-        groupEnd();
         throw new Error("Could not find numeric operands for operator in list");
       }
 
@@ -236,32 +206,17 @@ export class ExpressionList {
       // with result
       const result = op.evaluate(numA, numB);
       list.splice(opIndex - 1, 3, result);
-      log(
-        `Calculated ${numA.value} ${op.value} ${numB.value} = ${result.value} (operand at ${opIndex})`,
-        debug(list)
-      );
     }
 
     // List should have only one expression remaining.
     if (list.length !== 1) {
-      log("❌ List had invalid length after parsing", debug(list));
-      groupEnd();
       throw new Error("List had invalid length after parsing");
     }
 
     // Last expression in list should be a number or expression list.
     if (!NumberExpression.is(list[0]) && !ExpressionList.is(list[0])) {
-      log(
-        "❌ Parsed value in list was not number or expression list",
-        debug(list)
-      );
-      groupEnd();
       throw new Error("Parsed value in list was not number or expression list");
     }
-
-    log("Final result: ", toNumberExpression(list[0]).value);
-
-    groupEnd();
 
     // Return value of number or expression list
     return toNumberExpression(list[0]).value;
@@ -275,8 +230,6 @@ export class ExpressionList {
    * - Transforms all implicit multiplications to explicit.
    */
   static parseString(str: string): Expression[] {
-    group("Parsing string");
-
     // List of all parsed expressions
     const expressions: Expression[] = [];
 
@@ -300,7 +253,6 @@ export class ExpressionList {
         return true;
       } catch (e) {
         // Invalid numbers will not be appended, reset acc on invalid
-        log("❌ Invalid acc being flushed:", acc);
         acc = "";
         return false;
       }
@@ -311,45 +263,35 @@ export class ExpressionList {
       // Accumulate numbers
       if (char.match(/\d|\./)) {
         acc += char;
-        log(`Added "${char}" to acc`, debug(expressions), { acc });
         continue;
       }
 
       // Flush acc
       const insertedNumber = flushAcc();
-      log(
-        `Attempted parsing acc (${insertedNumber ? "flushed" : "none"})`,
-        debug(expressions),
-        { acc }
-      );
 
       // Match expression
       switch (char) {
         // Addition operator
         case "+": {
           expressions.push(new OperatorExpression("+"));
-          log(`Parsed "+"`, debug(expressions), { acc });
           break;
         }
 
         // Subtraction operator
         case "-": {
           expressions.push(new OperatorExpression("-"));
-          log(`Parsed "-"`, debug(expressions), { acc });
           break;
         }
 
         // Division operator
         case "/": {
           expressions.push(new OperatorExpression("/"));
-          log(`Parsed "/"`, debug(expressions), { acc });
           break;
         }
 
         // Multiplication operator
         case "*": {
           expressions.push(new OperatorExpression("*"));
-          log(`Parsed "*"`, debug(expressions), { acc });
           break;
         }
 
@@ -358,19 +300,14 @@ export class ExpressionList {
           // Add an explicit multiplication when implicit multiplication deteted
           if (insertedNumber) {
             expressions.push(new OperatorExpression("*"));
-            log(`Parsed implicit multiplication`, debug(expressions), {
-              acc,
-            });
           }
 
           expressions.push(new ParenthesisExpression("("));
-          log(`Parsed "("`, debug(expressions), { acc });
           break;
         }
 
         case ")": {
           expressions.push(new ParenthesisExpression(")"));
-          log(`Parsed ")"`, debug(expressions), { acc });
           break;
         }
       }
@@ -378,7 +315,6 @@ export class ExpressionList {
 
     // Final flush
     flushAcc();
-    log(`Performed final flush:`, debug(expressions), { acc });
 
     // Count amount of missing closing parenthesis
     let nMissingParenthesis = 0;
@@ -391,21 +327,11 @@ export class ExpressionList {
         }
       }
     }
-    log(
-      `Found ${nMissingParenthesis} missing parenthesis`,
-      debug(expressions),
-      { acc }
-    );
 
     // Insert all missing parenthesis expressions
     for (let i = 0; i < nMissingParenthesis; i++) {
       expressions.push(new ParenthesisExpression(")"));
     }
-    log(`Inserted ${nMissingParenthesis} parenthesis`, debug(expressions), {
-      acc,
-    });
-
-    groupEnd();
 
     // Return all expressions as list
     return expressions;
@@ -423,32 +349,5 @@ function toNumberExpression(
     return new NumberExpression(val.evaluate());
   } else {
     return val;
-  }
-}
-
-function debug(list: ExpressionListItem[] | ExpressionList) {
-  if (ExpressionList.is(list)) return list.toString();
-  return `[ ${list.map((_) => _.toString()).join(" ")} ]`;
-}
-
-let logging = false;
-function group(arg: string) {
-  if (logging) {
-    console.group(arg);
-  }
-}
-function groupEnd() {
-  if (logging) {
-    console.groupEnd();
-  }
-}
-function groupCollapsed(arg: string) {
-  if (logging) {
-    console.groupCollapsed(arg);
-  }
-}
-function log(...args: any[]) {
-  if (logging) {
-    console.log(...args);
   }
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen";
 import { useDebounce } from "../../hooks/utils/useDebounce";
 import { useStoreActions, useStoreState } from "../../store";
@@ -18,9 +18,7 @@ export function useTransactionsFilterController(
   // component is programmatically opened.
   const isNowOpened = useRef(false);
 
-  const [open, setOpen] = useIsSearchOpen();
-  const onOpen = useCallback(() => setOpen(true), [setOpen]);
-  const onClose = useCallback(() => setOpen(false), [setOpen]);
+  const { isOpen, handleOpen, handleClose } = useIsSearchOpen();
 
   const debouncedInput = useDebounce(input, 100);
 
@@ -36,22 +34,22 @@ export function useTransactionsFilterController(
       }
     }
 
-    if (open) {
+    if (isOpen) {
       setSearchTerm(debouncedInput);
     } else {
       setSearchTerm("");
     }
-  }, [debouncedInput, open, setSearchTerm]);
+  }, [debouncedInput, isOpen, setSearchTerm]);
 
   // When closed, reset the utility ref
   useEffect(() => {
-    if (!open) isNowOpened.current = false;
-  }, [open]);
+    if (!isOpen) isNowOpened.current = false;
+  }, [isOpen]);
 
   return {
-    open,
-    onOpen,
-    onClose,
+    isOpen,
+    onOpen: () => handleOpen(),
+    onClose: () => handleClose(),
     input,
     setInput,
 

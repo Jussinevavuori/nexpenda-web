@@ -167,7 +167,7 @@ export function TransactionForm(props: TransactionFormProps) {
 							<Type>
 								{"EUR"}
 							</Type>
-							<IconButton onClick={controller.handleCalculatorOpen}>
+							<IconButton onClick={() => controller.handleCalculatorOpen()}>
 								<Icon>{"calculate"}</Icon>
 							</IconButton>
 						</InputAdornment>

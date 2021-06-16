@@ -24,9 +24,7 @@ export function BudgetBlock(props: BudgetBlockProps) {
 
 		<BudgetBlockMenu
 			budget={props.budget}
-			MenuProps={{
-				anchorEl: controller.menuAnchorEl,
-			}}
+			MenuProps={{ anchorEl: controller.menu.anchorEl }}
 		/>
 
 		<div className={cx("BudgetBlock")}>

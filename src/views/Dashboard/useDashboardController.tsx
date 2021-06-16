@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from "react";
 import { MoneyAmount } from "../../classes/MoneyAmount";
-import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { useStoreState } from "../../store";
 
@@ -17,15 +17,15 @@ export function useDashboardController() {
 
 	const isDesktopLayout = useMdMedia()
 
-	const [transactionCreatorFormOpen, setTransactionCreatorFormOpen] = useTransactionCreatorDrawerOpenState()
+	const { isOpen: isTransactionCreatorDrawerOpen, handleClose: handleTransactionCreatorClose } = useTransactionCreatorOpenState()
 
 	const showCreateTransactionForm = useMemo(() => {
-		return isDesktopLayout && transactionCreatorFormOpen
-	}, [isDesktopLayout, transactionCreatorFormOpen])
+		return isDesktopLayout && isTransactionCreatorDrawerOpen
+	}, [isDesktopLayout, isTransactionCreatorDrawerOpen])
 
 	const handleTransactionFormClose = useCallback(() => {
-		setTransactionCreatorFormOpen(false)
-	}, [setTransactionCreatorFormOpen])
+		handleTransactionCreatorClose()
+	}, [handleTransactionCreatorClose])
 
 	return {
 		transactionsCount,

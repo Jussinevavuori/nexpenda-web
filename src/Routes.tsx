@@ -73,6 +73,11 @@ export const routes = {
 		path: "/subscribe",
 		title: "Subscribe"
 	}),
+	subscribeCanceled: new RouteData({
+		name: "subscribeCanceled",
+		path: "/subscribe/cancel",
+		title: "Subscription canceled"
+	}),
 	subscribeSuccess: new RouteData({
 		name: "subscribeSuccess",
 		path: "/subscribe/success",
@@ -181,6 +186,12 @@ export function Routes() {
 		<ProtectedRoute exact path={routes.subscribe.path}>
 			<Suspense fallback={<RouteSuspenseFallback />}>
 				<Subscribe />
+			</Suspense>
+		</ProtectedRoute>
+
+		<ProtectedRoute exact path={routes.subscribeCanceled.path}>
+			<Suspense fallback={<RouteSuspenseFallback />}>
+				<Subscribe cancelled />
 			</Suspense>
 		</ProtectedRoute>
 

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useAvatarChangerDialogOpenState } from "../../hooks/componentStates/useAvatarChangerDialogOpenState";
-import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
+import { useAvatarChangerOpenState } from "../../hooks/componentStates/useAvatarChangerOpenState";
 import { useStoreActions, useStoreState } from "../../store";
 import { AvatarChangerMenuProps } from "./AvatarChangerMenu";
 
@@ -11,9 +10,7 @@ export function useAvatarChangerMenuController(props: AvatarChangerMenuProps) {
 
   // Open state
 
-  const avatarChangerDialog = useOpenStateWrapper(
-    useAvatarChangerDialogOpenState()
-  );
+  const avatarChangerDialog = useAvatarChangerOpenState();
 
   // Closing
 

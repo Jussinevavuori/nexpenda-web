@@ -106,7 +106,7 @@ export function Settings(props: SettingsProps) {
 						color="primary"
 						variant="contained"
 						endIcon={<UploadIcon />}
-						onClick={controller.handleOpenFileUploaderDrawer}
+						onClick={() => controller.handleOpenFileUploaderDrawer()}
 						fullWidth
 					>
 						{"Import transactions"}
@@ -134,7 +134,7 @@ export function Settings(props: SettingsProps) {
 					</Type>
 					<Button
 						variant="outlined"
-						onClick={controller.handleOpenFeedbackDialog}
+						onClick={() => controller.handleOpenFeedbackDialog()}
 						startIcon={<FeedbackIcon />}
 						fullWidth
 					>

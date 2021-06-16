@@ -1,14 +1,9 @@
-import { ComponentState } from "../../hooks/componentStates/ComponentState";
-import { useBooleanQueryState } from "../../hooks/state/useBooleanQueryState";
+import { useState } from "react";
 import { useStoreState } from "../../store";
 import { SubscribeProps } from "./Subscribe";
 
 export function useSubscribeController(props: SubscribeProps) {
-  const [isCanceled, setIsCanceled] = useBooleanQueryState(
-    ComponentState.keys.SubscriptionCanceled,
-    "replace",
-    "true"
-  );
+  const [isCanceled, setIsCanceled] = useState(!!props.cancelled);
 
   const isPremium = useStoreState((_) => _.auth.user)?.isPremium;
 

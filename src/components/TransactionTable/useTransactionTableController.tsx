@@ -4,7 +4,7 @@ import { useXlMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction"
 import { useStoreState } from "../../store"
 import { TransactionTableProps } from "./TransactionTable"
-import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
+import { useTransactionEditorOpenState } from "../../hooks/componentStates/useTransactionEditorOpenState";
 
 const virtualizedListRef = createRef<List>()
 
@@ -14,7 +14,7 @@ export function useTransactionTableController(props: TransactionTableProps) {
 	const sortingStrategy = useStoreState(_ => _.transactions.sortingStrategy)
 	const [isUpcomingOpen, setIsUpcomingOpen] = useState(false)
 
-	const [editingId] = useTransactionEditorDrawerVariableOpenState()
+	const { openedId: editingId } = useTransactionEditorOpenState()
 
 	const {
 		allSortedItems,

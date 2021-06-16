@@ -3,7 +3,7 @@ import { Transaction } from "../../classes/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen"
 import { useTransactionCopy } from "../../hooks/application/useTransactionCopy"
-import { useTransactionEditorDrawerVariableOpenState } from "../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState"
+import { useTransactionEditorOpenState } from "../../hooks/componentStates/useTransactionEditorOpenState"
 import { useStoreActions, useStoreState } from "../../store"
 import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { TransactionContextMenuProps } from "./TransactionContextMenu"
@@ -19,7 +19,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	const select = useStoreActions(_ => _.selection.select)
 	const deselect = useStoreActions(_ => _.selection.deselect)
 
-	const [, setEditor] = useTransactionEditorDrawerVariableOpenState()
+	const { handleOpen: handleOpenEditor } = useTransactionEditorOpenState()
 
 	const menu = useTransactionContextMenu()
 
@@ -88,10 +88,10 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	 */
 	const handleEdit = useCallback(() => {
 		if (menu.transaction) {
-			setEditor(menu.transaction.id)
+			handleOpenEditor(menu.transaction)
 		}
 		handleClose()
-	}, [handleClose, menu, setEditor])
+	}, [handleClose, menu, handleOpenEditor])
 
 	/**
 	 * Duplicating
@@ -120,7 +120,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	 */
 	const smartSearch = useStoreState(_ => _.transactions.smartSearch)
 	const setSearch = useStoreActions(_ => _.transactions.setSearchTerm)
-	const { 1: setIsSearchOpen } = useIsSearchOpen()
+	const { setIsOpen: setIsSearchOpen } = useIsSearchOpen()
 
 	const isCategoryFilterToggledOn = useMemo(() => {
 		return smartSearch.categories.some(c => {

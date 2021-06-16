@@ -1,11 +1,11 @@
-import { useFileUploaderDrawerOpenState } from "../../hooks/componentStates/useFileUploaderDrawerOpenState";
+import { useFileUploaderOpenState } from "../../hooks/componentStates/useFileUploaderOpenState";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { FileUploaderDrawerProps } from "./FileUploaderDrawer";
 
 export function useFileUploaderDrawerController(
   props: FileUploaderDrawerProps
 ) {
-  const [isOpen, setIsOpen] = useFileUploaderDrawerOpenState();
+  const { isOpen, setIsOpen } = useFileUploaderOpenState();
   const isDesktop = useMdMedia();
 
   return {

@@ -12,7 +12,7 @@ import { routes } from "../../Routes";
 import { Button } from "@material-ui/core";
 
 export type SubscribeProps = {
-
+	cancelled?: boolean;
 };
 
 export function Subscribe(props: SubscribeProps) {

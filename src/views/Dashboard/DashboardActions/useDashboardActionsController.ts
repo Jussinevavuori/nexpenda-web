@@ -2,12 +2,11 @@ import { DashboardActionsProps } from "./DashboardActions";
 import { useCallback, useMemo, useState } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
 import { DataUtils } from "../../../utils/DataUtils/DataUtils";
-import { useBooleanQueryState } from "../../../hooks/state/useBooleanQueryState";
 import { TransactionSpreadsheet } from "../../../utils/FileIO/TransactionSpreadsheet";
 import { useMenuAnchorState } from "../../../hooks/state/useMenuAnchorState";
-import { useTransactionCreatorDrawerOpenState } from "../../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
-import { useTransactionEditorDrawerVariableOpenState } from "../../../hooks/componentStates/useTransactionEditorDrawerVariableOpenState";
-import { ComponentState } from "../../../hooks/componentStates/ComponentState";
+import { useTransactionCreatorOpenState } from "../../../hooks/componentStates/useTransactionCreatorOpenState";
+import { useIsSearchOpen } from "../../../hooks/application/useIsSearchOpen";
+import { useTransactionEditorOpenState } from "../../../hooks/componentStates/useTransactionEditorOpenState";
 
 export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
@@ -19,11 +18,7 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
    * Search open
    */
-  const [isSearchOpen] = useBooleanQueryState(
-    ComponentState.keys.Search,
-    "replace",
-    "open"
-  );
+  const { isOpen: isSearchOpen } = useIsSearchOpen();
 
   /**
    * Selection
@@ -90,22 +85,19 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
    * Editor drawer
    */
-  const [, setEditor] = useTransactionEditorDrawerVariableOpenState();
+  const { handleOpen: handleOpenEditor } = useTransactionEditorOpenState();
   const handleEdit = useCallback(() => {
     if (selection.length === 1) {
-      setEditor(selection[0].id);
+      handleOpenEditor(selection[0]);
       deselectAll();
     }
-  }, [selection, setEditor, deselectAll]);
+  }, [selection, handleOpenEditor, deselectAll]);
 
   /**
    * Create transaction drawer
    */
-  const [createDrawerOpen, setCreateDrawerOpen] =
-    useTransactionCreatorDrawerOpenState();
-  const handleCreate = useCallback(() => {
-    setCreateDrawerOpen(!createDrawerOpen);
-  }, [createDrawerOpen, setCreateDrawerOpen]);
+  const { isOpen: createDrawerOpen, handleToggle: handleCreateDrawerToggle } =
+    useTransactionCreatorOpenState();
 
   return {
     moreMenu,
@@ -117,7 +109,7 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
     handleDeselectAll,
     handleEdit,
     handleDelete,
-    handleCreate,
+    handleCreate: handleCreateDrawerToggle,
     handleDownload,
     isDownloading,
     isSearchOpen,

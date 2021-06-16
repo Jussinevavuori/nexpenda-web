@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from "react";
-import { useFreemiumTrackerDialogOpenState } from "../../hooks/componentStates/useFreemiumTrackerDialogOpenState";
+import { useMemo } from "react";
+import { useFreemiumTrackerOpenState } from "../../hooks/componentStates/useFreemiumTrackerOpenState";
 import { useStoreState } from "../../store";
 import { MiniFreemiumTrackerProps } from "./MiniFreemiumTracker";
 
@@ -33,10 +33,7 @@ export function useMiniFreemiumTrackerController(
   const transactionsPercentage = (100 * transactionsCount) / transactionsLimit;
   const budgetsPercentage = (100 * budgetsCount) / budgetsLimit;
 
-  const { 1: setIsDialogOpen } = useFreemiumTrackerDialogOpenState();
-  const handleOpen = useCallback(() => {
-    setIsDialogOpen(true);
-  }, [setIsDialogOpen]);
+  const { handleOpen } = useFreemiumTrackerOpenState();
 
   return {
     isUserLoaded,

@@ -1,26 +1,24 @@
-import { useBudgetBlockMenuVariableOpenState } from "../../hooks/componentStates/useBudgetBlockMenuVariableOpenState";
-import { useBudgetEditorDialogVariableOpenState } from "../../hooks/componentStates/useBudgetEditorDialogVariableOpenState";
+import { useCallback } from "react";
+import { useBudgetEditorOpenState } from "../../hooks/componentStates/useBudgetEditorOpenState";
+import { useBudgetMenuState } from "../../hooks/componentStates/useBudgetMenuState";
 import { useStoreActions } from "../../store";
 import { BudgetBlockMenuProps } from "./BudgetBlockMenu";
 
 export function useBudgetBlockMenuController(props: BudgetBlockMenuProps) {
   // Editing
-  const { 1: setIsEditingId } = useBudgetEditorDialogVariableOpenState();
-  const [menuId, setMenuId] = useBudgetBlockMenuVariableOpenState();
-  const isOpen = menuId === props.budget.id;
+  const budget = props.budget;
+  const { handleOpen } = useBudgetEditorOpenState();
+  const { targetId, handleClose } = useBudgetMenuState();
+  const isOpen = targetId === budget.id;
 
-  function handleClose() {
-    setMenuId(null);
-  }
-
-  function handleEdit() {
-    setIsEditingId(props.budget.id);
-  }
+  const handleEdit = useCallback(() => {
+    handleOpen(budget, { replace: true });
+  }, [handleOpen, budget]);
 
   // Deleting
   const deleteBudget = useStoreActions((_) => _.budgets.deleteBudget);
   function handleDelete() {
-    deleteBudget(props.budget.id);
+    deleteBudget(budget.id);
     handleClose();
   }
 

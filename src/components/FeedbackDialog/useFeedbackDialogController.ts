@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useFeedbackDialogOpenState } from "../../hooks/componentStates/useFeedbackDialogOpenState";
+import { useFeedbackOpenState } from "../../hooks/componentStates/useFeedbackOpenState";
 import { FeedbackService } from "../../services/FeedbackService";
 import { useStoreActions } from "../../store";
 import { FeedbackDialogProps } from "./FeedbackDialog";
@@ -7,7 +7,7 @@ import { FeedbackDialogProps } from "./FeedbackDialog";
 export function useFeedbackDialogController(props: FeedbackDialogProps) {
   const notify = useStoreActions((_) => _.notification.notify);
 
-  const [isOpen, setIsOpen] = useFeedbackDialogOpenState();
+  const { isOpen, setIsOpen } = useFeedbackOpenState();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 

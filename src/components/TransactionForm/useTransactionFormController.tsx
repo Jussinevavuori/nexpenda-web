@@ -7,8 +7,8 @@ import { useStoreActions, useStoreState } from "../../store"
 import { Category } from "../../classes/Category";
 import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCopy";
 import { Transaction } from "../../classes/Transaction";
-import { useCalculatorDialogOpenState } from "../../hooks/componentStates/useCalculatorDialogOpenState";
-import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
+import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
+import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
 
 export const transactionFormSchema = z.object({
 	icon: z.string(),
@@ -60,7 +60,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		isOpen: isCalculatorOpen,
 		handleOpen: handleCalculatorOpen,
 		handleClose: handleCalculatorClose,
-	} = useOpenStateWrapper(useCalculatorDialogOpenState())
+	} = useCalculatorOpenState()
 
 	/**
 	 * Calculator submission handler
@@ -292,30 +292,29 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		 * Handle error messages
 		 */
 		setErrors(() => {
-			if (result.reason === "invalidServerResponse") {
-				return { main: "Invalid response received from server" }
+
+			if (result.reason === "network" && result.code === "request/invalid-request-data") {
+				const e = result.data?.errors ?? {};
+				return {
+					amount:
+						typeof e.integerAmount === "string"
+							? e.integerAmount
+							: undefined,
+					comment: typeof e.comment === "string" ? e.comment : undefined,
+					category: typeof e.category === "string" ? e.category : undefined,
+					time: typeof e.time === "string" ? e.time : undefined,
+					main:
+						typeof e._root === "string"
+							? e._root
+							: typeof e.id === "string"
+								? e.id
+								: typeof e.uid === "string"
+									? e.uid
+									: undefined,
+				};
 			}
-			switch (result.code) {
-				case "request/invalid-request-data":
-					const e = result.data?.errors ?? {}
-					return {
-						amount: typeof e.integerAmount === "string" ? e.integerAmount : undefined,
-						comment: typeof e.comment === "string" ? e.comment : undefined,
-						category: typeof e.category === "string" ? e.category : undefined,
-						time: typeof e.time === "string" ? e.time : undefined,
-						main: typeof e._root === "string" ? e._root
-							: typeof e.id === "string" ? e.id
-								: typeof e.uid === "string" ? e.uid : undefined
-					}
-				case "transaction/already-exists":
-					return { main: "Could not post transaction due to overlapping IDs" }
-				case "auth/unauthorized":
-					return { main: "Cannot edit another user's transaction" }
-				case "server/unavailable":
-					return { main: "Could not react server. Try again later." }
-				default:
-					return { main: "Error posting transaction." }
-			}
+
+			return { main: getErrorMessage("transactionForm", result) }
 		})
 
 		setLoading(false)

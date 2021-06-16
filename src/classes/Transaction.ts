@@ -74,7 +74,7 @@ export class Transaction {
    */
   get icon() {
     if (this.category.icon) {
-      return this.category.icon.substr(0, 2);
+      return this.category.icon;
     } else {
       return this.amount.isPositive
         ? Category.defaultIncomeIcon

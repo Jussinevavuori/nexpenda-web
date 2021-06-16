@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useStoreState } from "../../store";
 import { useIsApplicationActive } from "../application/useIsApplicationActive";
-import { useTransactionEditorDrawerVariableOpenState } from "../componentStates/useTransactionEditorDrawerVariableOpenState";
+import { useTransactionEditorOpenState } from "../componentStates/useTransactionEditorOpenState";
 import { useShortcut } from "./useShortcut";
 
 export function useEditTransactionShortcut() {
@@ -12,18 +12,17 @@ export function useEditTransactionShortcut() {
   const onlySelectedId = selection.length === 1 ? selection[0] : undefined;
 
   // Use the editor state
-  const [isEditingId, setIsEditingId] =
-    useTransactionEditorDrawerVariableOpenState();
+  const { isOpen, handleClose, handleOpen } = useTransactionEditorOpenState();
 
   // Handler to toggle
   const handler = useCallback(() => {
     if (!isApplicationActive) return;
-    if (isEditingId) {
-      setIsEditingId(null);
+    if (isOpen) {
+      handleClose();
     } else if (onlySelectedId) {
-      setIsEditingId(onlySelectedId);
+      handleOpen(onlySelectedId);
     }
-  }, [isApplicationActive, isEditingId, setIsEditingId, onlySelectedId]);
+  }, [isApplicationActive, isOpen, handleOpen, handleClose, onlySelectedId]);
 
   useShortcut({ key: "E", shift: true }, handler);
 }

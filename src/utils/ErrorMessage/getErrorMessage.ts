@@ -1,9 +1,12 @@
 import { AnyFailure } from "../../result/Failures";
 import { LogService } from "../../services/LogService";
 
-type ActionType = "forgotPassword";
+type ActionType = "forgotPassword" | "transactionForm";
 
-export function getErrorMessage(actionType: ActionType, failure: AnyFailure) {
+export function getErrorMessage(
+  actionType: ActionType,
+  failure: AnyFailure
+): string {
   switch (actionType) {
     case "forgotPassword":
       if (failure.reason === "network") {
@@ -14,6 +17,17 @@ export function getErrorMessage(actionType: ActionType, failure: AnyFailure) {
             return "No user exists with that email.";
         }
       }
+      break;
+    case "transactionForm":
+      if (failure.reason === "network") {
+        switch (failure.code) {
+          case "transaction/already-exists":
+            return "Could not post transaction due to overlapping IDs";
+          case "auth/unauthorized":
+            return "Cannot edit another user's transaction";
+        }
+      }
+      break;
   }
 
   return getDefaultErrorMessage(failure);

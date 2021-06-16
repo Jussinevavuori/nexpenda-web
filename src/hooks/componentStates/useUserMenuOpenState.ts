@@ -1,6 +1,6 @@
-import { useQueryMenuState } from "../state/useQueryMenuState";
+import { useOpenMenuQueryState } from "../state/useOpenMenuQueryState";
 import { ComponentState } from "./ComponentState";
 
 export function useUserMenuOpenState() {
-  return useQueryMenuState(ComponentState.keys.UserMenu, "push");
+  return useOpenMenuQueryState(ComponentState.keys.UserMenu);
 }

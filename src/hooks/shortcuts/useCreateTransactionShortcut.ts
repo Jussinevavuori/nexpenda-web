@@ -1,22 +1,22 @@
 import { useCallback } from "react";
 import { useIsApplicationActive } from "../application/useIsApplicationActive";
-import { useTransactionCreatorDrawerOpenState } from "../componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionCreatorOpenState } from "../componentStates/useTransactionCreatorOpenState";
 import { useShortcut } from "./useShortcut";
 
 export function useCreateTransactionShortcut() {
   const isApplicationActive = useIsApplicationActive();
 
-  const [, setIsOpen] = useTransactionCreatorDrawerOpenState();
+  const { handleOpen, handleClose } = useTransactionCreatorOpenState();
 
   const openCreateHandler = useCallback(() => {
     if (!isApplicationActive) return;
-    setIsOpen(true);
-  }, [isApplicationActive, setIsOpen]);
+    handleOpen();
+  }, [isApplicationActive, handleOpen]);
 
   const hideCreateHandler = useCallback(() => {
     if (!isApplicationActive) return;
-    setIsOpen(false);
-  }, [isApplicationActive, setIsOpen]);
+    handleClose();
+  }, [isApplicationActive, handleClose]);
 
   useShortcut(
     {

@@ -3,7 +3,7 @@ import { routes } from "../../Routes";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState, useStoreActions } from "../../store";
 import { SidebarNavigationProps } from "./SidebarNavigation";
-import { useTransactionCreatorDrawerOpenState } from "../../hooks/componentStates/useTransactionCreatorDrawerOpenState";
+import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState";
 
 export function useSidebarNavigationController(props: SidebarNavigationProps) {
   const dashboardMatch = useRouteMatch(routes.dashboard);
@@ -19,11 +19,11 @@ export function useSidebarNavigationController(props: SidebarNavigationProps) {
 
   const redirect = useRedirect();
 
-  const [, setTransactionCreatorOpen] = useTransactionCreatorDrawerOpenState();
+  const { handleOpen } = useTransactionCreatorOpenState();
 
   return {
     isOpen,
-    toggleOpen() {
+    toggleOpen: () => {
       toggleOpen();
     },
 
@@ -52,7 +52,7 @@ export function useSidebarNavigationController(props: SidebarNavigationProps) {
     user: user,
     logout: () => logout(),
 
-    onTransactionCreatorOpen: () => setTransactionCreatorOpen(true),
+    onTransactionCreatorOpen: () => handleOpen(),
   };
 }
 

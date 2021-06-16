@@ -2,11 +2,9 @@ import ReactGA from "react-ga";
 import { useCallback } from "react"
 import { useStoreState, useStoreActions } from "../../store"
 import { useRedirect } from "../../hooks/utils/useRedirect"
-import { ComponentState } from "../../hooks/componentStates/ComponentState";
-import { useFeedbackDialogOpenState } from "../../hooks/componentStates/useFeedbackDialogOpenState";
-import { useFileUploaderDrawerOpenState } from "../../hooks/componentStates/useFileUploaderDrawerOpenState";
-import { useOpenStateWrapper } from "../../hooks/state/useOpenStateWrapper";
-import { useQueryMenuState } from "../../hooks/state/useQueryMenuState";
+import { useFeedbackOpenState } from "../../hooks/componentStates/useFeedbackOpenState";
+import { useFileUploaderOpenState } from "../../hooks/componentStates/useFileUploaderOpenState";
+import { useAvatarChangerMenuOpenState } from "../../hooks/componentStates/useAvatarChangerMenuOpenState";
 
 
 export function useSettingsController() {
@@ -32,17 +30,14 @@ export function useSettingsController() {
 	}
 
 	// Upload state
-	const { handleOpen: handleOpenFileUploaderDrawer } = useOpenStateWrapper(
-		useFileUploaderDrawerOpenState()
-	)
+	const { handleOpen: handleOpenFileUploaderDrawer } =
+		useFileUploaderOpenState()
 
 	// Avatar changer menu state
-	const avatarChangerMenu = useQueryMenuState(ComponentState.keys.AvatarChangerMenu, "push")
+	const avatarChangerMenu = useAvatarChangerMenuOpenState()
 
 	// Feedback dialog state
-	const { handleOpen: handleOpenFeedbackDialog } = useOpenStateWrapper(
-		useFeedbackDialogOpenState()
-	)
+	const { handleOpen: handleOpenFeedbackDialog } = useFeedbackOpenState()
 
 	return {
 		user,

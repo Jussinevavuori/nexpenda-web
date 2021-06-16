@@ -15,8 +15,8 @@ export function useCloseFormsShortcut() {
     const query = parseQueryString(location.search);
     const queryString = createQueryString({
       ...query,
-      [ComponentState.keys.TransactionEditorDrawer]: undefined,
-      [ComponentState.keys.TransactionCreatorDrawer]: undefined,
+      [ComponentState.keys.TransactionEditor]: undefined,
+      [ComponentState.keys.TransactionCreator]: undefined,
     });
 
     history.replace({ search: queryString });

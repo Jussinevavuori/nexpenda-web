@@ -27,10 +27,7 @@ export function IntervalManager(props: IntervalManagerProps) {
 		<Button
 			className={cx("date-button")}
 			startIcon={<DateRange />}
-			onClick={e => {
-				controller.setIntervalPickerOpen(true)
-				controller.setIntervalPickerMenuAnchor(e.currentTarget)
-			}}
+			onClick={e => controller.menuState.handleOpen(e)}
 		>
 			<span className={cx("label")}>
 				{controller.intervalLabel}
@@ -58,13 +55,10 @@ export function IntervalManager(props: IntervalManagerProps) {
 		</motion.div>
 
 		<ResponsiveMenu
-			open={!!controller.intervalPickerMenuAnchor && controller.intervalPickerOpen}
-			onClose={() => {
-				controller.setIntervalPickerMenuAnchor(undefined)
-				controller.setIntervalPickerOpen(false)
-			}}
+			open={controller.menuState.isOpen}
+			onClose={controller.menuState.handleClose}
 			MenuProps={{
-				anchorEl: controller.intervalPickerMenuAnchor,
+				anchorEl: controller.menuState.anchorEl,
 				anchorOrigin: { horizontal: "left", vertical: "bottom" },
 				transformOrigin: { horizontal: "left", vertical: "top" },
 				getContentAnchorEl: null,
@@ -79,12 +73,7 @@ export function IntervalManager(props: IntervalManagerProps) {
 						? "IntervalManager__Menu"
 						: "IntervalManager__Drawer"
 					)}>
-					<IntervalPickerForm
-						onConfirm={() => {
-							controller.setIntervalPickerMenuAnchor(undefined)
-							controller.setIntervalPickerOpen(false)
-						}}
-					/>
+					<IntervalPickerForm onConfirm={controller.menuState.handleClose} />
 				</div>
 			}
 		</ResponsiveMenu>

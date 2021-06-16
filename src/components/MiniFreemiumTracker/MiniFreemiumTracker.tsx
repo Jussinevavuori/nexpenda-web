@@ -23,7 +23,7 @@ export function MiniFreemiumTracker(props: MiniFreemiumTrackerProps) {
 				? <CircularProgress
 					size={44}
 				/>
-				: <button onClick={controller.handleOpen}>
+				: <button onClick={() => controller.handleOpen()}>
 					<PercentageCircle
 						size={44}
 						percentage={controller.percentage}
