@@ -18,7 +18,9 @@ export function useBudgetCreatorOpenState() {
   /**
    * Get the opened budget corresponding to the one specified
    */
-  const budgetType = useMemo((): Budget["type"] | undefined => {
+  const budgetType: Budget["type"] | undefined = useMemo(():
+    | Budget["type"]
+    | undefined => {
     if (object && object.type === "budget" && object.action === "create") {
       if (object.id === "income" || object.id === "expense") {
         return object.id;
@@ -59,7 +61,12 @@ export function useBudgetCreatorOpenState() {
    */
   return useMemo(
     () => ({
-      budgetType,
+      // Fix this later:
+      // For some reason budgetType is correctly typed as
+      // "income" | "expense" | undefined even in the dependencies array,
+      // however it loses its specificity and becomes string | undefined
+      // when passed to the object as just budgetType. This fixes it.
+      budgetType: budgetType as typeof budgetType,
       isOpen,
       handleOpen,
       handleClose,
