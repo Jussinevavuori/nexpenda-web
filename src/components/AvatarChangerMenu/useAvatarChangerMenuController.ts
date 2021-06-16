@@ -21,9 +21,8 @@ export function useAvatarChangerMenuController(props: AvatarChangerMenuProps) {
   // Uploading
 
   const handleSelectUpload = useCallback(() => {
-    handleClose();
-    avatarChangerDialog.handleOpen();
-  }, [handleClose, avatarChangerDialog]);
+    avatarChangerDialog.handleOpen({ replace: true });
+  }, [avatarChangerDialog]);
 
   // Removing
 

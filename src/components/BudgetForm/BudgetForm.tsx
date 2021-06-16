@@ -190,7 +190,7 @@ export function BudgetForm(props: BudgetFormProps) {
 				fullWidth
 				onClick={controller.handleSubmit}
 			>
-				{controller.variant ? "Create" : "Save"}
+				{controller.isEditing ? "Save" : "Create"}
 			</Button>
 
 		</form>
