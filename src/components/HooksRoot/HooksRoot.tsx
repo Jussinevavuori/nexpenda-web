@@ -7,8 +7,6 @@ import { useForceInterval } from "../../hooks/application/useForceInterval";
 import { usePathTitle } from "../../hooks/application/usePathTitle";
 import { useNotifyOnNetworkFailure } from "../../hooks/network/useNotifyOnNetworkFailure";
 import { useBlockCreation } from "../../hooks/application/useBlockCreation";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
 /**
  * List of all hook components
@@ -95,11 +93,6 @@ const HookComponents = [
  * rerender the real application root.
  */
 export function HooksRoot() {
-
-	const location = useLocation();
-	useEffect(() => {
-		console.log(location.state)
-	}, [location])
 
 	return <>
 		{
