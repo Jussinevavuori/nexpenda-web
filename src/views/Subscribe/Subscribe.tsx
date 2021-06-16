@@ -49,7 +49,7 @@ export function Subscribe(props: SubscribeProps) {
 
 
 		{
-			!controller.isPremium
+			controller.isPremium
 				? <>
 					<Type component="h3" variant="bold" size="lg">
 						{"You are already a Nexpenda premium user"}
