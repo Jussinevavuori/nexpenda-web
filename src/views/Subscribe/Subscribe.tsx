@@ -49,7 +49,7 @@ export function Subscribe(props: SubscribeProps) {
 
 
 		{
-			controller.isPremium
+			!controller.isPremium
 				? <>
 					<Type component="h3" variant="bold" size="lg">
 						{"You are already a Nexpenda premium user"}
@@ -65,6 +65,13 @@ export function Subscribe(props: SubscribeProps) {
 						{"Choose your price"}
 					</Type>
 					<PremiumPricingOptions />
+
+
+					<Link to={routes.dashboard.path}>
+						<Button color="primary" variant="text">
+							{"Go back"}
+						</Button>
+					</Link>
 				</>
 		}
 
