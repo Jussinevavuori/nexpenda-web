@@ -78,19 +78,19 @@ export function useProfilePanelController(props: ProfilePanelProps) {
 		handleCancelEditName()
 	}, [handleCancelEditName, updateProfile, notify, nameValue])
 
-	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
+	const resetPassword = useStoreActions(_ => _.auth.resetPassword)
 	const handleChangePassword = useCallback(async () => {
 		if (!user || !user.email || !user.hasPassword) return
-		const result = await forgotPassword({ email: user.email })
+		const result = await resetPassword({ email: user.email })
 		if (result.isSuccess()) {
 			notify({ message: "Password change email sent", severity: "success" })
 		} else {
 			notify({
-				message: getErrorMessage("forgotPassword", result),
+				message: getErrorMessage("resetPassword", result),
 				severity: "error",
 			})
 		}
-	}, [notify, forgotPassword, user])
+	}, [notify, resetPassword, user])
 
 	const manageSubscription = useStoreActions(_ => _.stripe.createBillingPortalSession)
 

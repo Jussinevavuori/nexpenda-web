@@ -46,10 +46,10 @@ export class AuthService extends Service {
   }
 
   /**
-   * Sends a forgot password email to the given email address.
+   * Sends a reset password email to the given email address.
    */
-  static async forgotPassword(credentials: { email: string }) {
-    const result = await Service.post("/auth/forgot_password", credentials);
+  static async resetPassword(credentials: { email: string }) {
+    const result = await Service.post("/auth/reset_password", credentials);
 
     if (result.isFailure()) {
       return result;
@@ -58,7 +58,7 @@ export class AuthService extends Service {
     } else {
       return new InvalidServerResponseFailure<undefined>(
         result.value,
-        "auth/forgot-password"
+        "auth/reset-password"
       );
     }
   }

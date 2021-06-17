@@ -10,7 +10,7 @@ const Register = lazy(() => import('./views/Register/Register').then(_ => ({ def
 const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
 const Settings = lazy(() => import("./views/Settings/Settings").then(_ => ({ default: _.Settings })))
 const Analytics = lazy(() => import("./views/Analytics/Analytics").then(_ => ({ default: _.Analytics })))
-const ForgotPassword = lazy(() => import("./views/ForgotPassword/ForgotPassword").then(_ => ({ default: _.ForgotPassword })))
+const ResetPassword = lazy(() => import("./views/ResetPassword/ResetPassword").then(_ => ({ default: _.ResetPassword })))
 const ChangePassword = lazy(() => import("./views/ChangePassword/ChangePassword").then(_ => ({ default: _.ChangePassword })))
 const ConfirmEmail = lazy(() => import("./views/ConfirmEmail/ConfirmEmail").then(_ => ({ default: _.ConfirmEmail })))
 const Budgets = lazy(() => import("./views/Budgets/Budgets").then(_ => ({ default: _.Budgets })))
@@ -53,10 +53,10 @@ export const routes = {
 		path: "/",
 		title: "Login"
 	}),
-	forgotPassword: new RouteData({
-		name: "forgotPassword",
-		path: "/forgotPassword",
-		title: "Forgot Password"
+	resetPassword: new RouteData({
+		name: "resetPassword",
+		path: "/resetPassword",
+		title: "Reset Password"
 	}),
 	register: new RouteData({
 		name: "register",
@@ -119,10 +119,10 @@ export function Routes() {
 			</AuthFrame>
 		</Route>
 
-		<Route exact path={routes.forgotPassword.path}>
+		<Route exact path={routes.resetPassword.path}>
 			<AuthFrame>
 				<Suspense fallback={<RouteSuspenseFallback />}>
-					<ForgotPassword />
+					<ResetPassword />
 				</Suspense>
 			</AuthFrame>
 		</Route>

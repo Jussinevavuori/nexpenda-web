@@ -7,17 +7,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
 
-export const forgotPasswordValidationSchema = z.object({
+export const resetPasswordValidationSchema = z.object({
 	email: z.string().min(3).max(255).email(),
 })
 
-export type ForgotPasswordFormType = z.TypeOf<typeof forgotPasswordValidationSchema>
+export type ResetPasswordFormType = z.TypeOf<typeof resetPasswordValidationSchema>
 
-export function useForgotPasswordController() {
+export function useResetPasswordController() {
 
 	const redirect = useRedirect()
 
-	const forgotPassword = useStoreActions(_ => _.auth.forgotPassword)
+	const resetPassword = useStoreActions(_ => _.auth.resetPassword)
 	const loginWithGoogle = useStoreActions(_ => _.auth.loginWithGoogle)
 
 	/**
@@ -33,24 +33,24 @@ export function useForgotPasswordController() {
 	/**
 	 * Form state
 	 */
-	const form = useForm<ForgotPasswordFormType>({
-		resolver: zodResolver(forgotPasswordValidationSchema),
+	const form = useForm<ResetPasswordFormType>({
+		resolver: zodResolver(resetPasswordValidationSchema),
 	})
 
 	/**
 	 * Submit handler function
 	 */
-	async function submitHandler(values: ForgotPasswordFormType) {
+	async function submitHandler(values: ResetPasswordFormType) {
 		setError(undefined)
-		const result = await forgotPassword(values)
+		const result = await resetPassword(values)
 		if (result.isSuccess()) {
 			ReactGA.event({
-				action: "Forgot Password",
+				action: "Reset Password",
 				category: "User",
 			})
 			setSuccess(true)
 		} else {
-			setError(getErrorMessage("forgotPassword", result))
+			setError(getErrorMessage("resetPassword", result))
 		}
 	}
 

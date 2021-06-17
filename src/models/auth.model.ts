@@ -139,14 +139,14 @@ export interface AuthModel {
   >;
 
   /**
-   * Forgot password
+   * Reset password
    */
-  forgotPassword: Thunk<
+  resetPassword: Thunk<
     AuthModel,
-    Parameters<typeof AuthService["forgotPassword"]>[0],
+    Parameters<typeof AuthService["resetPassword"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof AuthService["forgotPassword"]>
+    ReturnType<typeof AuthService["resetPassword"]>
   >;
 
   /**
@@ -326,8 +326,8 @@ export const authModel: AuthModel = {
     return result;
   }),
 
-  forgotPassword: thunk(async (actions, payload) => {
-    const result = await AuthService.forgotPassword(payload);
+  resetPassword: thunk(async (actions, payload) => {
+    const result = await AuthService.resetPassword(payload);
     return result;
   }),
 

@@ -1,14 +1,14 @@
 import { AnyFailure } from "../../result/Failures";
 import { LogService } from "../../services/LogService";
 
-type ActionType = "forgotPassword" | "transactionForm";
+type ActionType = "resetPassword" | "transactionForm";
 
 export function getErrorMessage(
   actionType: ActionType,
   failure: AnyFailure
 ): string {
   switch (actionType) {
-    case "forgotPassword":
+    case "resetPassword":
       if (failure.reason === "network") {
         switch (failure.code) {
           case "request/invalid-request-data":

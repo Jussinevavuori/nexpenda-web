@@ -114,7 +114,7 @@ export function useLoginController() {
 	}
 
 	async function handleForgotPassword() {
-		redirect(routes => routes.forgotPassword)
+		redirect(routes => routes.resetPassword)
 	}
 
 	async function handleCreateAccount() {

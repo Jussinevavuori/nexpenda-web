@@ -1,17 +1,17 @@
-import "./ForgotPassword.scss";
+import "./ResetPassword.scss";
 import React from "react"
-import { useForgotPasswordController } from "./useForgotPasswordController";
+import { useResetPasswordController } from "./useResetPasswordController";
 import { TextField, Button, InputAdornment } from "@material-ui/core";
 import { Email as EmailIcon } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
-export function ForgotPassword() {
+export function ResetPassword() {
 
-	const controller = useForgotPasswordController()
+	const controller = useResetPasswordController()
 	const isDarkTheme = useIsDarkTheme()
 
-	return <div className="ForgotPassword">
+	return <div className="ResetPassword">
 
 		<Type
 			component="h1"
@@ -19,7 +19,7 @@ export function ForgotPassword() {
 			color={isDarkTheme ? "gray-100" : "gray-900"}
 			size="xxl"
 		>
-			{"Forgot password"}
+			{"Reset password"}
 		</Type>
 
 		<main>
