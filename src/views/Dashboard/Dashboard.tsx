@@ -15,7 +15,6 @@ import { MoneyType } from "../../components/MoneyType/MoneyType";
 import { DashboardActions } from "./DashboardActions/DashboardActions";
 import { DashboardPanel } from "./DashboardPanel/DashboardPanel";
 import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
-import differenceInCalendarISOWeekYears from "date-fns/differenceInCalendarISOWeekYears";
 import { Notes, Today } from "@material-ui/icons";
 
 export type DashboardProps = {

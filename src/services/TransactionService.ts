@@ -11,10 +11,13 @@ export class TransactionService extends Service {
     options: {
       after?: Date;
       before?: Date;
+      scheduleId?: string;
     } = {}
   ) {
     // Construct query parameters
-    const queryParams: Record<string, string> = {};
+    const queryParams: Record<string, string | undefined> = {
+      scheduleId: options.scheduleId,
+    };
     if (options.after && options.after.getTime()) {
       queryParams["after"] = options.after.getTime().toString();
     }
@@ -58,6 +61,7 @@ export class TransactionService extends Service {
       );
     }
   }
+
   /**
    * Post many transactions by IDs and return created json transactions as result.
    */
@@ -87,16 +91,18 @@ export class TransactionService extends Service {
    * Delete a transaction by ID and return empty Result.
    */
   static async deleteTransaction(id: string) {
-    const result = await Service.delete(`/transactions/${id}`, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+    const result = await Service.delete(
+      `/transactions/${id}`,
+      {},
+      { service: { enableLogoutOnUnauthorized: true } }
+    );
 
     if (result.isFailure()) {
       return result;
     } else if (result.value.status === 200) {
       return Success.Empty();
     } else {
-      return new InvalidServerResponseFailure<JsonTransaction[]>(
+      return new InvalidServerResponseFailure<void>(
         result.value,
         "transactions/delete"
       );

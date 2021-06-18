@@ -45,13 +45,14 @@ export class Service {
    */
   protected static endpoint(
     path: string,
-    queryParams: Record<string, string> = {}
+    queryParams: Record<string, string | undefined> = {}
   ) {
     const query =
       Object.entries(queryParams).length === 0
         ? ""
         : "?" +
           Object.entries(queryParams)
+            .filter((e) => !!e[1])
             .map((p) => `${p[0]}=${p[1]}`)
             .join("&");
 
@@ -179,7 +180,7 @@ export class Service {
    */
   protected static async handleRequest<T>(
     path: string,
-    queryParams: Record<string, string>,
+    queryParams: Record<string, string | undefined>,
     config: RequestConfig | undefined,
     requestFunction: (
       url: string,
@@ -219,7 +220,7 @@ export class Service {
    */
   protected static async get<ResponseData = any>(
     path: string,
-    queryParams: Record<string, string>,
+    queryParams: Record<string, string | undefined>,
     config?: RequestConfig | undefined
   ) {
     return Service.handleRequest(path, queryParams, config, (url, options) => {
@@ -245,6 +246,7 @@ export class Service {
    */
   protected static async delete<ResponseData = any>(
     path: string,
+    queryParams: Record<string, string | undefined>,
     config?: RequestConfig | undefined
   ) {
     return Service.handleRequest(path, {}, config, (url, options) => {

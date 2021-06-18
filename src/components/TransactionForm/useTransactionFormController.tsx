@@ -9,6 +9,7 @@ import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCo
 import { Transaction } from "../../classes/Transaction";
 import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
 import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
+import { useOpenState } from "../../hooks/state/useOpenState";
 
 export const transactionFormSchema = z.object({
 	icon: z.string(),
@@ -72,6 +73,11 @@ export function useTransactionFormController(props: TransactionFormProps) {
 			setAmount(value.toFixed(2));
 		}
 	}, [handleCalculatorClose])
+
+	/**
+	 * Expansion state
+	 */
+	const expansion = useOpenState()
 
 	// If existing category selected and it has an icon, display
 	// it (unless an icon is selected)
@@ -348,5 +354,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		categories: categories,
 		edit: !!editTransaction,
 		optionRenderer,
+		expansion,
 	}
 }

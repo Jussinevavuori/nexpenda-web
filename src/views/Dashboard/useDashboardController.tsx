@@ -40,7 +40,7 @@ export function useDashboardController() {
 		if (selection.length > 0) {
 			return MoneyAmount.sum(selection.map(_ => _.amount))
 		}
-	}, [selection, transactionsTotal])
+	}, [selection])
 
 	return {
 		transactionsCount,

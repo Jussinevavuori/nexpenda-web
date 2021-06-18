@@ -56,9 +56,11 @@ export class ProfileService extends Service {
      * Delete avatar if no target provided
      */
     if (!target) {
-      const result = await Service.delete<JsonAuth>("/avatar", {
-        service: { enableLogoutOnUnauthorized: true },
-      });
+      const result = await Service.delete<JsonAuth>(
+        "/avatar",
+        {},
+        { service: { enableLogoutOnUnauthorized: true } }
+      );
 
       if (result.isFailure()) {
         return result;

@@ -18,35 +18,38 @@ import { SidebarModel, sidebarModel } from "./models/sidebar.model";
 import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
 import { SearchModel, searchModel } from "./models/search.model";
 import { exposeToWindow } from "./utils/Utils/exposeToWindow";
+import { schedulesModel, SchedulesModel } from "./models/schedules.model";
 
 export interface StoreModel {
-  notification: NotificationModel;
-  transactions: TransactionsModel;
-  selection: SelectionModel;
-  interval: IntervalModel;
-  history: HistoryModel;
-  auth: AuthModel;
-  theme: ThemeModel;
-  stripe: StripeModel;
-  budgets: BudgetsModel;
-  sidebar: SidebarModel;
-  search: SearchModel;
   appConfig: AppConfigModel;
+  auth: AuthModel;
+  budgets: BudgetsModel;
+  history: HistoryModel;
+  interval: IntervalModel;
+  notification: NotificationModel;
+  search: SearchModel;
+  selection: SelectionModel;
+  schedules: SchedulesModel;
+  sidebar: SidebarModel;
+  stripe: StripeModel;
+  theme: ThemeModel;
+  transactions: TransactionsModel;
 }
 
 const storeModel: StoreModel = {
-  notification: notificationModel,
-  transactions: transactionsModel,
-  selection: selectionModel,
-  interval: intervalModel,
-  history: historyModel,
-  auth: authModel,
-  theme: themeModel,
-  stripe: stripeModel,
-  budgets: budgetsModel,
-  sidebar: sidebarModel,
-  search: searchModel,
   appConfig: appConfigModel,
+  auth: authModel,
+  budgets: budgetsModel,
+  history: historyModel,
+  interval: intervalModel,
+  notification: notificationModel,
+  search: searchModel,
+  selection: selectionModel,
+  schedules: schedulesModel,
+  sidebar: sidebarModel,
+  stripe: stripeModel,
+  transactions: transactionsModel,
+  theme: themeModel,
 };
 
 export const store = createStore(storeModel);

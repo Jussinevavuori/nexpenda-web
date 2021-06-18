@@ -24,6 +24,15 @@
     padding-bottom: $spacing-6;
     display: flex;
     align-items: center;
+
+    & > i {
+      &.start {
+        margin-right: $spacing-4;
+      }
+      &.end {
+        margin-left: auto;
+      }
+    }
   }
 }
 
@@ -31,5 +40,12 @@
   .ContainerBlock {
     background: $gray-810;
     border-color: $gray-800;
+    & > .header {
+      & > i {
+        & svg {
+          color: white;
+        }
+      }
+    }
   }
 }

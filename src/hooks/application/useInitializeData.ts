@@ -5,6 +5,8 @@ import { useStoreActions } from "../../store";
 export function useInitializeData() {
   const getAppConfig = useStoreActions((_) => _.appConfig.fetchConfig);
   const getProfile = useStoreActions((_) => _.auth.getProfile);
+  const getBudgets = useStoreActions((_) => _.budgets.getBudgets);
+  const getSchedules = useStoreActions((_) => _.schedules.getSchedules);
   const getTransactions = useStoreActions(
     (_) => _.transactions.getTransactions
   );
@@ -35,4 +37,18 @@ export function useInitializeData() {
       getTransactions();
     });
   }, [getTransactions]);
+
+  /**
+   * Fetch the budgets
+   */
+  useEffect(() => {
+    getBudgets();
+  }, [getBudgets]);
+
+  /**
+   * Fetch the schedules
+   */
+  useEffect(() => {
+    getSchedules();
+  }, [getSchedules]);
 }

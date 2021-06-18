@@ -98,3 +98,18 @@ type JsonAuth = import("zod").TypeOf<
 type UpdatableJsonAuthFields = Partial<
   Pick<JsonAuth, "displayName" | "themeColor" | "themeMode">
 >;
+
+// TRANSACTION SCHEDULE
+
+type JsonTransactionSchedule = import("zod").TypeOf<
+  typeof import("./classes/TransactionSchedule").TransactionSchedule["Schema"]
+>;
+type JsonTransactionScheduleArray = import("zod").TypeOf<
+  typeof import("./classes/TransactionSchedule").TransactionSchedule["ArraySchema"]
+>;
+type JsonTransactionScheduleInitializer = import("zod").TypeOf<
+  typeof import("./classes/TransactionSchedule").TransactionSchedule["InitializerSchema"]
+>;
+type JsonTransactionScheduleUpdater = import("zod").TypeOf<
+  typeof import("./classes/TransactionSchedule").TransactionSchedule["UpdaterSchema"]
+>;

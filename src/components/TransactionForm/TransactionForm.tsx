@@ -2,7 +2,7 @@ import "./TransactionForm.scss";
 import React, { useRef } from "react"
 import cx from "classnames"
 import EmojiPicker from "emoji-picker-react";
-import { TextField, InputAdornment, Button, ButtonGroup, Menu, IconButton, Dialog, Icon } from "@material-ui/core";
+import { TextField, InputAdornment, Button, ButtonGroup, Menu, IconButton, Dialog, Icon, Collapse } from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
@@ -254,6 +254,17 @@ export function TransactionForm(props: TransactionFormProps) {
 				required
 				size="small"
 			/>
+
+			<Collapse
+				in={controller.expansion.isOpen}
+				timeout="auto"
+				unmountOnExit
+			>
+				<div className="moreOptions">
+
+				</div>
+			</Collapse>
+
 
 			<EnhancedButton
 				type="submit"

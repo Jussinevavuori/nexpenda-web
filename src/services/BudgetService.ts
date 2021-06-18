@@ -8,7 +8,7 @@ export class BudgetService extends Service {
   /**
    * Get all budgets for user as Result
    */
-  static async getBudgets() {
+  static async getBudgets(options: {} = {}) {
     const result = await Service.get(
       "/budgets",
       {},
@@ -54,9 +54,13 @@ export class BudgetService extends Service {
    * Delete a budget by ID and return empty Result.
    */
   static async deleteBudget(id: string) {
-    const result = await Service.delete(`/budgets/${id}`, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+    const result = await Service.delete(
+      `/budgets/${id}`,
+      {},
+      {
+        service: { enableLogoutOnUnauthorized: true },
+      }
+    );
 
     if (result.isFailure()) {
       return result;

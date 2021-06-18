@@ -57,15 +57,6 @@ export function PercentageCircle(props: PercentageCircleProps) {
 		style={{ width: 2 * controller.radius, height: 2 * controller.radius }}
 	>
 
-		<Type
-			component="label"
-			size="sm"
-			variant="bold"
-			{...props.labelProps}
-		>
-			{controller.percentage.toFixed(0) + "%"}
-		</Type>
-
 		<svg
 			height={controller.radius * 2}
 			width={controller.radius * 2}
@@ -109,5 +100,14 @@ export function PercentageCircle(props: PercentageCircleProps) {
 				})}
 			/>
 		</svg>
+
+		<Type
+			component="label"
+			size="sm"
+			variant="bold"
+			{...props.labelProps}
+		>
+			{controller.percentage.toFixed(0) + "%"}
+		</Type>
 	</div>
 }

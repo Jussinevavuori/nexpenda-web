@@ -53,7 +53,7 @@ export interface BudgetsModel {
    */
   getBudgets: Thunk<
     BudgetsModel,
-    { force?: boolean },
+    Parameters<typeof BudgetService["getBudgets"]>[0],
     any,
     StoreModel,
     Promise<
@@ -110,11 +110,6 @@ export interface BudgetsModel {
   //==============================================================//
 
   /**
-   * Fetch data on login
-   */
-  onLogin: ThunkOn<BudgetsModel, any, StoreModel>;
-
-  /**
    * Clear data on logout
    */
   onLogout: ThunkOn<BudgetsModel, any, StoreModel>;
@@ -166,12 +161,8 @@ export const budgetsModel: BudgetsModel = {
   // THUNKS
   //==============================================================//
 
-  getBudgets: thunk(async (actions, payload, helpers) => {
-    const hasFetchedSome = helpers.getState().items.length > 0;
-    if (hasFetchedSome && !payload.force) {
-      return undefined;
-    }
-    const result = await BudgetService.getBudgets();
+  getBudgets: thunk(async (actions, payload) => {
+    const result = await BudgetService.getBudgets(payload);
     if (result.isSuccess()) {
       actions.setBudgetsToState(result.value.map((json) => new Budget(json)));
     } else {
@@ -180,7 +171,7 @@ export const budgetsModel: BudgetsModel = {
     return result;
   }),
 
-  postBudget: thunk(async (actions, json, store) => {
+  postBudget: thunk(async (actions, json) => {
     const result = await BudgetService.postBudget(json);
     if (result.isSuccess()) {
       const budget = new Budget(result.value);
@@ -230,13 +221,6 @@ export const budgetsModel: BudgetsModel = {
   //==============================================================//
   // LISTENERS
   //==============================================================//
-
-  onLogin: thunkOn(
-    (_, store) => store.auth.setAuthToState,
-    (actions) => {
-      actions.getBudgets({});
-    }
-  ),
 
   onLogout: thunkOn(
     (_, store) => store.auth.logout,
