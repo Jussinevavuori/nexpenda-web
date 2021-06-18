@@ -10,7 +10,6 @@ import {
 	Briefcase as BudgetIcon,
 	PlusCircle as PlusIcon
 } from "react-feather"
-import { motion, Variants } from "framer-motion";
 
 export type TabNavigationProps = {
 
@@ -22,33 +21,23 @@ export function TabNavigation(props: TabNavigationProps) {
 
 	return <aside className={cx("TabNavigation")}>
 
-		<motion.div
-			className="tabContainer"
-			variants={tabVariants}
-			animate={controller.isDashboard ? "active" : "inactive"}
-		>
+		<div className="tabContainer">
 			<IconButton
 				className={cx("tab", { active: controller.isDashboard })}
 				onClick={controller.onDashboard}
 			>
 				<DashboardIcon />
 			</IconButton>
+		</div>
 
-		</motion.div>
-
-		<motion.div
-			className="tabContainer"
-			variants={tabVariants}
-			animate={controller.isAnalytics ? "active" : "inactive"}
-		>
+		<div className="tabContainer">
 			<IconButton
 				className={cx("tab", { active: controller.isAnalytics })}
 				onClick={controller.onAnalytics}
 			>
 				<AnalyticsIcon />
 			</IconButton>
-
-		</motion.div>
+		</div>
 
 		<div className="tabContainer">
 			<IconButton
@@ -59,45 +48,23 @@ export function TabNavigation(props: TabNavigationProps) {
 			</IconButton>
 		</div>
 
-		<motion.div
-			className="tabContainer"
-			variants={tabVariants}
-			animate={controller.isBudget ? "active" : "inactive"}
-		>
+		<div className="tabContainer">
 			<IconButton
 				className={cx("tab", { active: controller.isBudget })}
 				onClick={controller.onBudget}
 			>
 				<BudgetIcon />
 			</IconButton>
+		</div>
 
-		</motion.div>
-
-		<motion.div
-			className="tabContainer"
-			variants={tabVariants}
-			animate={controller.isSettings ? "active" : "inactive"}
-		>
+		<div className="tabContainer">
 			<IconButton
 				className={cx("tab", { active: controller.isSettings })}
 				onClick={controller.onSettings}
 			>
 				<UserIcon />
 			</IconButton>
-
-		</motion.div>
+		</div>
 
 	</aside>
-}
-const tabVariants: Variants = {
-	"inactive": {
-		scale: 1,
-	},
-	"active": {
-		scale: 1.5,
-		transition: {
-			repeatType: "mirror",
-			repeat: 1,
-		}
-	}
 }

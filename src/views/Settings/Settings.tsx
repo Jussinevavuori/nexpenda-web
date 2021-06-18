@@ -18,6 +18,8 @@ import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { Config } from "../../config";
 import { FreemiumTracker } from "../../components/FreemiumTracker/FreemiumTracker";
 import { AvatarChangerMenu } from "../../components/AvatarChangerMenu/AvatarChangerMenu";
+import { SchedulesManager } from "../../components/SchedulesManager/SchedulesManager";
+import { Development } from "../../components/Development/Development";
 
 export type SettingsProps = {
 }
@@ -94,6 +96,12 @@ export function Settings(props: SettingsProps) {
 				<ContainerBlock className="customization" containerTitle="Theme">
 					<ThemePicker />
 				</ContainerBlock>
+
+				<Development>
+					<ContainerBlock className="customization" containerTitle="Manage your scheduled transactions">
+						<SchedulesManager />
+					</ContainerBlock>
+				</Development>
 
 				<ContainerBlock className="fileHandlers" containerTitle="Import and export">
 					<Type

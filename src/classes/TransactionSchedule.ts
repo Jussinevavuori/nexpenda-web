@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { Category } from "./Category";
 import { MoneyAmount } from "./MoneyAmount";
 
 export class TransactionSchedule {
@@ -29,14 +30,9 @@ export class TransactionSchedule {
   intervalLength: number;
 
   /**
-   * The template category ID
+   * The category
    */
-  categoryId: string;
-
-  /**
-   * The template category value
-   */
-  categoryValue: string;
+  category: Category;
 
   /**
    * The template amount
@@ -59,8 +55,11 @@ export class TransactionSchedule {
     this.occurrences = json.occurrences;
     this.intervalType = json.intervalType;
     this.intervalLength = json.intervalLength;
-    this.categoryId = json.categoryId;
-    this.categoryValue = json.categoryValue;
+    this.category = new Category({
+      id: json.category.id,
+      value: json.category.value,
+      icon: json.category.icon ?? "",
+    });
     this.amount = new MoneyAmount(json.integerAmount);
     this.comment = json.comment ?? "";
     this.createdAt = new Date(json.createdAt);
@@ -76,9 +75,12 @@ export class TransactionSchedule {
     intervalLength: z.number().positive().int(),
     intervalType: z.enum(["DAY", "WEEK", "MONTH", "YEAR"]),
     comment: z.string().optional(),
-    categoryId: z.string().nonempty(),
-    categoryValue: z.string(),
     integerAmount: z.number().int(),
+    category: z.object({
+      id: z.string().nonempty(),
+      value: z.string(),
+      icon: z.string().optional(),
+    }),
     createdAt: z.number().positive().int(),
   });
 
@@ -107,7 +109,7 @@ export class TransactionSchedule {
       intervalLength: this.intervalLength,
       firstOccurrence: this.firstOccurrence.getTime(),
       occurrences: this.occurrences,
-      category: this.categoryValue,
+      category: this.category.value,
       integerAmount: this.amount.value,
       comment: this.comment,
       assignTransactions: undefined,
