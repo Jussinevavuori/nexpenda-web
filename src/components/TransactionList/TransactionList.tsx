@@ -1,6 +1,5 @@
 import "./TransactionList.scss";
 import { TransactionListItem } from "../TransactionListItem/TransactionListItem";
-import { format } from "date-fns"
 import { AutoSizer, List } from "react-virtualized"
 import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
@@ -8,6 +7,7 @@ import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
 import { DataUtils } from "../../utils/DataUtils/DataUtils";
 import { AnimatePresence, motion } from "framer-motion";
+import { Transaction } from "../../classes/Transaction";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -103,7 +103,7 @@ export function TransactionList(props: TransactionListProps) {
 													>
 														<div className="dateGroupHeader upcoming">
 															<Type variant="bold" color="gray-700" size="md">
-																{toDatestring(entry.date)}
+																{Transaction.formatDatestring(entry.date)}
 															</Type>
 														</div>
 														<ul>
@@ -133,7 +133,7 @@ export function TransactionList(props: TransactionListProps) {
 							>
 								<div className="dateGroupHeader">
 									<Type variant="bold" color="gray-700" size="md">
-										{toDatestring(entry.date)}
+										{Transaction.formatDatestring(entry.date)}
 									</Type>
 								</div>
 								<ul>
@@ -153,11 +153,3 @@ export function TransactionList(props: TransactionListProps) {
 		</AutoSizer>
 	</div>
 }
-
-function toDatestring(date: Date) {
-	return date.getFullYear() === currentYear
-		? format(date, "dd.MM.")
-		: format(date, "dd.MM.yyyy")
-}
-
-const currentYear = new Date().getFullYear()

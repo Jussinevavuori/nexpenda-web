@@ -239,7 +239,7 @@ export function FileUploader(props: FileUploaderProps) {
 				<Type color="primary-600" size="xl">
 					{`Success!`}
 				</Type>
-				<Type color="gray-800">
+				<Type color={isDarkTheme ? "gray-300" : "gray-800"}>
 					{`${controller.selectedSheet?.result.succeeded} rows succesfully `}
 					{"uploaded!"}
 				</Type>

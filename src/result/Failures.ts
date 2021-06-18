@@ -54,6 +54,7 @@ export type ServerFailureCode =
   | "budget/already-exists"
   | "budget/not-found"
   | "budget/limit-exceeded"
+  | "schedule/not-found"
   | "auth/missing-token"
   | "auth/invalid-token"
   | "auth/user-has-no-password"

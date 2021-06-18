@@ -48,8 +48,16 @@ export class Category {
    * Get the full label of the category, which includes the name and the icon.
    * Uses a defaulted icon, using the given sign.
    */
-  public getFullLabel(sign: number | "+" | "-" = "+") {
-    return `${this.getDefaultedIcon(sign)} ${this.name}`;
+  public getFullLabel(
+    sign: number | "+" | "-" = "+",
+    iconAfter: boolean = false
+  ) {
+    const icon = this.getDefaultedIcon(sign);
+    const name = this.name;
+    if (iconAfter) {
+      return `${name} ${icon}`;
+    }
+    return `${icon} ${name}`;
   }
 
   /**

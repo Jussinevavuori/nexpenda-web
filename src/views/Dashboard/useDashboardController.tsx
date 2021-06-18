@@ -27,6 +27,21 @@ export function useDashboardController() {
 		handleTransactionCreatorClose()
 	}, [handleTransactionCreatorClose])
 
+	const selection = useStoreState(_ => _.selection.selection)
+	const selectedTransaction = useMemo(() => {
+		return selection.length === 1 ? selection[0] : undefined
+	}, [selection])
+
+	const selectionLength = useMemo(() => {
+		return selection.length
+	}, [selection])
+
+	const selectionTotalAmount = useMemo(() => {
+		if (selection.length > 0) {
+			return MoneyAmount.sum(selection.map(_ => _.amount))
+		}
+	}, [selection, transactionsTotal])
+
 	return {
 		transactionsCount,
 		transactionsTotal,
@@ -34,6 +49,9 @@ export function useDashboardController() {
 		isDesktopLayout,
 		showCreateTransactionForm,
 		handleTransactionFormClose,
+		selectedTransaction,
+		selectionTotalAmount,
+		selectionLength,
 	}
 
 }

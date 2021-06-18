@@ -5,6 +5,8 @@ import { DateUtils } from "../utils/DateUtils/DateUtils";
 import { Category } from "./Category";
 import { DataUtils } from "../utils/DataUtils/DataUtils";
 import { lightFormat } from "date-fns";
+import { format } from "date-fns";
+
 export class Transaction {
   /**
    * Transaction ID
@@ -37,28 +39,23 @@ export class Transaction {
   public readonly createdAt: Date;
 
   /**
+   * Transaction schedule id
+   */
+  public readonly scheduleId?: string;
+
+  /**
    * Create transaction from a JSON transaction.
    *
    * @param json Crea
    */
   constructor(json: JsonTransaction) {
-    // Timestamp to date
     this.date = new Date(json.time);
-
-    // Create category object as category
     this.category = new Category(json.category);
-
-    // Ensure json comment string, default to empty string
     this.comment = json.comment || "";
-
-    // Create MoneyAmount object from integerAmount, ensure integer
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
-
-    // Timestamp to date
     this.createdAt = new Date(json.time);
-
-    // Use ID (if none exists, create new UUID)
     this.id = json.id || uuid.v4();
+    this.scheduleId = json.scheduleId;
   }
 
   /**
@@ -80,6 +77,24 @@ export class Transaction {
         ? Category.defaultIncomeIcon
         : Category.defaultExpenseIcon;
     }
+  }
+
+  /**
+   * Format the datestring
+   */
+  get datestring() {
+    return this.date.getFullYear() === currentYear
+      ? format(this.date, "dd.MM.")
+      : format(this.date, "dd.MM.yyyy");
+  }
+
+  /**
+   * Static datestring formatter
+   */
+  static formatDatestring(date: Date) {
+    return date.getFullYear() === currentYear
+      ? format(date, "dd.MM.")
+      : format(date, "dd.MM.yyyy");
   }
 
   /**
@@ -123,6 +138,7 @@ export class Transaction {
       value: z.string(),
       icon: z.string(),
     }),
+    scheduleId: z.string().optional(),
   });
 
   /**
@@ -158,6 +174,7 @@ export class Transaction {
         t: z.number().positive().int(),
         ca: z.number().positive().int(),
         cid: z.string(),
+        sid: z.string().optional(),
         a: z.number().int(),
         c: z.string().optional(),
       })
@@ -236,6 +253,7 @@ export class Transaction {
           value: category.v,
           icon: category.i,
         },
+        scheduleId: transaction.sid,
       });
     });
   }
@@ -278,5 +296,6 @@ export class Transaction {
 }
 
 // Get today's date for comparison in order to avoid creating
-// too many Date objects
+// too many Date objects, similarly for the current year
 const today = new Date();
+const currentYear = new Date().getFullYear();

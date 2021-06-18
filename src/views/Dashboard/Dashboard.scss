@@ -48,20 +48,55 @@
   }
 
   &__headerContent {
-    position: relative;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;
-    flex-direction: column;
     height: 100%;
     width: 100%;
-    & > p > span {
-      margin-right: $spacing-2;
+
+    & > .selectionView {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+
+      & > p {
+        & > i {
+          display: inline-block;
+          position: relative;
+          height: $text-md;
+          width: 24px;
+          & svg {
+            top: 0;
+            left: 0;
+            position: absolute;
+            color: white;
+            font-size: 16px;
+            transform: translateY(2px);
+          }
+        }
+        & span {
+          margin-right: $spacing-4;
+        }
+      }
     }
-    & > .limit {
-      bottom: 0;
-      right: 0;
-      position: absolute;
+
+    & > .defaultView {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      & > p > span {
+        margin-right: $spacing-2;
+      }
+      & > .limit {
+        bottom: 0;
+        right: 0;
+        position: absolute;
+      }
     }
   }
 }

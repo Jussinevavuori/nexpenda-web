@@ -30,7 +30,7 @@ export function ResetPassword() {
 					</Type>
 					: <form noValidate onSubmit={controller.handleSubmit}>
 
-						<Type color={isDarkTheme ? "gray-500" : "gray-300"}>
+						<Type color={isDarkTheme ? "gray-300" : "gray-600"}>
 							{"Enter your email below and we will send you an email containing a link, which you can use to change your password."}
 						</Type>
 

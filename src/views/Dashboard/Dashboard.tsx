@@ -15,6 +15,8 @@ import { MoneyType } from "../../components/MoneyType/MoneyType";
 import { DashboardActions } from "./DashboardActions/DashboardActions";
 import { DashboardPanel } from "./DashboardPanel/DashboardPanel";
 import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
+import differenceInCalendarISOWeekYears from "date-fns/differenceInCalendarISOWeekYears";
+import { Notes, Today } from "@material-ui/icons";
 
 export type DashboardProps = {
 }
@@ -26,31 +28,75 @@ export function Dashboard(props: DashboardProps) {
 	return <ViewContainer
 		viewHeader={<ViewHeader>
 			<div className="Dashboard__headerContent">
-				<p>
-					<Type
-						component="span"
-						variant="boldcaps"
-						size="sm"
-						color={"white"}
-					>
-						{`${controller.transactionsCount} transactions`}
-					</Type>
-					<Type
-						component="span"
-						variant="boldcaps"
-						size="sm"
-						color="primary-300"
-					>
-						{controller.intervalLabel}
-					</Type>
-				</p>
-				<MoneyType
-					size="xxl"
-					color="white"
-					amount={controller.transactionsTotal}
-					animate
-				/>
-				<MiniFreemiumTracker variant="transaction" className="limit" />
+				{
+					controller.selectedTransaction
+						? <div className="selectionView">
+							<p>
+								<Type variant="bold" color="white" component="span">
+									{
+										controller
+											.selectedTransaction
+											.category
+											.getFullLabel(controller.selectedTransaction.amount.sign)
+									}
+								</Type>
+								<i>
+									<Today />
+								</i>
+								<Type component="span" color={"white"}>
+									{controller.selectedTransaction.datestring}
+								</Type>
+								{
+									controller.selectedTransaction.comment && <>
+										<i>
+											<Notes />
+										</i>
+										<Type component="span" color={"white"}>
+											{controller.selectedTransaction.comment}
+										</Type>
+									</>
+								}
+							</p>
+							<MoneyType
+								size="xxl"
+								color="white"
+								amount={controller.selectedTransaction.amount}
+								component="span"
+							/>
+						</div>
+						: <div className="defaultView">
+							<p>
+								<Type
+									component="span"
+									variant="boldcaps"
+									size="sm"
+									color={"white"}
+								>
+									{
+										controller.selectionLength > 0
+											? `${controller.selectionLength} selected`
+											: `${controller.transactionsCount} transactions`
+									}
+								</Type>
+								<Type
+									component="span"
+									variant="boldcaps"
+									size="sm"
+									color="primary-300"
+								>
+									{controller.intervalLabel}
+								</Type>
+							</p>
+							<MoneyType
+								size="xxl"
+								color="white"
+								amount={controller.selectionTotalAmount ?? controller.transactionsTotal}
+								animate
+							/>
+							<MiniFreemiumTracker variant="transaction" className="limit" />
+						</div>
+				}
+
 			</div>
 		</ViewHeader>}
 		viewPanel={<DashboardPanel />}

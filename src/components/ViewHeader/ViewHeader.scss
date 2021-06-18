@@ -21,7 +21,6 @@
     transition: background-color $timing-theme;
     display: flex;
     align-items: flex-end;
-    padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
 
     &:not(.scrollable) {
       position: absolute;
@@ -37,6 +36,8 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
+      overflow-y: auto;
       & > .title {
         position: relative;
       }
