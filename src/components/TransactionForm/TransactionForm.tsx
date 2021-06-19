@@ -1,5 +1,5 @@
 import "./TransactionForm.scss";
-import React, { useRef } from "react"
+import React from "react"
 import cx from "classnames"
 import EmojiPicker from "emoji-picker-react";
 import {
@@ -42,11 +42,7 @@ export type TransactionFormProps = {
 }
 
 export function TransactionForm(props: TransactionFormProps) {
-
-	const amountInputRef = useRef<HTMLDivElement | null>(null)
-
 	const controller = useTransactionFormController(props)
-
 	const largerLayout = useSmMedia()
 	const isDesktopLayout = useMdMedia()
 
@@ -115,7 +111,7 @@ export function TransactionForm(props: TransactionFormProps) {
 						variant={controller.formValues.sign === "+" ? "contained" : "outlined"}
 						onClick={() => {
 							controller.form.setValue("sign", "+")
-							amountInputRef.current?.focus()
+							document.getElementById("amountInput")?.focus()
 						}}
 					>
 						{"+"}
@@ -125,7 +121,7 @@ export function TransactionForm(props: TransactionFormProps) {
 						variant={controller.formValues.sign === "-" ? "contained" : "outlined"}
 						onClick={() => {
 							controller.form.setValue("sign", "-")
-							amountInputRef.current?.focus()
+							document.getElementById("amountInput")?.focus()
 						}}
 					>
 						{"-"}
@@ -147,6 +143,8 @@ export function TransactionForm(props: TransactionFormProps) {
 					autoFocus={!controller.isEditingTransaction}
 					autoComplete="off"
 					error={!!controller.getFormError("amount")}
+					inputProps={{ id: "amountInput" }}
+					InputLabelProps={{ shrink: !!controller.formValues.amount }}
 					InputProps={{
 						endAdornment: <InputAdornment className="amountEndAdornment" position="end">
 							<Type>
@@ -190,6 +188,7 @@ export function TransactionForm(props: TransactionFormProps) {
 					fullWidth
 					options={controller.categories.map(_ => _.value)}
 					renderOption={controller.optionRenderer}
+					onInputChange={(e, v) => controller.form.setValue("category", v)}
 					renderInput={(params) => (
 						<TextField
 							{...wrapRegister(controller.form.register("category"), "inputRef")}
@@ -230,6 +229,7 @@ export function TransactionForm(props: TransactionFormProps) {
 					label="Date"
 					error={!!controller.getFormError("time")}
 					fullWidth
+					helperText=""
 					required
 					size="small"
 				/>

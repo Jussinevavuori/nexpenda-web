@@ -16,7 +16,7 @@ import { useGetFormError } from "../../hooks/forms/useGetFormError"
 export const transactionFormSchema = z.object({
 	icon: z.string().refine(str => !str.trim() || emojiRegex().test(str.trim()), "Invalid icon"),
 	sign: z.enum(["+", "-"]),
-	amount: z.string().regex(/^-?\d*[.,]?\d{0,2}$/),
+	amount: z.string().regex(/^\+?-?\d*[.,]?\d{0,2}$/),
 	category: z.string().transform(str => str.trim()),
 	time: z.date().refine(d => !Number.isNaN(d.getTime()), "Invalid date"),
 	comment: z.string().transform(str => str.trim()),
@@ -60,6 +60,10 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		if (!Number.isNaN(value)) {
 			form.setValue("sign", value <= 0 ? "-" : "+", { shouldValidate: true, shouldTouch: true });
 			form.setValue("amount", value.toFixed(2), { shouldValidate: true, shouldTouch: true });
+			form.trigger("amount")
+			setTimeout(() => {
+				document.getElementById("amountInput")?.focus()
+			}, 10)
 		}
 	}, [calculator, form])
 
@@ -67,8 +71,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	 * Return an existing category if one found
 	 */
 	const existingCategory = useMemo(() => {
-		console.log(categories.find(_ => _.value === formValues.category),
-			categories.find(_ => _.value === formValues.category)?.icon)
 		return categories.find(_ => _.value === formValues.category)
 	}, [formValues, categories])
 
@@ -134,7 +136,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	 * Form submission
 	 */
 	const handleFormSubmit = form.handleSubmit(async (values) => {
-		console.log(values)
 
 		// Parse integer amount
 		const integerAmount = parseInputToIntegerAmount(values.amount, values.sign)
