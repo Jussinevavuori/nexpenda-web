@@ -61,10 +61,9 @@ export function Register() {
 					: <form onSubmit={controller.handleSubmit}>
 
 						<TextField
+							{...controller.form.register("email")}
 							id="register-email"
-							name="email"
 							type="text"
-							inputRef={controller.form.register}
 							label="Email"
 							variant="outlined"
 							error={!!controller.emailError}
@@ -78,10 +77,9 @@ export function Register() {
 						/>
 
 						<TextField
+							{...controller.form.register("password")}
 							id="register-password"
-							name="password"
 							type={controller.passwordVisible ? "text" : "password"}
-							inputRef={controller.form.register}
 							label="Password"
 							variant="outlined"
 							error={!!controller.passwordError}

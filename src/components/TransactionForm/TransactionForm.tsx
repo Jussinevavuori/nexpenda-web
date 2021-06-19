@@ -2,7 +2,16 @@ import "./TransactionForm.scss";
 import React, { useRef } from "react"
 import cx from "classnames"
 import EmojiPicker from "emoji-picker-react";
-import { TextField, InputAdornment, Button, ButtonGroup, Menu, IconButton, Dialog, Icon, Collapse } from "@material-ui/core";
+import {
+	TextField,
+	InputAdornment,
+	Button,
+	ButtonGroup,
+	Menu,
+	IconButton,
+	Dialog,
+	Icon
+} from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
@@ -10,8 +19,10 @@ import { useMdMedia, useSmMedia } from "../../hooks/utils/useMedia";
 import { Transaction } from "../../classes/Transaction";
 import { useTransactionFormController } from "./useTransactionFormController";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
-import { Close } from "@material-ui/icons";
+import { Close, Replay } from "@material-ui/icons";
 import { Calculator } from "../Calculator/Calculator";
+import { ButtonTextFieldGroup } from "../ButtonTextFieldGroup/ButtonTextFieldGroup";
+import { wrapRegister } from "../../utils/FormUtils/wrapRegister";
 
 export type TransactionFormProps = {
 	onClose?(): void;
@@ -36,11 +47,6 @@ export function TransactionForm(props: TransactionFormProps) {
 
 	const controller = useTransactionFormController(props)
 
-	function handleSubmit(e: React.FormEvent) {
-		e.preventDefault()
-		controller.onSubmit()
-	}
-
 	const largerLayout = useSmMedia()
 	const isDesktopLayout = useMdMedia()
 
@@ -48,18 +54,19 @@ export function TransactionForm(props: TransactionFormProps) {
 
 		{/* Emoji menu */}
 		<Menu
-			anchorEl={controller.emojiPickerAnchor}
-			open={controller.emojiPickerOpen}
-			onClose={() => controller.setEmojiPickerOpen(false)}
+			anchorEl={controller.emojiPicker.anchorEl}
+			open={controller.emojiPicker.isOpen}
+			onClose={controller.emojiPicker.handleClose}
 		>
 			<div>
 				<EmojiPicker
 					native
 					disableAutoFocus
 					onEmojiClick={(e, emoji) => {
-						controller.setEmojiPickerAnchor(null)
-						controller.setEmojiPickerOpen(false)
-						controller.onIconChange(emoji.emoji)
+						controller.form.setValue("icon", emoji.emoji, {
+							shouldValidate: true,
+						})
+						controller.emojiPicker.handleClose()
 					}}
 				/>
 			</div>
@@ -67,15 +74,15 @@ export function TransactionForm(props: TransactionFormProps) {
 
 		{/* Calculator dialog */}
 		<Dialog
-			open={controller.isCalculatorOpen}
-			onClose={controller.handleCalculatorClose}
+			open={controller.calculator.isOpen}
+			onClose={controller.calculator.handleClose}
 		>
 			<div className="TransactionForm__CalculatorDialog">
 				<Calculator
-					initialValue={parseFloat(controller.amount)}
+					initialValue={parseFloat(controller.formValues.amount ?? "")}
 					onSubmit={controller.onCalculatorSubmit}
 				/>
-				<IconButton onClick={controller.handleCalculatorClose}>
+				<IconButton onClick={controller.calculator.handleClose}>
 					<Close />
 				</IconButton>
 			</div>
@@ -86,7 +93,7 @@ export function TransactionForm(props: TransactionFormProps) {
 				titleHidden: !!props.hideTitle,
 				hasCloseButton: !!props.showCloseButton
 			})}
-			onSubmit={handleSubmit}
+			onSubmit={controller.handleFormSubmit}
 		>
 
 			{
@@ -96,35 +103,29 @@ export function TransactionForm(props: TransactionFormProps) {
 						variant="boldcaps"
 						color="gray-600"
 					>
-						{controller.edit ? "Edit transaction" : "New transaction"}
+						{controller.isEditingTransaction ? "Edit transaction" : "New transaction"}
 					</Type>
 				</div>
 			}
 
-			<div className="buttonTextFieldGroup transaction-amount">
+			<ButtonTextFieldGroup className="amountInput">
 				<ButtonGroup>
 					<Button
-						color={controller.sign === "+" ? "primary" : undefined}
-						variant={controller.sign === "+" ? "contained" : "outlined"}
+						color={controller.formValues.sign === "+" ? "primary" : undefined}
+						variant={controller.formValues.sign === "+" ? "contained" : "outlined"}
 						onClick={() => {
-							controller.onSignChange("+")
-							const amountInput = amountInputRef.current
-							if (amountInput) {
-								amountInput.focus()
-							}
+							controller.form.setValue("sign", "+")
+							amountInputRef.current?.focus()
 						}}
 					>
 						{"+"}
 					</Button>
 					<Button
-						color={controller.sign === "-" ? "primary" : undefined}
-						variant={controller.sign === "-" ? "contained" : "outlined"}
+						color={controller.formValues.sign === "-" ? "primary" : undefined}
+						variant={controller.formValues.sign === "-" ? "contained" : "outlined"}
 						onClick={() => {
-							controller.onSignChange("-")
-							const amountInput = amountInputRef.current
-							if (amountInput) {
-								amountInput.focus()
-							}
+							controller.form.setValue("sign", "-")
+							amountInputRef.current?.focus()
 						}}
 					>
 						{"-"}
@@ -132,71 +133,53 @@ export function TransactionForm(props: TransactionFormProps) {
 				</ButtonGroup>
 
 				<TextField
-					value={controller.amount}
-					onChange={e => controller.onAmountChange(e.target.value)}
+					{...wrapRegister(controller.form.register("amount"), "inputRef")}
 					onKeyDown={e => {
-						switch (e.key) {
-							case "-":
-								controller.onSignChange("-")
-								break;
-							case "+":
-								controller.onSignChange("+")
-								break;
-						}
+						if (e.key === "-" || e.key === "+")
+							controller.form.setValue("sign", e.key)
 					}}
-					id="transaction-amount"
 					variant="outlined"
-					name="amount"
 					type="number"
 					label="Amount"
-					error={!!controller.errors.amount}
-					helperText={controller.errors.amount}
 					fullWidth
 					required
 					size="small"
-					autoFocus={!controller.edit}
+					autoFocus={!controller.isEditingTransaction}
 					autoComplete="off"
-					inputProps={{
-						ref: amountInputRef,
-					}}
+					error={!!controller.getFormError("amount")}
 					InputProps={{
-						endAdornment: <InputAdornment
-							className="amountEndAdornment"
-							position="end"
-						>
+						endAdornment: <InputAdornment className="amountEndAdornment" position="end">
 							<Type>
 								{"EUR"}
 							</Type>
-							<IconButton onClick={() => controller.handleCalculatorOpen()}>
-								<Icon>{"calculate"}</Icon>
-							</IconButton>
 						</InputAdornment>
 					}}
 				/>
-			</div>
+				<ButtonGroup>
+					<Button
+						variant="outlined"
+						onClick={() => controller.calculator.handleOpen()}
+					>
+						<Icon color="primary">{"calculate"}</Icon>
+					</Button>
+				</ButtonGroup>
+			</ButtonTextFieldGroup>
 
-			<div className="buttonTextFieldGroup transaction-category">
+			<ButtonTextFieldGroup className="categoryInput">
 				<ButtonGroup>
 					<Button
 						tabIndex={-1}
-						className="transaction-emoji"
 						variant="outlined"
-						onClick={(e) => {
-							controller.setEmojiPickerAnchor(e.currentTarget)
-							controller.setEmojiPickerOpen(true)
-						}}
+						onClick={e => controller.emojiPicker.handleOpen(e)}
 					>
 						{
-							controller.icon
-							|| controller.existingCategoryIcon
-							|| (controller.sign === "+" ? "💰" : "💸")
+							controller.formValues.icon
+							|| controller.existingCategory?.icon
+							|| (controller.formValues.sign === "+" ? "💰" : "💸")
 						}
 					</Button>
 				</ButtonGroup>
 				<Autocomplete
-					inputValue={controller.category}
-					onInputChange={(e, v) => controller.onCategoryChange(v)}
-					id="transaction-category"
 					freeSolo
 					openOnFocus
 					autoHighlight
@@ -209,61 +192,59 @@ export function TransactionForm(props: TransactionFormProps) {
 					renderOption={controller.optionRenderer}
 					renderInput={(params) => (
 						<TextField
+							{...wrapRegister(controller.form.register("category"), "inputRef")}
 							variant="outlined"
-							name="category"
 							type="text"
 							label="Category"
 							autoComplete="off"
-							error={!!controller.errors.category}
-							helperText={controller.errors.category}
+							error={!!controller.getFormError("category")}
 							required
 							{...params}
 						/>
 					)}
 				/>
-			</div>
+			</ButtonTextFieldGroup>
 
 			<TextField
-				value={controller.comment}
-				onChange={e => controller.onCommentChange(e.target.value)}
-				id="transaction-comment"
-				className="transaction-comment"
+				{...wrapRegister(controller.form.register("comment"), "inputRef")}
+				error={!!controller.getFormError("comment")}
+				className="commentInput"
 				variant="outlined"
-				name="comment"
 				type="text"
 				label="Comment"
-				error={!!controller.errors.comment}
-				helperText={controller.errors.comment}
 				fullWidth
 				size="small"
 			/>
 
-			<KeyboardDatePicker
-				value={controller.time}
-				onChange={d => controller.onTimeChange(d as Date)}
-				format="dd/MM/yyyy"
-				autoOk
-				id="transaction-time"
-				className="transaction-time"
-				variant={largerLayout ? "inline" : "dialog"}
-				inputVariant="outlined"
-				label="Date"
-				error={!!controller.errors.time}
-				helperText={controller.errors.time}
-				fullWidth
-				required
-				size="small"
-			/>
-
-			<Collapse
-				in={controller.expansion.isOpen}
-				timeout="auto"
-				unmountOnExit
-			>
-				<div className="moreOptions">
-
-				</div>
-			</Collapse>
+			<ButtonTextFieldGroup className="timeInput">
+				<KeyboardDatePicker
+					value={controller.formValues.time}
+					onChange={d => controller.form.setValue("time", d as Date, {
+						shouldValidate: true,
+						shouldTouch: true,
+					})}
+					format="dd/MM/yyyy"
+					autoOk
+					variant={largerLayout ? "inline" : "dialog"}
+					inputVariant="outlined"
+					label="Date"
+					error={!!controller.getFormError("time")}
+					fullWidth
+					required
+					size="small"
+				/>
+				{
+					!controller.isEditingTransaction &&
+					<ButtonGroup>
+						<Button
+							variant="outlined"
+							onClick={(e) => { console.log("Here") }}
+						>
+							<Replay />
+						</Button>
+					</ButtonGroup>
+				}
+			</ButtonTextFieldGroup>
 
 
 			<EnhancedButton
@@ -272,9 +253,9 @@ export function TransactionForm(props: TransactionFormProps) {
 				variant="contained"
 				className="submit"
 				fullWidth
-				loading={controller.loading}
+				loading={controller.form.formState.isSubmitting}
 			>
-				{controller.edit ? "Save" : "Create"}
+				{controller.isEditingTransaction ? "Save" : "Create"}
 			</EnhancedButton>
 
 			{
@@ -297,6 +278,5 @@ export function TransactionForm(props: TransactionFormProps) {
 			}
 
 		</form >
-
 	</>
 }

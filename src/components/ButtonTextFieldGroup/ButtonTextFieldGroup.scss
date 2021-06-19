@@ -1,0 +1,34 @@
+@import "main";
+
+.ButtonTextFieldGroup {
+  display: flex;
+  align-items: stretch;
+
+  & > .ButtonTextFieldGroup__hasPrevious {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  & > .ButtonTextFieldGroup__hasPrevious,
+  & > .ButtonTextFieldGroup__hasPrevious * {
+    &.MuiButtonGroup-root,
+    &.MuiInputBase-root,
+    &.MuiButtonGroup-root .MuiButtonBase-root:first-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  & > .ButtonTextFieldGroup__hasNext {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  & > .ButtonTextFieldGroup__hasNext,
+  & > .ButtonTextFieldGroup__hasNext * {
+    &.MuiButtonGroup-root,
+    &.MuiInputBase-root,
+    &.MuiButtonGroup-root .MuiButtonBase-root:last-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

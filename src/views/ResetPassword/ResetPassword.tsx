@@ -35,10 +35,9 @@ export function ResetPassword() {
 						</Type>
 
 						<TextField
+							{...controller.form.register("email")}
 							id="login-email"
-							name="email"
 							type="text"
-							inputRef={controller.form.register}
 							label="Email"
 							variant="outlined"
 							error={!!controller.emailError}

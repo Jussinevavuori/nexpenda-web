@@ -169,10 +169,15 @@ export function useBudgetFormController(props: BudgetFormProps) {
     form,
     error,
     handleSubmit: form.handleSubmit(submitHandler),
-    labelError: form.formState.touched.label && form.errors.label?.message,
-    amountError: form.formState.touched.amount && form.errors.amount?.message,
+    labelError:
+      form.formState.touchedFields.label &&
+      form.formState.errors.label?.message,
+    amountError:
+      form.formState.touchedFields.amount &&
+      form.formState.errors.amount?.message,
     periodError:
-      form.formState.touched.periodMonths && form.errors.periodMonths?.message,
+      form.formState.touchedFields.periodMonths &&
+      form.formState.errors.periodMonths?.message,
 
     expansion,
 

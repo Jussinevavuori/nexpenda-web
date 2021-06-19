@@ -1,7 +1,6 @@
-import ReactGA from "react-ga";
 import emojiRegex from "emoji-regex"
 import * as z from "zod"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, useMemo } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
 import { Category } from "../../classes/Category";
@@ -9,86 +8,75 @@ import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCo
 import { Transaction } from "../../classes/Transaction";
 import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
 import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
-import { useOpenState } from "../../hooks/state/useOpenState";
+import { useForm, useWatch } from "react-hook-form"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEmojiPickerOpenState } from "../../hooks/componentStates/useEmojiPickerOpenState";
+import { useGetFormError } from "../../hooks/forms/useGetFormError"
 
 export const transactionFormSchema = z.object({
-	icon: z.string(),
+	icon: z.string().refine(str => !str.trim() || emojiRegex().test(str.trim()), "Invalid icon"),
 	sign: z.enum(["+", "-"]),
-	amount: z.string(),
-	category: z.string(),
-	time: z.date(),
-	comment: z.string(),
+	amount: z.string().regex(/^-?\d*[.,]?\d{0,2}$/),
+	category: z.string().transform(str => str.trim()),
+	time: z.date().refine(d => !Number.isNaN(d.getTime()), "Invalid date"),
+	comment: z.string().transform(str => str.trim()),
 })
 
 export type TransactionFormSchema = z.TypeOf<typeof transactionFormSchema>
 
 export function useTransactionFormController(props: TransactionFormProps) {
-
-	const notify = useStoreActions(_ => _.notification.notify)
-
 	const editTransaction = props.editTransaction
 
 	const categories = useStoreState(_ => _.transactions.categories)
-
+	const notify = useStoreActions(_ => _.notification.notify)
 	const postTransaction = useStoreActions(_ => _.transactions.postTransaction)
 	const putTransaction = useStoreActions(_ => _.transactions.putTransaction)
 
 	/**
-	 * Loading state
+	 * Login form state
 	 */
-	const [loading, setLoading] = useState(false)
+	const form = useForm<TransactionFormSchema>({
+		resolver: zodResolver(transactionFormSchema),
+		defaultValues: {
+			sign: "-",
+			time: new Date(),
+			amount: "",
+			category: "",
+			comment: "",
+			icon: "",
+		}
+	})
 
-	/**
-	 * Input state
-	 */
-	const [icon, setIcon] = useState<string>("")
-	const [sign, setSign] = useState<"+" | "-">("-")
-	const [amount, setAmount] = useState<string>("")
-	const [category, setCategory] = useState<string>("")
-	const [time, setTime] = useState<Date>(new Date())
-	const [comment, setComment] = useState<string>("")
-
-	/**
-	 * Emoji picker state
-	 */
-	const [emojiPickerAnchor, setEmojiPickerAnchor] = useState<Element | null>(null)
-	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
-
-	/**
-	 * Calculator state
-	 */
-	const {
-		isOpen: isCalculatorOpen,
-		handleOpen: handleCalculatorOpen,
-		handleClose: handleCalculatorClose,
-	} = useCalculatorOpenState()
+	const formValues = useWatch({ control: form.control })
+	const getFormError = useGetFormError(form)
+	const emojiPicker = useEmojiPickerOpenState()
+	const calculator = useCalculatorOpenState()
 
 	/**
 	 * Calculator submission handler
 	 */
 	const onCalculatorSubmit = useCallback((value: number) => {
-		handleCalculatorClose()
+		calculator.handleClose()
 		if (!Number.isNaN(value)) {
-			setSign(value <= 0 ? "-" : "+");
-			setAmount(value.toFixed(2));
+			form.setValue("sign", value <= 0 ? "-" : "+", { shouldValidate: true, shouldTouch: true });
+			form.setValue("amount", value.toFixed(2), { shouldValidate: true, shouldTouch: true });
 		}
-	}, [handleCalculatorClose])
+	}, [calculator, form])
 
 	/**
-	 * Expansion state
+	 * Return an existing category if one found
 	 */
-	const expansion = useOpenState()
+	const existingCategory = useMemo(() => {
+		console.log(categories.find(_ => _.value === formValues.category),
+			categories.find(_ => _.value === formValues.category)?.icon)
+		return categories.find(_ => _.value === formValues.category)
+	}, [formValues, categories])
 
-	// If existing category selected and it has an icon, display
-	// it (unless an icon is selected)
-	const existingCategoryIcon = categories.find(_ => _.value === category)?.icon
-
-	// Initialize input state from editTransaction. We use the
-	// `latestEditTransactionId` for preventing double-initializations of
-	// the same transaction.
-	//
-	// If no edit transaction present, attempt to get values from storage
-	// service's autofill
+	/**
+	 * If editing, initialize the state from edit transaction. We use
+	 * `latestEditTransactionId` for preventing double-initializations of
+	 * the same transaction.
+	 */
 	const latestEditTransactionId = useRef<string>('')
 	useEffect(() => {
 
@@ -102,22 +90,25 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		latestEditTransactionId.current = editTransaction.id
 
 		// Initialize values
-		setSign(editTransaction.amount.sign === 1 ? "+" : "-")
-		setAmount(editTransaction.amount.decimalValue.toFixed(2))
-		setCategory(editTransaction.category.value)
-		setComment(editTransaction.comment)
-		setTime(editTransaction.date)
-		setIcon(editTransaction.category.icon)
-	}, [editTransaction])
+		form.setValue("sign", editTransaction.amount.sign === 1 ? "+" : "-")
+		form.setValue("amount", editTransaction.amount.decimalValue.toFixed(2))
+		form.setValue("category", editTransaction.category.value)
+		form.setValue("comment", editTransaction.comment)
+		form.setValue("time", editTransaction.date)
+		form.setValue("icon", editTransaction.category.icon)
+	}, [editTransaction, form])
 
-	// Enable copying transactions
+	/**
+	 * Enable copying transactions. When a copy is detected, automatically
+	 * replace the values in the form.
+	 */
 	useOnTransactionCopy(
 		useCallback((copied: Transaction) => {
-			setAmount(copied.amount.decimalValue.toFixed(2))
-			setSign(copied.amount.signSymbol)
-			setCategory(copied.category.name)
-			setComment(copied.comment)
-		}, [setAmount, setSign, setCategory, setComment])
+			form.setValue("amount", copied.amount.decimalValue.toFixed(2))
+			form.setValue("sign", copied.amount.signSymbol)
+			form.setValue("category", copied.category.name)
+			form.setValue("comment", copied.comment)
+		}, [form])
 	)
 
 	/**
@@ -126,234 +117,102 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	function optionRenderer(categoryValue: string) {
 		const categoryObject = categories.find(_ => _.value === categoryValue)
 		if (categoryObject) {
-			return categoryObject.getFullLabel(sign)
+			return categoryObject.getFullLabel(formValues.sign)
 		}
-		const icon = sign === "+"
+		const icon = formValues.sign === "+"
 			? Category.defaultIncomeIcon
 			: Category.defaultExpenseIcon
 		return `${icon} ${categoryValue}`
 	}
 
 	/**
-	 * Error state
+	 * Submit error
 	 */
-	const [errors, setErrors] = useState<{
-		main?: string;
-		amount?: string;
-		category?: string;
-		time?: string;
-		comment?: string;
-	}>({})
-
-	function validateIcon(): string | undefined {
-		if (emojiRegex().test(icon)) {
-			return icon
-		} else {
-			return undefined
-		}
-	}
+	const [submitError, setSubmitError] = useState("")
 
 	/**
-	 * Validator for amount
+	 * Form submission
 	 */
-	function validateAmount(): string | undefined {
-		/* eslint-disable-next-line no-useless-escape */
-		const valid = /^-?\d*[\.,]?\d{0,2}$/.test(amount.trim())
-		if (!valid) return "Invalid number"
-		return undefined
-	}
+	const handleFormSubmit = form.handleSubmit(async (values) => {
+		console.log(values)
 
-	/**
-	 * Validator for category
-	 */
-	function validateCategory(): string | undefined {
-		const c = category.trim()
-		if (c === "") return "Please enter a cetegory"
-		return undefined
-	}
+		// Parse integer amount
+		const integerAmount = parseInputToIntegerAmount(values.amount, values.sign)
 
-	/**
-	 * Validator for time
-	 */
-	function validateTime(): string | undefined {
-		const valid = time.getTime() > 0 && !isNaN(time.getTime())
-		if (!valid) return "Invalid date"
-		return undefined
-	}
-
-	/**
-	 * Validator for comment
-	 */
-	function validateComment(): string | undefined {
-		return undefined
-	}
-
-	/**
-	 * Full validation
-	 */
-	function validateForm(): boolean {
-		const amountValidationError = validateAmount()
-		const categoryValidationError = validateCategory()
-		const timeValidationError = validateTime()
-		const commentValidationError = validateComment()
-
-		setErrors({
-			amount: amountValidationError,
-			category: categoryValidationError,
-			time: timeValidationError,
-			comment: commentValidationError,
-		})
-
-		if (
-			!amountValidationError &&
-			!categoryValidationError &&
-			!timeValidationError &&
-			!commentValidationError
-		) {
-			return true
-		}
-
-		return false
-	}
-
-	/**
-	 * Handle form submission
-	 */
-	async function handleSubmit() {
-		/**
-		 * Validate form
-		 */
-		const formValid = validateForm()
-		if (!formValid) return
-
-		setLoading(true)
-
-		/**
-		 * Parsing
-		 */
-		const integerAmount = Math.round(
-			Math.abs(
-				100 * Number(
-					amount.trim().replace(/,/g, ".")
-				)
-			) * (sign === "+" ? 1 : -1)
-		)
-
+		// Values into format to post to server
 		const json: JsonTransactionInitializer = {
 			integerAmount,
-			category: category.trim(),
-			time: time.getTime(),
-			comment: comment.trim(),
-			categoryIcon: validateIcon(),
+			category: values.category,
+			time: values.time.getTime(),
+			comment: values.comment,
+			categoryIcon: values.icon,
 		}
 
-		/**
-		 * Post or edit transaction
-		 */
+		// Send create or edit transaction request
 		const result = editTransaction
 			? await putTransaction({ id: editTransaction.id, ...json })
 			: await postTransaction(json)
 
-		/**
-		 * Handle success by reseting form
-		 */
+		// In case of success, notify on edit and reset form
 		if (result.isSuccess()) {
-
 			if (editTransaction) {
-				ReactGA.event({
-					action: "Edit Transaction",
-					category: "Transactions",
-					label: result.value.category.value,
-					value: result.value.integerAmount / 100,
-				})
-			} else {
-				ReactGA.event({
-					action: "Create Transaction",
-					category: "Transactions",
-					label: result.value.category.value,
-					value: result.value.integerAmount / 100,
-				})
+				notify({ message: "Changes saved", severity: "success" })
 			}
 
-			if (editTransaction) {
-				notify({
-					message: "Changes saved"
-				})
-			}
-
-			setAmount("")
-			setCategory("")
-			setTime(new Date())
-			setComment("")
-			setErrors({})
+			form.reset()
 			latestEditTransactionId.current = ""
-			if (props.onClose) {
-				props.onClose()
-			}
-			setLoading(false)
-			return
-		}
+			props.onClose?.()
+		} else {
 
-		/**
-		 * Handle error messages
-		 */
-		setErrors(() => {
-
+			// Handle error messages
 			if (result.reason === "network" && result.code === "request/invalid-request-data") {
-				const e = result.data?.errors ?? {};
-				return {
-					amount:
-						typeof e.integerAmount === "string"
-							? e.integerAmount
-							: undefined,
-					comment: typeof e.comment === "string" ? e.comment : undefined,
-					category: typeof e.category === "string" ? e.category : undefined,
-					time: typeof e.time === "string" ? e.time : undefined,
-					main:
-						typeof e._root === "string"
-							? e._root
-							: typeof e.id === "string"
-								? e.id
-								: typeof e.uid === "string"
-									? e.uid
-									: undefined,
+				const getError = (field: string) => {
+					const e = result.data?.errors ?? {};
+					return typeof e[field] && e[field] === "string" ? e[field] : undefined
+				}
+				const attemptSetError = (field: keyof TransactionFormSchema) => {
+					const msg = getError(field)
+					if (msg) form.setError(field, msg)
+				}
+				attemptSetError("amount")
+				attemptSetError("comment")
+				attemptSetError("category")
+				attemptSetError("time")
+				if (getError("_root")) {
+					setSubmitError(getError("_root"))
 				};
+			} else {
+				setSubmitError(getErrorMessage("transactionForm", result))
 			}
-
-			return { main: getErrorMessage("transactionForm", result) }
-		})
-
-		setLoading(false)
-	}
+		}
+	}, () => {
+		// On invalid values
+		setSubmitError("Invalid values")
+	})
 
 	return {
-		loading,
-		onSubmit: handleSubmit,
-		sign,
-		amount,
-		category,
-		time,
-		comment,
-		icon,
-		existingCategoryIcon,
-		emojiPickerOpen,
-		emojiPickerAnchor,
-		setEmojiPickerOpen,
-		setEmojiPickerAnchor,
-		onIconChange: setIcon,
-		onSignChange: setSign,
-		onAmountChange: setAmount,
-		onCategoryChange: setCategory,
-		onTimeChange: setTime,
-		onCommentChange: setComment,
-		isCalculatorOpen,
-		handleCalculatorOpen,
-		handleCalculatorClose,
+		form,
+		formValues,
+		getFormError,
+		handleFormSubmit,
+		submitError,
+		existingCategory,
+		emojiPicker,
+		calculator,
 		onCalculatorSubmit,
-		errors: errors,
-		categories: categories,
-		edit: !!editTransaction,
+		categories,
+		isEditingTransaction: !!editTransaction,
 		optionRenderer,
-		expansion,
 	}
+}
+
+/**
+ * Parses a numeric input to an integer amount.
+ */
+function parseInputToIntegerAmount(amount: string, signStr: "+" | "-"): number {
+	const parsedString = amount.trim().replace(/,/g, ".")
+	const parsedNumber = 100 * parseFloat(parsedString)
+	const parsedInteger = Math.round(Math.abs(parsedNumber))
+	const sign = (signStr === "+" ? 1 : -1)
+	return parsedInteger * sign
 }

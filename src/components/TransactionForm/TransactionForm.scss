@@ -10,7 +10,7 @@
     "comment comment" auto
     "time time" auto
     "submit submit" auto / 1fr;
-  align-items: center;
+  align-items: flex-end;
   gap: $spacing-2 $spacing-4;
 
   @include md {
@@ -51,7 +51,7 @@
     display: flex;
   }
 
-  & .transaction-amount {
+  & .amountInput {
     grid-area: amount;
 
     & .MuiInputAdornment-root {
@@ -61,15 +61,15 @@
     }
   }
 
-  & .transaction-category {
+  & .categoryInput {
     grid-area: category;
   }
 
-  & .transaction-comment {
+  & .commentInput {
     grid-area: comment;
   }
 
-  & .transaction-time {
+  & .timeInput {
     grid-area: time;
   }
 
@@ -84,26 +84,6 @@
   & .MuiButton-root:not(.MuiButton-contained),
   & .MuiTextField-root {
     background: white;
-  }
-
-  & .buttonTextFieldGroup {
-    display: flex;
-    align-items: center;
-
-    & .MuiButtonGroup-root {
-      transform: scale(1.02);
-    }
-
-    & .MuiButton-root:last-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    & .MuiInputBase-root {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-left-color: transparent;
-    }
   }
 
   &__CalculatorDialog {

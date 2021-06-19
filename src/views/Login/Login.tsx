@@ -51,10 +51,9 @@ export function Login() {
 					</div>
 
 					<TextField
+						{...controller.form.register("email")}
 						id="login-email"
-						name="email"
 						type="text"
-						inputRef={controller.form.register}
 						label="Email"
 						variant="outlined"
 						error={!!controller.emailError}
@@ -68,10 +67,9 @@ export function Login() {
 					/>
 
 					<TextField
+						{...controller.form.register("password")}
 						id="login-password"
-						name="password"
 						type={controller.passwordVisible ? "text" : "password"}
-						inputRef={controller.form.register}
 						label="Password"
 						variant="outlined"
 						error={!!controller.passwordError}

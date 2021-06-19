@@ -68,7 +68,7 @@ export function useResetPasswordController() {
 		loginWithGoogle()
 	}
 
-	const emailError = form.formState.touched.email && form.errors.email?.message
+	const emailError = form.formState.touchedFields.email && form.formState.errors.email?.message
 
 	return {
 		handleSubmit,

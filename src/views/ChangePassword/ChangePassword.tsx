@@ -87,10 +87,9 @@ export function ChangePassword() {
 						</Type>
 
 						<TextField
+							{...controller.form.register("password")}
 							id="change-password"
-							name="password"
 							type={controller.passwordVisible ? "text" : "password"}
-							inputRef={controller.form.register}
 							label="Password"
 							variant="outlined"
 							error={!!controller.passwordError}

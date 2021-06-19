@@ -80,8 +80,8 @@ export function BudgetForm(props: BudgetFormProps) {
 				</Type>
 
 				<TextField
+					{...controller.form.register("amount")}
 					variant="outlined"
-					name="amount"
 					type="number"
 					label="Amount"
 					error={!!controller.amountError}
@@ -89,7 +89,6 @@ export function BudgetForm(props: BudgetFormProps) {
 					fullWidth
 					size="small"
 					autoComplete="off"
-					inputRef={controller.form.register}
 					InputProps={{
 						endAdornment: <InputAdornment position="end">
 							<Type>
@@ -127,14 +126,13 @@ export function BudgetForm(props: BudgetFormProps) {
 						</Type>
 
 						<TextField
+							{...controller.form.register("label")}
 							variant="outlined"
-							name="label"
 							type="text"
 							label="Label (optional)"
 							error={!!controller.labelError}
 							helperText={controller.labelError}
 							fullWidth
-							inputRef={controller.form.register}
 							size="small"
 						/>
 					</div>
@@ -154,8 +152,8 @@ export function BudgetForm(props: BudgetFormProps) {
 						</Type>
 
 						<TextField
+							{...controller.form.register("periodMonths")}
 							variant="outlined"
-							name="periodMonths"
 							type="number"
 							label="Budget period (months)"
 							error={!!controller.periodError}
@@ -163,7 +161,6 @@ export function BudgetForm(props: BudgetFormProps) {
 							fullWidth
 							size="small"
 							autoComplete="off"
-							inputRef={controller.form.register}
 							defaultValue={1}
 							InputProps={{
 								endAdornment: <InputAdornment position="end">

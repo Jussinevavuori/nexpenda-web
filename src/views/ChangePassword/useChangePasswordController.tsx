@@ -108,7 +108,7 @@ export function useChangePasswordController() {
 	/**
 	 * Email and password error shorthands for react hook form
 	 */
-	const passwordError = form.formState.touched.password && form.formState.errors.password?.message
+	const passwordError = form.formState.touchedFields.password && form.formState.errors.password?.message
 
 	return {
 		validTokenEmail,

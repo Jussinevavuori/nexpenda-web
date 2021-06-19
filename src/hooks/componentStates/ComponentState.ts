@@ -12,6 +12,7 @@ export class ComponentState {
     BudgetMenu: "budget-menu",
     BudgetCreator: "budget-create",
     BudgetEditor: "budget-edit",
+    EmojiPicker: "emoji",
     FeedbackDialog: "feedback",
     FileUploader: "upload",
     FreemiumTracker: "free",
