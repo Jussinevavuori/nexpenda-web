@@ -1,0 +1,39 @@
+@import "main";
+
+.IntegerInput {
+  & .MuiTextField-root {
+    width: 45px;
+    margin-left: -1px;
+    margin-right: -1px;
+    background: $gray-200;
+    & .MuiInputBase-input {
+      padding-left: $spacing-2;
+      padding-right: $spacing-2;
+      text-align: center;
+    }
+  }
+
+  & .MuiButton-root {
+    touch-action: manipulation;
+    & svg {
+      font-size: 16px;
+    }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@include darkmode {
+  .IntegerInput {
+    & .MuiTextField-root {
+      background: $gray-830;
+    }
+  }
+}

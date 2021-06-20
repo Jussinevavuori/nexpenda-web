@@ -1,6 +1,6 @@
 import emojiRegex from "emoji-regex"
 import * as z from "zod"
-import { useCallback, useEffect, useRef, useState, useMemo } from "react"
+import { useCallback, useEffect, useRef, useMemo } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
 import { Category } from "../../classes/Category";
@@ -8,18 +8,20 @@ import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCo
 import { Transaction } from "../../classes/Transaction";
 import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
 import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
-import { useForm, useWatch } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useEmojiPickerOpenState } from "../../hooks/componentStates/useEmojiPickerOpenState";
-import { useGetFormError } from "../../hooks/forms/useGetFormError"
+import { useControlledForm } from "../../hooks/forms/useControlledForm"
+import { useControlledFormField } from "../../hooks/forms/useControlledFormField"
+import { useScheduleFormOpenState } from "../../hooks/componentStates/useScheduleFormOpenState"
+import { defaultScheduleFormField, scheduleFormFieldSchema } from "../../utils/FormUtils/scheduleFormField"
 
 export const transactionFormSchema = z.object({
 	icon: z.string().refine(str => !str.trim() || emojiRegex().test(str.trim()), "Invalid icon"),
 	sign: z.enum(["+", "-"]),
 	amount: z.string().regex(/^\+?-?\d*[.,]?\d{0,2}$/),
-	category: z.string().transform(str => str.trim()),
+	category: z.string().refine(str => !!str.trim()),
 	time: z.date().refine(d => !Number.isNaN(d.getTime()), "Invalid date"),
-	comment: z.string().transform(str => str.trim()),
+	comment: z.string().refine(str => !!str.trim()),
+	schedule: scheduleFormFieldSchema,
 })
 
 export type TransactionFormSchema = z.TypeOf<typeof transactionFormSchema>
@@ -31,26 +33,50 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	const notify = useStoreActions(_ => _.notification.notify)
 	const postTransaction = useStoreActions(_ => _.transactions.postTransaction)
 	const putTransaction = useStoreActions(_ => _.transactions.putTransaction)
+	const postSchedule = useStoreActions(_ => _.schedules.postSchedule)
 
 	/**
-	 * Login form state
+	 * Form state
 	 */
-	const form = useForm<TransactionFormSchema>({
-		resolver: zodResolver(transactionFormSchema),
-		defaultValues: {
-			sign: "-",
-			time: new Date(),
-			amount: "",
-			category: "",
-			comment: "",
-			icon: "",
+	const form = useControlledForm<TransactionFormSchema>({
+		fields: {
+			icon: useControlledFormField({
+				defaultValue: "",
+				validation: transactionFormSchema.shape.icon,
+			}),
+			sign: useControlledFormField({
+				defaultValue: "-",
+				validation: transactionFormSchema.shape.sign,
+			}),
+			amount: useControlledFormField({
+				defaultValue: "",
+				validation: transactionFormSchema.shape.amount,
+			}),
+			category: useControlledFormField({
+				defaultValue: "",
+				validation: transactionFormSchema.shape.category,
+			}),
+			time: useControlledFormField({
+				defaultValue: new Date(),
+				validation: transactionFormSchema.shape.time,
+			}),
+			comment: useControlledFormField({
+				defaultValue: "",
+				validation: transactionFormSchema.shape.comment,
+			}),
+			schedule: useControlledFormField({
+				defaultValue: defaultScheduleFormField,
+				validation: transactionFormSchema.shape.schedule,
+			})
 		}
 	})
 
-	const formValues = useWatch({ control: form.control })
-	const getFormError = useGetFormError(form)
+	/**
+	 * Open states
+	 */
 	const emojiPicker = useEmojiPickerOpenState()
 	const calculator = useCalculatorOpenState()
+	const scheduleForm = useScheduleFormOpenState()
 
 	/**
 	 * Calculator submission handler
@@ -58,12 +84,9 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	const onCalculatorSubmit = useCallback((value: number) => {
 		calculator.handleClose()
 		if (!Number.isNaN(value)) {
-			form.setValue("sign", value <= 0 ? "-" : "+", { shouldValidate: true, shouldTouch: true });
-			form.setValue("amount", value.toFixed(2), { shouldValidate: true, shouldTouch: true });
-			form.trigger("amount")
-			setTimeout(() => {
-				document.getElementById("amountInput")?.focus()
-			}, 10)
+			form.set("sign", value <= 0 ? "-" : "+");
+			form.set("amount", value.toFixed(2));
+			setTimeout(() => { document.getElementById("amountInput")?.focus() }, 10)
 		}
 	}, [calculator, form])
 
@@ -71,8 +94,8 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	 * Return an existing category if one found
 	 */
 	const existingCategory = useMemo(() => {
-		return categories.find(_ => _.value === formValues.category)
-	}, [formValues, categories])
+		return categories.find(_ => _.value === form.values.category)
+	}, [form, categories])
 
 	/**
 	 * If editing, initialize the state from edit transaction. We use
@@ -92,12 +115,12 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		latestEditTransactionId.current = editTransaction.id
 
 		// Initialize values
-		form.setValue("sign", editTransaction.amount.sign === 1 ? "+" : "-")
-		form.setValue("amount", editTransaction.amount.decimalValue.toFixed(2))
-		form.setValue("category", editTransaction.category.value)
-		form.setValue("comment", editTransaction.comment)
-		form.setValue("time", editTransaction.date)
-		form.setValue("icon", editTransaction.category.icon)
+		form.set("sign", editTransaction.amount.sign === 1 ? "+" : "-")
+		form.set("amount", editTransaction.amount.decimalValue.toFixed(2))
+		form.set("category", editTransaction.category.value)
+		form.set("comment", editTransaction.comment)
+		form.set("time", editTransaction.date)
+		form.set("icon", editTransaction.category.icon)
 	}, [editTransaction, form])
 
 	/**
@@ -106,10 +129,10 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	 */
 	useOnTransactionCopy(
 		useCallback((copied: Transaction) => {
-			form.setValue("amount", copied.amount.decimalValue.toFixed(2))
-			form.setValue("sign", copied.amount.signSymbol)
-			form.setValue("category", copied.category.name)
-			form.setValue("comment", copied.comment)
+			form.set("amount", copied.amount.decimalValue.toFixed(2))
+			form.set("sign", copied.amount.signSymbol)
+			form.set("category", copied.category.name)
+			form.set("comment", copied.comment)
 		}, [form])
 	)
 
@@ -119,33 +142,31 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	function optionRenderer(categoryValue: string) {
 		const categoryObject = categories.find(_ => _.value === categoryValue)
 		if (categoryObject) {
-			return categoryObject.getFullLabel(formValues.sign)
+			return categoryObject.getFullLabel(form.values.sign)
 		}
-		const icon = formValues.sign === "+"
+		const icon = form.values.sign === "+"
 			? Category.defaultIncomeIcon
 			: Category.defaultExpenseIcon
 		return `${icon} ${categoryValue}`
 	}
 
 	/**
-	 * Submit error
-	 */
-	const [submitError, setSubmitError] = useState("")
-
-	/**
 	 * Form submission
 	 */
-	const handleFormSubmit = form.handleSubmit(async (values) => {
+	const handleFormSubmit = form.createSubmitHandler(async (formresult) => {
+		if (!formresult.isValid) {
+			form.setSubmitError("Invalid values.")
+			return false;
+		}
 
-		// Parse integer amount
+		// Parse values and put into format for posting to server
+		const values = formresult.values
 		const integerAmount = parseInputToIntegerAmount(values.amount, values.sign)
-
-		// Values into format to post to server
 		const json: JsonTransactionInitializer = {
 			integerAmount,
-			category: values.category,
+			category: values.category.trim(),
 			time: values.time.getTime(),
-			comment: values.comment,
+			comment: values.comment.trim(),
 			categoryIcon: values.icon,
 		}
 
@@ -153,6 +174,21 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		const result = editTransaction
 			? await putTransaction({ id: editTransaction.id, ...json })
 			: await postTransaction(json)
+
+		// If a schedule is defined, post it
+		if (result.isSuccess() && !editTransaction && values.schedule.enabled) {
+			const scheduleResult = await postSchedule({
+				integerAmount,
+				category: values.category.trim(),
+				comment: values.comment.trim(),
+				firstOccurrence: values.time.getTime(),
+				intervalLength: values.schedule.every,
+				intervalType: values.schedule.type,
+				occurrences: values.schedule.occurrences,
+				assignTransactions: [result.value.id],
+			})
+			console.log(scheduleResult)
+		}
 
 		// In case of success, notify on edit and reset form
 		if (result.isSuccess()) {
@@ -163,13 +199,15 @@ export function useTransactionFormController(props: TransactionFormProps) {
 			form.reset()
 			latestEditTransactionId.current = ""
 			props.onClose?.()
+			return true;
 		} else {
 
 			// Handle error messages
 			if (result.reason === "network" && result.code === "request/invalid-request-data") {
 				const getError = (field: string) => {
 					const e = result.data?.errors ?? {};
-					return typeof e[field] && e[field] === "string" ? e[field] : undefined
+					const f = e[field]
+					return f && typeof f === "string" ? f : undefined
 				}
 				const attemptSetError = (field: keyof TransactionFormSchema) => {
 					const msg = getError(field)
@@ -180,26 +218,22 @@ export function useTransactionFormController(props: TransactionFormProps) {
 				attemptSetError("category")
 				attemptSetError("time")
 				if (getError("_root")) {
-					setSubmitError(getError("_root"))
+					form.setSubmitError(getError("_root"))
 				};
 			} else {
-				setSubmitError(getErrorMessage("transactionForm", result))
+				form.setSubmitError(getErrorMessage("transactionForm", result))
 			}
+			return false;
 		}
-	}, () => {
-		// On invalid values
-		setSubmitError("Invalid values")
 	})
 
 	return {
 		form,
-		formValues,
-		getFormError,
 		handleFormSubmit,
-		submitError,
 		existingCategory,
 		emojiPicker,
 		calculator,
+		scheduleForm,
 		onCalculatorSubmit,
 		categories,
 		isEditingTransaction: !!editTransaction,

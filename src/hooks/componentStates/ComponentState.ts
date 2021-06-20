@@ -18,6 +18,7 @@ export class ComponentState {
     FreemiumTracker: "free",
     IntervalManager: "i",
     LocketOutDialog: "getpremium",
+    ScheduleForm: "schedule",
     TransactionCreator: "transaction-create",
     TransactionEditor: "transaction-edit",
     UserMenu: "usermenu",

@@ -96,7 +96,7 @@ export class TransactionSchedule {
     intervalType: z.enum(["DAY", "WEEK", "MONTH", "YEAR"]),
     intervalLength: z.number().int().min(1),
     firstOccurrence: z.number().int(),
-    occurrences: z.number().int().min(1).optional(),
+    occurrences: z.number().int().min(0).optional(),
     integerAmount: z.number().int(),
     category: z.string().nonempty(),
     comment: z.string().optional(),
