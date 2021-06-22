@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import { useStoreState } from "../store"
-import { calculateAnalytics } from "../utils/AnalyticsUtils/calculateAnalytics"
+import { calculateAnalytics } from "../lib/DataAnalysis/calculateAnalytics"
 
 type AnalyticsContextType = ReturnType<typeof calculateAnalytics>
 

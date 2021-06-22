@@ -1,5 +1,6 @@
-import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
-import { exposeToWindow } from "../utils/Utils/exposeToWindow";
+import { ThemeColors } from "../lib/Theme/ThemeColors";
+import { ThemeModes } from "../lib/Theme/ThemeModes";
+import { exposeToWindow } from "../lib/Utilities/exposeToWindow";
 
 export enum StorageType {
   Local,
@@ -211,7 +212,7 @@ export class StorageService {
     ThemeColor | undefined
   >({
     key: StorageService.createKey("latestSelectedThemeColor"),
-    decode: (value) => (ThemeUtils.isThemeColor(value) ? value : undefined),
+    decode: (value) => (ThemeColors.isThemeColor(value) ? value : undefined),
     encode: (value) => value,
     storage: StorageType.Local,
   });
@@ -227,7 +228,7 @@ export class StorageService {
     ThemeMode | undefined
   >({
     key: StorageService.createKey("latestSelectedThemeMode"),
-    decode: (value) => (ThemeUtils.isThemeMode(value) ? value : undefined),
+    decode: (value) => (ThemeModes.isThemeMode(value) ? value : undefined),
     encode: (value) => value,
     storage: StorageType.Local,
   });

@@ -1,7 +1,7 @@
 import "./CategoryChip.scss";
 import React from "react";
 import cx from "classnames";
-import { Category } from "../../classes/Category";
+import { Category } from "../../lib/DataModels/Category";
 import { Type, TypeProps } from "../Type/Type";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 

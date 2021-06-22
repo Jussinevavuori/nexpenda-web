@@ -4,7 +4,7 @@
  * Shape of a transaction's JSON data.
  */
 type JsonTransaction = import("zod").TypeOf<
-  typeof import("./classes/Transaction").Transaction["Schema"]
+  typeof import("./lib/DataModels/Transaction").Transaction["Schema"]
 >;
 
 /**
@@ -12,7 +12,7 @@ type JsonTransaction = import("zod").TypeOf<
  * request to create a transaction. Does not include the ID field.
  */
 type JsonTransactionInitializer = import("zod").TypeOf<
-  typeof import("./classes/Transaction").Transaction["InitializerSchema"]
+  typeof import("./lib/DataModels/Transaction").Transaction["InitializerSchema"]
 >;
 
 /**
@@ -20,7 +20,7 @@ type JsonTransactionInitializer = import("zod").TypeOf<
  * request to create a transaction. Includes the ID field.
  */
 type JsonTransactionIdInitializer = import("zod").TypeOf<
-  typeof import("./classes/Transaction").Transaction["IdInitializerSchema"]
+  typeof import("./lib/DataModels/Transaction").Transaction["IdInitializerSchema"]
 >;
 
 /**
@@ -29,7 +29,7 @@ type JsonTransactionIdInitializer = import("zod").TypeOf<
  * categories in a single object.
  */
 type CompressedTransactionsJson = import("zod").TypeOf<
-  typeof import("./classes/Transaction").Transaction["CompressedJsonSchema"]
+  typeof import("./lib/DataModels/Transaction").Transaction["CompressedJsonSchema"]
 >;
 
 /**
@@ -47,7 +47,7 @@ type JsonSpreadsheetTransaction = Pick<
  * JSON shape of a budget object.
  */
 type JsonBudget = import("zod").TypeOf<
-  typeof import("./classes/Budget").Budget["Schema"]
+  typeof import("./lib/DataModels/Budget").Budget["Schema"]
 >;
 
 /**
@@ -55,7 +55,7 @@ type JsonBudget = import("zod").TypeOf<
  * server. Does not include the ID field.
  */
 type JsonBudgetInitializer = import("zod").TypeOf<
-  typeof import("./classes/Budget").Budget["InitializerSchema"]
+  typeof import("./lib/DataModels/Budget").Budget["InitializerSchema"]
 >;
 
 /**
@@ -63,7 +63,7 @@ type JsonBudgetInitializer = import("zod").TypeOf<
  * server. Includes the ID field.
  */
 type JsonBudgetIdInitializer = import("zod").TypeOf<
-  typeof import("./classes/Budget").Budget["IdInitializerSchema"]
+  typeof import("./lib/DataModels/Budget").Budget["IdInitializerSchema"]
 >;
 
 // CATEGORY
@@ -71,7 +71,9 @@ type JsonBudgetIdInitializer = import("zod").TypeOf<
 /**
  * A JSON representation of a category.
  */
-type JsonCategory = JsonTransaction["category"];
+type JsonCategory = import("zod").TypeOf<
+  typeof import("./lib/DataModels/Category").Budget["Schema"]
+>;
 
 // APP CONFIG
 
@@ -79,7 +81,7 @@ type JsonCategory = JsonTransaction["category"];
  * JSON representation of all app configuration values.
  */
 type JsonAppConfig = import("zod").TypeOf<
-  typeof import("./classes/AppConfig").AppConfig["Schema"]
+  typeof import("./lib/DataModels/AppConfig").AppConfig["Schema"]
 >;
 
 // AUTH
@@ -88,7 +90,7 @@ type JsonAppConfig = import("zod").TypeOf<
  * JSON representation of an auth object representing a user.
  */
 type JsonAuth = import("zod").TypeOf<
-  typeof import("./classes/Auth").Auth["Schema"]
+  typeof import("./lib/DataModels/Auth").Auth["Schema"]
 >;
 
 /**
@@ -102,14 +104,26 @@ type UpdatableJsonAuthFields = Partial<
 // TRANSACTION SCHEDULE
 
 type JsonTransactionSchedule = import("zod").TypeOf<
-  typeof import("./classes/TransactionSchedule").TransactionSchedule["Schema"]
+  typeof import("./lib/DataModels/TransactionSchedule").TransactionSchedule["Schema"]
 >;
 type JsonTransactionScheduleArray = import("zod").TypeOf<
-  typeof import("./classes/TransactionSchedule").TransactionSchedule["ArraySchema"]
+  typeof import("./lib/DataModels/TransactionSchedule").TransactionSchedule["ArraySchema"]
 >;
 type JsonTransactionScheduleInitializer = import("zod").TypeOf<
-  typeof import("./classes/TransactionSchedule").TransactionSchedule["InitializerSchema"]
+  typeof import("./lib/DataModels/TransactionSchedule").TransactionSchedule["InitializerSchema"]
 >;
 type JsonTransactionScheduleUpdater = import("zod").TypeOf<
-  typeof import("./classes/TransactionSchedule").TransactionSchedule["UpdaterSchema"]
+  typeof import("./lib/DataModels/TransactionSchedule").TransactionSchedule["UpdaterSchema"]
+>;
+
+// TRANSACTION TEMPLATE
+
+type JsonTransactionTemplate = import("zod").TypeOf<
+  typeof import("./lib/DataModels/TransactionTemplate").TransactionTemplate["Schema"]
+>;
+
+// SCHEDULE
+
+type JsonSchedule = import("zod").TypeOf<
+  typeof import("./lib/Schedules/Schedule").Schedule["Schema"]
 >;

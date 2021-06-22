@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
-import { MoneyAmount } from "../classes/MoneyAmount";
+import { MoneyAmount } from "../lib/Money/MoneyAmount";
 import { useStoreState } from "../store"
-import { calculateBudgets } from "../utils/BudgetsUtils/calculateBudgets";
+import { calculateBudgets } from "../lib/DataAnalysis/calculateBudgets";
 
 type BudgetsContextType = ReturnType<typeof calculateBudgets>
 

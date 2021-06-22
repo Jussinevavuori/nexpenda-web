@@ -1,12 +1,12 @@
 import { DashboardActionsProps } from "./DashboardActions";
 import { useCallback, useMemo, useState } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
-import { DataUtils } from "../../../utils/DataUtils/DataUtils";
-import { TransactionSpreadsheet } from "../../../utils/FileIO/TransactionSpreadsheet";
+import { TransactionSpreadsheet } from "../../../lib/FileIO/TransactionSpreadsheet";
 import { useMenuAnchorState } from "../../../hooks/state/useMenuAnchorState";
 import { useTransactionCreatorOpenState } from "../../../hooks/componentStates/useTransactionCreatorOpenState";
 import { useIsSearchOpen } from "../../../hooks/application/useIsSearchOpen";
 import { useTransactionEditorOpenState } from "../../../hooks/componentStates/useTransactionEditorOpenState";
+import { compareArrays } from "../../../lib/Utilities/compareArrays";
 
 export function useDashboardActionsController(props: DashboardActionsProps) {
   /**
@@ -53,7 +53,7 @@ export function useDashboardActionsController(props: DashboardActionsProps) {
    * All selected
    */
   const allSelected = useMemo(() => {
-    return DataUtils.compareArrays(
+    return compareArrays(
       filteredTransactions.map((_) => _.id),
       selection.map((_) => _.id)
     );

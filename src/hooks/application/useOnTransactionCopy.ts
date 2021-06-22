@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Transaction } from "../../classes/Transaction";
-import { Subscribable } from "../../utils/SubscriptionUtils/Subscribable";
+import { Transaction } from "../../lib/DataModels/Transaction";
+import { PubSubChannel } from "../../lib/PubSub/PubSubChannel";
 
-export const TransactionCopySubscriber = new Subscribable(
+export const TransactionCopySubscriber = new PubSubChannel(
   (copiedTransaction: Transaction) => copiedTransaction
 );
 

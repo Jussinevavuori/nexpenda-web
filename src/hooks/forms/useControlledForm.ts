@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useState } from "react";
-import { forEach } from "../../utils/DataUtils/forEach";
-import { mapObject } from "../../utils/DataUtils/mapObject";
-import { reduceObject } from "../../utils/DataUtils/reduceObject";
+import { forEach } from "../../lib/Utilities/forEach";
+import { mapObject } from "../../lib/Utilities/mapObject";
+import { reduceObject } from "../../lib/Utilities/reduceObject";
 import { ControlledFormField } from "./useControlledFormField";
 
 export type UseControlledFormOptions<T extends {}> = {

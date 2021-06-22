@@ -2,7 +2,7 @@ import "./TransactionSpreadsheetReadSheetResult.scss";
 import React from "react";
 import cx from "classnames";
 import { useTransactionSpreadsheetReadSheetResultController } from "./useTransactionSpreadsheetReadSheetResultController";
-import { SpreadsheetReadSheetResult } from "../../utils/FileIO/Spreadsheet";
+import { SpreadsheetReadSheetResult } from "../../lib/FileIO/Spreadsheet";
 import { Type } from "../Type/Type";
 
 export type TransactionSpreadsheetReadSheetResultProps = {

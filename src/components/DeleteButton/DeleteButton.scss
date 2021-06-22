@@ -1,0 +1,47 @@
+@import "main";
+
+.DeleteButton {
+  &.MuiButton-text {
+    & .MuiButton-label {
+      color: $red-600;
+    }
+  }
+  &.MuiButton-outlined {
+    & .MuiButton-label {
+      color: $red-600;
+    }
+    border-color: $red-600;
+  }
+  &.MuiButton-contained {
+    & .MuiButton-label {
+      color: white;
+    }
+    &.Mui-disabled {
+      background: $red-200;
+      & .MuiButton-label {
+        color: $red-300;
+      }
+    }
+    background: $red-500;
+    &:hover,
+    &:focus {
+      background: $red-600;
+    }
+    &:active {
+      background: $red-700;
+    }
+  }
+}
+
+@include darkmode {
+  .DeleteButton {
+    &.MuiButton-contained {
+      &.Mui-disabled {
+        background: $red-900;
+        & .MuiButton-label {
+          color: $red-700;
+        }
+      }
+    }
+  }
+}

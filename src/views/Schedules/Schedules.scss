@@ -1,0 +1,25 @@
+@import "main";
+
+.Schedules {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  padding: $spacing-10 $spacing-6 $spacing-6;
+  @include md {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: $spacing-8 $spacing-16 $spacing-6;
+  }
+
+  & > h2 {
+    position: relative;
+    $offset: 48px;
+    transform: translate(#{$offset});
+    & .MuiIconButton-root {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(#{-$offset - $spacing-icon-button}, -50%);
+    }
+  }
+}

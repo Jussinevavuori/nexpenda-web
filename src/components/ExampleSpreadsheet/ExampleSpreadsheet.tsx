@@ -4,7 +4,7 @@ import cx from "classnames";
 // import { useExampleSpreadsheetController } from "./useExampleSpreadsheetController";
 import { Type } from "../Type/Type";
 import { Tooltip } from "@material-ui/core";
-import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet";
+import { TransactionSpreadsheet } from "../../lib/FileIO/TransactionSpreadsheet";
 
 export type ExampleSpreadsheetProps = {
 

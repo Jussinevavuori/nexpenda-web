@@ -48,6 +48,28 @@
       padding: $spacing-4 $spacing-6;
       position: relative;
 
+      & .submenu {
+        position: relative;
+        padding-left: $spacing-6;
+        transition: padding-left 100ms;
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: $spacing-1;
+          border-radius: $radius-sm;
+          background: $primary-500;
+        }
+        &:not(.open) {
+          padding-left: 0;
+          &::before {
+            border-radius: $radius-sm 0 0 $radius-sm;
+          }
+        }
+      }
+
       & .link {
         width: 100%;
         display: flex;
@@ -67,17 +89,20 @@
         &:hover {
           outline: none;
           background: $gray-300;
-          &.active {
-            background: $primary-600;
+          &.activePrimary {
             transition: background-color $timing-theme;
+            background: $primary-600;
           }
+          // &.activeSecondary {
+          // background: $primary-500;
+          // }
         }
 
         &:active {
           background: $gray-100;
-          &.active {
-            background: $primary-700;
+          &.activePrimary {
             transition: background-color $timing-theme;
+            background: $primary-700;
           }
         }
 
@@ -93,8 +118,7 @@
           color: $gray-800;
         }
 
-        &.active {
-          background: $primary-500;
+        &.activePrimary {
           transition: background-color $timing-theme;
           color: white;
           & .Type,
@@ -102,6 +126,7 @@
             color: white;
             stroke-width: 1.5px;
           }
+          background: $primary-500;
         }
 
         &.closed {
@@ -110,6 +135,25 @@
           }
           & svg {
             margin: 0 auto;
+          }
+        }
+
+        &.hasSubmenu {
+          position: relative;
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: -10px;
+            left: 0;
+            width: $spacing-1;
+            border-radius: $radius-sm;
+            background: $primary-500;
+          }
+          &:not(.open) {
+            &::before {
+              border-radius: $radius-sm 0 0 $radius-sm;
+            }
           }
         }
       }
@@ -181,19 +225,19 @@
           &:focus,
           &:hover {
             background: $gray-820;
-            &.active {
+            &.activePrimary {
               background: $primary-600;
             }
           }
 
           &:active {
             background: $gray-800;
-            &.active {
+            &.activePrimary {
               background: $primary-700;
             }
           }
 
-          &.active {
+          &.activePrimary {
             background: $primary-500;
           }
         }

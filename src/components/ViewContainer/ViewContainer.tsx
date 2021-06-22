@@ -1,6 +1,6 @@
 import "./ViewContainer.scss";
 import React from "react";
-import { createClassnames } from "../../utils/Utils/createClassnames";
+import { createClassnames } from "../../lib/Utilities/createClassnames";
 
 export type ViewContainerProps = {
 
@@ -25,6 +25,11 @@ export type ViewContainerProps = {
 	 * will be stuck to the top of the screen.
 	 */
 	scrollable?: boolean;
+
+	/**
+	 * True when can navigate back and is not a root-level route.
+	 */
+	canNavigateBack?: boolean;
 
 };
 

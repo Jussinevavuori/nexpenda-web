@@ -6,13 +6,14 @@ import { useScheduleFormController } from "./useScheduleFormController";
 import { Select, MenuItem, FormControl, Switch } from "@material-ui/core";
 import { Type } from "../Type/Type";
 import { IntegerInput } from "../IntegerInput/IntegerInput";
-import { ScheduleFormType } from "../../utils/FormUtils/scheduleFormField";
+import { ScheduleFormType } from "../../lib/Forms/scheduleFormField";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 
 export type ScheduleFormProps = {
 	fromDate: Date;
 	value: ScheduleFormType;
 	onChange(s: ScheduleFormType): void;
+	alwaysEnabled?: boolean;
 };
 
 export function ScheduleForm(props: ScheduleFormProps) {
@@ -24,26 +25,29 @@ export function ScheduleForm(props: ScheduleFormProps) {
 		<div className="repeatEvery">
 			<Type className="title" color={isDarkTheme ? "gray-300" : "gray-800"}>
 				{"Repeat every"}
-				<Switch
-					className="switch"
-					checked={props.value.enabled}
-					onChange={(e) => props.onChange({ ...props.value, enabled: e.target.checked })}
-				/>
+
+				{
+					!props.alwaysEnabled &&
+					<Switch
+						className="switch"
+						checked={props.value.enabled}
+						onChange={(e) => props.onChange({ ...props.value, enabled: e.target.checked })}
+					/>
+				}
 			</Type>
 
-			<div className={cx("inputs", { dim: !props.value.enabled })}>
+			<div className={cx("inputs", { dim: !controller.isEnabled })}>
 				<IntegerInput
 					min={1}
-					disabled={!props.value.enabled}
+					disabled={!controller.isEnabled}
 					value={props.value.every}
 					onChange={every => props.onChange({ ...props.value, every })}
 				/>
-
 				<FormControl variant="outlined" size="small">
 					<Select
 						value={props.value.type}
 						onChange={(e) => props.onChange({ ...props.value, type: e.target.value as ScheduleFormType["type"] })}
-						disabled={!props.value.enabled}
+						disabled={!controller.isEnabled}
 					>
 						<MenuItem value="DAY">{pluralize("Day", props.value.every > 1)}</MenuItem>
 						<MenuItem value="WEEK">{pluralize("Week", props.value.every > 1)}</MenuItem>
@@ -59,13 +63,13 @@ export function ScheduleForm(props: ScheduleFormProps) {
 				{"End after"}
 				<Switch
 					className="switch"
-					checked={controller.isOccurrencesEnabled}
-					onChange={(e) => controller.setIsOccurrencesEnabled(e.target.checked)}
-					disabled={!props.value.enabled}
+					checked={props.value.occurrencesEnabled}
+					onChange={(e) => props.onChange({ ...props.value, occurrencesEnabled: e.target.checked })}
+					disabled={!controller.isEnabled}
 				/>
 			</Type>
 			{
-				controller.isOccurrencesEnabled && <>
+				props.value.occurrencesEnabled && <>
 					<div className="inputs">
 						<IntegerInput
 							min={1}
@@ -77,9 +81,12 @@ export function ScheduleForm(props: ScheduleFormProps) {
 						</Type>
 					</div>
 					{
-						controller.untilDate &&
 						<Type className="endson" color={isDarkTheme ? "gray-400" : "gray-700"}>
-							{`Ends on: ${format(controller.untilDate, "d.M.yyyy")}`}
+							{
+								controller.untilDate
+									? `Ends on: ${format(controller.untilDate, "d.M.yyyy")}`
+									: `Invalid value`
+							}
 						</Type>
 					}
 				</>

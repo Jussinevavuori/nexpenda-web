@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { useIsPremium } from "../../hooks/application/useIsPremium";
 import { useRedirect } from "../../hooks/utils/useRedirect";
+import { chunkify } from "../../lib/Utilities/chunkify";
 import { useStoreActions, useStoreState } from "../../store";
-import { DataUtils } from "../../utils/DataUtils/DataUtils";
-import { SpreadsheetReadFileResult } from "../../utils/FileIO/Spreadsheet";
-import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet";
+import { SpreadsheetReadFileResult } from "../../lib/FileIO/Spreadsheet";
+import { TransactionSpreadsheet } from "../../lib/FileIO/TransactionSpreadsheet";
 import { FileUploaderProps } from "./FileUploader";
 
 const steps = {
@@ -23,8 +23,9 @@ export function useFileUploaderController(props: FileUploaderProps) {
   const isPremium = useIsPremium();
   const transactions = useStoreState((_) => _.transactions.items);
   const transactionsCount = useMemo(() => transactions.length, [transactions]);
-  const transactionsLimit = useStoreState((_) => _.appConfig.value)
-    .freeTransactionsLimit;
+  const transactionsLimit = useStoreState(
+    (_) => _.appConfig.value
+  ).freeTransactionsLimit;
 
   function handleUpgrade() {
     redirect((_) => _.subscribe);
@@ -122,10 +123,9 @@ export function useFileUploaderController(props: FileUploaderProps) {
     setUploadFileState({ isUploading: true });
 
     // Chunkify rows to chunks of hundreds and post those chunks one by one
-    const chunks = DataUtils.chunkify(rowsToUpload, 100);
-    const postResults: PromiseType<
-      ReturnType<typeof massPostTransactions>
-    >[] = [];
+    const chunks = chunkify(rowsToUpload, 100);
+    const postResults: PromiseType<ReturnType<typeof massPostTransactions>>[] =
+      [];
     for (const chunk of chunks) {
       const result = await massPostTransactions(chunk);
       postResults.push(result);

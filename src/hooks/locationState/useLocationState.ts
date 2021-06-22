@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import {
   LocationState,
   locationStateSchema,
-} from "../../utils/LocationState/locationStateSchema";
+} from "../../lib/LocationState/locationStateSchema";
 
 /**
  * Access the location which is validated to have the shape defined by

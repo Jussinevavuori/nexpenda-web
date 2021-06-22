@@ -1,8 +1,8 @@
 import "./LogoIcon.scss";
 import React from "react";
 import cx from "classnames";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { SvgPath } from "../../lib/Svg/SvgPath";
 
 export type LogoIconProps = {
 	color?: Color;

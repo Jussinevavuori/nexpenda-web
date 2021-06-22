@@ -1,5 +1,5 @@
 import { Action, action, Thunk, thunk } from "easy-peasy";
-import { AppConfig } from "../classes/AppConfig";
+import { AppConfig } from "../lib/DataModels/AppConfig";
 import { AppConfigService } from "../services/AppConfigService";
 import { LogService } from "../services/LogService";
 

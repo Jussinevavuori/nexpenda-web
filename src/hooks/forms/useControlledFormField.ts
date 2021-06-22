@@ -48,7 +48,7 @@ export function useControlledFormField<FieldType>(
 
     const validated = validation.safeParse(value);
     if (validated.success) return undefined;
-    return validated.error.message;
+    return validated.error.issues.map((_) => _.message).join(", ");
   }, [customError, hideErrorOnUntouched, validation, isTouched, value]);
 
   // On change handler

@@ -2,7 +2,7 @@ import ReactGA from "react-ga";
 import { useState, useCallback } from "react"
 import { useStoreActions, useStoreState } from "../../store"
 import { ProfilePanelProps } from "./ProfilePanel"
-import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
+import { getErrorMessage } from "../../lib/ErrorMessages/getErrorMessage";
 
 export function useProfilePanelController(props: ProfilePanelProps) {
 

@@ -6,9 +6,9 @@ import { Type } from "../Type/Type";
 import { TransactionTableRowSkeleton } from "../TransactionTableRowSkeleton/TransactionTableRowSkeleton";
 import { useTransactionTableController } from "./useTransactionTableController";
 import { AnimatePresence, motion } from "framer-motion";
-import { DataUtils } from "../../utils/DataUtils/DataUtils";
 import { Button } from "@material-ui/core";
 import { ContainerBlock } from "../Container/ContainerBlock";
+import { createIndexArray } from "../../lib/Utilities/createIndexArray";
 
 export type TransactionTableProps = {
 	showSkeletons?: boolean;
@@ -25,7 +25,7 @@ export function TransactionTable(props: TransactionTableProps) {
 			<TransactionTableHeader />
 			<div className="listContainer">
 				{
-					DataUtils.createIndexArray(16).map(i => {
+					createIndexArray(16).map(i => {
 						return <TransactionTableRowSkeleton key={i} />
 					})
 				}

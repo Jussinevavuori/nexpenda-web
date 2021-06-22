@@ -2,8 +2,10 @@ import { useThemeColor } from "../../hooks/application/useThemeColor";
 import { useThemeMode } from "../../hooks/application/useThemeMode";
 import { StorageService } from "../../services/StorageService";
 import { useStoreActions } from "../../store";
-import { ThemeUtils } from "../../utils/ThemeUtils/ThemeUtils";
 import { ThemePickerProps } from "./ThemePicker";
+import { ThemeColors } from "../../lib/Theme/ThemeColors";
+import { ThemeModes } from "../../lib/Theme/ThemeModes";
+import { ThemeProperties } from "../../lib/Theme/ThemeProperties";
 
 export function useThemePickerController(props: ThemePickerProps) {
   const [themeColor, setThemeColor] = useThemeColor();
@@ -33,9 +35,9 @@ export function useThemePickerController(props: ThemePickerProps) {
     getThemeColorChangeHandler,
     getThemeModeChangeHandler,
     getThemeColor(theme: ThemeColor) {
-      return ThemeUtils.getThemePropertyValue(theme, "color-500");
+      return ThemeProperties.getPropertyValue(theme, "color-500");
     },
-    allThemeColors: ThemeUtils.themeColors,
-    allThemeModes: ThemeUtils.themeModes,
+    allThemeColors: ThemeColors.themeColors,
+    allThemeModes: ThemeModes.themeModes,
   };
 }

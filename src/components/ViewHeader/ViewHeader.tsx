@@ -1,7 +1,7 @@
 import "./ViewHeader.scss";
 import textureImg from "../../assets/images/textureImage.jpg";
 import React from "react";
-import { createClassnames } from "../../utils/Utils/createClassnames";
+import { createClassnames } from "../../lib/Utilities/createClassnames";
 import { Type } from "../Type/Type";
 
 export type ViewHeaderProps = {
@@ -11,6 +11,11 @@ export type ViewHeaderProps = {
 	 * aligned title. Else insert children into header as is.
 	 */
 	children?: string | React.ReactNode;
+
+	/**
+	 * Forces children to be rendered within the default type element
+	 */
+	forceDefaultTypeRendering?: boolean;
 
 	/**
 	 * Will the header be scrollable out of view with the panel sticking to the
@@ -38,9 +43,9 @@ export function ViewHeader(props: ViewHeaderProps) {
 				props.children &&
 				<div className={cx("content", { defaultTitle: typeof props.children === "string" })}>
 					{
-						typeof props.children === "string"
+						(typeof props.children === "string" || props.forceDefaultTypeRendering)
 							? <Type
-								className="title"
+								className="ViewHeader__defaultTitle"
 								component="h1"
 								size="xl"
 								color="white"

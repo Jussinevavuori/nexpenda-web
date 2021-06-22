@@ -1,5 +1,8 @@
 import { action, Action } from "easy-peasy";
-import { Notification, NotificationOptions } from "../classes/Notification";
+import {
+  Notification,
+  NotificationOptions,
+} from "../lib/Notifications/Notification";
 
 export type NotificationModel = {
   //==============================================================//

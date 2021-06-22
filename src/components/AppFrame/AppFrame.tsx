@@ -13,6 +13,9 @@ import { SidebarNavigation } from "../SidebarNavigation/SidebarNavigation";
 import { TabNavigation } from "../TabNavigation/TabNavigation";
 import { FreemiumTrackerDialog } from "../FreemiumTrackerDialog/FreemiumTrackerDialog";
 import { AvatarChangerDialog } from "../AvatarChangerDialog/AvatarChangerDialog";
+import { SchedulesManagerDrawer } from "../SchedulesManagerDrawer/SchedulesManagerDrawer";
+import { ScheduleEditorDialog } from "../ScheduleEditorDialog/ScheduleEditorDialog";
+import { ScheduleCreatorDialog } from "../ScheduleCreatorDialog/ScheduleCreatorDialog";
 
 export type AppFrameProps = {
 	children: React.ReactNode;
@@ -37,6 +40,9 @@ export function AppFrame(props: AppFrameProps) {
 			<FileUploaderDrawer />
 			<FreemiumTrackerDialog />
 			<AvatarChangerDialog />
+			<SchedulesManagerDrawer />
+			<ScheduleEditorDialog />
+			<ScheduleCreatorDialog />
 
 			{/* Static elements */}
 			<header>

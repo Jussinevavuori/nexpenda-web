@@ -1,25 +1,20 @@
-import { useRouteMatch } from "react-router-dom";
 import { routes } from "../../Routes";
-import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useStoreState, useStoreActions } from "../../store";
 import { SidebarNavigationProps } from "./SidebarNavigation";
-import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState";
+import { usePathLevel } from "../../hooks/utils/useRouteMatchLevel";
 
 export function useSidebarNavigationController(props: SidebarNavigationProps) {
-  const dashboardMatch = useRouteMatch(routes.dashboard);
-  const analyticsMatch = useRouteMatch(routes.analytics);
-  const budgetsMatch = useRouteMatch(routes.budgets);
-  const settingsMatch = useRouteMatch(routes.settings);
-
   const user = useStoreState((_) => _.auth.user);
   const logout = useStoreActions((_) => _.auth.logout);
 
   const isOpen = useStoreState((_) => _.sidebar.isOpen);
   const toggleOpen = useStoreActions((_) => _.sidebar.toggle);
 
-  const redirect = useRedirect();
-
-  const { handleOpen } = useTransactionCreatorOpenState();
+  const dashboardPathLevel = usePathLevel(routes.dashboard);
+  const analyticsPathLevel = usePathLevel(routes.analytics);
+  const budgetsPathLevel = usePathLevel(routes.budgets);
+  const settingsPathLevel = usePathLevel(routes.settings);
+  const schedulesPathLevel = usePathLevel(routes.schedules);
 
   return {
     isOpen,
@@ -27,42 +22,13 @@ export function useSidebarNavigationController(props: SidebarNavigationProps) {
       toggleOpen();
     },
 
-    isDashboard: !!dashboardMatch,
-    isAnalytics: !!analyticsMatch,
-    isBudget: !!budgetsMatch,
-    isSettings: !!settingsMatch,
-
-    onDashboard() {
-      redirect(routes.dashboard);
-      unfocus();
-    },
-    onAnalytics() {
-      redirect(routes.analytics);
-      unfocus();
-    },
-    onBudget() {
-      redirect(routes.budgets);
-      unfocus();
-    },
-    onSettings() {
-      redirect(routes.settings);
-      unfocus();
-    },
+    dashboardPathLevel,
+    analyticsPathLevel,
+    budgetsPathLevel,
+    settingsPathLevel,
+    schedulesPathLevel,
 
     user: user,
     logout: () => logout(),
-
-    onTransactionCreatorOpen: () => handleOpen(),
   };
-}
-
-function unfocus() {
-  try {
-    const el = window.document.activeElement;
-    if (el) {
-      (el as HTMLElement).blur();
-    }
-  } catch (e) {
-    return null;
-  }
 }

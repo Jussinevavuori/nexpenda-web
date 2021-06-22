@@ -1,7 +1,7 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy";
 import { BudgetService } from "../services/BudgetService";
 import { StoreModel } from "../store";
-import { Budget } from "../classes/Budget";
+import { Budget } from "../lib/DataModels/Budget";
 import { DeleteBudgetEvent } from "../history/DeleteBudgetEvent";
 
 export interface BudgetsModel {

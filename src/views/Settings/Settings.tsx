@@ -18,8 +18,9 @@ import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { Config } from "../../config";
 import { FreemiumTracker } from "../../components/FreemiumTracker/FreemiumTracker";
 import { AvatarChangerMenu } from "../../components/AvatarChangerMenu/AvatarChangerMenu";
-import { SchedulesManager } from "../../components/SchedulesManager/SchedulesManager";
 import { Development } from "../../components/Development/Development";
+import { routes } from "../../Routes";
+import { Link } from "react-router-dom";
 
 export type SettingsProps = {
 }
@@ -88,18 +89,28 @@ export function Settings(props: SettingsProps) {
 
 				{
 					!isDesktop && !controller.user.isPremium &&
-					<ContainerBlock className="customization" containerTitle="Free limits">
+					<ContainerBlock containerTitle="Free limits">
 						<FreemiumTracker />
 					</ContainerBlock>
 				}
 
-				<ContainerBlock className="customization" containerTitle="Theme">
+				<ContainerBlock containerTitle="Theme">
 					<ThemePicker />
 				</ContainerBlock>
 
 				<Development>
-					<ContainerBlock className="customization" containerTitle="Manage your scheduled transactions">
-						<SchedulesManager />
+					<ContainerBlock className="schedules" containerTitle="Scheduled transactions">
+						<Type
+							color={isDarkTheme ? "gray-400" : "gray-800"}
+						>
+							{"All your scheduled transactions can be viewed, edited "}
+							{"or canceled from here."}
+						</Type>
+						<Link to={routes.schedules.path}>
+							<Button color="primary" variant="contained" fullWidth>
+								{"View all"}
+							</Button>
+						</Link>
 					</ContainerBlock>
 				</Development>
 
@@ -108,13 +119,13 @@ export function Settings(props: SettingsProps) {
 						color={isDarkTheme ? "gray-400" : "gray-800"}
 					>
 						{"Import existing transactions from your own spreadsheets "}
-						{"or export all your transactions i	nto a .xlsx spreadsheet."}
+						{"or export all your transactions into a .xlsx spreadsheet."}
 					</Type>
 					<Button
 						color="primary"
 						variant="contained"
 						endIcon={<UploadIcon />}
-						onClick={() => controller.handleOpenFileUploaderDrawer()}
+						onClick={() => controller.handleOpenFileUploader()}
 						fullWidth
 					>
 						{"Import transactions"}
@@ -124,7 +135,7 @@ export function Settings(props: SettingsProps) {
 
 				{
 					controller.canManageBilling &&
-					<ContainerBlock containerTitle="Manage your subscription">
+					<ContainerBlock containerTitle="Subscription">
 						<SettingsSubscriptionManager />
 					</ContainerBlock>
 				}
@@ -142,7 +153,7 @@ export function Settings(props: SettingsProps) {
 					</Type>
 					<Button
 						variant="outlined"
-						onClick={() => controller.handleOpenFeedbackDialog()}
+						onClick={() => controller.handleOpenFeedback()}
 						startIcon={<FeedbackIcon />}
 						fullWidth
 					>

@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { Budget } from "../../classes/Budget";
+import { Budget } from "../../lib/DataModels/Budget";
 import { useLocationState } from "../locationState/useLocationState";
 import {
   OpenQueryStateOptions,

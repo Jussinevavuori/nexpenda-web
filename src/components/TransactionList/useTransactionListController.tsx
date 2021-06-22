@@ -1,9 +1,9 @@
 import { createRef, useMemo, useState, useEffect } from "react"
 import { List } from "react-virtualized"
 import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState"
+import { groupByDate } from "../../lib/Dates/groupByDate"
 import { useStoreState } from "../../store"
 import { theme } from "../../styles/main"
-import { DateUtils } from "../../utils/DateUtils/DateUtils"
 import { TransactionListProps } from "./TransactionList"
 
 
@@ -17,7 +17,7 @@ export function useTransactionListController(props: TransactionListProps) {
 	const [isUpcomingOpen, setIsUpcomingOpen] = useState(false)
 
 	const upcomingItemsByDates = useMemo(() => {
-		return DateUtils.groupByDate(items.filter(_ => _.isUpcoming), (_) => _.date, { sort: true });
+		return groupByDate(items.filter(_ => _.isUpcoming), (_) => _.date, { sort: true });
 	}, [items])
 
 	const upcomingTransactionsCount = useMemo(() => {
@@ -27,7 +27,7 @@ export function useTransactionListController(props: TransactionListProps) {
 	}, [upcomingItemsByDates])
 
 	const itemsByDates = useMemo(() => {
-		return DateUtils.groupByDate(items.filter(_ => !_.isUpcoming), (_) => _.date, { sort: true });
+		return groupByDate(items.filter(_ => !_.isUpcoming), (_) => _.date, { sort: true });
 	}, [items])
 
 	const initializedUser = useStoreState(_ => _.auth.initialized)

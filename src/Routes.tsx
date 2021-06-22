@@ -4,7 +4,8 @@ import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { AuthFrame } from "./components/AuthFrame/AuthFrame"
 import { AppFrame } from "./components/AppFrame/AppFrame"
 import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
-import { RouteData } from "./classes/RouteData";
+import { RouteData } from "./lib/Routing/RouteData";
+import { Schedules } from "./views/Schedules/Schedules";
 const Login = lazy(() => import("./views/Login/Login").then(_ => ({ default: _.Login })))
 const Register = lazy(() => import('./views/Register/Register').then(_ => ({ default: _.Register })))
 const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
@@ -47,6 +48,11 @@ export const routes = {
 		name: "settings",
 		path: "/app/settings",
 		title: "Settings"
+	}),
+	schedules: new RouteData({
+		name: "schedules",
+		path: "/app/settings/schedules",
+		title: "Schedules",
 	}),
 	login: new RouteData({
 		name: "login",
@@ -171,6 +177,14 @@ export function Routes() {
 			<AppFrame>
 				<Suspense fallback={<RouteSuspenseFallback />}>
 					<Budgets />
+				</Suspense>
+			</AppFrame>
+		</ProtectedRoute>
+
+		<ProtectedRoute exact path={routes.schedules.path}>
+			<AppFrame>
+				<Suspense fallback={<RouteSuspenseFallback />}>
+					<Schedules />
 				</Suspense>
 			</AppFrame>
 		</ProtectedRoute>

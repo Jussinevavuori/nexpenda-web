@@ -4,6 +4,7 @@ import { Logo } from "../Logo/Logo";
 import { Button } from "@material-ui/core";
 import { useAuthFrameController } from "./useAuthFrameController";
 import { GetApp } from "@material-ui/icons";
+import { useMdMedia } from "../../hooks/utils/useMedia";
 
 export type AuthFrameProps = {
 	children?: React.ReactNode;
@@ -11,6 +12,7 @@ export type AuthFrameProps = {
 
 export function AuthFrame(props: AuthFrameProps) {
 
+	const isDesktop = useMdMedia()
 	const controller = useAuthFrameController()
 
 	return <div className="AuthFrame">
@@ -26,7 +28,9 @@ export function AuthFrame(props: AuthFrameProps) {
 					onClick={controller.handlePwaInstall}
 					startIcon={<GetApp />}
 				>
-					{"Install Nexpenda"}
+					{
+						isDesktop ? "Install Nexpenda" : "Install"
+					}
 				</Button>
 			}
 		</nav>

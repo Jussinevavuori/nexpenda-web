@@ -1,0 +1,91 @@
+@import "main";
+
+.ScheduleItem {
+  min-width: 360px;
+  & > p {
+    &.title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &.scheduleTitle {
+      padding-top: $spacing-6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &.scheduleDescription {
+      & > span:not(:last-child) {
+        margin-right: $spacing-4;
+      }
+    }
+  }
+
+  & > .schedule {
+    margin-top: $spacing-3;
+    padding-top: 6px;
+    border-top: 1px solid $primary-500;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: $spacing-6;
+    position: relative;
+
+    & > .scheduleItem {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        $size: 6px;
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+        left: 0;
+        top: -10px;
+        background: $primary-500;
+      }
+
+      & > p {
+        display: flex;
+        gap: $spacing-1;
+      }
+
+      &.next {
+        text-align: right;
+        &::before {
+          left: unset;
+          right: 0;
+        }
+      }
+    }
+
+    & > .now {
+      position: absolute;
+      $size: 8px;
+      width: $size;
+      height: $size;
+      border-radius: 50%;
+      top: -5px;
+      background: white;
+      border: 2px solid $primary-500;
+    }
+  }
+
+  & > .actions {
+    padding-top: $spacing-6;
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    & > .MuiButton-root {
+      &.edit {
+        border-color: $primary-600;
+        color: $primary-500;
+      }
+      &.delete {
+        border-color: $red-700;
+        color: $red-600;
+      }
+    }
+  }
+}

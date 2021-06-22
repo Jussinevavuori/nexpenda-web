@@ -1,0 +1,43 @@
+@import "main";
+
+.SchedulesEmpty {
+  & > h2 {
+    padding-bottom: $spacing-6;
+  }
+
+  & > p {
+    & > i {
+      // transform: translateY(4px);
+      font-size: 16px;
+      border: $border;
+      border-radius: 4px;
+      margin-left: 4px;
+      margin-right: 4px;
+      & > svg {
+        transform: translateY(6px) scale(0.8);
+      }
+    }
+  }
+
+  & > .description {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+    margin-top: $spacing-6;
+    border-top: $border;
+    padding-top: $spacing-4;
+  }
+}
+
+@include darkmode {
+  .SchedulesEmpty {
+    & > p {
+      & > i {
+        border-color: $gray-600;
+      }
+    }
+    & > .description {
+      border-color: $gray-700;
+    }
+  }
+}

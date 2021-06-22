@@ -2,9 +2,9 @@ import "./PiechartCircle.scss";
 import React from "react";
 import cx from "classnames";
 import { usePiechartCircleController } from "./usePiechartCircleController";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
-import { Angle } from "../../utils/GeometryUtils/Angle";
+import { Angle } from "../../lib/Geometry/Angle";
 import { Tooltip } from "@material-ui/core";
+import { SvgPath } from "../../lib/Svg/SvgPath";
 
 export type PiechartCircleProps = {
 	/**

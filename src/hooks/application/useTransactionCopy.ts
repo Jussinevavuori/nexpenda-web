@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useTransactionCreatorOpenState } from "../componentStates/useTransactionCreatorOpenState";
-import { Transaction } from "../../classes/Transaction";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import { TransactionCopySubscriber } from "./useOnTransactionCopy";
 import { useTransactionEditorOpenState } from "../componentStates/useTransactionEditorOpenState";
 

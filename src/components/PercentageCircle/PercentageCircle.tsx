@@ -3,9 +3,9 @@ import React from "react";
 import cx from "classnames";
 import { usePercentageCircleController } from "./usePercentageCircleController";
 import { Type, TypeProps } from "../Type/Type";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
-import { Angle } from "../../utils/GeometryUtils/Angle";
+import { Angle } from "../../lib/Geometry/Angle";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { SvgPath } from "../../lib/Svg/SvgPath";
 
 export type PercentageCircleProps = {
 	/**

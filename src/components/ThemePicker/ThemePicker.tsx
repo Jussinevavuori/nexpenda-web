@@ -3,7 +3,7 @@ import React from "react";
 import cx from "classnames";
 import { useThemePickerController } from "./useThemePickerController";
 import { PremiumUserLock } from "../PremiumUserLock/PremiumUserLock";
-import { ThemeUtils } from "../../utils/ThemeUtils/ThemeUtils";
+import { ThemeColors } from "../../lib/Theme/ThemeColors";
 
 export type ThemePickerProps = {
 
@@ -18,7 +18,7 @@ export function ThemePicker(props: ThemePickerProps) {
 				controller.allThemeColors.map(color => {
 					return <PremiumUserLock
 						key={color}
-						isLocked={ThemeUtils.isPremiumThemeColor(color)}
+						isLocked={ThemeColors.isPremiumThemeColor(color)}
 					>
 						{
 							(args) => (<li

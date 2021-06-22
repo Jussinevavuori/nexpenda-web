@@ -2,11 +2,11 @@ import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
-import { Success } from "../result/Success";
-import { NetworkFailure } from "../result/Failures";
+import { Success } from "../lib/Result/Success";
+import { NetworkFailure } from "../lib/Result/Failures";
 import { routes } from "../Routes";
 import { StorageService } from "./StorageService";
-import { Subscribable } from "../utils/SubscriptionUtils/Subscribable";
+import { PubSubChannel } from "../lib/PubSub/PubSubChannel";
 
 export type ServiceRequestConfig = {
   enableLogoutOnUnauthorized?: boolean;
@@ -21,7 +21,7 @@ export class Service {
   /**
    * Subscribable for all errors
    */
-  static Failuresubscribable = new Subscribable(
+  static Failuresubscribable = new PubSubChannel(
     (failure: NetworkFailure<any, { errors?: any }>) => {
       return failure;
     }

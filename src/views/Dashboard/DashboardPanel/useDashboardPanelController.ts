@@ -1,9 +1,9 @@
 import { DashboardPanelProps } from "./DashboardPanel";
 import { useCallback, useMemo } from "react";
 import { useStoreState, useStoreActions } from "../../../store";
-import { DataUtils } from "../../../utils/DataUtils/DataUtils";
 import { useTransactionEditorOpenState } from "../../../hooks/componentStates/useTransactionEditorOpenState";
 import { useIsSearchOpen } from "../../../hooks/application/useIsSearchOpen";
+import { compareArrays } from "../../../lib/Utilities/compareArrays";
 
 export function useDashboardPanelController(props: DashboardPanelProps) {
   // Is the search open
@@ -30,7 +30,7 @@ export function useDashboardPanelController(props: DashboardPanelProps) {
 
   // Are all selected
   const allSelected = useMemo(() => {
-    return DataUtils.compareArrays(
+    return compareArrays(
       filteredTransactions.map((_) => _.id),
       selection.map((_) => _.id)
     );

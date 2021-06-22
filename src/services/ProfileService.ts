@@ -1,8 +1,8 @@
 import { Service } from "./Service";
-import { Auth } from "../classes/Auth";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { Success } from "../result/Success";
-import { FileNotUploadedFailure } from "../result/Failures";
+import { Auth } from "../lib/DataModels/Auth";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { Success } from "../lib/Result/Success";
+import { FileNotUploadedFailure } from "../lib/Result/Failures";
 
 export class ProfileService extends Service {
   /**

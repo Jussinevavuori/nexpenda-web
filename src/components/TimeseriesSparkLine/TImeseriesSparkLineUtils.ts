@@ -1,5 +1,8 @@
-import { DateSerializer } from "../../utils/DateUtils/DateSerializer";
-import { DateUtils } from "../../utils/DateUtils/DateUtils";
+import { compareDate } from "../../lib/Dates/compareDate";
+import { DateSerializer } from "../../lib/Dates/DateSerializer";
+import { datesToDateRange } from "../../lib/Dates/datesToDateRange";
+import { groupByDateSerialToMap } from "../../lib/Dates/groupByDateSerialToMap";
+import { mapEachDate } from "../../lib/Dates/mapEachDate";
 import { SparkLineProps } from "../SparkLine/SparkLine";
 import { TimeseriesSparkLineProps } from "./TimeseriesSparkLine";
 
@@ -32,7 +35,7 @@ export class TimeseriesSparkLineUtils {
     /**
      * Group data by date serial for performance
      */
-    const groupedData = DateUtils.groupByDateSerialToMap(data, (t) => t.date);
+    const groupedData = groupByDateSerialToMap(data, (t) => t.date);
 
     /**
      * Get date range (min and max date) from data. If empty date, use
@@ -40,7 +43,7 @@ export class TimeseriesSparkLineUtils {
      */
     const dateRange =
       data.length > 0
-        ? DateUtils.datesToDateRange(data.map((_) => _.date))
+        ? datesToDateRange(data.map((_) => _.date))
         : { min: new Date(1), max: new Date(2) };
 
     /**
@@ -52,7 +55,7 @@ export class TimeseriesSparkLineUtils {
      * Map each date to a value (cumulative if specified on props)
      * as the sum of all values for that date.
      */
-    let values = DateUtils.mapEachDate(
+    let values = mapEachDate(
       options.startDate ?? dateRange.min,
       options.endDate ?? dateRange.max,
       (date, i) => {
@@ -74,9 +77,9 @@ export class TimeseriesSparkLineUtils {
           // date matches either of those.
           hidden: Boolean(
             (options.hideValuesAfter &&
-              DateUtils.compareDate(date, ">", options.hideValuesAfter)) ||
+              compareDate(date, ">", options.hideValuesAfter)) ||
               (options.hideValuesBefore &&
-                DateUtils.compareDate(date, "<", options.hideValuesBefore))
+                compareDate(date, "<", options.hideValuesBefore))
           ),
         };
       }

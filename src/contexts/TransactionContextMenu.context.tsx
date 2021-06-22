@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Transaction } from "../classes/Transaction";
+import { Transaction } from "../lib/DataModels/Transaction";
 import { TransactionContextMenu } from "../components/TransactionContextMenu/TransactionContextMenu";
 
 type TransactionContextMenuContextType = {

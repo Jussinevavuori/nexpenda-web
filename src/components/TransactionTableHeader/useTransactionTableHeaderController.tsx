@@ -1,6 +1,6 @@
 import { useMemo } from "react"
+import { compareArrays } from "../../lib/Utilities/compareArrays"
 import { useStoreActions, useStoreState } from "../../store"
-import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { TransactionTableHeaderProps } from "./TransactionTableHeader"
 
 
@@ -15,7 +15,7 @@ export function useTransactionTableHeaderController(props: TransactionTableHeade
 
 	const isSelectionActive = useStoreState(_ => _.selection.selectionActive)
 	const isAllSelected = useMemo(() => {
-		return DataUtils.compareArrays(transactions.map(_ => _.id), selection.map(_ => _.id))
+		return compareArrays(transactions.map(_ => _.id), selection.map(_ => _.id))
 	}, [transactions, selection])
 
 	const handleSelectAll = useStoreActions(_ => _.selection.selectAll)

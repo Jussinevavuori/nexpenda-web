@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { MoneyAmount } from "../../classes/MoneyAmount";
+import { MoneyAmount } from "../../lib/Money/MoneyAmount";
 import { useBudgetsContext } from "../../contexts/BudgetsContext.context";
 import { useBudgetMenuState } from "../../hooks/componentStates/useBudgetMenuState";
 import { useStoreState } from "../../store";

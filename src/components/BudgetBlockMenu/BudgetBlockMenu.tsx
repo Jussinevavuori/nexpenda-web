@@ -3,7 +3,7 @@ import React from "react";
 import cx from "classnames";
 import { useBudgetBlockMenuController } from "./useBudgetBlockMenuController";
 import { ResponsiveMenu, ResponsiveMenuProps } from "../ResponsiveMenu/ResponsiveMenu";
-import { Budget } from "../../classes/Budget";
+import { Budget } from "../../lib/DataModels/Budget";
 import { MenuItem } from "@material-ui/core";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 import { Type } from "../Type/Type";

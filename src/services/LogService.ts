@@ -1,8 +1,8 @@
 import * as z from "zod";
-import { Log } from "../classes/Log";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { Success } from "../result/Success";
-import { exposeToWindow } from "../utils/Utils/exposeToWindow";
+import { Log } from "../lib/DataModels/Log";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { Success } from "../lib/Result/Success";
+import { exposeToWindow } from "../lib/Utilities/exposeToWindow";
 import { Service } from "./Service";
 
 type Loggable = {

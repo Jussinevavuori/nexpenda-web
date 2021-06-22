@@ -1,0 +1,67 @@
+@import "main";
+
+.TransactionScheduleForm {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: $spacing-4;
+  width: fit-content;
+
+  & .Type.switchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  & > main {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-4;
+
+    @include md {
+      flex-direction: row;
+      gap: $spacing-8;
+    }
+
+    & .amountInput {
+      & .MuiInputAdornment-root {
+        & .MuiIconButton-root {
+          color: $primary-500;
+        }
+      }
+    }
+
+    & > .transactionTemplate {
+      min-width: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-4;
+    }
+
+    & > .scheduleForm {
+      min-width: 300px;
+    }
+  }
+
+  & > footer {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-4;
+    & > .actions {
+      padding-top: $spacing-2;
+    }
+  }
+}
+
+@include darkmode {
+  .TransactionScheduleForm {
+    & .categoryInput {
+      & .MuiButtonBase-root {
+        background: $gray-800;
+      }
+    }
+  }
+}

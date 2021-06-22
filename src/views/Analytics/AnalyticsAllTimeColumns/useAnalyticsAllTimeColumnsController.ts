@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context";
-import { DateSerializer } from "../../../utils/DateUtils/DateSerializer";
+import { DateSerializer } from "../../../lib/Dates/DateSerializer";
 import { AnalyticsAllTimeColumnsProps } from "./AnalyticsAllTimeColumns";
 
 export function useAnalyticsAllTimeColumnsController(

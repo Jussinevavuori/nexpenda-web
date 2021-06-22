@@ -1,6 +1,6 @@
 import { Service } from "./Service";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { Success } from "../result/Success";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { Success } from "../lib/Result/Success";
 
 export class AuthService extends Service {
   /**

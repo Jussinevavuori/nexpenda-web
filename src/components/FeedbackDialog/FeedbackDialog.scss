@@ -1,6 +1,7 @@
 @import "main";
 
 .FeedbackDialog {
+  padding: $spacing-6;
   &__form {
     & .MuiDialogActions-root {
       padding-right: 24px;

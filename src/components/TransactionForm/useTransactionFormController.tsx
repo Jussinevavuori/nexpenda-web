@@ -3,16 +3,16 @@ import * as z from "zod"
 import { useCallback, useEffect, useRef, useMemo } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
-import { Category } from "../../classes/Category";
+import { Category } from "../../lib/DataModels/Category";
 import { useOnTransactionCopy } from "../../hooks/application/useOnTransactionCopy";
-import { Transaction } from "../../classes/Transaction";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
-import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
+import { getErrorMessage } from "../../lib/ErrorMessages/getErrorMessage";
 import { useEmojiPickerOpenState } from "../../hooks/componentStates/useEmojiPickerOpenState";
 import { useControlledForm } from "../../hooks/forms/useControlledForm"
 import { useControlledFormField } from "../../hooks/forms/useControlledFormField"
 import { useScheduleFormOpenState } from "../../hooks/componentStates/useScheduleFormOpenState"
-import { defaultScheduleFormField, scheduleFormFieldSchema } from "../../utils/FormUtils/scheduleFormField"
+import { defaultScheduleFormField, scheduleFormFieldSchema } from "../../lib/Forms/scheduleFormField"
 
 export const transactionFormSchema = z.object({
 	icon: z.string().refine(str => !str.trim() || emojiRegex().test(str.trim()), "Invalid icon"),
@@ -20,7 +20,7 @@ export const transactionFormSchema = z.object({
 	amount: z.string().regex(/^\+?-?\d*[.,]?\d{0,2}$/),
 	category: z.string().refine(str => !!str.trim()),
 	time: z.date().refine(d => !Number.isNaN(d.getTime()), "Invalid date"),
-	comment: z.string().refine(str => !!str.trim()),
+	comment: z.string(),
 	schedule: scheduleFormFieldSchema,
 })
 
@@ -99,20 +99,20 @@ export function useTransactionFormController(props: TransactionFormProps) {
 
 	/**
 	 * If editing, initialize the state from edit transaction. We use
-	 * `latestEditTransactionId` for preventing double-initializations of
+	 * `latestEditId` for preventing double-initializations of
 	 * the same transaction.
 	 */
-	const latestEditTransactionId = useRef<string>('')
+	const latestEditId = useRef<string>('')
 	useEffect(() => {
 
 		// Skip when not editing transaction
 		if (!editTransaction) return
 
 		// Skip duplicate initialization of same editable transaction
-		if (latestEditTransactionId.current === editTransaction.id) return
+		if (latestEditId.current === editTransaction.id) return
 
 		// Memorize ID as latest edit transaction ID 
-		latestEditTransactionId.current = editTransaction.id
+		latestEditId.current = editTransaction.id
 
 		// Initialize values
 		form.set("sign", editTransaction.amount.sign === 1 ? "+" : "-")
@@ -120,7 +120,6 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		form.set("category", editTransaction.category.value)
 		form.set("comment", editTransaction.comment)
 		form.set("time", editTransaction.date)
-		form.set("icon", editTransaction.category.icon)
 	}, [editTransaction, form])
 
 	/**
@@ -154,8 +153,10 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	 * Form submission
 	 */
 	const handleFormSubmit = form.createSubmitHandler(async (formresult) => {
+
 		if (!formresult.isValid) {
 			form.setSubmitError("Invalid values.")
+			notify({ message: "Could not create transaction", severity: "error" })
 			return false;
 		}
 
@@ -177,17 +178,22 @@ export function useTransactionFormController(props: TransactionFormProps) {
 
 		// If a schedule is defined, post it
 		if (result.isSuccess() && !editTransaction && values.schedule.enabled) {
-			const scheduleResult = await postSchedule({
-				integerAmount,
-				category: values.category.trim(),
-				comment: values.comment.trim(),
-				firstOccurrence: values.time.getTime(),
-				intervalLength: values.schedule.every,
-				intervalType: values.schedule.type,
-				occurrences: values.schedule.occurrences,
+			await postSchedule({
+				schedule: {
+					firstOccurrence: values.time.getTime(),
+					occurrences: values.schedule.occurrencesEnabled ? values.schedule.occurrences : undefined,
+					interval: {
+						every: values.schedule.every,
+						type: values.schedule.type,
+					}
+				},
+				transactionTemplate: {
+					integerAmount,
+					category: values.category.trim(),
+					comment: values.comment.trim(),
+				},
 				assignTransactions: [result.value.id],
 			})
-			console.log(scheduleResult)
 		}
 
 		// In case of success, notify on edit and reset form
@@ -197,7 +203,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 			}
 
 			form.reset()
-			latestEditTransactionId.current = ""
+			latestEditId.current = ""
 			props.onClose?.()
 			return true;
 		} else {

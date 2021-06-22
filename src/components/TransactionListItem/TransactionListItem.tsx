@@ -1,7 +1,7 @@
 import "./TransactionListItem.scss";
 import React, { useCallback, useMemo } from "react"
 import cx from "classnames"
-import { Transaction } from "../../classes/Transaction";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import {
 	Check as SelectedIcon,
 } from "react-feather"

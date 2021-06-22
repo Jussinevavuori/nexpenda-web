@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { MoneyAmount } from "../../classes/MoneyAmount";
+import { MoneyAmount } from "../../lib/Money/MoneyAmount";
 import { useTransactionCreatorOpenState } from "../../hooks/componentStates/useTransactionCreatorOpenState";
 import { useMdMedia } from "../../hooks/utils/useMedia";
 import { useStoreState } from "../../store";

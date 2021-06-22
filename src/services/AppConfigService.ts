@@ -1,7 +1,7 @@
 import { Service } from "./Service";
-import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { AppConfig } from "../classes/AppConfig";
+import { Success } from "../lib/Result/Success";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { AppConfig } from "../lib/DataModels/AppConfig";
 
 export class AppConfigService extends Service {
   /**

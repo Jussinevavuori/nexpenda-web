@@ -5,9 +5,9 @@ import { Type } from "../Type/Type";
 import { TransactionListItemSkeleton } from "../TransactionListItemSkeleton/TransactionListItemSkeleton";
 import { useTransactionListController } from "./useTransactionListController";
 import { Button } from "@material-ui/core";
-import { DataUtils } from "../../utils/DataUtils/DataUtils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Transaction } from "../../classes/Transaction";
+import { formatDateString } from "../../lib/Dates/formatDateString";
+import { createIndexArray } from "../../lib/Utilities/createIndexArray";
 
 export type TransactionListProps = {
 	showSkeletons?: boolean;
@@ -22,7 +22,7 @@ export function TransactionList(props: TransactionListProps) {
 	if (controller.showSkeletons) {
 		return <div className="TransactionList">
 			{
-				DataUtils.createIndexArray(16).map(i => {
+				createIndexArray(16).map(i => {
 					return <TransactionListItemSkeleton i={i} key={i} />
 				})
 			}
@@ -103,7 +103,7 @@ export function TransactionList(props: TransactionListProps) {
 													>
 														<div className="dateGroupHeader upcoming">
 															<Type variant="bold" color="gray-700" size="md">
-																{Transaction.formatDatestring(entry.date)}
+																{formatDateString(entry.date)}
 															</Type>
 														</div>
 														<ul>
@@ -133,7 +133,7 @@ export function TransactionList(props: TransactionListProps) {
 							>
 								<div className="dateGroupHeader">
 									<Type variant="bold" color="gray-700" size="md">
-										{Transaction.formatDatestring(entry.date)}
+										{formatDateString(entry.date)}
 									</Type>
 								</div>
 								<ul>

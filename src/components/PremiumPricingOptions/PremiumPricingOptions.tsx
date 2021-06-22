@@ -5,7 +5,7 @@ import { usePremiumPricingOptionsController } from "./usePremiumPricingOptionsCo
 import { CircularProgress } from "@material-ui/core";
 import { LocalOffer as DealIcon } from "@material-ui/icons"
 import { Type } from "../Type/Type";
-import { StripeProduct } from "../../classes/StripeProduct";
+import { StripeProduct } from "../../lib/Stripe/StripeProduct";
 
 export type PremiumPricingOptionsProps = {
 

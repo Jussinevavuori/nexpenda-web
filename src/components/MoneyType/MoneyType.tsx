@@ -1,7 +1,7 @@
 import "./MoneyType.scss";
 import React, { useEffect, useMemo, useRef } from "react"
 import cx from "classnames"
-import { MoneyAmount } from "../../classes/MoneyAmount";
+import { MoneyAmount } from "../../lib/Money/MoneyAmount";
 import { Type, TypeProps } from "../Type/Type";
 import { animate } from "framer-motion"
 

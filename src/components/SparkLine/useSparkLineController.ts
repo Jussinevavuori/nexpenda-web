@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
+import { SvgPath } from "../../lib/Svg/SvgPath";
 import { SparkLineProps } from "./SparkLine";
 
 export function useSparkLineController(props: SparkLineProps) {

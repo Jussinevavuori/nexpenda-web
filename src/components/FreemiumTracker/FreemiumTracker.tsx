@@ -4,7 +4,7 @@ import { useFreemiumTrackerController } from "./useFreemiumTrackerController";
 import { PercentageCircle } from "../PercentageCircle/PercentageCircle";
 import { Type } from "../Type/Type";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
-import { createClassnames } from "../../utils/Utils/createClassnames";
+import { createClassnames } from "../../lib/Utilities/createClassnames";
 import { ContainerBlock } from "../Container/ContainerBlock";
 import { Button, CircularProgress, Tooltip } from "@material-ui/core";
 import { Star } from "@material-ui/icons";
@@ -50,7 +50,7 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 					{
 						!props.hideTransactions &&
 						<Tooltip
-							title={<div className="FreemiumTracker__Tooltip">
+							title={<div className="FreemiumTracker__tooltip">
 								<Type variant="bold" color={isDarkTheme ? "white" : "gray-800"}>
 									{"Transactions"}
 								</Type>
@@ -99,7 +99,7 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 					{
 						!props.hideBudgets &&
 						<Tooltip
-							title={<div className="FreemiumTracker__Tooltip">
+							title={<div className="FreemiumTracker__tooltip">
 								<Type variant="bold" color={isDarkTheme ? "white" : "gray-800"}>
 									{"Budgets"}
 								</Type>
@@ -151,7 +151,7 @@ export function FreemiumTracker(props: FreemiumTrackerProps) {
 		{
 			!props.hideUpgradeButton &&
 			<Tooltip
-				title={<div className="FreemiumTracker__Tooltip">
+				title={<div className="FreemiumTracker__tooltip">
 					<div>
 						<Type component="span" size="sm">
 							{"Upgrade to "}

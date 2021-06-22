@@ -1,0 +1,10 @@
+@import "main";
+
+.ScheduleEditor {
+  & > p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: $spacing-6;
+  }
+}

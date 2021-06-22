@@ -1,7 +1,7 @@
-import { Transaction } from "../classes/Transaction";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { NetworkFailure } from "../result/Failures";
-import { Success } from "../result/Success";
+import { Transaction } from "../lib/DataModels/Transaction";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { NetworkFailure } from "../lib/Result/Failures";
+import { Success } from "../lib/Result/Success";
 import { store } from "../store";
 import { HistoryEvent } from "./HistoryEvent";
 

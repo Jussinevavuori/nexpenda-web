@@ -29,23 +29,22 @@ export function useSettingsController() {
 		redirect(_ => _.subscribe)
 	}
 
-	// Upload state
-	const { handleOpen: handleOpenFileUploaderDrawer } =
-		useFileUploaderOpenState()
+	// Open drawers
+	const { handleOpen: handleOpenFileUploader } = useFileUploaderOpenState()
+	const { handleOpen: handleOpenFeedback } = useFeedbackOpenState()
 
 	// Avatar changer menu state
 	const avatarChangerMenu = useAvatarChangerMenuOpenState()
 
 	// Feedback dialog state
-	const { handleOpen: handleOpenFeedbackDialog } = useFeedbackOpenState()
 
 	return {
 		user,
 		handleLogout,
 		handleSubscribe,
 		canManageBilling: !!user?.customer,
-		handleOpenFileUploaderDrawer,
 		avatarChangerMenu,
-		handleOpenFeedbackDialog,
+		handleOpenFileUploader,
+		handleOpenFeedback,
 	}
 }

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Budget } from "../../classes/Budget";
+import { Budget } from "../../lib/DataModels/Budget";
 import { useBudgetCreatorOpenState } from "../../hooks/componentStates/useBudgetCreatorOpenState";
 import { useStoreState } from "../../store";
 import { BudgetsProps } from "./Budgets";

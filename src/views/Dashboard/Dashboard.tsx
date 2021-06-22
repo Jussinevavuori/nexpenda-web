@@ -16,12 +16,13 @@ import { DashboardActions } from "./DashboardActions/DashboardActions";
 import { DashboardPanel } from "./DashboardPanel/DashboardPanel";
 import { MiniFreemiumTracker } from "../../components/MiniFreemiumTracker/MiniFreemiumTracker";
 import { Notes, Today } from "@material-ui/icons";
+import { formatDateString } from "../../lib/Dates/formatDateString";
 
 export type DashboardProps = {
 }
 
 export function Dashboard(props: DashboardProps) {
-	const trueAfterTimeout = useTrueAfterTimeout(100)
+	const shouldAnimate = useTrueAfterTimeout(100)
 	const controller = useDashboardController()
 
 	return <ViewContainer
@@ -43,7 +44,7 @@ export function Dashboard(props: DashboardProps) {
 									<Today />
 								</i>
 								<Type component="span" color={"white"}>
-									{controller.selectedTransaction.datestring}
+									{formatDateString(controller.selectedTransaction.date)}
 								</Type>
 								{
 									controller.selectedTransaction.comment && <>
@@ -137,7 +138,7 @@ export function Dashboard(props: DashboardProps) {
 				</AnimatePresence>
 
 				<motion.section
-					layout={trueAfterTimeout && controller.isDesktopLayout ? "position" : undefined}
+					layout={shouldAnimate && controller.isDesktopLayout ? "position" : undefined}
 					initial={false}
 					className="transactionsList"
 				>

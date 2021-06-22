@@ -1,7 +1,7 @@
 import "./AnalyticsAllTimeColumns.scss";
 import React from "react";
 import cx from "classnames";
-import { MoneyAmount } from "../../../classes/MoneyAmount";
+import { MoneyAmount } from "../../../lib/Money/MoneyAmount";
 import { format } from "date-fns";
 import { useAnalyticsAllTimeColumnsController } from "./useAnalyticsAllTimeColumnsController";
 import { Bar, CartesianGrid, ResponsiveContainer, ComposedChart, YAxis, Tooltip, Line } from "recharts";

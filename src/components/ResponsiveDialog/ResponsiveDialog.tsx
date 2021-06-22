@@ -39,7 +39,7 @@ export function ResponsiveDialog(props: ResponsiveDialogProps) {
 			className={cx(
 				props.className,
 				props.DrawerProps?.className,
-				"ResponsiveDialog ResponsiveDialog__Drawer"
+				"ResponsiveDialog ResponsiveDialog__drawer"
 			)}
 			children={
 				typeof props.children === "function"

@@ -8,14 +8,16 @@ import {
 	Briefcase as BudgetIcon,
 } from "react-feather"
 import { Type } from "../../components/Type/Type";
-import { createClassnames } from "../../utils/Utils/createClassnames";
+import { createClassnames } from "../../lib/Utilities/createClassnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft } from "@material-ui/icons";
+import { ChevronLeft, Replay } from "@material-ui/icons";
 import { Logo } from "../Logo/Logo";
 import { Tooltip } from "@material-ui/core";
 import { CornerPiece } from "../CornerPiece/CornerPiece";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { FreemiumTracker } from "../FreemiumTracker/FreemiumTracker";
+import { Link } from "react-router-dom";
+import { routes } from "../../Routes";
 
 export type SidebarNavigationProps = {
 
@@ -70,13 +72,15 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 						</Type>
 					</div>}
 				>
-					<motion.button
-						onClick={controller.onDashboard}
-						className={cx("link", { active: controller.isDashboard })}
-					>
-						<DashboardIcon />
-						<Type variant="bold">{"Dashboard"}</Type>
-					</motion.button>
+					<Link to={routes.dashboard.path}>
+						<motion.button className={cx("link", {
+							activePrimary: controller.dashboardPathLevel === 1,
+							activeSecondary: controller.dashboardPathLevel > 1
+						})}>
+							<DashboardIcon />
+							<Type variant="bold">{"Dashboard"}</Type>
+						</motion.button>
+					</Link>
 				</Tooltip>
 
 				<Tooltip
@@ -89,13 +93,15 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 						</Type>
 					</div>}
 				>
-					<motion.button
-						onClick={controller.onAnalytics}
-						className={cx("link", { active: controller.isAnalytics })}
-					>
-						<AnalyticsIcon />
-						<Type variant="bold">{"Analytics"}</Type>
-					</motion.button>
+					<Link to={routes.analytics.path}>
+						<motion.button className={cx("link", {
+							activePrimary: controller.analyticsPathLevel === 1,
+							activeSecondary: controller.analyticsPathLevel > 1
+						})}>
+							<AnalyticsIcon />
+							<Type variant="bold">{"Analytics"}</Type>
+						</motion.button>
+					</Link>
 				</Tooltip>
 
 
@@ -109,13 +115,15 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 						</Type>
 					</div>}
 				>
-					<motion.button
-						onClick={controller.onBudget}
-						className={cx("link", { active: controller.isBudget })}
-					>
-						<BudgetIcon />
-						<Type variant="bold">{"Budgets"}</Type>
-					</motion.button>
+					<Link to={routes.budgets.path}>
+						<motion.button className={cx("link", {
+							activePrimary: controller.budgetsPathLevel === 1,
+							activeSecondary: controller.budgetsPathLevel > 1
+						})} >
+							<BudgetIcon />
+							<Type variant="bold">{"Budgets"}</Type>
+						</motion.button>
+					</Link>
 				</Tooltip>
 
 
@@ -129,14 +137,49 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 						</Type>
 					</div>}
 				>
-					<motion.button
-						onClick={controller.onSettings}
-						className={cx("link", { active: controller.isSettings })}
-					>
-						<UserIcon />
-						<Type variant="bold">{"Settings"}</Type>
-					</motion.button>
+					<Link to={routes.settings.path}>
+						<motion.button className={cx("link", {
+							hasSubmenu: !!controller.settingsPathLevel,
+							activePrimary: controller.settingsPathLevel === 1,
+							activeSecondary: controller.settingsPathLevel > 1
+						})}>
+							<UserIcon />
+							<Type variant="bold">{"Settings"}</Type>
+						</motion.button>
+					</Link>
 				</Tooltip>
+
+				<AnimatePresence>
+					{
+						controller.settingsPathLevel &&
+						<motion.div
+							className={cx("submenu")}
+							initial={{ scaleY: 0, opacity: 0, transformOrigin: "top" }}
+							animate={{ scaleY: 1, opacity: 1, transformOrigin: "top" }}
+							exit={{ scaleY: 0, opacity: 0, transformOrigin: "top" }}
+						>
+							<Tooltip
+								title={<div className="SidebarNavigation__linkTooltip">
+									<Type variant="bold" color={isDarkTheme ? "white" : "gray-900"}>
+										{"Schedules"}
+									</Type>
+								</div>}
+							>
+								<Link to={routes.schedules.path}>
+									<motion.button className={cx("link", {
+										activePrimary: controller.schedulesPathLevel === 1,
+										activeSecondary: controller.schedulesPathLevel > 1
+									})}>
+										<Replay />
+										<Type variant="bold">{"Schedules"}</Type>
+									</motion.button>
+								</Link>
+							</Tooltip>
+						</motion.div>
+					}
+				</AnimatePresence>
+
+
 
 			</div>
 
@@ -181,5 +224,5 @@ export function SidebarNavigation(props: SidebarNavigationProps) {
 			variant="internal"
 		/>
 
-	</motion.aside>
+	</motion.aside >
 }

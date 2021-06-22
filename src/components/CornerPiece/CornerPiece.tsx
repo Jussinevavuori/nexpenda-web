@@ -1,7 +1,7 @@
 import "./CornerPiece.scss";
 import React from "react";
 import cx from "classnames";
-import { SvgPath } from "../../utils/SvgUtils/SvgPath";
+import { SvgPath } from "../../lib/Svg/SvgPath";
 
 export type CornerPieceProps = {
 	fill: Color;

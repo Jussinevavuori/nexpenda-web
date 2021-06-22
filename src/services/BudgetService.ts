@@ -1,8 +1,8 @@
 import { Service } from "./Service";
-import { Budget } from "../classes/Budget";
-import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/Failures";
-import { DataUtils } from "../utils/DataUtils/DataUtils";
+import { Budget } from "../lib/DataModels/Budget";
+import { Success } from "../lib/Result/Success";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { removeProperty } from "../lib/Utilities/removeProperty";
 
 export class BudgetService extends Service {
   /**
@@ -81,7 +81,7 @@ export class BudgetService extends Service {
   static async putBudget(json: JsonBudgetIdInitializer) {
     const result = await Service.put(
       `/budgets/${json.id}`,
-      DataUtils.removeProperty(json, "id"),
+      removeProperty(json, "id"),
       { service: { enableLogoutOnUnauthorized: true } }
     );
 
@@ -104,7 +104,7 @@ export class BudgetService extends Service {
   static async patchBudget(json: JsonBudgetIdInitializer) {
     const result = await Service.patch(
       `/budgets/${json.id}`,
-      DataUtils.removeProperty(json, "id"),
+      removeProperty(json, "id"),
       { service: { enableLogoutOnUnauthorized: true } }
     );
 

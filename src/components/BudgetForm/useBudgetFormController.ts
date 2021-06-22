@@ -2,7 +2,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Category } from "../../classes/Category";
+import { Category } from "../../lib/DataModels/Category";
 import { useStoreActions, useStoreState } from "../../store";
 import { BudgetFormProps } from "./BudgetForm";
 import { useOpenState } from "../../hooks/state/useOpenState";

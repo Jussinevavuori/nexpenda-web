@@ -17,7 +17,7 @@ import { budgetsModel, BudgetsModel } from "./models/budgets.model";
 import { SidebarModel, sidebarModel } from "./models/sidebar.model";
 import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
 import { SearchModel, searchModel } from "./models/search.model";
-import { exposeToWindow } from "./utils/Utils/exposeToWindow";
+import { exposeToWindow } from "./lib/Utilities/exposeToWindow";
 import { schedulesModel, SchedulesModel } from "./models/schedules.model";
 
 export interface StoreModel {

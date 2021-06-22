@@ -1,6 +1,7 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy";
-import { TransactionSchedule } from "../classes/TransactionSchedule";
-import { TransactionScheduleService } from "../services/TransactionScheduleService";
+import { Transaction } from "../lib/DataModels/Transaction";
+import { TransactionSchedule } from "../lib/DataModels/TransactionSchedule";
+import { ScheduleService } from "../services/ScheduleService";
 import { StoreModel } from "../store";
 
 export interface SchedulesModel {
@@ -58,14 +59,12 @@ export interface SchedulesModel {
    */
   getSchedules: Thunk<
     SchedulesModel,
-    Parameters<typeof TransactionScheduleService["getSchedules"]>[0],
+    Parameters<typeof ScheduleService["getSchedules"]>[0],
     any,
     StoreModel,
     Promise<
       | undefined
-      | PromiseType<
-          ReturnType<typeof TransactionScheduleService["getSchedules"]>
-        >
+      | PromiseType<ReturnType<typeof ScheduleService["getSchedules"]>>
     >
   >;
 
@@ -74,10 +73,10 @@ export interface SchedulesModel {
    */
   postSchedule: Thunk<
     SchedulesModel,
-    Parameters<typeof TransactionScheduleService["postSchedule"]>[0],
+    Parameters<typeof ScheduleService["postSchedule"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof TransactionScheduleService["postSchedule"]>
+    ReturnType<typeof ScheduleService["postSchedule"]>
   >;
 
   /**
@@ -85,10 +84,10 @@ export interface SchedulesModel {
    */
   deleteSchedule: Thunk<
     SchedulesModel,
-    Parameters<typeof TransactionScheduleService["deleteSchedule"]>[0],
+    Parameters<typeof ScheduleService["deleteSchedule"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof TransactionScheduleService["deleteSchedule"]>
+    ReturnType<typeof ScheduleService["deleteSchedule"]>
   >;
 
   /**
@@ -96,10 +95,21 @@ export interface SchedulesModel {
    */
   patchSchedule: Thunk<
     SchedulesModel,
-    Parameters<typeof TransactionScheduleService["patchSchedule"]>[0],
+    Parameters<typeof ScheduleService["patchSchedule"]>[0],
     any,
     StoreModel,
-    ReturnType<typeof TransactionScheduleService["patchSchedule"]>
+    ReturnType<typeof ScheduleService["patchSchedule"]>
+  >;
+
+  /**
+   * Creates all scheduled transactions.
+   */
+  createScheduledTransactions: Thunk<
+    SchedulesModel,
+    Parameters<typeof ScheduleService["createScheduledTransactions"]>[0],
+    any,
+    StoreModel,
+    ReturnType<typeof ScheduleService["createScheduledTransactions"]>
   >;
 
   //==============================================================//
@@ -159,7 +169,7 @@ export const schedulesModel: SchedulesModel = {
   //==============================================================//
 
   getSchedules: thunk(async (actions, payload) => {
-    const result = await TransactionScheduleService.getSchedules(payload);
+    const result = await ScheduleService.getSchedules(payload);
 
     if (result.isSuccess()) {
       actions.setSchedulesToState(
@@ -172,7 +182,7 @@ export const schedulesModel: SchedulesModel = {
   }),
 
   postSchedule: thunk(async (actions, json) => {
-    const result = await TransactionScheduleService.postSchedule(json);
+    const result = await ScheduleService.postSchedule(json);
     if (result.isSuccess()) {
       actions.upsertSchedulesToState(new TransactionSchedule(result.value));
     }
@@ -185,7 +195,7 @@ export const schedulesModel: SchedulesModel = {
 
     // Delete the schedule
     actions.removeSchedulesFromStateById(payload.id);
-    const result = await TransactionScheduleService.deleteSchedule(payload);
+    const result = await ScheduleService.deleteSchedule(payload);
 
     // If deletion fails, put schedule back
     if (result.isFailure() && schedule) {
@@ -195,10 +205,20 @@ export const schedulesModel: SchedulesModel = {
   }),
 
   patchSchedule: thunk(async (actions, json, store) => {
-    const result = await TransactionScheduleService.patchSchedule(json);
+    const result = await ScheduleService.patchSchedule(json);
     if (result.isSuccess()) {
       const schedule = new TransactionSchedule(result.value);
       actions.upsertSchedulesToState(schedule);
+    }
+    return result;
+  }),
+
+  createScheduledTransactions: thunk(async (actions, payload, store) => {
+    const result = await ScheduleService.createScheduledTransactions(payload);
+    if (result.isSuccess()) {
+      const transactions = result.value.map((json) => new Transaction(json));
+      const storeActions = store.getStoreActions();
+      storeActions.transactions.upsertTransactionsToState(transactions);
     }
     return result;
   }),

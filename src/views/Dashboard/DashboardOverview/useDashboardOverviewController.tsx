@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { MoneyAmount } from "../../../classes/MoneyAmount"
+import { MoneyAmount } from "../../../lib/Money/MoneyAmount"
 import { useStoreState } from "../../../store"
 import { DashboardOverviewProps } from "./DashboardOverview"
 

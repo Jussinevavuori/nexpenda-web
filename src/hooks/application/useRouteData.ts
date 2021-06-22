@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { RouteData } from "../../classes/RouteData";
+import { RouteData } from "../../lib/Routing/RouteData";
 import { routes } from "../../Routes";
 
 export function useRouteData(): RouteData | undefined {

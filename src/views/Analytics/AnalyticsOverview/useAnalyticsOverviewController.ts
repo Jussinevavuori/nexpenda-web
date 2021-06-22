@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { TimeseriesSparkLineProps } from "../../../components/TimeseriesSparkLine/TimeseriesSparkLine";
 import { useAnalyticsContext } from "../../../contexts/AnalyticsContext.context";
+import { compareDate } from "../../../lib/Dates/compareDate";
 import { useStoreState } from "../../../store";
-import { DateUtils } from "../../../utils/DateUtils/DateUtils";
 import { AnalyticsOverviewProps } from "./AnalyticsOverview";
 
 export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
@@ -59,8 +59,8 @@ export function useAnalyticsOverviewController(props: AnalyticsOverviewProps) {
     const currentDate = new Date();
 
     const isCurrentDateWithinInterval =
-      DateUtils.compareDate(currentDate, ">=", startDate) &&
-      DateUtils.compareDate(currentDate, "<", endDate);
+      compareDate(currentDate, ">=", startDate) &&
+      compareDate(currentDate, "<", endDate);
 
     return {
       data: selectedTransactions.map((transaction) => ({

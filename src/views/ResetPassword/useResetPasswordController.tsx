@@ -5,7 +5,7 @@ import { useStoreActions } from "../../store";
 import { useRedirect } from "../../hooks/utils/useRedirect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getErrorMessage } from "../../utils/ErrorMessage/getErrorMessage";
+import { getErrorMessage } from "../../lib/ErrorMessages/getErrorMessage";
 
 export const resetPasswordValidationSchema = z.object({
 	email: z.string().min(3).max(255).email(),

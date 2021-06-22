@@ -8,7 +8,9 @@ import {
 } from "easy-peasy";
 import { StorageService } from "../services/StorageService";
 import { StoreModel } from "../store";
-import { ThemeUtils } from "../utils/ThemeUtils/ThemeUtils";
+import { ThemeUtils } from "../lib/Theme/ThemeUtils";
+import { ThemeColors } from "../lib/Theme/ThemeColors";
+import { ThemeModes } from "../lib/Theme/ThemeModes";
 
 export interface ThemeModel {
   //==============================================================//
@@ -71,7 +73,7 @@ export const themeModel: ThemeModel = {
 
   themeColor:
     StorageService.latestSelectedThemeColor.getValue() ??
-    ThemeUtils.freeDefaultThemeColor,
+    ThemeColors.freeDefaultThemeColor,
 
   themeMode: StorageService.latestSelectedThemeMode.getValue() ?? "light", // ThemeUtils.getBrowserPreferredThemeMode(),
   // themeMode: "dark",
@@ -95,14 +97,14 @@ export const themeModel: ThemeModel = {
   onThemeColorChange: actionOn(
     (actions) => actions.setThemeColor,
     (_state, target) => {
-      ThemeUtils.switchThemeColorVariables(target.payload);
+      ThemeColors.updateThemeColor(target.payload);
     }
   ),
 
   onThemeModeChange: actionOn(
     (actions) => actions.setThemeMode,
     (_state, target) => {
-      ThemeUtils.updateThemeMode(target.payload);
+      ThemeModes.updateThemeMode(target.payload);
     }
   ),
 
@@ -112,19 +114,19 @@ export const themeModel: ThemeModel = {
       const themeColor = target.payload.themeColor;
       const themeMode = target.payload.themeMode;
 
-      if (ThemeUtils.isThemeColor(themeColor)) {
-        if (ThemeUtils.isPremiumThemeColor(themeColor)) {
+      if (ThemeColors.isThemeColor(themeColor)) {
+        if (ThemeColors.isPremiumThemeColor(themeColor)) {
           if (target.payload.isPremium) {
             actions.setThemeColor(themeColor);
           } else {
-            actions.setThemeColor(ThemeUtils.freeDefaultThemeColor);
+            actions.setThemeColor(ThemeColors.freeDefaultThemeColor);
             StorageService.latestSelectedThemeColor.clearValue();
           }
         } else {
           actions.setThemeColor(themeColor);
         }
       }
-      if (ThemeUtils.isThemeMode(themeMode)) {
+      if (ThemeModes.isThemeMode(themeMode)) {
         actions.setThemeMode(themeMode);
       }
     }

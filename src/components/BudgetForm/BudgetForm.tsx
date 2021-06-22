@@ -4,7 +4,7 @@ import cx from "classnames";
 import { useBudgetFormController } from "./useBudgetFormController";
 import { Type } from "../Type/Type";
 import { Button, Collapse, IconButton, InputAdornment, TextField } from "@material-ui/core";
-import { Budget } from "../../classes/Budget";
+import { Budget } from "../../lib/DataModels/Budget";
 import { MultiCategorySelector } from "../MultiCategorySelector/MultiCategorySelector";
 import { ExpandMore } from "@material-ui/icons";
 import { motion } from "framer-motion";

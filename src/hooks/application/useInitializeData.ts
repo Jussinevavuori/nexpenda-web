@@ -4,6 +4,7 @@ import { useStoreActions, useStoreState } from "../../store";
 
 export function useInitializeData() {
   const user = useStoreState((_) => _.auth.user);
+  const userId = user?.id;
 
   const getAppConfig = useStoreActions((_) => _.appConfig.fetchConfig);
   const getProfile = useStoreActions((_) => _.auth.getProfile);
@@ -11,6 +12,9 @@ export function useInitializeData() {
   const getSchedules = useStoreActions((_) => _.schedules.getSchedules);
   const getTransactions = useStoreActions(
     (_) => _.transactions.getTransactions
+  );
+  const createScheduledTransactions = useStoreActions(
+    (_) => _.schedules.createScheduledTransactions
   );
 
   /**
@@ -32,31 +36,36 @@ export function useInitializeData() {
    * all transactions.
    */
   useEffect(() => {
-    if (!user) return;
-
+    if (!userId) return;
     getTransactions({
       before: endOfMonth(new Date()),
       after: startOfMonth(new Date()),
     }).then(() => {
       getTransactions();
     });
-  }, [user, getTransactions]);
+  }, [userId, getTransactions]);
 
   /**
    * Fetch the budgets
    */
   useEffect(() => {
-    if (!user) return;
-
+    if (!userId) return;
     getBudgets();
-  }, [user, getBudgets]);
+  }, [userId, getBudgets]);
 
   /**
    * Fetch the schedules
    */
   useEffect(() => {
-    if (!user) return;
-
+    if (!userId) return;
     getSchedules();
-  }, [user, getSchedules]);
+  }, [userId, getSchedules]);
+
+  /**
+   * Create scheduled transactions
+   */
+  useEffect(() => {
+    if (!userId) return;
+    createScheduledTransactions();
+  }, [userId, createScheduledTransactions]);
 }

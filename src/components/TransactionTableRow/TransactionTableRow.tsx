@@ -1,8 +1,7 @@
 import "./TransactionTableRow.scss";
 import React from "react"
 import cx from "classnames"
-import { Transaction } from "../../classes/Transaction";
-import { format } from "date-fns";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import { MoneyType } from "../MoneyType/MoneyType";
 import { Type } from "../Type/Type";
 import {
@@ -12,6 +11,7 @@ import {
 import { useTransactionTableRowController } from "./useTransactionTableRowController";
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { formatDateString } from "../../lib/Dates/formatDateString";
 
 export type TransactionTableRowProps = {
 	transaction: Transaction;
@@ -107,16 +107,8 @@ export function TransactionTableRow(props: TransactionTableRowProps) {
 				variant="regular"
 				size="md"
 			>
-				{toDatestring(controller.transaction.date)}
+				{formatDateString(controller.transaction.date)}
 			</Type>
 		</div>
 	</div>
 }
-
-function toDatestring(date: Date) {
-	return date.getFullYear() === currentYear
-		? format(date, "d.M.")
-		: format(date, "d.M.yyyy")
-}
-
-const currentYear = new Date().getFullYear()

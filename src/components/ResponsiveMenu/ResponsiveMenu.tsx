@@ -23,7 +23,7 @@ export function ResponsiveMenu(props: ResponsiveMenuProps) {
 			className={cx(
 				props.className,
 				props.MenuProps?.className,
-				"ResponsiveMenu ResponsiveMenu__Menu"
+				"ResponsiveMenu ResponsiveMenu__menu"
 			)}
 			children={
 				typeof props.children === "function"
@@ -39,7 +39,7 @@ export function ResponsiveMenu(props: ResponsiveMenuProps) {
 			className={cx(
 				props.className,
 				props.DrawerProps?.className,
-				"ResponsiveMenu ResponsiveMenu__Drawer"
+				"ResponsiveMenu ResponsiveMenu__drawer"
 			)}
 			children={
 				typeof props.children === "function"

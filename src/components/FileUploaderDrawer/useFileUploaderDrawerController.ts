@@ -5,14 +5,12 @@ import { FileUploaderDrawerProps } from "./FileUploaderDrawer";
 export function useFileUploaderDrawerController(
   props: FileUploaderDrawerProps
 ) {
-  const { isOpen, setIsOpen } = useFileUploaderOpenState();
+  const { isOpen, handleClose } = useFileUploaderOpenState();
   const isDesktop = useMdMedia();
 
   return {
     isDesktop,
     isOpen,
-    handleClose() {
-      setIsOpen(false);
-    },
+    handleClose,
   };
 }

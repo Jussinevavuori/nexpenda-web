@@ -1,7 +1,7 @@
 import { Service } from "./Service";
-import { Transaction } from "../classes/Transaction";
-import { Success } from "../result/Success";
-import { InvalidServerResponseFailure } from "../result/Failures";
+import { Transaction } from "../lib/DataModels/Transaction";
+import { Success } from "../lib/Result/Success";
+import { InvalidServerResponseFailure } from "../lib/Result/Failures";
 
 export class TransactionService extends Service {
   /**

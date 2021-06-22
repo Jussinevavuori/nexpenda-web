@@ -38,8 +38,11 @@
       justify-content: flex-end;
       padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
       overflow-y: auto;
-      & > .title {
+      & > .ViewHeader__defaultTitle {
         position: relative;
+        & * {
+          color: white;
+        }
       }
     }
 

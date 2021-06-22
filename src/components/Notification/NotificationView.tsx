@@ -1,6 +1,6 @@
 import "./Notification.scss";
 import React, { useMemo, useState } from "react"
-import { Notification } from "../../classes/Notification";
+import { Notification } from "../../lib/Notifications/Notification";
 import { Alert } from "@material-ui/lab";
 import { Button, Grow, Icon, IconButton, Snackbar } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";

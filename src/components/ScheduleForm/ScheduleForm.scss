@@ -1,16 +1,14 @@
 @import "main";
 
 .ScheduleForm {
-  padding: $spacing-4;
-
   & > div {
     & > p.title {
-      padding-bottom: $spacing-3;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     & > .inputs {
+      padding-top: $spacing-3;
       display: flex;
       align-items: center;
       gap: $spacing-4;
@@ -18,12 +16,16 @@
   }
 
   & > .repeatEvery {
-    padding-bottom: $spacing-3;
-    border-bottom: 1px solid $gray-300;
+    padding: $spacing-3;
+    border: 1px solid $gray-300;
+    border-radius: $radius-sm;
   }
 
   & > .endsAfter {
-    padding-top: $spacing-3;
+    margin-top: $spacing-4;
+    padding: $spacing-3;
+    border: 1px solid $gray-300;
+    border-radius: $radius-sm;
     & > p.endson {
       padding-top: $spacing-2;
     }
@@ -33,7 +35,10 @@
 @include darkmode {
   .ScheduleForm {
     & > .repeatEvery {
-      border-bottom-color: $gray-800;
+      border-color: $gray-800;
+    }
+    & > .endsAfter {
+      border-color: $gray-800;
     }
   }
 }

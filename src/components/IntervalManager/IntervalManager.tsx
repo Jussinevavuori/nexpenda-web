@@ -4,7 +4,7 @@ import { Button, IconButton, } from "@material-ui/core";
 import { ArrowBack, ArrowForward, DateRange } from "@material-ui/icons"
 import { IntervalPickerForm } from "../IntervalPickerForm/IntervalPickerForm";
 import { useIntervalManagerController } from "./useIntervalManagerController";
-import { createClassnames } from "../../utils/Utils/createClassnames";
+import { createClassnames } from "../../lib/Utilities/createClassnames";
 import { motion } from "framer-motion"
 import { ResponsiveMenu } from "../ResponsiveMenu/ResponsiveMenu";
 
@@ -70,8 +70,8 @@ export function IntervalManager(props: IntervalManagerProps) {
 			{
 				(renderProps) => <div
 					className={cx(renderProps.variant === "menu"
-						? "IntervalManager__Menu"
-						: "IntervalManager__Drawer"
+						? "IntervalManager__menu"
+						: "IntervalManager__drawer"
 					)}>
 					<IntervalPickerForm onConfirm={controller.menuState.handleClose} />
 				</div>

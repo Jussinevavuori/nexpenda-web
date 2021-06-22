@@ -5,7 +5,8 @@ import {
   stringify as createQueryString,
 } from "query-string";
 import { useStatePoppedCooldownRef } from "../utils/useStatePoppedCooldownRef";
-import { LocationState } from "../../utils/LocationState/locationStateSchema";
+import { LocationState } from "../../lib/LocationState/locationStateSchema";
+import { useLocationState } from "../locationState/useLocationState";
 
 export type UseOpenQueryStateOptions = {
   truthy?: string;
@@ -28,6 +29,7 @@ export function useOpenQueryState(
 
   const location = useLocation();
   const history = useHistory();
+  const locationState = useLocationState();
 
   /**
    * Get current state from the query string
@@ -60,8 +62,8 @@ export function useOpenQueryState(
           [key]: truthy,
         });
 
-        // Get the specified state
-        const state = typeof ops === "object" ? ops.state : undefined;
+        // Get the specified state or pass previous state through
+        const state = typeof ops === "object" ? ops.state : locationState;
 
         // Get the specified method
         const method =
@@ -85,6 +87,7 @@ export function useOpenQueryState(
       history,
       location,
       truthy,
+      locationState,
       enableOnPopStateCooldown,
       isPopStateCooldownActive,
     ]

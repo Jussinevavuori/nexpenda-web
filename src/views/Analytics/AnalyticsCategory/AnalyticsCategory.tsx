@@ -1,8 +1,8 @@
 import "./AnalyticsCategory.scss";
 import React from "react";
-import { createClassnames } from "../../../utils/Utils/createClassnames";
+import { createClassnames } from "../../../lib/Utilities/createClassnames";
 import { motion } from "framer-motion";
-import { Category } from "../../../classes/Category";
+import { Category } from "../../../lib/DataModels/Category";
 import { Type } from "../../../components/Type/Type";
 import { MoneyType } from "../../../components/MoneyType/MoneyType";
 import { useIsDarkTheme } from "../../../hooks/application/useIsThemeMode";

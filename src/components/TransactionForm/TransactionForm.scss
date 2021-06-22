@@ -86,6 +86,13 @@
     background: white;
   }
 
+  &__ScheduleFormDialog {
+    padding: $spacing-4;
+    & > p {
+      padding-bottom: $spacing-4;
+    }
+  }
+
   &__CalculatorDialog {
     padding: $spacing-4;
     position: relative;

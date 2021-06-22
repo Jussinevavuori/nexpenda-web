@@ -8,13 +8,13 @@ import {
   ThunkOn,
   thunkOn,
 } from "easy-peasy";
-import { Transaction } from "../classes/Transaction";
+import { Transaction } from "../lib/DataModels/Transaction";
 import { TransactionService } from "../services/TransactionService";
 import { StoreModel } from "../store";
 import { DeleteTransactionEvent } from "../history/DeleteTransactionEvent";
 import { DeleteTransactionsEvent } from "../history/DeleteTransactionsEvent";
-import { DataUtils } from "../utils/DataUtils/DataUtils";
-import { SmartTransactionFilter } from "../classes/SmartTransactionFilter";
+import { SmartTransactionFilter } from "../lib/DataFilters/SmartTransactionFilter";
+import { unique } from "../lib/Utilities/unique";
 
 export interface TransactionsModel {
   //==============================================================//
@@ -230,7 +230,7 @@ export const transactionsModel: TransactionsModel = {
   ),
 
   categories: computed((state) =>
-    DataUtils.unique(
+    unique(
       state.items.map((_) => _.category),
       (a, b) => a.id === b.id
     )

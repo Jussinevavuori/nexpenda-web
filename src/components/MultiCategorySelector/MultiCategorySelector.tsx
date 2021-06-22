@@ -4,7 +4,7 @@ import cx from "classnames";
 import { useMultiCategorySelectorController } from "./useMultiCategorySelectorController";
 import { Autocomplete } from "@material-ui/lab";
 import { TextField, TextFieldProps } from "@material-ui/core";
-import { Category } from "../../classes/Category";
+import { Category } from "../../lib/DataModels/Category";
 
 export type MultiCategorySelectorProps = {
 	TextFieldProps?: TextFieldProps;

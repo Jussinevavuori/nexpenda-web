@@ -17,7 +17,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Type } from "../Type/Type";
 import { useMdMedia, useSmMedia } from "../../hooks/utils/useMedia";
-import { Transaction } from "../../classes/Transaction";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import { useTransactionFormController } from "./useTransactionFormController";
 import { EnhancedButton } from "../EnhancedButton/EnhancedButton";
 import { Close, Replay } from "@material-ui/icons";
@@ -71,8 +71,13 @@ export function TransactionForm(props: TransactionFormProps) {
 		<Dialog
 			open={controller.scheduleForm.isOpen}
 			onClose={controller.scheduleForm.handleClose}
+			maxWidth="sm"
+			fullWidth
 		>
 			<div className="TransactionForm__ScheduleFormDialog">
+				<Type>
+					{"Set up a transaction schedule"}
+				</Type>
 				<ScheduleForm
 					fromDate={controller.form.values.time}
 					value={controller.form.values.schedule}
@@ -197,8 +202,7 @@ export function TransactionForm(props: TransactionFormProps) {
 					</Button>
 				</ButtonGroup>
 				<Autocomplete
-					value={controller.form.values.category}
-					onChange={(e, v) => controller.form.set("category", v)}
+					inputValue={controller.form.values.category}
 					onInputChange={(e, v) => controller.form.set("category", v)}
 					onBlur={controller.form.fields.category.onBlur}
 					freeSolo

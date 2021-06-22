@@ -10,7 +10,6 @@ export type FileUploaderDrawerProps = {
 } & Omit<DrawerProps, "open" | "onClose">;
 
 export function FileUploaderDrawer(props: FileUploaderDrawerProps) {
-
 	const controller = useFileUploaderDrawerController(props)
 
 	return <Drawer

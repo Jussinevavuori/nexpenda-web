@@ -1,5 +1,5 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy";
-import { StripeProduct } from "../classes/StripeProduct";
+import { StripeProduct } from "../lib/Stripe/StripeProduct";
 import { StripeService } from "../services/StripeService";
 import { StoreModel } from "../store";
 

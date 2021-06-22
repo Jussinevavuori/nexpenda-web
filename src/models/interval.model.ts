@@ -1,7 +1,7 @@
 import { Action, action, Computed, computed } from "easy-peasy";
 import * as datefns from "date-fns";
 import { MINIMUM_DATE, MAXIMUM_DATE } from "../constants";
-import { DateUtils } from "../utils/DateUtils/DateUtils";
+import { compareDate } from "../lib/Dates/compareDate";
 
 export type IntervalLengthType = "month" | "year" | "all" | "invalid";
 export type ValidIntervalLengthType = Exclude<IntervalLengthType, "invalid">;
@@ -203,8 +203,8 @@ export const intervalModel: IntervalModel = {
 
   isAll: computed((state) => {
     return (
-      DateUtils.compareDate(state.startDate, "==", MINIMUM_DATE) &&
-      DateUtils.compareDate(state.endDate, "==", MAXIMUM_DATE)
+      compareDate(state.startDate, "==", MINIMUM_DATE) &&
+      compareDate(state.endDate, "==", MAXIMUM_DATE)
     );
   }),
 
@@ -249,8 +249,8 @@ export const intervalModel: IntervalModel = {
   includesToday: computed((state) => {
     const today = new Date();
     return (
-      DateUtils.compareDate(today, ">=", state.startDate) &&
-      DateUtils.compareDate(today, "<=", state.endDate)
+      compareDate(today, ">=", state.startDate) &&
+      compareDate(today, "<=", state.endDate)
     );
   }),
 
@@ -283,7 +283,7 @@ export const intervalModel: IntervalModel = {
   //==============================================================//
 
   // setStartDate: action((state, date) => {
-  //   if (DateUtils.compareDate(date, ">", state.endDate)) {
+  //   if (compareDate(date, ">", state.endDate)) {
   //     throw new Error("Start date cannot be after end date");
   //   } else {
   //     state.startDate = date;
@@ -291,7 +291,7 @@ export const intervalModel: IntervalModel = {
   // }),
 
   // setEndDate: action((state, date) => {
-  //   if (DateUtils.compareDate(date, "<", state.startDate)) {
+  //   if (compareDate(date, "<", state.startDate)) {
   //     throw new Error("End date cannot be before start date");
   //   } else {
   //     state.endDate = date;
@@ -299,7 +299,7 @@ export const intervalModel: IntervalModel = {
   // }),
 
   // setInterval: action((state, dates) => {
-  //   if (DateUtils.compareDate(dates.startDate, ">", dates.endDate)) {
+  //   if (compareDate(dates.startDate, ">", dates.endDate)) {
   //     throw new Error("End date cannot be before start date");
   //   } else {
   //     state.startDate = dates.startDate;

@@ -1,7 +1,7 @@
 import ReactGA from "react-ga";
 import { useCallback, useState } from "react"
 import { useStoreActions, useStoreState } from "../../store"
-import { TransactionSpreadsheet } from "../../utils/FileIO/TransactionSpreadsheet"
+import { TransactionSpreadsheet } from "../../lib/FileIO/TransactionSpreadsheet"
 import { FileDownloaderProps } from "./FileDownloader"
 
 export function useFileDownloaderController(props: FileDownloaderProps) {

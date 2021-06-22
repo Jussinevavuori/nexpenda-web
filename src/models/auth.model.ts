@@ -1,5 +1,5 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { Auth } from "../classes/Auth";
+import { Auth } from "../lib/DataModels/Auth";
 import { AuthService } from "../services/AuthService";
 import { ProfileService } from "../services/ProfileService";
 import { StorageService } from "../services/StorageService";

@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { Transaction } from "../../classes/Transaction";
+import { Transaction } from "../../lib/DataModels/Transaction";
 import { useStoreState } from "../../store";
 import { useLocationState } from "../locationState/useLocationState";
 import {

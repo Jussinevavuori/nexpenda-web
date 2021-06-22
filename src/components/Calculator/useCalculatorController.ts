@@ -3,7 +3,7 @@ import { useOnKeyPress } from "../../hooks/utils/useOnKeyPress";
 import {
   Calculation,
   CalculatorFunction,
-} from "../../utils/CalculatorUtils/Calculation";
+} from "../../lib/Calculations/Calculation";
 import { CalculatorProps } from "./Calculator";
 
 export function useCalculatorController(props: CalculatorProps) {

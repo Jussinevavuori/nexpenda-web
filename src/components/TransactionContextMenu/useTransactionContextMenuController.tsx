@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef } from "react"
-import { Transaction } from "../../classes/Transaction"
+import { Transaction } from "../../lib/DataModels/Transaction"
 import { useTransactionContextMenu } from "../../contexts/TransactionContextMenu.context"
 import { useIsSearchOpen } from "../../hooks/application/useIsSearchOpen"
 import { useTransactionCopy } from "../../hooks/application/useTransactionCopy"
 import { useTransactionEditorOpenState } from "../../hooks/componentStates/useTransactionEditorOpenState"
 import { useStoreActions, useStoreState } from "../../store"
-import { DataUtils } from "../../utils/DataUtils/DataUtils"
 import { TransactionContextMenuProps } from "./TransactionContextMenu"
+import { compareArrays } from "../../lib/Utilities/compareArrays"
 
 
 export function useTransactionContextMenuController(props: TransactionContextMenuProps) {
@@ -65,7 +65,7 @@ export function useTransactionContextMenuController(props: TransactionContextMen
 	 * All selected
 	 */
 	const isAllSelected = useMemo(() => {
-		return DataUtils.compareArrays(
+		return compareArrays(
 			filteredTransactions.map(_ => _.id),
 			selection.map(_ => _.id),
 		)

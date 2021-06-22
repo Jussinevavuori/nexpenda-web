@@ -2,7 +2,7 @@ import "./BudgetBlock.scss";
 import React from "react";
 import cx from "classnames";
 import { useBudgetBlockController } from "./useBudgetBlockController";
-import { Budget } from "../../classes/Budget";
+import { Budget } from "../../lib/DataModels/Budget";
 import { PercentageCircle } from "../PercentageCircle/PercentageCircle";
 import { CategoryChip } from "../CategoryChip/CategoryChip";
 import { Type } from "../Type/Type";

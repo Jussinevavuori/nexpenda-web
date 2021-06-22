@@ -1,5 +1,5 @@
 import { action, Action, computed, Computed } from "easy-peasy";
-import { Transaction } from "../classes/Transaction";
+import { Transaction } from "../lib/DataModels/Transaction";
 import { StoreModel } from "../store";
 
 export type SelectionModel = {

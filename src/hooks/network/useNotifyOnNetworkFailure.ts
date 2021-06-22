@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Service } from "../../services/Service";
 import { useStoreActions } from "../../store";
-import { ListenerType } from "../../utils/SubscriptionUtils/Subscribable";
+import { ListenerType } from "../../lib/PubSub/PubSubChannel";
 import { useRedirect } from "../utils/useRedirect";
 import { useOnNetworkError } from "./useOnNetworkError";
 

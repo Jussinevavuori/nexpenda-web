@@ -1,0 +1,12 @@
+@import "main";
+
+.SchedulesManagerDrawer {
+  & .SchedulesManagerDrawer__content {
+    padding: $spacing-6;
+    max-height: calc(100vh - 100px);
+    @include desktop {
+      max-height: unset;
+      min-width: 600px;
+    }
+  }
+}

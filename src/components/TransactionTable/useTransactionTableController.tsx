@@ -1,7 +1,7 @@
 import { createRef, useCallback, useEffect, useMemo, useState } from "react"
 import { List } from "react-virtualized"
 import { useXlMedia } from "../../hooks/utils/useMedia";
-import { Transaction } from "../../classes/Transaction"
+import { Transaction } from "../../lib/DataModels/Transaction"
 import { useStoreState } from "../../store"
 import { TransactionTableProps } from "./TransactionTable"
 import { useTransactionEditorOpenState } from "../../hooks/componentStates/useTransactionEditorOpenState";

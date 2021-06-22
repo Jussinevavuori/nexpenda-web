@@ -7,6 +7,8 @@ import { ExitToApp as LogoutIcon, Settings as SettingsIcon } from "@material-ui/
 import { Type } from "../Type/Type";
 import { ResponsiveMenu, ResponsiveMenuProps } from "../ResponsiveMenu/ResponsiveMenu";
 import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
+import { Link } from "react-router-dom";
+import { routes } from "../../Routes";
 
 export type UserMenuProps = {
 
@@ -41,12 +43,14 @@ export function UserMenu(props: UserMenuProps) {
 			</section>
 			<section className="actions">
 				<MenuList>
-					<MenuItem onClick={controller.handleSettings}>
-						<SettingsIcon />
-						<Type >
-							{"Settings"}
-						</Type>
-					</MenuItem>
+					<Link to={routes.settings.path} replace>
+						<MenuItem>
+							<SettingsIcon />
+							<Type >
+								{"Settings"}
+							</Type>
+						</MenuItem>
+					</Link>
 					<MenuItem onClick={controller.handleLogout}>
 						<LogoutIcon />
 						<Type >
