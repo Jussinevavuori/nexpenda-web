@@ -87,9 +87,12 @@
   }
 
   &__ScheduleFormDialog {
-    padding: $spacing-4;
+    padding: $spacing-6;
     & > p {
-      padding-bottom: $spacing-4;
+      padding-bottom: $spacing-6;
+    }
+    & > button {
+      margin-top: $spacing-6;
     }
   }
 

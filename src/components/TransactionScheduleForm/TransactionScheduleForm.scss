@@ -33,15 +33,19 @@
     }
 
     & > .transactionTemplate {
-      min-width: 360px;
       display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: $spacing-4;
+      @include md {
+        min-width: 360px;
+      }
     }
 
     & > .scheduleForm {
-      min-width: 300px;
+      @include md {
+        min-width: 300px;
+      }
     }
   }
 

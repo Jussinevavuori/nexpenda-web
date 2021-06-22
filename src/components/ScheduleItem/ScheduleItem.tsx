@@ -79,47 +79,44 @@ export function ScheduleItem(props: ScheduleItemProps) {
 			</Type>
 		}
 
-		{
-			controller.previousOccurrence && controller.nextOccurrence &&
-			<div className="schedule">
-				<div className="scheduleItem previous">
-					<Type size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
-						<Type component="span" variant="bold" size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
-							{formatDateString(controller.previousOccurrence)}
-						</Type>
-						{controller.isActive ? "Previous" : "Last"}
+		<div className="schedule">
+			<div className="scheduleItem previous">
+				<Type size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
+					<Type component="span" variant="bold" size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
+						{formatDateString(controller.previousOccurrence ?? new Date())}
 					</Type>
-				</div>
-				{
-					controller.isActive && <>
-						<div className="scheduleItem next">
-							<Type size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
-								{`Next in ${controller.daysUntilNext} days`}
-								<Type component="span" variant="bold" size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
-									{formatDateString(controller.nextOccurrence)}
-								</Type>
-							</Type>
-						</div>
-						<span
-							className="now"
-							style={{
-								left: controller.progressUntilNextPercentage < 50
-									? `${controller.progressUntilNextPercentage}%`
-									: undefined,
-								right: controller.progressUntilNextPercentage >= 50
-									? `${100 - controller.progressUntilNextPercentage}%`
-									: undefined,
-							}}
-						/>
-					</>
-				}
+					{controller.previousOccurrence ? (controller.isActive ? "Previous" : "Last") : "Today"}
+				</Type>
 			</div>
-		}
+			{
+				controller.isActive && controller.nextOccurrence && <>
+					<div className="scheduleItem next">
+						<Type size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
+							{`Next in ${controller.daysUntilNext} days`}
+							<Type component="span" variant="bold" size="sm" color={isDarkTheme ? "gray-400" : "gray-700"}>
+								{formatDateString(controller.nextOccurrence)}
+							</Type>
+						</Type>
+					</div>
+					<span
+						className="now"
+						style={{
+							left: controller.progressUntilNextPercentage < 50
+								? `${controller.progressUntilNextPercentage}%`
+								: undefined,
+							right: controller.progressUntilNextPercentage >= 50
+								? `${100 - controller.progressUntilNextPercentage}%`
+								: undefined,
+						}}
+					/>
+				</>
+			}
+		</div>
 
 		{/* Actions */}
-		{
-			controller.isActive &&
-			<div className="actions">
+		<div className="actions">
+			{
+				controller.isActive &&
 				<Button
 					className="edit"
 					variant="outlined"
@@ -128,13 +125,13 @@ export function ScheduleItem(props: ScheduleItemProps) {
 				>
 					{"Edit"}
 				</Button>
-				<DeleteButton
-					deleteLabel={"Cancel"}
-					deletingLabel={"Canceling..."}
-					onConfirm={() => controller.handleDeleteSchedule()}
-				/>
-			</div>
-		}
+			}
+			<DeleteButton
+				deleteLabel={controller.isActive ? "Cancel" : "Delete"}
+				deletingLabel={controller.isActive ? "Canceling..." : "Deleteing..."}
+				onConfirm={() => controller.handleDeleteSchedule()}
+			/>
+		</div>
 
 	</ContainerBlock >
 }

@@ -54,10 +54,10 @@ export function useScheduleItemController(props: ScheduleItemProps) {
 
   const daysBetweenPreviousAndNext = useMemo(
     () =>
-      nextOccurrence && previousOccurrence
+      nextOccurrence
         ? differenceInDays(
             startOfDay(nextOccurrence),
-            startOfDay(previousOccurrence)
+            startOfDay(previousOccurrence ?? new Date())
           )
         : 0,
     [nextOccurrence, previousOccurrence]

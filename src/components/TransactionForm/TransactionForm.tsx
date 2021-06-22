@@ -83,12 +83,15 @@ export function TransactionForm(props: TransactionFormProps) {
 					value={controller.form.values.schedule}
 					onChange={s => controller.form.set("schedule", s)}
 				/>
-			</div>
-			<DialogActions>
-				<Button onClick={controller.scheduleForm.handleClose}>
+				<Button
+					onClick={controller.scheduleForm.handleClose}
+					color="primary"
+					variant="contained"
+					fullWidth
+				>
 					{"Ok"}
 				</Button>
-			</DialogActions>
+			</div>
 		</Dialog>
 
 		{/* Calculator dialog */}

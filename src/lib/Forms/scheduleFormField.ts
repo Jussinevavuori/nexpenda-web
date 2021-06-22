@@ -12,7 +12,7 @@ export type ScheduleFormType = z.TypeOf<typeof scheduleFormFieldSchema>;
 
 export const defaultScheduleFormField: ScheduleFormType = {
   enabled: false,
-  type: "DAY",
+  type: "MONTH",
   every: 1,
   occurrencesEnabled: false,
   occurrences: 0,
