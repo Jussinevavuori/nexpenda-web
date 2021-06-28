@@ -1,4 +1,5 @@
 import * as dateFns from "date-fns";
+import { Schedule } from "./Schedule";
 
 export class ScheduleInterval {
   /**
@@ -34,5 +35,40 @@ export class ScheduleInterval {
         return dateFns.addYears(date, numIntervals * this.every);
       }
     }
+  }
+
+  getAverageOccurrencesPerYear() {
+    switch (this.type) {
+      case "DAY": {
+        return 365 / this.every;
+      }
+      case "WEEK": {
+        return 365 / (7 * this.every);
+      }
+      case "MONTH": {
+        return 12 / this.every;
+      }
+      case "YEAR": {
+        return 1 / this.every;
+      }
+    }
+  }
+
+  /**
+   * Format interval to string. Replaces the "%" character with the schedule
+   * string.
+   */
+  format() {
+    const n = this.every;
+    const interval = this.type.toLowerCase();
+    return n > 1 ? `${n} ${interval}s` : `${interval}`;
+  }
+
+  static isValidEveryValue(value: any): value is ScheduleInterval["every"] {
+    return Schedule.Schema.shape.interval.shape.every.check(value);
+  }
+
+  static isValidTypeValue(value: any): value is ScheduleInterval["type"] {
+    return Schedule.Schema.shape.interval.shape.type.check(value);
   }
 }

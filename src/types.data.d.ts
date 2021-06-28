@@ -127,3 +127,9 @@ type JsonTransactionTemplate = import("zod").TypeOf<
 type JsonSchedule = import("zod").TypeOf<
   typeof import("./lib/Schedules/Schedule").Schedule["Schema"]
 >;
+
+// PREMIUM PRICE
+
+type JsonPremiumPrice = import("zod").TypeOf<
+  typeof import("./lib/DataModels/PremiumPrice").PremiumPrice["Schema"]
+>;

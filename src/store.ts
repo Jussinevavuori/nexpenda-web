@@ -19,6 +19,10 @@ import { AppConfigModel, appConfigModel } from "./models/appConfig.model";
 import { SearchModel, searchModel } from "./models/search.model";
 import { exposeToWindow } from "./lib/Utilities/exposeToWindow";
 import { schedulesModel, SchedulesModel } from "./models/schedules.model";
+import {
+  premiumPricesModel,
+  PremiumPricesModel,
+} from "./models/premiumPrices.model";
 
 export interface StoreModel {
   appConfig: AppConfigModel;
@@ -27,6 +31,7 @@ export interface StoreModel {
   history: HistoryModel;
   interval: IntervalModel;
   notification: NotificationModel;
+  premiumPrices: PremiumPricesModel;
   search: SearchModel;
   selection: SelectionModel;
   schedules: SchedulesModel;
@@ -43,6 +48,7 @@ const storeModel: StoreModel = {
   history: historyModel,
   interval: intervalModel,
   notification: notificationModel,
+  premiumPrices: premiumPricesModel,
   search: searchModel,
   selection: selectionModel,
   schedules: schedulesModel,

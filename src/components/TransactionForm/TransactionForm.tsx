@@ -11,7 +11,6 @@ import {
 	IconButton,
 	Dialog,
 	Icon,
-	DialogActions
 } from "@material-ui/core";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";

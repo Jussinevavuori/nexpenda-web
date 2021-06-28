@@ -1,5 +1,7 @@
 import { PremiumPricingOptionsProps } from "./PremiumPricingOptions";
 import { useStoreActions, useStoreState } from "../../store";
+import { useMemo } from "react";
+import { PremiumPrice } from "../../lib/DataModels/PremiumPrice";
 
 export function usePremiumPricingOptionsController(
   props: PremiumPricingOptionsProps
@@ -7,34 +9,20 @@ export function usePremiumPricingOptionsController(
   const createCheckoutSession = useStoreActions(
     (_) => _.stripe.createCheckoutSession
   );
-  const products = useStoreState((_) => _.stripe.products);
-  const product = products[0];
+  const prices = useStoreState((_) => _.premiumPrices.items);
 
-  const percentageYearlyCheaperThanMonthly = (() => {
-    if (!product) return "0%";
-    if (!product.monthlyPrice || !product.yearlyPrice) return "0%";
-    const m = product.monthlyPrice.unit_amount * 12;
-    const y = product.yearlyPrice.unit_amount;
+  const sortedPrices = useMemo(() => {
+    return prices.sort(PremiumPrice.createPriceComparison("ASC"));
+  }, [prices]);
 
-    return ((100 * (m - y)) / m).toFixed(0) + "%";
-  })();
-
-  function getOnSubscribeHandler(variant: "yearly" | "monthly") {
+  function getOnSubscribeHandler(price: PremiumPrice) {
     return () => {
-      const priceId =
-        variant === "yearly"
-          ? product.yearlyPrice?.id
-          : product.monthlyPrice?.id;
-
-      if (!priceId) return;
-
-      createCheckoutSession(priceId);
+      createCheckoutSession(price.id);
     };
   }
 
   return {
-    product,
-    percentageYearlyCheaperThanMonthly,
+    prices: sortedPrices,
     getOnSubscribeHandler,
   };
 }

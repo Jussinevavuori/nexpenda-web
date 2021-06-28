@@ -13,6 +13,9 @@ export function useInitializeData() {
   const getTransactions = useStoreActions(
     (_) => _.transactions.getTransactions
   );
+  const getPremiumPrices = useStoreActions(
+    (_) => _.premiumPrices.getPremiumPrices
+  );
   const createScheduledTransactions = useStoreActions(
     (_) => _.schedules.createScheduledTransactions
   );
@@ -30,6 +33,13 @@ export function useInitializeData() {
   useEffect(() => {
     getAppConfig();
   }, [getAppConfig]);
+
+  /**
+   * Fetch the premium prices
+   */
+  useEffect(() => {
+    getPremiumPrices();
+  }, [getPremiumPrices]);
 
   /**
    * First fetch the transactions only for this month. Then fetch

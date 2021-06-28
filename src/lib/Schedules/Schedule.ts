@@ -68,9 +68,7 @@ export class Schedule {
    * string.
    */
   formatInterval() {
-    const n = this.interval.every;
-    const interval = this.interval.type.toLowerCase();
-    return n > 1 ? `${n} ${interval}s` : `${interval}`;
+    return this.interval.format();
   }
 
   /**

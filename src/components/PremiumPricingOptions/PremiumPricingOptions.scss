@@ -7,7 +7,7 @@
     padding: $spacing-4 $spacing-6;
     border-radius: $spacing-2;
 
-    &.yearly {
+    &.primary {
       background: $primary-600;
       transition: background-color $timing-theme;
       border: 1px solid $primary-600;
@@ -16,7 +16,7 @@
       }
     }
 
-    &.monthly {
+    &.secondary {
       background: $white;
       border: 1px solid $primary-300;
     }
@@ -55,7 +55,7 @@
         transform: scale(0.95);
       }
 
-      &.yearly {
+      &.primary {
         background: $white;
         color: $primary-700;
         transition: color $timing-theme;
@@ -69,7 +69,7 @@
         }
       }
 
-      &.monthly {
+      &.secondary {
         background: $primary-500;
         transition: background-color $timing-theme;
         color: $white;
@@ -97,7 +97,7 @@
 @include darkmode {
   .PremiumPricingOptions {
     & li.pricingOption {
-      &.yearly {
+      &.primary {
         background: $primary-600;
         border-color: $primary-600;
         & * {
@@ -105,7 +105,7 @@
         }
       }
 
-      &.monthly {
+      &.secondary {
         background: $gray-810;
         border-color: $primary-500;
       }
@@ -115,7 +115,7 @@
       }
 
       & button {
-        &.yearly {
+        &.primary {
           background: $white;
           color: $primary-700;
           &:hover,
@@ -127,7 +127,7 @@
           }
         }
 
-        &.monthly {
+        &.secondary {
           background: $primary-500;
           color: $white;
 
