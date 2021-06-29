@@ -179,7 +179,6 @@ export function useTransactionScheduleFormController(
     if (!formresult.isValid) {
       form.setSubmitError("Invalid values.");
       notify({ message: "Could not create transaction", severity: "error" });
-      console.log(form);
       return false;
     }
 

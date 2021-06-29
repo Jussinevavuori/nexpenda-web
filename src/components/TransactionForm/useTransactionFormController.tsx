@@ -150,6 +150,24 @@ export function useTransactionFormController(props: TransactionFormProps) {
 	}
 
 	/**
+	 * Remove all emojis from category string. Use emojis as icon instead.
+	 */
+	const _categoryValue = form.values.category
+	useEffect(() => {
+		const regex = emojiRegex()
+
+		// Use first emoji as new icon if one introduced
+		const emojis = _categoryValue.match(regex)
+		if (emojis && emojis.length > 0) form.set("icon", emojis[0])
+
+		// Replace emojis from category
+		const categoryWithoutEmojis = _categoryValue.replace(regex, "")
+		if (_categoryValue !== categoryWithoutEmojis) {
+			form.set("category", categoryWithoutEmojis)
+		}
+	}, [form, _categoryValue])
+
+	/**
 	 * Form submission
 	 */
 	const handleFormSubmit = form.createSubmitHandler(async (formresult) => {

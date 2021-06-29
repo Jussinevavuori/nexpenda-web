@@ -44,23 +44,6 @@ export function useTransactionListController(props: TransactionListProps) {
 		);
 	}, [items])
 
-	console.group()
-	console.log("%cUpcoming:", "font-weight:bold;")
-	for (const group of upcomingItemsByDates) {
-		console.log(`%c> ${group.date.toLocaleDateString()}`, "fong-weight:bold;")
-		for (const item of group.items) {
-			console.log(">", item.amount.format(), item.category.value, item.createdAt.getTime())
-		}
-	}
-	console.log("%cCurrent:", "font-weight:bold;")
-	for (const group of itemsByDates) {
-		console.log(`%c> ${group.date.toLocaleDateString()}`, "fong-weight:bold;")
-		for (const item of group.items) {
-			console.log(">", item.amount.format(), item.category.value, item.createdAt.getTime())
-		}
-	}
-	console.groupEnd()
-
 	const initializedUser = useStoreState(_ => _.auth.initialized)
 	const initializedItems = useStoreState(_ => _.transactions.initialized)
 	const shouldShowSkeletons = !initializedItems || !initializedUser
