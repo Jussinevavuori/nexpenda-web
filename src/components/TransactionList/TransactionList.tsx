@@ -57,6 +57,9 @@ export function TransactionList(props: TransactionListProps) {
 						</div>
 					}}
 					rowRenderer={(rowProps) => {
+						/**
+						 * At index 0, render upcoming transactions
+						 */
 						if (rowProps.index === 0) {
 
 							if (controller.upcomingItemsByDates.length === 0) {
@@ -123,6 +126,9 @@ export function TransactionList(props: TransactionListProps) {
 								</AnimatePresence>
 							</motion.div>
 						} else {
+							/**
+							 * Render regular transactions at index >= 1
+							 */
 
 							const entry = controller.itemsByDates[rowProps.index - 1]
 

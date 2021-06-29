@@ -52,7 +52,7 @@ export class Transaction {
     this.category = new Category(json.category);
     this.comment = json.comment || "";
     this.amount = new MoneyAmount(Math.floor(json.integerAmount));
-    this.createdAt = new Date(json.time);
+    this.createdAt = new Date(json.createdAt);
     this.id = json.id || uuid.v4();
     this.scheduleId = json.scheduleId;
   }

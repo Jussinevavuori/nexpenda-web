@@ -17,7 +17,14 @@ export function useTransactionListController(props: TransactionListProps) {
 	const [isUpcomingOpen, setIsUpcomingOpen] = useState(false)
 
 	const upcomingItemsByDates = useMemo(() => {
-		return groupByDate(items.filter(_ => _.isUpcoming), (_) => _.date, { sort: true });
+		return groupByDate(
+			items.filter(_ => _.isUpcoming),
+			(_) => _.date,
+			{
+				sort: true,
+				sortGroups: (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+			}
+		);
 	}, [items])
 
 	const upcomingTransactionsCount = useMemo(() => {
@@ -27,8 +34,32 @@ export function useTransactionListController(props: TransactionListProps) {
 	}, [upcomingItemsByDates])
 
 	const itemsByDates = useMemo(() => {
-		return groupByDate(items.filter(_ => !_.isUpcoming), (_) => _.date, { sort: true });
+		return groupByDate(
+			items.filter(_ => !_.isUpcoming),
+			(_) => _.date,
+			{
+				sort: true,
+				sortGroups: (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+			}
+		);
 	}, [items])
+
+	console.group()
+	console.log("%cUpcoming:", "font-weight:bold;")
+	for (const group of upcomingItemsByDates) {
+		console.log(`%c> ${group.date.toLocaleDateString()}`, "fong-weight:bold;")
+		for (const item of group.items) {
+			console.log(">", item.amount.format(), item.category.value, item.createdAt.getTime())
+		}
+	}
+	console.log("%cCurrent:", "font-weight:bold;")
+	for (const group of itemsByDates) {
+		console.log(`%c> ${group.date.toLocaleDateString()}`, "fong-weight:bold;")
+		for (const item of group.items) {
+			console.log(">", item.amount.format(), item.category.value, item.createdAt.getTime())
+		}
+	}
+	console.groupEnd()
 
 	const initializedUser = useStoreState(_ => _.auth.initialized)
 	const initializedItems = useStoreState(_ => _.transactions.initialized)

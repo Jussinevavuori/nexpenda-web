@@ -19,12 +19,10 @@ export function useUserAvatarController(props: UserAvatarProps) {
 	 * Memorize latest set URL in order to prevent sending multiple
 	 * request to erroring URL
 	 */
-	const latestSrc = useRef<string>("")
+	const latestSrc = useRef<string | undefined>(undefined)
 
 	useEffect(function setLatestSrc() {
-		if (avatar.src) {
-			latestSrc.current = avatar.src;
-		}
+		latestSrc.current = avatar.src;
 	}, [avatar, latestSrc])
 
 	/**
