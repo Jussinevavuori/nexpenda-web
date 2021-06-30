@@ -58,7 +58,10 @@ const storeModel: StoreModel = {
   theme: themeModel,
 };
 
-export const store = createStore(storeModel);
+export const store = createStore(storeModel, {
+  name: "Nexpenda Store",
+  devTools: process.env.NODE_ENV !== "production",
+});
 
 exposeToWindow({
   store,
