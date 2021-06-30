@@ -24,7 +24,7 @@ plugins {
 def twaManifest = [
     applicationId: 'com.nexpenda.app.twa',
     hostName: 'app.nexpenda.com', // The domain being opened in the TWA.
-    launchUrl: '/app/dashboard', // The start path for the TWA. Must be relative to the domain.
+    launchUrl: '/', // The start path for the TWA. Must be relative to the domain.
     name: 'Nexpenda', // The application name.
     launcherName: 'Nexpenda', // The name shown on the Android Launcher.
     themeColor: '#2A52E2', // The color used for the status bar.
@@ -56,8 +56,8 @@ android {
         applicationId "com.nexpenda.app.twa"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1"
+        versionCode 2
+        versionName "2"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name

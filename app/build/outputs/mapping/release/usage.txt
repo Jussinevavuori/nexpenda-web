@@ -696,8 +696,8 @@ android.support.customtabs.trusted.ITrustedWebActivityService$Stub:
     static final int TRANSACTION_getSmallIconId
     static final int TRANSACTION_getSmallIconBitmap
     static final int TRANSACTION_extraCommand
-androidx.core.app.ShareCompat
 androidx.core.content.SharedPreferencesCompat$EditorCompat
+androidx.core.app.ShareCompat
 androidx.core.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderApi16
 androidx.core.view.NestedScrollingParent
 androidx.core.app.NotificationCompat$Extender

@@ -20,7 +20,7 @@
     <!-- Value from default config. -->
     <string name="hostName" translatable="false">app.nexpenda.com</string>
     <!-- Value from default config. -->
-    <string name="launchUrl" translatable="false">https://app.nexpenda.com/app/dashboard</string>
+    <string name="launchUrl" translatable="false">https://app.nexpenda.com/</string>
     <!-- Value from default config. -->
     <string name="launcherName" translatable="false">Nexpenda</string>
     <!-- Value from default config. -->

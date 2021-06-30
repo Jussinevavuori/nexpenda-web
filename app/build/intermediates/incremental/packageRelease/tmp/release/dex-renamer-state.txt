@@ -1,4 +1,4 @@
-#Wed Jun 30 10:35:35 EEST 2021
+#Wed Jun 30 11:27:49 EEST 2021
 base.0=C\:\\Users\\jussi\\projects\\nexpenda\\web@nexpenda\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
