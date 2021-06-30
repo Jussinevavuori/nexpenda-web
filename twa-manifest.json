@@ -11,7 +11,7 @@
   "navigationDividerColorDark": "#000000",
   "backgroundColor": "#000000",
   "enableNotifications": true,
-  "startUrl": "/app/dashboard",
+  "startUrl": "/",
   "iconUrl": "https://app.nexpenda.com/assets/manifest-icon-512.png",
   "maskableIconUrl": "https://app.nexpenda.com/assets/manifest-icon-512.png",
   "splashScreenFadeOutDuration": 300,

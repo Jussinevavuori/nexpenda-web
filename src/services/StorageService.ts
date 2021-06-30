@@ -183,7 +183,7 @@ export class StorageService {
    * StorageService component:
    *
    * Represents a boolean value for whether the user was logged in. If this is
-   * true, the app will automatically attempt
+   * true, the app will automatically attempt to log in
    */
   static wasLoggedIn = StorageService.createBooleanComponent({
     key: StorageService.createKey("wasLoggedIn"),
