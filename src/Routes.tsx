@@ -1,8 +1,8 @@
 import { lazy, Suspense } from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteData } from "./lib/Routing/RouteData";
+import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
 const ProtectedRoute = lazy(() => import("./components/ProtectedRoute/ProtectedRoute").then(_ => ({ default: _.ProtectedRoute })));
-const RouteSuspenseFallback = lazy(() => import("./components/RouteSuspenseFallback/RouteSuspenseFallback").then(_ => ({ default: _.RouteSuspenseFallback })));
 const AuthFrame = lazy(() => import("./components/AuthFrame/AuthFrame").then(_ => ({ default: _.AuthFrame })))
 const AppFrame = lazy(() => import("./components/AppFrame/AppFrame").then(_ => ({ default: _.AppFrame })))
 const Schedules = lazy(() => import("./views/Schedules/Schedules").then(_ => ({ default: _.Schedules })))
@@ -107,118 +107,121 @@ export const routes = {
 
 export function Routes() {
 
-	return <Switch>
+	return (
+		<Suspense fallback={<RouteSuspenseFallback />}>
+			<Switch>
 
-		<Route exact path={routes.login.path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Login />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.login.path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Login />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<Route exact path={routes.register.path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Register />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.register.path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Register />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<Route exact path={routes.resetPassword.path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<ResetPassword />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.resetPassword.path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<ResetPassword />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<Route exact path={routes.changePassword(":token").path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<ChangePassword />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.changePassword(":token").path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<ChangePassword />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<Route exact path={routes.confirmEmail(":token").path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<ConfirmEmail />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.confirmEmail(":token").path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<ConfirmEmail />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<Route exact path={routes.logOut.path}>
-			<AuthFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Logout />
-				</Suspense>
-			</AuthFrame>
-		</Route>
+				<Route exact path={routes.logOut.path}>
+					<AuthFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Logout />
+						</Suspense>
+					</AuthFrame>
+				</Route>
 
-		<ProtectedRoute exact path={routes.dashboard.path}>
-			<AppFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Dashboard />
-				</Suspense>
-			</AppFrame>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.dashboard.path}>
+					<AppFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Dashboard />
+						</Suspense>
+					</AppFrame>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.analytics.path}>
-			<AppFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Analytics />
-				</Suspense>
-			</AppFrame>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.analytics.path}>
+					<AppFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Analytics />
+						</Suspense>
+					</AppFrame>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.budgets.path}>
-			<AppFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Budgets />
-				</Suspense>
-			</AppFrame>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.budgets.path}>
+					<AppFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Budgets />
+						</Suspense>
+					</AppFrame>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.schedules.path}>
-			<AppFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Schedules />
-				</Suspense>
-			</AppFrame>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.schedules.path}>
+					<AppFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Schedules />
+						</Suspense>
+					</AppFrame>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.settings.path}>
-			<AppFrame>
-				<Suspense fallback={<RouteSuspenseFallback />}>
-					<Settings />
-				</Suspense>
-			</AppFrame>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.settings.path}>
+					<AppFrame>
+						<Suspense fallback={<RouteSuspenseFallback />}>
+							<Settings />
+						</Suspense>
+					</AppFrame>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.subscribe.path}>
-			<Suspense fallback={<RouteSuspenseFallback />}>
-				<Subscribe />
-			</Suspense>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.subscribe.path}>
+					<Suspense fallback={<RouteSuspenseFallback />}>
+						<Subscribe />
+					</Suspense>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.subscribeCanceled.path}>
-			<Suspense fallback={<RouteSuspenseFallback />}>
-				<Subscribe cancelled />
-			</Suspense>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.subscribeCanceled.path}>
+					<Suspense fallback={<RouteSuspenseFallback />}>
+						<Subscribe cancelled />
+					</Suspense>
+				</ProtectedRoute>
 
-		<ProtectedRoute exact path={routes.subscribeSuccess.path}>
-			<Suspense fallback={<RouteSuspenseFallback />}>
-				<SubscribeSuccess />
-			</Suspense>
-		</ProtectedRoute>
+				<ProtectedRoute exact path={routes.subscribeSuccess.path}>
+					<Suspense fallback={<RouteSuspenseFallback />}>
+						<SubscribeSuccess />
+					</Suspense>
+				</ProtectedRoute>
 
-		<Route path="/">
-			<Redirect to={routes.dashboard.path} />
-		</Route>
+				<Route path="/">
+					<Redirect to={routes.dashboard.path} />
+				</Route>
 
-	</Switch>
-
+			</Switch>
+		</Suspense>
+	)
 }

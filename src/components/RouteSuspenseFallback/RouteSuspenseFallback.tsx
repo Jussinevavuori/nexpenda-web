@@ -1,7 +1,7 @@
 import "./RouteSuspenseFallback.scss";
 import cx from "classnames";
 // import { useRouteSuspenseFallbackController } from "./useRouteSuspenseFallbackController";
-import { CircularProgress } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress/index";
 
 export type RouteSuspenseFallbackProps = {
 
