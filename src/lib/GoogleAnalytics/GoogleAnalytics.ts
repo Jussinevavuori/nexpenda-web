@@ -18,7 +18,6 @@ export class GoogleAnalytics {
         return el;
       })()
     );
-
     ReactGA.initialize(GoogleAnalytics.TrackingID);
   }
 }

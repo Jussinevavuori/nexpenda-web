@@ -1,0 +1,63 @@
+{
+  "packageId": "com.nexpenda.app.twa",
+  "host": "app.nexpenda.com",
+  "name": "Nexpenda",
+  "launcherName": "Nexpenda",
+  "display": "standalone",
+  "themeColor": "#2A52E2",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#000000",
+  "enableNotifications": true,
+  "startUrl": "/app/dashboard",
+  "iconUrl": "https://app.nexpenda.com/assets/manifest-icon-512.png",
+  "maskableIconUrl": "https://app.nexpenda.com/assets/manifest-icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:\\Users\\jussi\\projects\\nexpenda\\web@nexpenda\\android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Add new transaction",
+      "shortName": "New",
+      "url": "https://app.nexpenda.com/app/dashboard?transaction-create=open",
+      "chosenIconUrl": "https://app.nexpenda.com/assets/shortcuts/nexpenda_add_icon_48.png"
+    },
+    {
+      "name": "Analytics",
+      "shortName": "Analytics",
+      "url": "https://app.nexpenda.com/app/analytics",
+      "chosenIconUrl": "https://app.nexpenda.com/assets/shortcuts/nexpenda_add_icon_48.png"
+    },
+    {
+      "name": "Budgets",
+      "shortName": "Budgets",
+      "url": "https://app.nexpenda.com/app/budgets",
+      "chosenIconUrl": "https://app.nexpenda.com/assets/shortcuts/nexpenda_add_icon_48.png"
+    },
+    {
+      "name": "Settings",
+      "shortName": "Settings",
+      "url": "https://app.nexpenda.com/app/settings",
+      "chosenIconUrl": "https://app.nexpenda.com/assets/shortcuts/nexpenda_add_icon_48.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://app.nexpenda.com/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "appVersion": "1"
+}

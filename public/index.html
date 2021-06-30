@@ -8,7 +8,7 @@
       defer
     ></script>
 
-    <script src="https://js.stripe.com/v3/" defer></script>
+    <script src="https://js.stripe.com/v3/" defer async></script>
 
     <meta charset="utf-8" />
     <link
@@ -40,9 +40,13 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
 
+    <!-- Metadata -->
     <meta name="theme-color" content="#5e24ff" />
-
     <meta name="description" content="Nexpenda Money Tracking App" />
+
+		<!-- Preconnection optimizations -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
     <!-- Generated for apple -->
     <link
@@ -188,12 +192,20 @@
     <title>Nexpenda</title>
   </head>
   <body>
+    <!-- Noscript -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!-- Root for rendering react -->
     <div id="root"></div>
+
+    <!-- Automatic favicon switching based on theme -->
     <script>
+      // Get dark and light favicons
       var faviconDarkTheme = document.getElementById("favicon-dark-theme");
       var faviconLightTheme = document.getElementById("favicon-light-theme");
 
+      // Depending on color scheme matcher, remove unwanted favicon theme
+      // and append wanted favicon theme
       function onColorSchemeMatcherUpdate() {
         if (colorSchemeMatcher.matches) {
           faviconLightTheme.remove();
@@ -204,10 +216,15 @@
         }
       }
 
+      // Color scheme matcher to match the dark theme
       var colorSchemeMatcher = window.matchMedia(
         "(prefers-color-scheme: dark)"
       );
+
+      // Add listener
       colorSchemeMatcher.addListener(onColorSchemeMatcherUpdate);
+
+      // Initial update
       onColorSchemeMatcherUpdate();
     </script>
   </body>

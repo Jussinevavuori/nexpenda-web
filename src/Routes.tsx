@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react"
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
-import { AuthFrame } from "./components/AuthFrame/AuthFrame"
-import { AppFrame } from "./components/AppFrame/AppFrame"
-import { RouteSuspenseFallback } from "./components/RouteSuspenseFallback/RouteSuspenseFallback";
 import { RouteData } from "./lib/Routing/RouteData";
-import { Schedules } from "./views/Schedules/Schedules";
+const ProtectedRoute = lazy(() => import("./components/ProtectedRoute/ProtectedRoute").then(_ => ({ default: _.ProtectedRoute })));
+const RouteSuspenseFallback = lazy(() => import("./components/RouteSuspenseFallback/RouteSuspenseFallback").then(_ => ({ default: _.RouteSuspenseFallback })));
+const AuthFrame = lazy(() => import("./components/AuthFrame/AuthFrame").then(_ => ({ default: _.AuthFrame })))
+const AppFrame = lazy(() => import("./components/AppFrame/AppFrame").then(_ => ({ default: _.AppFrame })))
+const Schedules = lazy(() => import("./views/Schedules/Schedules").then(_ => ({ default: _.Schedules })))
 const Login = lazy(() => import("./views/Login/Login").then(_ => ({ default: _.Login })))
 const Register = lazy(() => import('./views/Register/Register').then(_ => ({ default: _.Register })))
 const Dashboard = lazy(() => import('./views/Dashboard/Dashboard').then(_ => ({ default: _.Dashboard })))
