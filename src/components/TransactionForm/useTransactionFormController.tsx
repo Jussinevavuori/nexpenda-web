@@ -1,5 +1,5 @@
 import emojiRegex from "emoji-regex"
-import * as z from "zod"
+import { z } from "zod"
 import { useCallback, useEffect, useRef, useMemo } from "react"
 import { TransactionFormProps } from "./TransactionForm"
 import { useStoreActions, useStoreState } from "../../store"
@@ -19,7 +19,7 @@ export const transactionFormSchema = z.object({
 	sign: z.enum(["+", "-"]),
 	amount: z.string().regex(/^\+?-?\d*[.,]?\d{0,2}$/),
 	category: z.string().refine(str => !!str.trim()),
-	time: z.date().refine(d => !Number.isNaN(d.getTime()), "Invalid date"),
+	time: z.date(),
 	comment: z.string(),
 	schedule: scheduleFormFieldSchema,
 })
@@ -181,7 +181,7 @@ export function useTransactionFormController(props: TransactionFormProps) {
 		// Parse values and put into format for posting to server
 		const values = formresult.values
 		const integerAmount = parseInputToIntegerAmount(values.amount, values.sign)
-		const json: JsonTransactionInitializer = {
+		const json = {
 			integerAmount,
 			category: values.category.trim(),
 			time: values.time.getTime(),

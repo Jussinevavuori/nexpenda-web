@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import * as dateFns from "date-fns";
 import { ScheduleInterval } from "./ScheduleInterval";
 import { compareDate } from "../Dates/compareDate";

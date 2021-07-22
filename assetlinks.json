@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.nexpenda.app.twa",
+      "sha256_cert_fingerprints": [
+        "2D:8D:D5:8A:5C:A3:F9:09:1C:6D:E5:B7:88:E4:71:ED:E8:8A:02:23:73:18:8D:DD:FB:07:EB:74:E1:36:A6:AB"
+      ]
+    }
+  }
+]

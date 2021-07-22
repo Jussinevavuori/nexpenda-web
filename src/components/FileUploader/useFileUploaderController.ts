@@ -35,7 +35,7 @@ export function useFileUploaderController(props: FileUploaderProps) {
    * State of reading uploaded spreadsheet file
    */
   const [readFileState, setReadFileState] = useState<{
-    result?: SpreadsheetReadFileResult<JsonSpreadsheetTransaction>;
+    result?: SpreadsheetReadFileResult<SpreadsheetTransaction>;
     isParsing: boolean;
     error?: string;
   }>({ isParsing: false });

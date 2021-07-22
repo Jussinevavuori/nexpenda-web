@@ -1,5 +1,5 @@
 import * as uuid from "uuid";
-import * as z from "zod";
+import { z } from "zod";
 import { MoneyAmount } from "../Money/MoneyAmount";
 import { Category } from "./Category";
 import { lightFormat } from "date-fns";
@@ -127,34 +127,12 @@ export class Transaction {
   }
 
   /**
-   * Convert Transaction to JsonTransactionInitializer
-   */
-  toJsonInitializer(options: {}): JsonTransactionInitializer;
-  toJsonInitializer(options: { id: true }): JsonTransactionIdInitializer;
-  toJsonInitializer(
-    options: { id?: true } = {}
-  ): JsonTransactionInitializer | JsonTransactionIdInitializer {
-    const json: JsonTransactionInitializer = {
-      time: this.date.getTime(),
-      category: this.category.value,
-      comment: this.comment,
-      integerAmount: this.amount.value,
-    };
-
-    if (options.id) {
-      return { ...json, id: this.id };
-    } else {
-      return json;
-    }
-  }
-
-  /**
    * Parse compressed data to a list of transactions. Transactions with
    * invalid category ids will use an error category.
    *
    * @param data Compressed Transactions Data Json
    */
-  static parseCompressedData(data: CompressedTransactionsJson): Transaction[] {
+  static parseCompressedData(data: CompressedTransactions): Transaction[] {
     return data.t.map((transaction) => {
       // Find category or use default value for invalid categories
       const category = data.c.find((c) => c.id === transaction.cid) ?? {
@@ -214,10 +192,6 @@ export class Transaction {
     }
   }
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
   static Schema = z.object({
     id: z.string(),
     time: z.number().positive().int(),
@@ -230,33 +204,7 @@ export class Transaction {
 
   static ArraySchema = z.array(Transaction.Schema);
 
-  /**
-   * Schema for validating that objects match the JsonTransactionInitializer
-   * format.
-   */
-  static InitializerSchema = z.object({
-    time: z.number().positive().int(),
-    integerAmount: z.number().int(),
-    comment: z.string().optional(),
-    category: z.string(),
-    categoryIcon: z.string().optional(),
-  });
-
-  /**
-   * Schema for validating that objects match the JsonTransactionInitializer
-   * format.
-   */
-  static IdInitializerSchema = Transaction.InitializerSchema.merge(
-    z.object({
-      id: z.string(),
-    })
-  );
-
-  /**
-   * Schema for validating that objects match the
-   * CompressedTransactionsDataJson format.
-   */
-  static CompressedJsonSchema = z.object({
+  static CompressedSchema = z.object({
     t: z.array(
       z.object({
         id: z.string(),

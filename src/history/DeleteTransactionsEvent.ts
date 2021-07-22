@@ -18,11 +18,20 @@ export class DeleteTransactionsEvent extends HistoryEvent<
   readonly transactions: Transaction[];
 
   constructor(transactions: Transaction[]) {
-    super("transaction/delete", async () => {
-      const jsons = transactions.map((_) => _.toJsonInitializer({ id: true }));
+    super("transaction/delete", () => {
       const put = store.getActions().transactions.putTransaction;
-      const results = await Promise.all(jsons.map((json) => put(json)));
-      return results;
+      return Promise.all(
+        this.transactions.map((transaction) => {
+          return put({
+            id: transaction.id,
+            integerAmount: transaction.amount.value,
+            time: transaction.date.getTime(),
+            comment: transaction.comment,
+            scheduleId: transaction.scheduleId,
+            category: transaction.category.value,
+          });
+        })
+      );
     });
     this.transactions = transactions;
   }

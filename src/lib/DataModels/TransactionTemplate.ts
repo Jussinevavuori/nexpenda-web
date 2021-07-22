@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { Category } from "./Category";
 import { MoneyAmount } from "../Money/MoneyAmount";
 
@@ -13,13 +13,6 @@ export class TransactionTemplate {
     this.comment = json.comment;
   }
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
-  /**
-   * JSON schema
-   */
   static Schema = z.object({
     integerAmount: z.number().int(),
     comment: z.string().optional(),

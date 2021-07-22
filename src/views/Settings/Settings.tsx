@@ -1,7 +1,7 @@
 import "./Settings.scss";
 import React from "react"
 import { Button, CircularProgress } from "@material-ui/core";
-import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIcon, Camera } from "@material-ui/icons";
+import { Publish as UploadIcon, ExitToApp as LogoutIcon, Feedback as FeedbackIcon, Camera, Replay, Palette, AccountBalance, RateReview, Person } from "@material-ui/icons";
 import { Type } from "../../components/Type/Type";
 import { FileDownloader } from "../../components/FileDownloader/FileDownloader";
 import { useSettingsController } from "./useSettingsController";
@@ -73,6 +73,7 @@ export function Settings(props: SettingsProps) {
 				</Type>
 
 				<ContainerBlock className="profilePanel" containerTitle="Profile">
+					<Person className="sectionIcon" />
 					<ProfilePanel
 						disableAvatar={!isDesktop}
 						UserAvatarProps={{
@@ -95,11 +96,13 @@ export function Settings(props: SettingsProps) {
 				}
 
 				<ContainerBlock containerTitle="Theme">
+					<Palette className="sectionIcon" />
 					<ThemePicker />
 				</ContainerBlock>
 
 				<Development>
-					<ContainerBlock className="schedules" containerTitle="Scheduled transactions">
+					<ContainerBlock className="schedules" containerTitle="Scheduled transactions" >
+						<Replay className="sectionIcon" />
 						<Type
 							color={isDarkTheme ? "gray-400" : "gray-800"}
 						>
@@ -115,6 +118,7 @@ export function Settings(props: SettingsProps) {
 				</Development>
 
 				<ContainerBlock className="fileHandlers" containerTitle="Import and export">
+					<UploadIcon className="sectionIcon" />
 					<Type
 						color={isDarkTheme ? "gray-400" : "gray-800"}
 					>
@@ -136,6 +140,7 @@ export function Settings(props: SettingsProps) {
 				{
 					controller.canManageBilling &&
 					<ContainerBlock containerTitle="Subscription">
+						<AccountBalance className="sectionIcon" />
 						<SettingsSubscriptionManager />
 					</ContainerBlock>
 				}
@@ -144,6 +149,7 @@ export function Settings(props: SettingsProps) {
 					containerTitle="Send feedback"
 					className="feedbackSection"
 				>
+					<RateReview className="sectionIcon" />
 					<Type
 						color={isDarkTheme ? "gray-400" : "gray-800"}
 						component="label"
@@ -179,9 +185,6 @@ export function Settings(props: SettingsProps) {
 					</Type>
 					<Type component="span" variant="bold" size="sm" color="gray-700" >
 						{Config.VERSION}
-					</Type>
-					<Type component="span" variant="bold" size="sm" color="gray-600">
-						{"Alpha"}
 					</Type>
 				</div>
 

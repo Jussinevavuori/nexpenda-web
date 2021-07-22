@@ -1,122 +1,68 @@
-import { Service } from "./Service";
+import { RequestConfig, Service } from "./Service";
 import { Budget } from "../lib/DataModels/Budget";
-import { Success } from "../lib/Result/Success";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
 import { removeProperty } from "../lib/Utilities/removeProperty";
 
 export class BudgetService extends Service {
   /**
-   * Get all budgets for user as Result
+   * Path
    */
-  static async getBudgets(options: {} = {}) {
-    const result = await Service.get(
-      "/budgets",
-      {},
-      {
-        service: { enableLogoutOnUnauthorized: true },
-      }
+  static path = "/budgets";
+  static pathTo(id: string) {
+    return `${this.path}/${id}`;
+  }
+
+  /**
+   * Default config
+   */
+  static config: RequestConfig = {
+    service: { enableLogoutOnUnauthorized: true },
+  };
+
+  /**
+   * Get all budgets
+   */
+  static async getBudgets(query: {} = {}) {
+    const result = await Service.get(this.path, query, this.config);
+    return Service.validateResult(result, Budget.ArraySchema);
+  }
+
+  /**
+   * Create a budget
+   */
+  static async postBudget(json: PostableBudget) {
+    const result = await Service.post(this.path, json, this.config);
+    return Service.validateResult(result, Budget.Schema);
+  }
+
+  /**
+   * Upsert a budget
+   */
+  static async putBudget(json: PuttableBudget) {
+    const result = await Service.put(
+      this.pathTo(json.id),
+      removeProperty(json, "id"),
+      this.config
     );
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Budget.ArraySchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<Budget[]>(
-        result.value,
-        "budgets/get"
-      );
-    }
+    return Service.validateResult(result, Budget.Schema);
   }
 
   /**
-   * Post a budget (in json, without id or uid) and return
-   * created json budget response as Result.
+   * Partially update a budget
    */
-  static async postBudget(json: JsonBudgetInitializer) {
-    const result = await Service.post("/budgets", json, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Budget.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonBudget>(
-        result.value,
-        "budgets/post"
-      );
-    }
+  static async patchBudget(json: PatchableBudget) {
+    const result = await Service.patch(
+      this.pathTo(json.id),
+      removeProperty(json, "id"),
+      this.config
+    );
+    return Service.validateResult(result, Budget.Schema);
   }
 
   /**
-   * Delete a budget by ID and return empty Result.
+   * Delete a budget
    */
   static async deleteBudget(id: string) {
-    const result = await Service.delete(
-      `/budgets/${id}`,
-      {},
-      {
-        service: { enableLogoutOnUnauthorized: true },
-      }
-    );
-
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<JsonBudget[]>(
-        result.value,
-        "budgets/delete"
-      );
-    }
-  }
-
-  /**
-   * Put a budget on the server as json (upsert) and
-   * return upserted json budget as Result.
-   */
-  static async putBudget(json: JsonBudgetIdInitializer) {
-    const result = await Service.put(
-      `/budgets/${json.id}`,
-      removeProperty(json, "id"),
-      { service: { enableLogoutOnUnauthorized: true } }
-    );
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Budget.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonBudget>(
-        result.value,
-        "budgets/put"
-      );
-    }
-  }
-
-  /**
-   * Patch a budget on the server as json (partial update)
-   * and return updated json budget as Result.
-   */
-  static async patchBudget(json: JsonBudgetIdInitializer) {
-    const result = await Service.patch(
-      `/budgets/${json.id}`,
-      removeProperty(json, "id"),
-      { service: { enableLogoutOnUnauthorized: true } }
-    );
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Budget.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonBudget[]>(
-        result.value,
-        "budgets/patch"
-      );
-    }
+    const result = await Service.patch(this.pathTo(id), {}, this.config);
+    return Service.validateResult(result, null, { status: 200 });
   }
 }

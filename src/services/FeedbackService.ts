@@ -1,6 +1,4 @@
 import { Service } from "./Service";
-import { Success } from "../lib/Result/Success";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
 
 export class FeedbackService extends Service {
   /**
@@ -13,15 +11,6 @@ export class FeedbackService extends Service {
       { service: { enableLogoutOnUnauthorized: true } }
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "feedback/post"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 }

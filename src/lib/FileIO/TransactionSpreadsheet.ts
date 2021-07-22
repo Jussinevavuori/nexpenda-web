@@ -1,8 +1,9 @@
+import { z } from "zod";
 import { Transaction } from "../DataModels/Transaction";
 import { Spreadsheet } from "./Spreadsheet";
 
 /* eslint-disable no-useless-escape */
-export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransaction> {
+export class TransactionSpreadsheet extends Spreadsheet<SpreadsheetTransaction> {
   public options = TransactionSpreadsheet.options;
   public schema = TransactionSpreadsheet.schema;
 
@@ -31,7 +32,13 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
   /**
    * The spreadsheet schema
    */
-  public static schema = Transaction.InitializerSchema;
+  public static schema: z.Schema<SpreadsheetTransaction> = z.object({
+    time: z.number().positive().int(),
+    integerAmount: z.number().int(),
+    comment: z.string().optional(),
+    category: z.string(),
+    categoryIcon: z.string().optional(),
+  });
 
   /**
    * The spreadsheet options
@@ -83,7 +90,7 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
   /**
    * Spreadsheet creator
    */
-  createRow(row: JsonSpreadsheetTransaction): object {
+  createRow(row: SpreadsheetTransaction): object {
     return {
       amount: row.integerAmount / 100,
       comment: row.comment || "",
@@ -111,7 +118,7 @@ export class TransactionSpreadsheet extends Spreadsheet<JsonSpreadsheetTransacti
   /**
    * Spreadsheet row order
    */
-  sortRows(rows: JsonSpreadsheetTransaction[]): JsonSpreadsheetTransaction[] {
+  sortRows(rows: SpreadsheetTransaction[]): SpreadsheetTransaction[] {
     return rows.sort((a, b) => a.time - b.time);
   }
 

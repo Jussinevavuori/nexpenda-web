@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export class AppConfig {
   /**
@@ -38,13 +38,6 @@ export class AppConfig {
     isDefaultAppConfig: true,
   });
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
-  /**
-   * Schema of budget JSON objects
-   */
   static Schema = z.object({
     freeTransactionsLimit: z.number().int().positive(),
     freeBudgetsLimit: z.number().int().positive(),

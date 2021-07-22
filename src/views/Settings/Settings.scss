@@ -68,4 +68,14 @@
       height: $size;
     }
   }
+
+  & .sectionIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: $spacing-4;
+    font-size: 32px;
+    color: $primary-800;
+    opacity: 0.25;
+  }
 }

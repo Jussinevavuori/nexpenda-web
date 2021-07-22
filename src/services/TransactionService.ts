@@ -1,112 +1,90 @@
-import { Service } from "./Service";
+import { RequestConfig, Service } from "./Service";
 import { Transaction } from "../lib/DataModels/Transaction";
-import { Success } from "../lib/Result/Success";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
+import { removeProperty } from "../lib/Utilities/removeProperty";
 
 export class TransactionService extends Service {
+  /**
+   * Path
+   */
+  static path = "/transactions";
+  static pathTo(id: string) {
+    return `${this.path}/${id}`;
+  }
+
+  /**
+   * Default config
+   */
+  static config: RequestConfig = {
+    service: { enableLogoutOnUnauthorized: true },
+  };
+
   /**
    * Get all transactions for user as Result
    */
   static async getTransactions(
-    options: {
+    query: {
       after?: Date;
       before?: Date;
       scheduleId?: string;
     } = {}
   ) {
-    // Construct query parameters
-    const queryParams: Record<string, string | undefined> = {
-      scheduleId: options.scheduleId,
-    };
-    if (options.after && options.after.getTime()) {
-      queryParams["after"] = options.after.getTime().toString();
-    }
-    if (options.before && options.before.getTime()) {
-      queryParams["before"] = options.before.getTime().toString();
-    }
-
-    const result = await Service.get("/transactions", queryParams, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Transaction.CompressedJsonSchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<CompressedTransactionsJson>(
-        result.value,
-        "transactions/get"
-      );
-    }
+    const result = await Service.get(this.path, query, this.config);
+    return Service.validateResult(result, Transaction.CompressedSchema);
   }
 
   /**
-   * Post a transaction (in json, without id or uid) and return
-   * created json transaction response as Result.
+   * Create a transaction
    */
-  static async postTransaction(json: JsonTransactionInitializer) {
-    const result = await Service.post("/transactions", json, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+  static async postTransaction(json: PostableTransaction) {
+    const result = await Service.post(this.path, json, this.config);
+    return Service.validateResult(result, Transaction.Schema);
+  }
 
-    if (result.isFailure()) {
-      return result;
-    } else if (Transaction.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransaction>(
-        result.value,
-        "transactions/post"
-      );
-    }
+  /**
+   * Upsert a transaction
+   */
+  static async putTransaction(json: PuttableTransaction) {
+    const result = await Service.put(
+      this.pathTo(json.id),
+      removeProperty(json, "id"),
+      this.config
+    );
+    return Service.validateResult(result, Transaction.Schema);
+  }
+
+  /**
+   * Partially update a transaction
+   */
+  static async patchTransaction(json: PatchableTransaction) {
+    const result = await Service.patch(
+      this.pathTo(json.id),
+      removeProperty(json, "id"),
+      this.config
+    );
+    return Service.validateResult(result, Transaction.Schema);
+  }
+
+  /**
+   * Delete a transaction
+   */
+  static async deleteTransaction(id: string) {
+    const result = await Service.delete(this.pathTo(id), {}, this.config);
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
    * Post many transactions by IDs and return created json transactions as result.
    */
-  static async massPostTransactions(jsons: JsonTransactionInitializer[]) {
+  static async massPostTransactions(jsons: PostableTransaction[]) {
     const result = await Service.post(
-      `/transactions/mass/post`,
+      this.pathTo(`mass/post`),
       { transactions: jsons },
-      { service: { enableLogoutOnUnauthorized: true } }
+      this.config
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (
-      result.value.status === 201 &&
-      Transaction.CompressedJsonSchema.check(result.value.data)
-    ) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<CompressedTransactionsJson>(
-        result.value,
-        "transactions/mass/post"
-      );
-    }
-  }
-
-  /**
-   * Delete a transaction by ID and return empty Result.
-   */
-  static async deleteTransaction(id: string) {
-    const result = await Service.delete(
-      `/transactions/${id}`,
-      {},
-      { service: { enableLogoutOnUnauthorized: true } }
-    );
-
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "transactions/delete"
-      );
-    }
+    return Service.validateResult(result, Transaction.CompressedSchema, {
+      status: 201,
+    });
   }
 
   /**
@@ -114,70 +92,11 @@ export class TransactionService extends Service {
    */
   static async massDeleteTransactions(ids: string[]) {
     const result = await Service.post(
-      `/transactions/mass/delete`,
+      this.pathTo(`mass/delete`),
       { ids },
-      {
-        service: { enableLogoutOnUnauthorized: true },
-      }
+      this.config
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "transactions/mass/delete"
-      );
-    }
-  }
-
-  /**
-   * Put a transaction on the server as json (upsert) and
-   * return upserted json transaction as Result.
-   */
-  static async putTransaction(
-    json: JsonTransactionInitializer & { id: string }
-  ) {
-    const { id, ...data } = json;
-    const result = await Service.put(`/transactions/${id}`, data, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Transaction.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransaction>(
-        result.value,
-        "transactions/put"
-      );
-    }
-  }
-
-  /**
-   * Patch a transaction on the server as json (partial update)
-   * and return updated json transaction as Result.
-   */
-  static async patchTransaction(
-    json: JsonTransactionInitializer & { id: string }
-  ) {
-    const { id, ...data } = json;
-    const result = await Service.patch(`/transactions/${id}`, data, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Transaction.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransaction[]>(
-        result.value,
-        "transactions/patch"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 }

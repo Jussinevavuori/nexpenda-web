@@ -1,5 +1,5 @@
 import ReactGA from "react-ga";
-import * as z from "zod"
+import { z } from "zod"
 import { useCallback, useState } from 'react';
 import { useStoreActions } from '../../store';
 import { useRedirect } from '../../hooks/utils/useRedirect';

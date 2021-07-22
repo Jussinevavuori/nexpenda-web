@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 // Full location state schema
 export const locationStateSchema = z.object({

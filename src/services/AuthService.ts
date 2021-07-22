@@ -1,6 +1,5 @@
 import { Service } from "./Service";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
-import { Success } from "../lib/Result/Success";
+import { z } from "zod";
 
 export class AuthService extends Service {
   /**
@@ -11,17 +10,7 @@ export class AuthService extends Service {
     password: string;
   }) {
     const result = await Service.post("/auth/register", credentials);
-
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<undefined>(
-        result.value,
-        "auth/register"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -32,17 +21,7 @@ export class AuthService extends Service {
     password: string;
   }) {
     const result = await Service.post("/auth/login", credentials);
-
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<undefined>(
-        result.value,
-        "auth/login"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -50,17 +29,7 @@ export class AuthService extends Service {
    */
   static async resetPassword(credentials: { email: string }) {
     const result = await Service.post("/auth/reset_password", credentials);
-
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<undefined>(
-        result.value,
-        "auth/reset-password"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -72,20 +41,9 @@ export class AuthService extends Service {
       {}
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (
-      result.value.status === 200 &&
-      result.value.data &&
-      typeof result.value.data === "string"
-    ) {
-      return new Success<string>(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<string>(
-        result.value,
-        "auth/change-password"
-      );
-    }
+    return Service.validateResult(result, z.string().nonempty(), {
+      status: 200,
+    });
   }
 
   /**
@@ -100,16 +58,7 @@ export class AuthService extends Service {
       { password: credentials.password }
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "auth/change-password"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -121,16 +70,7 @@ export class AuthService extends Service {
       credentials
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "auth/request-confirm-email"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -141,16 +81,7 @@ export class AuthService extends Service {
       `/auth/confirm_email/${credentials.token}`
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "auth/confirm-email"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
@@ -159,16 +90,7 @@ export class AuthService extends Service {
   static async logout() {
     const result = await Service.post(`/auth/logout`);
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "auth/logout"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**

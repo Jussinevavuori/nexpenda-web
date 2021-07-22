@@ -172,12 +172,10 @@ export class InvalidServerResponseFailure<T> extends Failure<
   "invalidServerResponse"
 > {
   public readonly response: any;
-  public readonly method: string;
 
-  constructor(response: any, method: string) {
+  constructor(response: any) {
     super("invalidServerResponse");
     this.response = response;
-    this.method = method;
   }
 }
 

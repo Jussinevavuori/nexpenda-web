@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { Category } from "./Category";
 import { MoneyAmount } from "../Money/MoneyAmount";
 import { Transaction } from "./Transaction";
@@ -138,7 +138,7 @@ export class Budget {
   }
 
   /**
-   * Convert Transaction to JsonTransaction
+   * Convert Budget to JsonTransaction
    */
   toJson(): JsonBudget {
     return {
@@ -149,28 +149,6 @@ export class Budget {
       integerAmount: this.integerAmount,
       periodMonths: this.periodMonths,
     };
-  }
-
-  /**
-   * Convert Transaction to JsonTransactionInitializer
-   */
-  toJsonInitializer(options: {}): JsonBudgetInitializer;
-  toJsonInitializer(options: { id: true }): JsonBudgetIdInitializer;
-  toJsonInitializer(
-    options: { id?: true } = {}
-  ): JsonBudgetInitializer | JsonBudgetIdInitializer {
-    const json: JsonBudgetInitializer = {
-      categoryIds: this.categoryIds,
-      integerAmount: this.integerAmount,
-      label: this._label,
-      periodMonths: this.periodMonths,
-    };
-
-    if (options.id) {
-      return { ...json, id: this.id };
-    } else {
-      return json;
-    }
   }
 
   /**
@@ -194,13 +172,6 @@ export class Budget {
     };
   }
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
-  /**
-   * Schema of budget JSON objects
-   */
   static Schema = z.object({
     id: z.string(),
     label: z.string().optional(),
@@ -210,29 +181,5 @@ export class Budget {
     periodMonths: z.number().positive().int(),
   });
 
-  /**
-   * Schema for array of budget JSON objects
-   */
   static ArraySchema = z.array(Budget.Schema);
-
-  /**
-   * Schema for validating that objects match the JsonBudgetInitializer
-   * format.
-   */
-  static InitializerSchema = z.object({
-    label: z.string().optional(),
-    integerAmount: z.number().int(),
-    categoryIds: z.array(z.string()),
-    periodMonths: z.number().positive().int(),
-  });
-
-  /**
-   * Schema for validating that objects match the JsonBudgetInitializer
-   * format.
-   */
-  static IdInitializerSchema = Budget.InitializerSchema.merge(
-    z.object({
-      id: z.string(),
-    })
-  );
 }

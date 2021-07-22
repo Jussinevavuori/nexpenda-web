@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import * as z from "zod";
+import { z } from "zod";
 
 export type ControlledFormFieldOptions<FieldType> = {
   defaultValue: FieldType;

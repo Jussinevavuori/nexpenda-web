@@ -236,8 +236,9 @@ export const authModel: AuthModel = {
   }),
 
   setAuthToState: action((state, json) => {
-    if (Auth.Schema.check(json)) {
-      const user = new Auth(json);
+    const parsed = Auth.Schema.safeParse(json);
+    if (parsed.success) {
+      const user = new Auth(parsed.data);
       state.user = user;
 
       if (user.themeColor) {
@@ -250,8 +251,9 @@ export const authModel: AuthModel = {
   }),
 
   updateAuthToState: action((state, json) => {
-    if (Auth.Schema.check(json)) {
-      const user = new Auth(json);
+    const parsed = Auth.Schema.safeParse(json);
+    if (parsed.success) {
+      const user = new Auth(parsed.data);
       state.user = user;
 
       if (user.themeColor) {

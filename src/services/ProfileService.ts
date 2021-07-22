@@ -1,7 +1,5 @@
 import { Service } from "./Service";
 import { Auth } from "../lib/DataModels/Auth";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
-import { Success } from "../lib/Result/Success";
 import { FileNotUploadedFailure } from "../lib/Result/Failures";
 
 export class ProfileService extends Service {
@@ -10,39 +8,20 @@ export class ProfileService extends Service {
    */
   static async getProfile() {
     const result = await Service.get<JsonAuth>("/profile", {}, {});
-
-    if (result.isFailure()) {
-      return result;
-    } else if (Auth.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonAuth>(
-        result.value,
-        "/profile"
-      );
-    }
+    return Service.validateResult(result, Auth.Schema);
   }
 
   /**
    * Updates the user's profile
    */
-  static async updateProfile(update: UpdatableJsonAuthFields) {
-    const result = await Service.patch<UpdatableJsonAuthFields, JsonAuth>(
+  static async updateProfile(update: AuthUpdater) {
+    const result = await Service.patch<AuthUpdater, JsonAuth>(
       "/profile",
       update,
       { service: { enableLogoutOnUnauthorized: true } }
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (Auth.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonAuth>(
-        result.value,
-        "/profile"
-      );
-    }
+    return Service.validateResult(result, Auth.Schema);
   }
 
   /**
@@ -62,16 +41,7 @@ export class ProfileService extends Service {
         { service: { enableLogoutOnUnauthorized: true } }
       );
 
-      if (result.isFailure()) {
-        return result;
-      } else if (Auth.Schema.check(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return new InvalidServerResponseFailure<JsonAuth>(
-          result.value,
-          "/avatar"
-        );
-      }
+      return Service.validateResult(result, Auth.Schema);
     }
 
     /**
@@ -85,16 +55,7 @@ export class ProfileService extends Service {
         { service: { enableLogoutOnUnauthorized: true } }
       );
 
-      if (result.isFailure()) {
-        return result;
-      } else if (Auth.Schema.check(result.value.data)) {
-        return new Success(result.value.data);
-      } else {
-        return new InvalidServerResponseFailure<JsonAuth>(
-          result.value,
-          "/avatar"
-        );
-      }
+      return Service.validateResult(result, Auth.Schema);
     }
 
     /**
@@ -114,15 +75,6 @@ export class ProfileService extends Service {
       service: { enableLogoutOnUnauthorized: true },
     });
 
-    if (result.isFailure()) {
-      return result;
-    } else if (Auth.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonAuth>(
-        result.value,
-        "/avatar"
-      );
-    }
+    return Service.validateResult(result, Auth.Schema);
   }
 }

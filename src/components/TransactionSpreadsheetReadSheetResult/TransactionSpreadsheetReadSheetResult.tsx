@@ -6,7 +6,7 @@ import { SpreadsheetReadSheetResult } from "../../lib/FileIO/Spreadsheet";
 import { Type } from "../Type/Type";
 
 export type TransactionSpreadsheetReadSheetResultProps = {
-	data: SpreadsheetReadSheetResult<JsonSpreadsheetTransaction>
+	data: SpreadsheetReadSheetResult<SpreadsheetTransaction>
 	maxRowsCount?: number;
 };
 

@@ -10,26 +10,10 @@ import { Config } from "../config";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeInitializationFailure } from "../lib/Result/Failures";
 import { ErrorFailure } from "../lib/Result/Failures";
-import { StripeProduct } from "../lib/Stripe/StripeProduct";
 
 export class StripeService extends Service {
   static getStripe() {
     return loadStripe(Config.STRIPE_PUBLISHABLE_KEY);
-  }
-
-  static async getProducts() {
-    const result = await this.get("/stripe/products", {});
-
-    if (result.isFailure()) {
-      return result;
-    } else if (StripeProduct.ArraySchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<StripeProduct[]>(
-        result.value,
-        "/stripe/products"
-      );
-    }
   }
 
   /**
@@ -48,19 +32,22 @@ export class StripeService extends Service {
 
       if (result.isFailure()) {
         return result;
-      } else if (!stripe) {
+      }
+
+      if (!stripe) {
         return new StripeInitializationFailure<StripeSessionIdResponse>();
-      } else if (StripeUtils.isStripeSessionIdResponse(result.value.data)) {
+      }
+
+      if (StripeUtils.isStripeSessionIdResponse(result.value.data)) {
         await stripe.redirectToCheckout({
           sessionId: result.value.data.sessionId,
         });
         return new Success(result.value.data);
-      } else {
-        return new InvalidServerResponseFailure<StripeSessionIdResponse>(
-          result.value,
-          "/stripe/create-checkout-session"
-        );
       }
+
+      return new InvalidServerResponseFailure<StripeSessionIdResponse>(
+        result.value
+      );
     } catch (e) {
       return new ErrorFailure<StripeSessionIdResponse>(e);
     }
@@ -77,17 +64,20 @@ export class StripeService extends Service {
 
       if (result.isFailure()) {
         return result;
-      } else if (!stripe) {
+      }
+
+      if (!stripe) {
         return new StripeInitializationFailure<StripeSessionUrlResponse>();
-      } else if (StripeUtils.isStripeSessionUrlResponse(result.value.data)) {
+      }
+
+      if (StripeUtils.isStripeSessionUrlResponse(result.value.data)) {
         window.location.href = result.value.data.url;
         return new Success(result.value.data);
-      } else {
-        return new InvalidServerResponseFailure<StripeSessionUrlResponse>(
-          result.value,
-          "/stripe/create-billing-portal-session"
-        );
       }
+
+      return new InvalidServerResponseFailure<StripeSessionUrlResponse>(
+        result.value
+      );
     } catch (e) {
       return new ErrorFailure<StripeSessionUrlResponse>(e);
     }

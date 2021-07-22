@@ -65,10 +65,10 @@ export class ScheduleInterval {
   }
 
   static isValidEveryValue(value: any): value is ScheduleInterval["every"] {
-    return Schedule.Schema.shape.interval.shape.every.check(value);
+    return Schedule.Schema.shape.interval.shape.every.safeParse(value).success;
   }
 
   static isValidTypeValue(value: any): value is ScheduleInterval["type"] {
-    return Schedule.Schema.shape.interval.shape.type.check(value);
+    return Schedule.Schema.shape.interval.shape.type.safeParse(value).success;
   }
 }

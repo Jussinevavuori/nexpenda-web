@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export const scheduleFormFieldSchema = z.object({
   enabled: z.boolean(),

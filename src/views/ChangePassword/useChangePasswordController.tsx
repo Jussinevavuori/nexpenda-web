@@ -1,5 +1,5 @@
 import ReactGA from "react-ga";
-import * as z from "zod"
+import { z } from "zod"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"

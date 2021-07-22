@@ -1,5 +1,5 @@
 import emojiRegex from "emoji-regex";
-import * as z from "zod";
+import { z } from "zod";
 import { useCallback, useEffect, useRef, useMemo } from "react";
 import { useCalculatorOpenState } from "../../hooks/componentStates/useCalculatorOpenState";
 import { useControlledForm } from "../../hooks/forms/useControlledForm";
@@ -24,13 +24,7 @@ export const transactionScheduleFormSchema = z.object({
   sign: z.enum(["+", "-"]),
   amount: z.string().regex(/^\+?-?\d*[.,]?\d{0,2}$/),
   category: z.string().refine((str) => !!str.trim()),
-  firstOccurrence: z
-    .date()
-    .refine((d) => !Number.isNaN(d.getTime()), "Invalid date"),
-  // .refine(
-  //   (d) => compareDate(d, ">=", new Date()),
-  //   "Date can not be in the past"
-  // ),
+  firstOccurrence: z.date(),
   comment: z.string(),
   schedule: scheduleFormFieldSchema,
   updateAllTransactions: z.boolean(),

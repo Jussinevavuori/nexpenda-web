@@ -1,5 +1,5 @@
 import XLSX from "xlsx";
-import * as z from "zod";
+import { z } from "zod";
 import { Failure } from "../Result/Failure";
 import { ErrorFailure } from "../Result/Failures";
 import {

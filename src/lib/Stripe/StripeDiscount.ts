@@ -1,5 +1,5 @@
 import { StripeCoupon } from "./StripeCoupon";
-import * as z from "zod";
+import { z } from "zod";
 export class StripeDiscount {
   data: JsonStripeDiscount;
 

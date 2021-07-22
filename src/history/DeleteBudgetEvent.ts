@@ -17,9 +17,13 @@ export class DeleteBudgetEvent extends HistoryEvent<
 
   constructor(budget: Budget) {
     super("budget/delete", () => {
-      const json = budget.toJsonInitializer({ id: true });
-      const put = store.getActions().budgets.putBudget;
-      return put(json);
+      return store.getActions().budgets.putBudget({
+        id: this.budget.id,
+        label: this.budget.customLabel,
+        integerAmount: this.budget.integerAmount,
+        periodMonths: this.budget.periodMonths,
+        categoryIds: this.budget.categoryIds,
+      });
     });
     this.budget = budget;
   }

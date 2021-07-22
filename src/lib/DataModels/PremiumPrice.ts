@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { ScheduleInterval } from "../Schedules/ScheduleInterval";
 
 export class PremiumPrice {
@@ -77,10 +77,6 @@ export class PremiumPrice {
     }
     return currency.toUpperCase();
   }
-
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
 
   static Schema = z.object({
     id: z.string(),

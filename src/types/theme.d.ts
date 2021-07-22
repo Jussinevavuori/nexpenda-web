@@ -1,7 +1,47 @@
+/**
+ * All possible themes
+ */
+type ThemeColor = "blue" | "green" | "red" | "yellow" | "purple" | "pink";
+
+/**
+ * All possible color modes
+ */
+type ThemeMode = "dark" | "light";
+
+type ThemePropertyLabel =
+  | "color-100"
+  | "color-200"
+  | "color-300"
+  | "color-400"
+  | "color-500"
+  | "color-600"
+  | "color-700"
+  | "color-800"
+  | "color-900";
+
+/**
+ * Generic theme property that is manipulated via the theme feature
+ */
+type ThemeProperty = {
+  type: "color";
+  label: ThemePropertyLabel;
+  sourceName: string;
+  targetName: string;
+};
+
+/**
+ * All text variants
+ */
 type TextVariant = "regular" | "bold" | "boldcaps" | "extrabold";
 
+/**
+ * All text sizes
+ */
 type TextSize = "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
 
+/**
+ * All possible colors
+ */
 type Color =
   | "transparent"
   | "white"

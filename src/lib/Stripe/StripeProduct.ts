@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { StripePrice } from "./StripePrice";
 export class StripeProduct {
   data: JsonStripeProduct;

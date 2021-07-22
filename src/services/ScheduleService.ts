@@ -1,77 +1,54 @@
-import { Service } from "./Service";
+import { RequestConfig, Service } from "./Service";
 import { TransactionSchedule } from "../lib/DataModels/TransactionSchedule";
-import { Success } from "../lib/Result/Success";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
 import { Transaction } from "../lib/DataModels/Transaction";
+import { removeProperty } from "../lib/Utilities/removeProperty";
 
 export class ScheduleService extends Service {
   /**
+   * Path
+   */
+  static path = "/schedules";
+  static pathTo(id: string) {
+    return `${this.path}/${id}`;
+  }
+
+  /**
+   * Default config
+   */
+  static config: RequestConfig = {
+    service: { enableLogoutOnUnauthorized: true },
+  };
+
+  /**
    * Get all schedules for user as Result
    */
-  static async getSchedules(options: {} = {}) {
-    const result = await Service.get(
-      "/schedules",
-      {},
-      {
-        service: { enableLogoutOnUnauthorized: true },
-      }
-    );
+  static async getSchedules(query: {} = {}) {
+    const result = await Service.get(this.path, query, this.config);
 
-    if (result.isFailure()) {
-      return result;
-    } else if (TransactionSchedule.ArraySchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransactionScheduleArray>(
-        result.value,
-        "schedules/get"
-      );
-    }
+    return Service.validateResult(result, TransactionSchedule.ArraySchema);
   }
 
   /**
    * Post a schedule (in json, without id or uid) and return
    * response as Result.
    */
-  static async postSchedule(json: JsonTransactionScheduleInitializer) {
-    const result = await Service.post("/schedules", json, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
-
-    if (result.isFailure()) {
-      return result;
-    } else if (TransactionSchedule.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransactionSchedule>(
-        result.value,
-        "schedules/post"
-      );
-    }
+  static async postSchedule(json: PostableTransactionSchedule) {
+    const result = await Service.post(this.path, json, this.config);
+    return Service.validateResult(result, TransactionSchedule.Schema);
   }
 
   /**
    * Patch a schedule on the server as json (partial update)
    * and return updated as Result.
    */
-  static async patchSchedule(
-    json: JsonTransactionScheduleUpdater & { id: string }
-  ) {
-    const { id, ...data } = json;
-    const result = await Service.patch(`/schedules/${id}`, data, {
-      service: { enableLogoutOnUnauthorized: true },
-    });
+  static async patchSchedule(json: PatchableTransactionSchedule) {
+    const result = await Service.patch(
+      this.pathTo(json.id),
+      removeProperty(json, "id"),
+      this.config
+    );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (TransactionSchedule.Schema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<JsonTransactionScheduleUpdater[]>(
-        result.value,
-        "schedules/patch"
-      );
-    }
+    return Service.validateResult(result, TransactionSchedule.Schema);
   }
 
   /**
@@ -83,42 +60,24 @@ export class ScheduleService extends Service {
     deleteTransactions: boolean;
   }) {
     const result = await Service.delete(
-      `/schedules/${options.id}`,
-      { deleteTransactions: options.deleteTransactions ? "true" : undefined },
-      { service: { enableLogoutOnUnauthorized: true } }
+      this.pathTo(options.id),
+      removeProperty(options, "id"),
+      this.config
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (result.value.status === 200) {
-      return Success.Empty();
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "schedules/delete"
-      );
-    }
+    return Service.validateResult(result, null, { status: 200 });
   }
 
   /**
    * Create all scheduled transactions.
    */
-  static async createScheduledTransactions(options: {} = {}) {
+  static async createScheduledTransactions(query: {} = {}) {
     const result = await Service.post(
-      `/schedules/create_scheduled`,
-      {},
-      { service: { enableLogoutOnUnauthorized: true } }
+      this.pathTo("create_scheduled"),
+      query,
+      this.config
     );
 
-    if (result.isFailure()) {
-      return result;
-    } else if (Transaction.ArraySchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<void>(
-        result.value,
-        "schedules/create_scheduled"
-      );
-    }
+    return Service.validateResult(result, Transaction.ArraySchema);
   }
 }

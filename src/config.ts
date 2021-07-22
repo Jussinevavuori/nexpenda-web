@@ -16,7 +16,7 @@ export class Config {
   /**
    * Current application version number
    */
-  static VERSION = "0.2.0";
+  static VERSION = "0.2.1";
 
   /**
    * Get the correct API URL. While in development or testing, use localhost

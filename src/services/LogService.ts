@@ -1,7 +1,5 @@
-import * as z from "zod";
+import { z } from "zod";
 import { Log } from "../lib/DataModels/Log";
-import { InvalidServerResponseFailure } from "../lib/Result/Failures";
-import { Success } from "../lib/Result/Success";
 import { exposeToWindow } from "../lib/Utilities/exposeToWindow";
 import { Service } from "./Service";
 
@@ -13,8 +11,6 @@ type Loggable = {
 };
 
 export class LogService extends Service {
-  static PostResponseSchema = z.object({ id: z.string() });
-
   /**
    * Posts a log to the server.
    *
@@ -22,14 +18,8 @@ export class LogService extends Service {
    */
   private static async postLog(log: Log) {
     const result = await Service.post("/logs", log.toJson());
-
-    if (result.isFailure()) {
-      return result;
-    } else if (LogService.PostResponseSchema.check(result.value.data)) {
-      return new Success(result.value.data);
-    } else {
-      return new InvalidServerResponseFailure<void>(result.value, "logs/post");
-    }
+    const idObjectSchema = z.object({ id: z.string() });
+    return Service.validateResult(result, idObjectSchema);
   }
 
   /**
@@ -65,7 +55,7 @@ export class LogService extends Service {
   }) {
     if (!options.disablePrint) {
       const print = LogService.getConsolePrinterMethod(options.log.type);
-      print(options.log.message, options.log);
+      print(options.log.message, options.log, options.log.data);
     }
 
     if (!options.disablePost) {

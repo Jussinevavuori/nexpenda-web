@@ -23,8 +23,8 @@
 23-->
 24<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 25    package="com.nexpenda.app.twa"
-26    android:versionCode="2"
-27    android:versionName="2" >
+26    android:versionCode="3"
+27    android:versionName="3" >
 28
 29    <uses-sdk
 30        android:minSdkVersion="19"

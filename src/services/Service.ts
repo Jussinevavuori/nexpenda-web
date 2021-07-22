@@ -3,10 +3,18 @@ import { Config } from "../config";
 import { store } from "../store";
 import jwt from "jsonwebtoken";
 import { Success } from "../lib/Result/Success";
-import { NetworkFailure } from "../lib/Result/Failures";
+import {
+  InvalidServerResponseFailure,
+  NetworkFailure,
+} from "../lib/Result/Failures";
 import { routes } from "../Routes";
 import { StorageService } from "./StorageService";
 import { PubSubChannel } from "../lib/PubSub/PubSubChannel";
+import { z } from "zod";
+
+export type QueryParameterValue = string | number | Date | boolean | undefined;
+
+export type QueryParameters = Record<string, QueryParameterValue>;
 
 export type ServiceRequestConfig = {
   enableLogoutOnUnauthorized?: boolean;
@@ -41,22 +49,62 @@ export class Service {
   });
 
   /**
+   * Parse any query parameter value into a string or undefined if
+   * value is omitted.
+   */
+  protected static parseQueryParameterValue(
+    value: QueryParameterValue
+  ): string | undefined {
+    switch (typeof value) {
+      // True as "true", false omitted
+      case "boolean":
+        return value ? "true" : undefined;
+      // Strings as is, empty strings omitted
+      case "string":
+        return value ? value : undefined;
+      // Finite numbers as strings, else omitted
+      case "number":
+        return Number.isFinite(value) ? value.toString() : undefined;
+      default:
+        // Dates with valid values as epocn ms strings
+        if (value instanceof Date) {
+          const t = value.getTime();
+          return Number.isFinite(t) ? t.toString() : undefined;
+        }
+        // Omit other values
+        return undefined;
+    }
+  }
+
+  /**
+   * Parse a query into a query string
+   */
+  protected static parseQuery(original: QueryParameters): string {
+    const parsed = Object.entries(original).reduce((query, entry) => {
+      const [key, value] = entry;
+      const parsed = Service.parseQueryParameterValue(value);
+      return parsed ? { ...query, [key]: parsed } : query;
+    }, {} as Record<string, string | undefined>);
+
+    if (Object.entries(parsed).length === 0) {
+      return "";
+    }
+
+    const valueChain = Object.entries(parsed)
+      .map((p) => `${p[0]}=${p[1]}`)
+      .join("&");
+
+    return "?" + valueChain;
+  }
+
+  /**
    * Construct endpoint from path, base URL already handled
    */
   protected static endpoint(
     path: string,
-    queryParams: Record<string, string | undefined> = {}
+    query: Record<string, QueryParameterValue> = {}
   ) {
-    const query =
-      Object.entries(queryParams).length === 0
-        ? ""
-        : "?" +
-          Object.entries(queryParams)
-            .filter((e) => !!e[1])
-            .map((p) => `${p[0]}=${p[1]}`)
-            .join("&");
-
-    return `${Service.baseURL}${path}${query}`;
+    return `${Service.baseURL}${path}${Service.parseQuery(query)}`;
   }
 
   /**
@@ -180,7 +228,7 @@ export class Service {
    */
   protected static async handleRequest<T>(
     path: string,
-    queryParams: Record<string, string | undefined>,
+    query: QueryParameters,
     config: RequestConfig | undefined,
     requestFunction: (
       url: string,
@@ -191,7 +239,7 @@ export class Service {
     await Service.onBeforeRequest(config?.service);
 
     // Request configuration
-    const url = Service.endpoint(path, queryParams);
+    const url = Service.endpoint(path, query);
     const options = Service.getConfig(config?.axios);
 
     // Run request
@@ -220,10 +268,10 @@ export class Service {
    */
   protected static async get<ResponseData = any>(
     path: string,
-    queryParams: Record<string, string | undefined>,
+    query: QueryParameters,
     config?: RequestConfig | undefined
   ) {
-    return Service.handleRequest(path, queryParams, config, (url, options) => {
+    return Service.handleRequest(path, query, config, (url, options) => {
       return Service.axios.get<ResponseData>(url, options);
     });
   }
@@ -246,10 +294,10 @@ export class Service {
    */
   protected static async delete<ResponseData = any>(
     path: string,
-    queryParams: Record<string, string | undefined>,
+    query: QueryParameters,
     config?: RequestConfig | undefined
   ) {
-    return Service.handleRequest(path, {}, config, (url, options) => {
+    return Service.handleRequest(path, query, config, (url, options) => {
       return Service.axios.delete<ResponseData>(url, options);
     });
   }
@@ -278,5 +326,65 @@ export class Service {
     return Service.handleRequest(path, {}, config, (url, options) => {
       return Service.axios.patch<ResponseData>(url, data, options);
     });
+  }
+
+  /**
+   * Valdiate a result according to a schema or a status code.
+   */
+  protected static validateResult<R>(
+    result: Unwrap<ReturnType<typeof Service["handleRequest"]>>,
+    schema: z.Schema<R>,
+    requirements?: { status?: number },
+    extraCheck?: (res: AxiosResponse<unknown>) => boolean
+  ):
+    | NetworkFailure<unknown, { errors?: any }>
+    | InvalidServerResponseFailure<R>
+    | Success<R>;
+  protected static validateResult(
+    result: Unwrap<ReturnType<typeof Service["handleRequest"]>>,
+    schema: null,
+    requirements?: { status?: number },
+    extraCheck?: (res: AxiosResponse<unknown>) => boolean
+  ):
+    | NetworkFailure<unknown, { errors?: any }>
+    | InvalidServerResponseFailure<void>
+    | Success<void>;
+  protected static validateResult<R>(
+    result: Unwrap<ReturnType<typeof Service["handleRequest"]>>,
+    schema: null | z.Schema<R>,
+    requirements?: { status?: number },
+    extraCheck?: (res: AxiosResponse<unknown>) => boolean
+  ) {
+    // Always pass failures directly
+    if (result.isFailure()) return result;
+
+    // Alias
+    const response = result.value;
+
+    // Check requirements
+    if (requirements) {
+      // Require correct status code
+      if (requirements.status && requirements.status !== response.status) {
+        return new InvalidServerResponseFailure(response);
+      }
+    }
+
+    // Extra check
+    if (extraCheck && !extraCheck(response)) {
+      return new InvalidServerResponseFailure(response);
+    }
+
+    // If schema provided, ensure it passes
+    if (schema) {
+      const parseResult = schema.safeParse(response.data);
+      if (parseResult.success) {
+        return new Success(parseResult.data);
+      } else {
+        return new InvalidServerResponseFailure(response);
+      }
+    }
+
+    // If no schema, return empty
+    return Success.Empty();
   }
 }

@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 /**
  * Defines a category object
@@ -76,13 +76,6 @@ export class Category {
     return this.value.toLowerCase().replace(/\s+/g, "-");
   }
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
-  /**
-   * Schema
-   */
   static Schema = z.object({
     id: z.string(),
     value: z.string(),

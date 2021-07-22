@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { StripeCustomer } from "../Stripe/StripeCustomer";
 import { StripeSubscription } from "../Stripe/StripeSubscription";
 import { ThemeColors } from "../Theme/ThemeColors";
@@ -116,13 +116,6 @@ export class Auth {
       .join("");
   }
 
-  // ===========================================================================
-  // SCHEMAS
-  // ===========================================================================
-
-  /**
-   * Schema of json Auth objects
-   */
   static Schema = z.object({
     id: z.string().min(1),
     displayName: z.string().optional(),
