@@ -74,8 +74,17 @@
     top: 0;
     right: 0;
     margin: $spacing-4;
-    font-size: 32px;
-    color: $primary-800;
-    opacity: 0.25;
+    font-size: 28px;
+    color: $primary-600;
+    opacity: 0.35;
+  }
+}
+
+@include darkmode {
+  .Settings {
+    & .sectionIcon {
+      color: $primary-300;
+      opacity: 0.2;
+    }
   }
 }
