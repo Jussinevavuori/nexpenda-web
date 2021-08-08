@@ -18,7 +18,6 @@ import { useIsDarkTheme } from "../../hooks/application/useIsThemeMode";
 import { Config } from "../../config";
 import { FreemiumTracker } from "../../components/FreemiumTracker/FreemiumTracker";
 import { AvatarChangerMenu } from "../../components/AvatarChangerMenu/AvatarChangerMenu";
-import { Development } from "../../components/Development/Development";
 import { routes } from "../../Routes";
 import { Link } from "react-router-dom";
 
@@ -100,7 +99,7 @@ export function Settings(props: SettingsProps) {
 					<ThemePicker />
 				</ContainerBlock>
 
-				<Development>
+				
 					<ContainerBlock className="schedules" containerTitle="Scheduled transactions" >
 						<Replay className="sectionIcon" />
 						<Type
@@ -115,7 +114,7 @@ export function Settings(props: SettingsProps) {
 							</Button>
 						</Link>
 					</ContainerBlock>
-				</Development>
+				
 
 				<ContainerBlock className="fileHandlers" containerTitle="Import and export">
 					<UploadIcon className="sectionIcon" />
